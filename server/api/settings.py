@@ -141,7 +141,7 @@ STATIC_ROOT = BASE_DIR/"static_files"
 
 # This is where to _find_ static files when 'collectstatic' is run.
 # These files are then copied to the STATIC_ROOT location.
-STATICFILES_DIRS = ( BASE_DIR/"static",)
+STATICFILES_DIRS = (BASE_DIR/"static",)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
