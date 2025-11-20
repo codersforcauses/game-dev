@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Members(models.Model):
+class Member(models.Model):
     name = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
     profile_picture = models.ImageField(upload_to="profiles/", null=True)
