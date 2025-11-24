@@ -59,14 +59,14 @@ export default function Navbar() {
 
               <Link
                 className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
-                href="/"
+                href="/games"
               >
                 Game Showcase
               </Link>
 
               <Link
                 className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
-                href=""
+                href="/artwork"
               >
                 Art Showcase
               </Link>
