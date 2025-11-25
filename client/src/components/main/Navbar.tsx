@@ -8,6 +8,14 @@ import { useState } from "react";
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const navItems = [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About Us" },
+    { href: "/events", label: "Events" },
+    { href: "/games", label: "Game Showcase" },
+    { href: "/artwork", label: "Art Showcase" },
+  ];
+
   return (
     <>
       <header className="fixed left-0 top-0 z-50 w-full border-b border-border/20 bg-[#090A19] font-jersey10">
@@ -37,40 +45,15 @@ export default function Navbar() {
             </Link>
 
             <nav className="ml-auto hidden flex-none gap-10 text-xl md:flex">
-              <Link
-                className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
-                href="/"
-              >
-                Home
-              </Link>
-
-              <Link
-                className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
-                href="/about"
-              >
-                About Us
-              </Link>
-
-              <Link
-                className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
-                href="/events"
-              >
-                Events
-              </Link>
-
-              <Link
-                className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
-                href="/games"
-              >
-                Game Showcase
-              </Link>
-
-              <Link
-                className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
-                href="/artwork"
-              >
-                Art Showcase
-              </Link>
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
 
             <div className="ml-auto flex items-center">
@@ -85,45 +68,16 @@ export default function Navbar() {
 
                 {isDropdownOpen && (
                   <div className="absolute right-0 top-full z-50 mt-2 w-52 flex-col rounded border border-border/20 bg-popover">
-                    <Link
-                      className="block whitespace-nowrap px-4 py-3 text-lg transition-colors duration-150 hover:bg-white/10"
-                      href="/"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      Home
-                    </Link>
-
-                    <Link
-                      className="block whitespace-nowrap px-4 py-3 text-lg transition-colors duration-150 hover:bg-white/10"
-                      href="/about"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      About Us
-                    </Link>
-
-                    <Link
-                      className="block whitespace-nowrap px-4 py-3 text-lg transition-colors duration-150 hover:bg-white/10"
-                      href="/events"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      Events
-                    </Link>
-
-                    <Link
-                      className="block whitespace-nowrap px-4 py-3 text-lg transition-colors duration-150 hover:bg-white/10"
-                      href=""
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      Game Showcase
-                    </Link>
-
-                    <Link
-                      className="block whitespace-nowrap px-4 py-3 text-lg transition-colors duration-150 hover:bg-white/10"
-                      href=""
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      Art Showcase
-                    </Link>
+                    {navItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="block whitespace-nowrap px-4 py-3 text-lg transition-colors duration-150 hover:bg-white/10"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
                   </div>
                 )}
               </div>
