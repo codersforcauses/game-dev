@@ -1,5 +1,6 @@
 "use client";
 
+import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -17,10 +18,10 @@ export default function Navbar() {
               className="flex flex-none items-center gap-3 text-2xl"
             >
               <Image
-                src="/navbar_arr.svg"
+                src="/logo.svg"
                 alt="logo"
-                width={24}
-                height={24}
+                width={32}
+                height={32}
                 className="h-8 w-8"
               />
               <span className="sr-only">Game Development UWA</span>
@@ -31,7 +32,7 @@ export default function Navbar() {
                 aria-hidden="true"
                 className="hidden whitespace-nowrap md:inline"
               >
-                Game Development UWA _
+                Game Development UWA
               </span>
             </Link>
 
@@ -79,13 +80,7 @@ export default function Navbar() {
                   className="flex items-center justify-center p-2"
                   aria-label="Toggle menu"
                 >
-                  <Image
-                    src="/navbar_dropdown_icon.svg"
-                    alt="menu"
-                    width={24}
-                    height={24}
-                    className="h-6 w-6"
-                  />
+                  <Menu className="h-6 w-6" />
                 </button>
 
                 {isDropdownOpen && (
