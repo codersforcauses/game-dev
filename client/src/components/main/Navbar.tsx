@@ -22,7 +22,7 @@ export default function Navbar() {
         <div className="mx-auto flex h-[104px] max-w-[1440px] items-center justify-between rounded-[5px] px-20">
           <Link href="/" className="flex flex-none items-center gap-3 text-2xl">
             <Image
-              src="/logo.svg"
+              src="/game_dev_club_logo.svg"
               alt="logo"
               width={32}
               height={32}
