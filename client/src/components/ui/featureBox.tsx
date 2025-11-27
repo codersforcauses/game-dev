@@ -1,4 +1,3 @@
-import { Heading1 } from "lucide-react";
 import * as React from "react";
 
 interface dimensions {
