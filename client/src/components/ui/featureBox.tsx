@@ -5,13 +5,13 @@ interface contents {
   text: string;
 }
 
-function FeatureBox({ title,text }: contents): React.JSX.Element {
+function FeatureBox({ title, text }: contents): React.JSX.Element {
   return (
     <>
       <div
         style={{
-          width: '50rem',
-          height: '13rem',
+          width: "50rem",
+          height: "13rem",
           paddingTop: "0.15rem",
           clipPath:
             "polygon(0 0, 27% 0, 31% 10%, 100% 10%, 100% 90%, 97% 100%, 70% 100%, 67% 90%, 0 90%)",
@@ -26,19 +26,17 @@ function FeatureBox({ title,text }: contents): React.JSX.Element {
             marginLeft: "0.15rem",
             padding: "40px",
             clipPath:
-              "polygon(0 0, 27% 0, 31% 10%, 100% 10%, 100% 90%, 97% 100%, 70% 100%, 67% 90%, 0 90%)"
+              "polygon(0 0, 27% 0, 31% 10%, 100% 10%, 100% 90%, 97% 100%, 70% 100%, 67% 90%, 0 90%)",
           }}
-          className='bg-dark'
+          className="bg-dark"
         >
           <div
-            style={{ marginBottom: "15px"}}
+            style={{ marginBottom: "15px" }}
             className="font-jersey10 text-4xl"
           >
             {title}
           </div>
-          <div className="font-sans">
-            {text}
-          </div>
+          <div className="font-sans">{text}</div>
         </div>
       </div>
     </>
