@@ -36,7 +36,7 @@ export default function Navbar() {
               aria-hidden="true"
               className="hidden whitespace-nowrap md:inline"
             >
-              Game Development UWA
+              Game Development UWA _
             </span>
           </Link>
 
