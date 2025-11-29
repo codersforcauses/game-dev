@@ -1,19 +1,21 @@
 import React from "react";
+
+import { ItchEmbed } from "@/components/ui/ItchEmbed";
 // import navbar
 // import footer
 
-function GameLandingPage() {
+export default function IndividualGamePage() {
   return (
     <div className="game-landing-container">
       {/* <Navbar /> */}
-      <header className="showcase-header">
+      <section className="showcase-header">
         <div className="showcase-image">
           {/* Replace with actual image */}
           <span role="img" aria-label="showcase" style={{ fontSize: "48px" }}>
             🖼️
           </span>
         </div>
-      </header>
+      </section>
       <main className="main-content">
         <h1 className="game-title">Game Title</h1>
         <div className="game-info">
@@ -90,10 +92,14 @@ function GameLandingPage() {
               </span>
             </div>
           </div>
+          <ItchEmbed
+            embedID="3"
+            hostURL="https://leafo.itch.io/x-moon"
+            name="X-Moon by leafy"
+          />
         </section>
       </main>
       {/* <Footer /> */}
     </div>
   );
 }
-export default GameLandingPage;
