@@ -24,7 +24,7 @@ class Events(models.Model):
 class Games(models.Model):
 
     # Enum choices
-    class CompletionStatus(models.IntegerField):
+    class CompletionStatus(models.IntegerChoices):
         WIP = 1, "Work in Progress (Unplayable)"
         PLAYABLE_DEV = 2, "Playable - In Development"
         BETA = 3, "Beta - Stable but not Final"
@@ -33,9 +33,9 @@ class Games(models.Model):
     name = models.CharField(max_length=200, null=False)
     description = models.CharField(max_length=4500)
     completion = models.IntegerField(
-        choices=CompletionStatus.choices,
+        choices=CompletionStatus.choices,   # ← important
         default=CompletionStatus.WIP,
-        null=False
+        null=False,
     )
     active = models.BooleanField(default=True, null=False)
     hostURL = models.CharField(max_length=2083)
