@@ -6,14 +6,14 @@ function GameLandingPage() {
   return (
     <div className="game-landing-container">
       {/* <Navbar /> */}
-      <header className="showcase-header">
+      <section className="showcase-header">
         <div className="showcase-image">
           {/* Replace with actual image */}
           <span role="img" aria-label="showcase" style={{ fontSize: "48px" }}>
             🖼️
           </span>
         </div>
-      </header>
+      </section>
       <main className="main-content">
         <h1 className="game-title">Game Title</h1>
         <div className="game-info">
