@@ -40,6 +40,7 @@ class Games(models.Model):
     active = models.BooleanField(default=True, null=False)
     hostURL = models.CharField(max_length=2083)
     isItch = models.BooleanField(default=True, null=False)
+    itchEmbeddedID = models.PositiveIntegerField()
     pathToMedia = models.CharField(max_length=2083)
     event = models.ForeignKey(Events, on_delete=models.CASCADE, null=False)
     # event reference uuid events.id model
