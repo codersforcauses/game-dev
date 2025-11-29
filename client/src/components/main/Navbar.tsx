@@ -18,65 +18,66 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-border/20 bg-background font-jersey10">
-        <div className="mx-auto flex h-24 max-w-7xl items-center justify-between rounded-md px-20">
-          <Link href="/" className="flex flex-none items-center gap-3 text-2xl">
-            <Image
-              src="/game_dev_club_logo.svg"
-              alt="logo"
-              width={32}
-              height={32}
-              className="h-8 w-8"
-            />
-            <span className="sr-only">Game Development UWA</span>
-            <span aria-hidden="true" className="whitespace-nowrap md:hidden">
-              GDUWA
-            </span>
-            <span
-              aria-hidden="true"
-              className="hidden whitespace-nowrap md:inline"
+      <header className="sticky top-0 z-50 flex h-24 w-full flex-wrap items-center justify-center rounded-md border-b border-border/20 bg-background px-20 font-jersey10">
+        <Link
+          href="/"
+          className="flex flex-none items-center gap-3 text-2xl md:mr-5"
+        >
+          <Image
+            src="/game_dev_club_logo.svg"
+            alt="logo"
+            width={32}
+            height={32}
+            className="h-8 w-8"
+          />
+          <span className="sr-only">Game Development UWA</span>
+          <span aria-hidden="true" className="whitespace-nowrap md:hidden">
+            GDUWA
+          </span>
+          <span
+            aria-hidden="true"
+            className="hidden whitespace-nowrap md:inline"
+          >
+            Game Development UWA _
+          </span>
+        </Link>
+
+        <nav className="ml-auto hidden flex-none gap-8 text-xl md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
             >
-              Game Development UWA _
-            </span>
-          </Link>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
 
-          <nav className="ml-auto hidden flex-none gap-10 text-xl md:flex">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+        <div className="ml-auto flex items-center">
+          <div className="relative md:hidden">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center justify-center p-2"
+              aria-label="Toggle menu"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
 
-          <div className="ml-auto flex items-center">
-            <div className="relative md:hidden">
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center justify-center p-2"
-                aria-label="Toggle menu"
-              >
-                <Menu className="h-6 w-6" />
-              </button>
-
-              {isDropdownOpen && (
-                <div className="absolute right-0 top-full z-50 mt-2 w-52 flex-col rounded border border-border/20 bg-popover">
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setIsDropdownOpen(false)}
-                      className="block whitespace-nowrap px-4 py-3 text-lg transition-colors duration-150 hover:bg-white/10"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+            {isDropdownOpen && (
+              <div className="absolute right-0 top-full z-50 mt-2 w-52 flex-col rounded border border-border/20 bg-popover">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsDropdownOpen(false)}
+                    className="block whitespace-nowrap px-4 py-3 text-lg transition-colors duration-150 hover:bg-accent"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </header>
