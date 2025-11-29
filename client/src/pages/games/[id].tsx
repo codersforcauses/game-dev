@@ -1,25 +1,33 @@
+import Image from "next/image";
 import React from "react";
 
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
+import styles from "@/styles/game.module.css";
+
 // import navbar
 // import footer
 
 export default function IndividualGamePage() {
   return (
-    <div className="game-landing-container">
+    <div className={styles.gameLandingContainer}>
       {/* <Navbar /> */}
-      <section className="showcase-header">
-        <div className="showcase-image">
-          {/* Replace with actual image */}
-          <span role="img" aria-label="showcase" style={{ fontSize: "48px" }}>
-            🖼️
-          </span>
+      <section className={styles.showcaseHeader}>
+        <div className={styles.showcaseImage}>
+          <Image
+            src="/games/Game_Cover_Sample.png"
+            alt="Game Cover"
+            width={600}
+            height={340}
+            style={{ borderRadius: "12px", background: "#232345" }}
+            className={styles.showcaseImage}
+            priority
+          />
         </div>
       </section>
-      <main className="main-content">
-        <h1 className="game-title">Game Title</h1>
-        <div className="game-info">
-          <div className="game-description">
+      <main className={styles.mainContent}>
+        <h1 className={styles.gameTitle}>Game Title</h1>
+        <div className={styles.gameInfo}>
+          <div className={styles.gameDescription}>
             <p>
               Lorem ipsum dolor sit amet. Non numquam dicta nam autem dicta 33
               error molestias...
@@ -42,7 +50,7 @@ export default function IndividualGamePage() {
             </p>
             <p>Ut possimus architecto eos ullam ducimus ut...</p>
           </div>
-          <div className="game-meta">
+          <div className={styles.gameMeta}>
             <table>
               <tbody>
                 <tr>
@@ -69,24 +77,24 @@ export default function IndividualGamePage() {
             </table>
           </div>
         </div>
-        <section className="game-card">
+        <section className={styles.gameCard}>
           {/* Replace with actual embed/card */}
           {/* <Image src="/assets/game-card-placeholder.png" alt="Game Card" style={{ width: '100%' }} /> */}
         </section>
-        <section className="game-art">
+        <section className={styles.gameArt}>
           <h2>GAME ART</h2>
-          <div className="art-gallery">
-            <div className="art-item">
+          <div className={styles.artGallery}>
+            <div className={styles.artItem}>
               <span role="img" aria-label="art" style={{ fontSize: "32px" }}>
                 🖼️
               </span>
             </div>
-            <div className="art-item">
+            <div className={styles.artItem}>
               <span role="img" aria-label="art" style={{ fontSize: "32px" }}>
                 🖼️
               </span>
             </div>
-            <div className="art-item">
+            <div className={styles.artItem}>
               <span role="img" aria-label="art" style={{ fontSize: "32px" }}>
                 🖼️
               </span>
