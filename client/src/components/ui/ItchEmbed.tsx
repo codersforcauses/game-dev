@@ -21,13 +21,22 @@ export function ItchEmbed({
   height = 167,
 }: ItchEmbedProps) {
   return (
-    <iframe
-      width={width}
-      height={height}
-      className="border-0"
-      src={`https://itch.io/embed/${embedID}`}
-    >
-      <a href={hostURL}>{name}</a>
-    </iframe>
+    <div>
+      <iframe
+        width={width}
+        height={height}
+        className="border-0"
+        src={`https://itch.io/embed/${embedID}`}
+        title={name}
+      />
+      <a
+        href={hostURL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-2 block text-[#7ecfff] underline"
+      >
+        {name}
+      </a>
+    </div>
   );
 }
