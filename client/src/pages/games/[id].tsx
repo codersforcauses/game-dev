@@ -2,7 +2,7 @@ import React from "react";
 // import navbar
 // import footer
 
-function GameLandingPage() {
+export default function IndividualGamePage() {
   return (
     <div className="game-landing-container">
       {/* <Navbar /> */}
@@ -96,4 +96,3 @@ function GameLandingPage() {
     </div>
   );
 }
-export default GameLandingPage;
