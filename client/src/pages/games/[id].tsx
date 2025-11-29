@@ -1,4 +1,6 @@
 import React from "react";
+
+import { ItchEmbed } from "@/components/ui/ItchEmbed";
 // import navbar
 // import footer
 
@@ -90,6 +92,11 @@ export default function IndividualGamePage() {
               </span>
             </div>
           </div>
+          <ItchEmbed
+            embedID="3"
+            hostURL="https://leafo.itch.io/x-moon"
+            name="X-Moon by leafy"
+          />
         </section>
       </main>
       {/* <Footer /> */}
