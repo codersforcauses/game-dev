@@ -1,18 +1,18 @@
 import * as React from "react";
 
-interface dimensions {
-  width: number;
-  height: number;
+interface contents {
+  title: string;
+  text: string;
 }
 
-function FeatureBox({ width, height }: dimensions): React.JSX.Element {
+function FeatureBox({ title,text }: contents): React.JSX.Element {
   return (
     <>
       <div
         style={{
-          width: width,
-          height: height,
-          paddingTop: "2.5px",
+          width: '50rem',
+          height: '13rem',
+          paddingTop: "0.15rem",
           clipPath:
             "polygon(0 0, 27% 0, 31% 10%, 100% 10%, 100% 90%, 97% 100%, 70% 100%, 67% 90%, 0 90%)",
         }}
@@ -21,23 +21,23 @@ function FeatureBox({ width, height }: dimensions): React.JSX.Element {
       >
         <div
           style={{
-            width: `${width - 5}px`,
-            height: `${height - 5}px`,
-            marginLeft: "2.5px",
-            padding: "32px",
+            width: "49.7rem",
+            height: "12.7rem",
+            marginLeft: "0.15rem",
+            padding: "40px",
             clipPath:
-              "polygon(0 0, 27% 0, 31% 10%, 100% 10%, 100% 90%, 97% 100%, 70% 100%, 67% 90%, 0 90%)",
-            backgroundColor: "hsl(260, 52.38%, 12.35%)",
+              "polygon(0 0, 27% 0, 31% 10%, 100% 10%, 100% 90%, 97% 100%, 70% 100%, 67% 90%, 0 90%)"
           }}
+          className='bg-dark'
         >
           <div
-            style={{ fontSize: 32, marginBottom: "10px" }}
-            className="font-jersey10"
+            style={{ marginBottom: "15px"}}
+            className="font-jersey10 text-4xl"
           >
-            Box title
+            {title}
           </div>
-          <div className="font-sans" style={{ fontSize: 12 }}>
-            Subtitle please code for a cause and develop a game at uwa
+          <div className="font-sans">
+            {text}
           </div>
         </div>
       </div>

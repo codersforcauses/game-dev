@@ -28,6 +28,9 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
 
+    --dark: 260, 52.38%, 12.35%;
+    --dark-foreground: 0 0% 100%;
+
     --border: 235 47% 20%;
     --input: 235 47% 20%;
     --ring: 236 47% 7%;
