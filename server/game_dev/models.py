@@ -33,7 +33,7 @@ class Games(models.Model):
     name = models.CharField(max_length=200, null=False)
     description = models.CharField(max_length=4500)
     completion = models.IntegerField(
-        choices=CompletionStatus.choices,   # ← important
+        choices=CompletionStatus.choices,
         default=CompletionStatus.WIP,
         null=False,
     )
