@@ -1,18 +1,99 @@
-//import { useRouter } from "next/router";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
+type ApiEvent = {
+  id: number;
+  name: string;
+  description: string;
+  publicationDate: string;
+  location: string;
+  cover_image: string | null;
+};
+
+type UiEvent = {
+  name: string;
+  description: string;
+  publicationDate: string;
+  location: string;
+  coverImage: string;
+};
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export default function EventPage() {
-  //const router = useRouter();
-  //const { id } = router.query;
+  const router = useRouter();
+  const { id } = router.query;
 
-  // Temporary mock event data
-  const event = {
-    name: "Super Fun Event",
-    description: "Yayayyayayay! This event will be awesome.",
-    coverImage: "/game_dev_club_logo.svg",
-    publicationDate: "2025-11-29",
-    location: "Ezone",
-  };
+  const [event, setEvent] = useState<UiEvent | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const controller = new AbortController();
+
+    async function fetchEvent() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res = await fetch(`${API_BASE}/api/events/${id}/`, {
+          signal: controller.signal,
+        });
+
+        if (!res.ok) {
+          if (res.status === 404) {
+            setError("Event not found.");
+          } else {
+            setError("Failed to load event.");
+          }
+          return;
+        }
+
+        const data: ApiEvent = await res.json();
+
+        setEvent({
+          name: data.name,
+          description: data.description,
+          publicationDate: data.publicationDate,
+          location: data.location,
+          coverImage: data.cover_image ?? "/game_dev_club_logo.svg",
+        });
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name !== "AbortError") {
+          setError("Failed to load event.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchEvent();
+
+    return () => controller.abort();
+  }, [id]);
+
+  if (loading || !event) {
+    return (
+      <main className="min-h-screen px-6 py-16 md:px-20">
+        <div className="mx-auto max-w-6xl">
+          <p>Loading event...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="min-h-screen px-6 py-16 md:px-20">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-red-500">{error}</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen px-6 py-16 md:px-20">
