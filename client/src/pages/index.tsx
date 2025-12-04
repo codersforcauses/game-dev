@@ -3,7 +3,6 @@ import { useState } from "react";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
-import { Footer } from "@/components/footer";
 import { Button } from "../components/ui/button";
 
 export default function Home() {
@@ -28,7 +27,6 @@ export default function Home() {
           </p>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

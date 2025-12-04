@@ -1,26 +1,27 @@
 "use client";
-import Link from "next/link";
-import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
 import {
   motion,
+  MotionValue,
+  useMotionTemplate,
   useMotionValue,
   useSpring,
   useTransform,
-  useMotionTemplate,
-  MotionValue,
 } from "framer-motion";
 import {
-  Gamepad2,
-  Sparkles,
-  Code2,
-  Palette,
   Calendar,
-  Users,
   ChevronRight,
+  Code2,
+  Gamepad2,
   Heart,
+  Palette,
+  Sparkles,
+  Users,
   Zap,
 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect,useRef, useState } from "react";
+import { SocialIcon } from "react-social-icons";
 
 // Type definitions for particle system
 type ParticleConfig = {
@@ -59,6 +60,13 @@ function MouseGradient({
   );
 }
 
+// should probably belong in src/utils
+function cssVarAsHSL(cssvar: string, alpha?: number) {
+  // client side only
+  const col = window.getComputedStyle(document.body).getPropertyValue(cssvar);
+  return alpha !== undefined ? `hsl(${col} / ${alpha})` : `hsl(${col})`;
+}
+
 // Individual particle component with pulsing animation and mouse interaction
 function SimpleParticle({
   baseX,
@@ -69,7 +77,7 @@ function SimpleParticle({
   smoothX,
   smoothY,
   isHovering,
-  color = "rgba(255, 255, 255, 0.6)",
+  color = cssVarAsHSL("--light-1", 0.6),
 }: ParticleConfig & {
   smoothX: MotionValue<number>;
   smoothY: MotionValue<number>;
@@ -88,7 +96,8 @@ function SimpleParticle({
       style={{ left: `${baseX}%`, top: `${baseY}%`, x: offsetX, y: offsetY }}
     >
       <motion.div
-        animate={{ opacity: [0.3, 0.8, 0.3], scale: [0.9, 1.1, 0.9] }}
+        // animating opacity causes css error spam on gecko-based browsers
+        animate={{ scale: [0.9, 1.1, 0.9] }}
         transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
       >
         <div
@@ -97,7 +106,7 @@ function SimpleParticle({
             height: size,
             borderRadius: "50%",
             backgroundColor: color,
-            opacity: 0.7,
+            // opacity: 0.7,
           }}
         />
       </motion.div>
@@ -172,12 +181,14 @@ function NetworkCanvas({
           .slice(0, 2);
 
         dists.forEach(({ index, dist }) => {
+          // a little bit redundant as the lines aren't super prominent, can probably
+          // just use white here
           const pB = pts[index];
           const op = (1 - dist / 150) * 0.25; // Opacity decreases with distance
           const grad = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
-          grad.addColorStop(0, `rgba(139, 92, 246, ${op})`);
-          grad.addColorStop(0.5, `rgba(196, 181, 253, ${op * 1.5})`);
-          grad.addColorStop(1, `rgba(236, 72, 153, ${op})`);
+          grad.addColorStop(0, cssVarAsHSL("--logo-blue-1", op));
+          grad.addColorStop(0.5, cssVarAsHSL("--light-2", op * 1.5));
+          grad.addColorStop(1, cssVarAsHSL("--light-alt", op));
           ctx.strokeStyle = grad;
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -196,8 +207,8 @@ function NetworkCanvas({
           if (dist < 120) {
             const op = (1 - dist / 120) * 0.4;
             const grad = ctx.createLinearGradient(p.x, p.y, mx, my);
-            grad.addColorStop(0, `rgba(236, 72, 153, ${op})`);
-            grad.addColorStop(1, `rgba(255, 255, 255, ${op * 0.5})`);
+            grad.addColorStop(0, cssVarAsHSL("--light-alt", op));
+            grad.addColorStop(1, cssVarAsHSL("--light-1", op * 0.5));
             ctx.strokeStyle = grad;
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -223,7 +234,7 @@ function NetworkCanvas({
   );
 }
 
-export function Footer() {
+export default function Footer() {
   const footerRef = useRef<HTMLElement | null>(null);
   const [isHovered, setIsHovered] = useState<string | null>(null); // Track which link is hovered for underline effect
   const [isHovering, setIsHovering] = useState(false);
@@ -236,15 +247,15 @@ export function Footer() {
   const mouseY = useMotionValue(50);
   const smoothX = useSpring(mouseX, { damping: 50, stiffness: 100 });
   const smoothY = useSpring(mouseY, { damping: 50, stiffness: 100 });
-
+  const motionColoursRef = useRef<Record<string, string>>({});
   // Initialize particles on client-side only (prevents hydration mismatch)
   useEffect(() => {
     setIsClient(true);
-    const colors = [
-      "rgba(255, 255, 255, 0.5)",
-      "rgba(196, 181, 253, 0.4)",
-      "rgba(168, 85, 247, 0.4)",
-      "rgba(236, 72, 153, 0.4)",
+    const particlecolors = [
+      cssVarAsHSL("--light-1", 0.5),
+      cssVarAsHSL("--light-2", 0.4),
+      cssVarAsHSL("--light-alt", 0.4),
+      // cssVarAsHSL("--logo-blue-2", 0.4),
     ];
     setParticleConfigs(
       Array.from({ length: 22 }, () => ({
@@ -253,9 +264,21 @@ export function Footer() {
         size: 2 + Math.random() * 3,
         delay: Math.random() * 4,
         duration: 3 + Math.random() * 3,
-        color: colors[Math.floor(Math.random() * colors.length)],
+        color:
+          particlecolors[Math.floor(Math.random() * particlecolors.length)],
       })),
     );
+    // unfortunatly, motion cannot animate named colours.
+    // one readable solution is to construct a handful of constants on the client instead.
+    motionColoursRef.current = {
+      mouseGradStart: cssVarAsHSL("--light-alt", 0.3),
+      mouseGradEnd: cssVarAsHSL("--light-2", 0.3),
+      // radial-gradient(at 20% 30%, hsl(--light-2 / 0.3) 0px, transparent 50%),
+      // radial-gradient(at 80% 70%, hsl(--light-alt / 0.3) 0px, transparent 50%),
+      // radial-gradient(at 50% 50%, hsl(--logo-blue-1 / 0.2) 0px, transparent 50%)`,
+      socialBGHov: cssVarAsHSL("--light-1", 0.1),
+      socialBorderHov: cssVarAsHSL("--light-alt", 0.5),
+    };
   }, []);
 
   // Update canvas dimensions on window resize
@@ -278,7 +301,8 @@ export function Footer() {
     mouseY.set(((e.clientY - rect.top) / rect.height) * 100);
     setIsHovering(true);
   };
-
+  // ideally this should pull from some source of information with the nav, but
+  // it's not that big of a deal
   const mainLinks = [
     { label: "Home", href: "/", icon: <Zap className="h-4 w-4" /> },
     { label: "About Us", href: "/about", icon: <Users className="h-4 w-4" /> },
@@ -298,47 +322,15 @@ export function Footer() {
       icon: <Palette className="h-4 w-4" />,
     },
   ];
+
+  // these should be stored elsewhere... like in a data directory so
+  // they can be easily changed
   const socialLinks = [
-    {
-      icon: (
-        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" />
-        </svg>
-      ),
-      href: "#",
-      label: "Discord",
-      color: "hover:text-[#5865F2]",
-    },
-    {
-      icon: (
-        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-        </svg>
-      ),
-      href: "#",
-      label: "X (Twitter)",
-      color: "hover:text-white",
-    },
-    {
-      icon: (
-        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-        </svg>
-      ),
-      href: "#",
-      label: "GitHub",
-      color: "hover:text-white",
-    },
-    {
-      icon: (
-        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-        </svg>
-      ),
-      href: "#",
-      label: "YouTube",
-      color: "hover:text-[#FF0000]",
-    },
+    // we can easily infer the domain
+    { url: "https://discord.com", label: "Discord" },
+    { url: "https://twitter.com", label: "X (Twitter)" },
+    { url: "https://github.com", label: "GitHub" },
+    { url: "https://youtube.com", label: "YouTube" },
   ];
   const quickLinks = [
     { label: "Join the Club", href: "#" },
@@ -346,7 +338,6 @@ export function Footer() {
     { label: "Upcoming Jams", href: "#" },
     { label: "Resources", href: "#" },
   ];
-
   return (
     <footer
       ref={footerRef}
@@ -354,20 +345,11 @@ export function Footer() {
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setIsHovering(false)}
     >
-      <div
-        className="absolute inset-0"
-        style={{ background: "hsl(235 47% 20%)" }}
-      />
+      <div className="absolute inset-0 bg-secondary-foreground" />
       <MouseGradient
         smoothX={smoothX}
         smoothY={smoothY}
         isHovering={isHovering}
-      />
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          background: `radial-gradient(at 20% 30%, rgba(139, 92, 246, 0.3) 0px, transparent 50%), radial-gradient(at 80% 70%, rgba(236, 72, 153, 0.3) 0px, transparent 50%), radial-gradient(at 50% 50%, rgba(168, 85, 247, 0.2) 0px, transparent 50%)`,
-        }}
       />
       {isClient && (
         <NetworkCanvas
@@ -447,16 +429,15 @@ export function Footer() {
               </p>
               <div className="flex gap-3 pt-2">
                 {socialLinks.map((social, index) => (
-                  <motion.a
+                  <motion.div
                     key={index}
-                    href={social.href}
-                    className={`rounded-xl border border-white/10 bg-white/5 p-2.5 ${social.color} group`}
+                    className={`--light-1 group rounded-xl border border-white/10 bg-white/5 p-2.5`}
                     aria-label={social.label}
                     whileHover={{
                       scale: 1.1,
                       y: -4,
-                      backgroundColor: "rgba(255, 255, 255, 0.1)",
-                      borderColor: "rgba(139, 92, 246, 0.5)",
+                      backgroundColor: motionColoursRef.current.socialBGHov,
+                      borderColor: motionColoursRef.current.socialBorderHov,
                     }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -469,15 +450,15 @@ export function Footer() {
                         damping: 17,
                       }}
                     >
-                      {social.icon}
+                      <SocialIcon url={social.url} className="h-5 w-5" />
                     </motion.span>
-                  </motion.a>
+                  </motion.div>
                 ))}
               </div>
             </div>
             <div className="space-y-3 lg:col-span-1">
               <h4 className="flex items-center gap-2 font-jersey10 text-xl font-semibold uppercase tracking-wider text-white">
-                <Zap className="h-4 w-4 text-purple-400" />
+                <Zap className="h-4 w-4 text-accent" />
                 Quick Links
               </h4>
               <ul className="space-y-2">
@@ -548,28 +529,6 @@ export function Footer() {
               <span className="font-jersey10 text-xl text-gray-300 transition-colors group-hover:text-white">
                 Constitution
               </span>
-              <div className="relative h-8 w-8 overflow-hidden rounded-full shadow-lg transition-transform duration-300 group-hover:scale-110">
-                <div className="absolute inset-0 bg-gradient-to-b from-orange-400 via-pink-400 to-purple-400" />
-                <div className="absolute right-1 top-1">
-                  <div className="h-2.5 w-2.5 rounded-full bg-yellow-300 shadow-[0_0_10px_rgba(250,240,137,0.8)]" />
-                </div>
-                <div className="absolute left-1 top-2 h-1 w-2 rounded-full bg-white/30" />
-                <div className="absolute right-2 top-3 h-0.5 w-1.5 rounded-full bg-white/20" />
-                <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-b from-blue-400 to-blue-500" />
-                <div className="absolute bottom-1.5 left-1/2 h-3 w-5 -translate-x-1/2 rounded-full bg-gradient-to-b from-green-500 to-green-600 shadow-sm" />
-                <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2">
-                  <div className="h-3 w-0.5 bg-gradient-to-b from-amber-600 to-amber-700" />
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2">
-                    <div className="h-2 w-3 rounded-full bg-gradient-to-b from-green-400 to-green-500" />
-                    <div className="absolute left-1/2 top-0 h-1 w-4 -translate-x-1/2 rotate-12 rounded-full bg-green-400" />
-                    <div className="absolute left-1/2 top-0 h-1 w-4 -translate-x-1/2 -rotate-12 rounded-full bg-green-400" />
-                  </div>
-                </div>
-                <div className="absolute left-2 top-1.5 text-[6px] text-gray-700">
-                  v
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-              </div>
             </Link>
             <div className="flex items-center gap-2 font-jersey10 text-xl text-gray-400">
               <span>Made with</span>
