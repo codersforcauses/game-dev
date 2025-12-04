@@ -29,6 +29,13 @@ export default function EventPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // for testing
+  useEffect(() => {
+    if (event) {
+      console.log("Event state updated:", event);
+    }
+  }, [event]);
+
   useEffect(() => {
     if (!id) return;
 
@@ -53,6 +60,9 @@ export default function EventPage() {
         }
 
         const data: ApiEvent = await res.json();
+
+        // for testing
+        console.log("Fetched event data:", data);
 
         setEvent({
           name: data.name,
