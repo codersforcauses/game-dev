@@ -3,40 +3,31 @@ import * as React from "react";
 interface contents {
   title: string;
   text: string;
+  hOffset: number;
 }
 
-function FeatureBox({ title, text }: contents): React.JSX.Element {
+function FeatureBox({ title, text, hOffset }: contents): React.JSX.Element {
   return (
     <>
       <div
         style={{
-          width: "50rem",
-          height: "13rem",
-          paddingTop: "0.15rem",
           clipPath:
-            "polygon(0 0, 27% 0, 31% 10%, 100% 10%, 100% 90%, 97% 100%, 70% 100%, 67% 90%, 0 90%)",
+            "polygon(0% 0%, 27% 0%, 31% 1rem, 100% 1rem, 100% calc(100% - 1rem), 97% 100%, 70% 100%, 67% calc(100% - 1rem), 0% calc(100% - 1rem))",
+          marginLeft: `${hOffset}%`,
         }}
         //Each pair of percentages is a 2d point, and polygon() joins them all together to form a polygon
-        className="bg-secondary"
+        className="m-0 mx-auto w-[60vw] bg-secondary pt-[0.15rem]"
       >
         <div
           style={{
-            width: "49.7rem",
-            height: "12.7rem",
-            marginLeft: "0.15rem",
-            padding: "40px",
+            width: "calc(60vw - 0.3rem)",
             clipPath:
-              "polygon(0 0, 27% 0, 31% 10%, 100% 10%, 100% 90%, 97% 100%, 70% 100%, 67% 90%, 0 90%)",
+              "polygon(0% 0%, 27% 0%, 31% 1rem, 100% 1rem, 100% calc(100% - 1rem), 97% 100%, 70% 100%, 67% calc(100% - 1rem), 0% calc(100% - 1rem))",
           }}
-          className="bg-dark"
+          className="mb-[0.15rem] ml-[0.15rem] bg-dark p-10"
         >
-          <div
-            style={{ marginBottom: "15px" }}
-            className="font-jersey10 text-4xl"
-          >
-            {title}
-          </div>
-          <div className="font-sans">{text}</div>
+          <h3 className="mb-[15px] font-jersey10 text-4xl">{title}</h3>
+          <p className="font-sans">{text}</p>
         </div>
       </div>
     </>
