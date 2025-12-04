@@ -83,11 +83,11 @@ export default function IndividualGamePage() {
             </div>
           </div>
         </section>
-        <section className="mt-8">
+        <section className="mt-8 flex flex-col items-center">
           <h2 className="mb-4 font-jersey10 text-3xl tracking-wide text-[#7ecfff]">
             GAME ART
           </h2>
-          <div className="mx-auto-64 mb-6 flex h-[240px] w-full max-w-4xl gap-6 overflow-hidden">
+          <div className="mx-auto mb-6 flex h-[240px] w-full max-w-4xl justify-center gap-6 overflow-hidden">
             <Image
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Minecraft_Zombie.png/120px-Minecraft_Zombie.png"
               alt="Minecraft Zombie"
