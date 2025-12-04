@@ -91,7 +91,7 @@ export default function EventPage() {
     return () => controller.abort();
   }, [id]);
 
-  if (loading || !event) {
+  if (loading) {
     return (
       <main className="min-h-screen px-6 py-16 md:px-20">
         <div className="mx-auto max-w-6xl">
@@ -106,6 +106,16 @@ export default function EventPage() {
       <main className="min-h-screen px-6 py-16 md:px-20">
         <div className="mx-auto max-w-6xl">
           <p className="text-red-500">{error}</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (!event) {
+    return (
+      <main className="min-h-screen px-6 py-16 md:px-20">
+        <div className="mx-auto max-w-6xl">
+          <p>No event data available.</p>
         </div>
       </main>
     );
