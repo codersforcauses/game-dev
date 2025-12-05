@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from game_dev.models import Event
+from .models import Event
 from .serializers import EventSerializer
 
 

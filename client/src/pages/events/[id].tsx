@@ -7,6 +7,8 @@ type ApiEvent = {
   name: string;
   description: string;
   publicationDate: string;
+  date: string;
+  startTime: string | null;
   location: string;
   cover_image: string | null;
 };
@@ -15,6 +17,8 @@ type UiEvent = {
   name: string;
   description: string;
   publicationDate: string;
+  date: string;
+  startTime?: string | null;
   location: string;
   coverImage: string;
 };
@@ -70,6 +74,8 @@ export default function EventPage() {
           publicationDate: data.publicationDate,
           location: data.location,
           coverImage: data.cover_image ?? "/game_dev_club_logo.svg",
+          date: data.date,
+          startTime: data.startTime,
         });
       } catch (err: unknown) {
         if (err instanceof Error && err.name !== "AbortError") {
@@ -116,7 +122,8 @@ export default function EventPage() {
             <div className="mt-4 w-full border-t border-gray-600"></div>
 
             <p className="mt-6 text-lg">
-              {event.publicationDate} · {event.location}
+              {event.date} {event.startTime && `· ${event.startTime}`} ·{" "}
+              {event.location}
             </p>
 
             <p className="mt-4 max-w-lg text-base leading-relaxed">
