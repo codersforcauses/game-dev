@@ -1,0 +1,91 @@
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEvent } from "@/hooks/useEvent";
+
+function formatDate(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
+  } catch {
+    return dateString; // Fallback to original string if parsing fails
+  }
+}
+
+export default function EventPage() {
+  const router = useRouter();
+  const { id } = router.query;
+  const { data: event, isLoading, error, isError } = useEvent(id);
+
+  if (isLoading) {
+    return (
+      <main className="min-h-screen px-6 py-16 md:px-20">
+        <div className="mx-auto max-w-6xl">
+          <p>Loading event...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (isError) {
+    const errorMessage =
+      error && "response" in error && (error as { response?: { status?: number } }).response?.status === 404
+        ? "Event not found."
+        : "Failed to load event.";
+
+    return (
+      <main className="min-h-screen px-6 py-16 md:px-20">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-red-500" role="alert">
+            {errorMessage}
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  if (!event) {
+    return (
+      <main className="min-h-screen px-6 py-16 md:px-20">
+        <div className="mx-auto max-w-6xl">
+          <p>No event data available.</p>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen px-6 py-16 md:px-20">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex flex-col justify-between gap-12 md:flex-row md:gap-20">
+          <div className="flex-1">
+            <h1 className="font-jersey10 text-4xl text-primary">{event.name}</h1>
+            <div className="mt-4 w-full border-t border-gray-600" aria-hidden="true" />
+            <p className="mt-6 text-lg">
+              {formatDate(event.publicationDate)} · {event.location}
+            </p>
+            <p className="mt-4 max-w-lg text-base leading-relaxed">{event.description}</p>
+          </div>
+          <div className="w-full flex-shrink-0 md:w-[380px] lg:w-[500px]">
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gray-700">
+              <Image
+                src={event.coverImage}
+                alt={`Cover image for ${event.name}`}
+                fill
+                className="object-cover"
+                onError={(e) => {
+                  // Fallback to default image if load fails
+                  e.currentTarget.src = "/game_dev_club_logo.svg";
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+
