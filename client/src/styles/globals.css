@@ -33,6 +33,12 @@
     --ring: 236 47% 7%;
 
     --radius: 0.5rem;
+
+    --dark-2: #090A19;
+    --neutral-1: #1B1F4C;
+    --light-1: #FFFFFF;
+    --light-2: #CED1FE;
+    --light-3: #9CA4FD;
   }
 }
 
@@ -40,4 +46,23 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.bg-neutral-1 {
+  background-color: var(--neutral-1);
+}
+.bg-dark-2 {
+  background-color: var(--dark-2);
+}
+.bg-light-2 {
+  background-color: var(--light-2);
+}
+.text-light-1 {
+  color: var(--light-1);
+}
+.outline-neutral-1 {
+  outline-color: var(--neutral-1);
+}
+.text-light-3 {
+  color: var(--light-3);
 }
