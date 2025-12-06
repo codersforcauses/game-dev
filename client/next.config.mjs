@@ -12,6 +12,15 @@ const config = {
     root: import.meta.dirname,
   },
   outputFileTracingRoot: import.meta.dirname,
+  // Include external image domains to display images for example game covers and arts
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+      },
+    ],
+  },
   // Turns on file change polling for the Windows Dev Container
   // Doesn't work currently for turbopack, so file changes will not automatically update the client.
     // watchOptions: isWindowsDevContainer()
