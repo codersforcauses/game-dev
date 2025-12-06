@@ -7,21 +7,53 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import {
-  Calendar,
-  ChevronRight,
-  Code2,
-  Gamepad2,
-  Heart,
-  Palette,
-  Sparkles,
-  Users,
-  Zap,
-} from "lucide-react";
+import { Code2, Gamepad2, Heart, Sparkles, Zap } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect,useRef, useState } from "react";
-import { SocialIcon } from "react-social-icons";
+import { useEffect, useRef, useState } from "react";
+
+import FooterLinkList from "@/components/footer/FooterLinkList";
+import SocialIconButton, {
+  createSocialMotionColours,
+} from "@/components/footer/SocialIconButton";
+import { mainLinks, quickLinks, socialLinks } from "@/data/footer-data";
+import {
+  DEFAULT_FOOTER_HEIGHT,
+  DEFAULT_FOOTER_WIDTH,
+  GRADIENT_CIRCLE_SIZE,
+  GRADIENT_OPACITY_DEFAULT,
+  GRADIENT_OPACITY_HOVERING,
+  GRADIENT_TRANSITION_DURATION,
+  MOUSE_CENTER_OFFSET,
+  MOUSE_OFFSET_MULTIPLIER,
+  MOTION_COLOUR_MOUSE_GRAD_END_ALPHA,
+  MOTION_COLOUR_MOUSE_GRAD_START_ALPHA,
+  NETWORK_CONNECTION_DISTANCE,
+  NETWORK_CONNECTION_MAX_PER_PARTICLE,
+  NETWORK_CONNECTION_OPACITY_BASE,
+  NETWORK_CONNECTION_OPACITY_MULTIPLIER,
+  NETWORK_LINE_WIDTH,
+  NETWORK_MOUSE_CONNECTION_DISTANCE,
+  NETWORK_MOUSE_CONNECTION_OPACITY_BASE,
+  NETWORK_MOUSE_CONNECTION_OPACITY_MULTIPLIER,
+  NETWORK_MOUSE_LINE_WIDTH,
+  NETWORK_PARTICLE_SIZE_MAX,
+  NETWORK_PARTICLE_SIZE_MIN,
+  NETWORK_PARTICLE_VELOCITY_MULTIPLIER,
+  PARTICLE_COLOUR_ALPHA_LIGHT_1,
+  PARTICLE_COLOUR_ALPHA_LIGHT_2,
+  PARTICLE_COLOUR_ALPHA_LIGHT_ALT,
+  PARTICLE_COUNT,
+  PARTICLE_DEFAULT_ALPHA,
+  PARTICLE_DELAY_MAX,
+  PARTICLE_DURATION_MAX,
+  PARTICLE_DURATION_MIN,
+  PARTICLE_SIZE_MAX,
+  PARTICLE_SIZE_MIN,
+  SPRING_DAMPING,
+  SPRING_STIFFNESS,
+} from "@/lib/footer-constants";
+import { cssVarAsHSL } from "@/lib/utils";
 
 // Type definitions for particle system
 type ParticleConfig = {
@@ -45,26 +77,30 @@ function MouseGradient({
   smoothX,
   smoothY,
   isHovering,
+  motionColours,
 }: {
   smoothX: MotionValue<number>;
   smoothY: MotionValue<number>;
   isHovering: boolean;
+  motionColours: {
+    mouseGradStart: string;
+    mouseGradEnd: string;
+  };
 }) {
-  const background = useMotionTemplate`radial-gradient(circle 600px at ${smoothX}% ${smoothY}%, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.12) 40%, transparent 70%)`;
+  // Use Motion values for colors instead of hard-coded rgba
+  const background = useMotionTemplate`radial-gradient(circle ${GRADIENT_CIRCLE_SIZE}px at ${smoothX}% ${smoothY}%, ${motionColours.mouseGradStart} 0%, ${motionColours.mouseGradEnd} 40%, transparent 70%)`;
   return (
     <motion.div
       className="absolute inset-0"
-      style={{ background, opacity: isHovering ? 0.5 : 0.25 }}
-      transition={{ duration: 0.5 }}
+      style={{
+        background,
+        opacity: isHovering
+          ? GRADIENT_OPACITY_HOVERING
+          : GRADIENT_OPACITY_DEFAULT,
+      }}
+      transition={{ duration: GRADIENT_TRANSITION_DURATION }}
     />
   );
-}
-
-// should probably belong in src/utils
-function cssVarAsHSL(cssvar: string, alpha?: number) {
-  // client side only
-  const col = window.getComputedStyle(document.body).getPropertyValue(cssvar);
-  return alpha !== undefined ? `hsl(${col} / ${alpha})` : `hsl(${col})`;
 }
 
 // Individual particle component with pulsing animation and mouse interaction
@@ -77,7 +113,7 @@ function SimpleParticle({
   smoothX,
   smoothY,
   isHovering,
-  color = cssVarAsHSL("--light-1", 0.6),
+  color = cssVarAsHSL("--light-1", PARTICLE_DEFAULT_ALPHA),
 }: ParticleConfig & {
   smoothX: MotionValue<number>;
   smoothY: MotionValue<number>;
@@ -85,10 +121,14 @@ function SimpleParticle({
 }) {
   // Particles react to mouse movement when hovering
   const offsetX = useTransform(smoothX, (mx) =>
-    isHovering ? (mx - 50) * 0.3 : 0,
+    isHovering
+      ? (mx - MOUSE_CENTER_OFFSET) * MOUSE_OFFSET_MULTIPLIER
+      : 0,
   );
   const offsetY = useTransform(smoothY, (my) =>
-    isHovering ? (my - 50) * 0.3 : 0,
+    isHovering
+      ? (my - MOUSE_CENTER_OFFSET) * MOUSE_OFFSET_MULTIPLIER
+      : 0,
   );
   return (
     <motion.div
@@ -106,7 +146,6 @@ function SimpleParticle({
             height: size,
             borderRadius: "50%",
             backgroundColor: color,
-            // opacity: 0.7,
           }}
         />
       </motion.div>
@@ -135,12 +174,16 @@ function NetworkCanvas({
   useEffect(() => {
     // Initialize particles only once to prevent regeneration on re-render
     if (!initializedRef.current) {
-      particlesRef.current = Array.from({ length: 22 }, () => ({
+      particlesRef.current = Array.from({ length: PARTICLE_COUNT }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.15,
-        size: 1.5 + Math.random() * 1.5,
+        vx:
+          (Math.random() - 0.5) * NETWORK_PARTICLE_VELOCITY_MULTIPLIER,
+        vy:
+          (Math.random() - 0.5) * NETWORK_PARTICLE_VELOCITY_MULTIPLIER,
+        size:
+          NETWORK_PARTICLE_SIZE_MIN +
+          Math.random() * NETWORK_PARTICLE_SIZE_MAX,
       }));
       initializedRef.current = true;
     }
@@ -176,21 +219,24 @@ function NetworkCanvas({
             const dy = pA.y - pB.y;
             return { index: i + j + 1, dist: Math.sqrt(dx * dx + dy * dy) };
           })
-          .filter((d) => d.dist < 150)
+          .filter((d) => d.dist < NETWORK_CONNECTION_DISTANCE)
           .sort((a, b) => a.dist - b.dist)
-          .slice(0, 2);
+          .slice(0, NETWORK_CONNECTION_MAX_PER_PARTICLE);
 
         dists.forEach(({ index, dist }) => {
-          // a little bit redundant as the lines aren't super prominent, can probably
-          // just use white here
           const pB = pts[index];
-          const op = (1 - dist / 150) * 0.25; // Opacity decreases with distance
+          const op =
+            (1 - dist / NETWORK_CONNECTION_DISTANCE) *
+            NETWORK_CONNECTION_OPACITY_BASE;
           const grad = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
           grad.addColorStop(0, cssVarAsHSL("--logo-blue-1", op));
-          grad.addColorStop(0.5, cssVarAsHSL("--light-2", op * 1.5));
+          grad.addColorStop(
+            0.5,
+            cssVarAsHSL("--light-2", op * NETWORK_CONNECTION_OPACITY_MULTIPLIER),
+          );
           grad.addColorStop(1, cssVarAsHSL("--light-alt", op));
           ctx.strokeStyle = grad;
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = NETWORK_LINE_WIDTH;
           ctx.beginPath();
           ctx.moveTo(pA.x, pA.y);
           ctx.lineTo(pB.x, pB.y);
@@ -204,13 +250,21 @@ function NetworkCanvas({
           const dx = p.x - mx;
           const dy = p.y - my;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            const op = (1 - dist / 120) * 0.4;
+          if (dist < NETWORK_MOUSE_CONNECTION_DISTANCE) {
+            const op =
+              (1 - dist / NETWORK_MOUSE_CONNECTION_DISTANCE) *
+              NETWORK_MOUSE_CONNECTION_OPACITY_BASE;
             const grad = ctx.createLinearGradient(p.x, p.y, mx, my);
             grad.addColorStop(0, cssVarAsHSL("--light-alt", op));
-            grad.addColorStop(1, cssVarAsHSL("--light-1", op * 0.5));
+            grad.addColorStop(
+              1,
+              cssVarAsHSL(
+                "--light-1",
+                op * NETWORK_MOUSE_CONNECTION_OPACITY_MULTIPLIER,
+              ),
+            );
             ctx.strokeStyle = grad;
-            ctx.lineWidth = 2;
+            ctx.lineWidth = NETWORK_MOUSE_LINE_WIDTH;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(mx, my);
@@ -236,48 +290,64 @@ function NetworkCanvas({
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement | null>(null);
-  const [isHovered, setIsHovered] = useState<string | null>(null); // Track which link is hovered for underline effect
   const [isHovering, setIsHovering] = useState(false);
-  const [dimensions, setDimensions] = useState({ width: 1920, height: 400 });
+  const [dimensions, setDimensions] = useState({
+    width: DEFAULT_FOOTER_WIDTH,
+    height: DEFAULT_FOOTER_HEIGHT,
+  });
   const [isClient, setIsClient] = useState(false); // Prevent SSR issues with canvas/animations
-  const [particleConfigs, setParticleConfigs] = useState<ParticleConfig[]>([]);
+  const [particleConfigs, setParticleConfigs] = useState<ParticleConfig[]>(
+    [],
+  );
 
   // Mouse position tracking with spring physics for smooth movement
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(50);
-  const smoothX = useSpring(mouseX, { damping: 50, stiffness: 100 });
-  const smoothY = useSpring(mouseY, { damping: 50, stiffness: 100 });
+  const smoothX = useSpring(mouseX, {
+    damping: SPRING_DAMPING,
+    stiffness: SPRING_STIFFNESS,
+  });
+  const smoothY = useSpring(mouseY, {
+    damping: SPRING_DAMPING,
+    stiffness: SPRING_STIFFNESS,
+  });
   const motionColoursRef = useRef<Record<string, string>>({});
+
   // Initialize particles on client-side only (prevents hydration mismatch)
   useEffect(() => {
     setIsClient(true);
-    const particlecolors = [
-      cssVarAsHSL("--light-1", 0.5),
-      cssVarAsHSL("--light-2", 0.4),
-      cssVarAsHSL("--light-alt", 0.4),
-      // cssVarAsHSL("--logo-blue-2", 0.4),
+    // British spelling: particlecolours
+    const particlecolours = [
+      cssVarAsHSL("--light-1", PARTICLE_COLOUR_ALPHA_LIGHT_1),
+      cssVarAsHSL("--light-2", PARTICLE_COLOUR_ALPHA_LIGHT_2),
+      cssVarAsHSL("--light-alt", PARTICLE_COLOUR_ALPHA_LIGHT_ALT),
     ];
     setParticleConfigs(
-      Array.from({ length: 22 }, () => ({
+      Array.from({ length: PARTICLE_COUNT }, () => ({
         baseX: Math.random() * 100,
         baseY: Math.random() * 100,
-        size: 2 + Math.random() * 3,
-        delay: Math.random() * 4,
-        duration: 3 + Math.random() * 3,
+        size: PARTICLE_SIZE_MIN + Math.random() * PARTICLE_SIZE_MAX,
+        delay: Math.random() * PARTICLE_DELAY_MAX,
+        duration:
+          PARTICLE_DURATION_MIN + Math.random() * PARTICLE_DURATION_MAX,
         color:
-          particlecolors[Math.floor(Math.random() * particlecolors.length)],
+          particlecolours[
+            Math.floor(Math.random() * particlecolours.length)
+          ],
       })),
     );
-    // unfortunatly, motion cannot animate named colours.
-    // one readable solution is to construct a handful of constants on the client instead.
+    // Unfortunately, motion cannot animate named colours.
+    // One readable solution is to construct a handful of constants on the client instead.
     motionColoursRef.current = {
-      mouseGradStart: cssVarAsHSL("--light-alt", 0.3),
-      mouseGradEnd: cssVarAsHSL("--light-2", 0.3),
-      // radial-gradient(at 20% 30%, hsl(--light-2 / 0.3) 0px, transparent 50%),
-      // radial-gradient(at 80% 70%, hsl(--light-alt / 0.3) 0px, transparent 50%),
-      // radial-gradient(at 50% 50%, hsl(--logo-blue-1 / 0.2) 0px, transparent 50%)`,
-      socialBGHov: cssVarAsHSL("--light-1", 0.1),
-      socialBorderHov: cssVarAsHSL("--light-alt", 0.5),
+      mouseGradStart: cssVarAsHSL(
+        "--light-alt",
+        MOTION_COLOUR_MOUSE_GRAD_START_ALPHA,
+      ),
+      mouseGradEnd: cssVarAsHSL(
+        "--light-2",
+        MOTION_COLOUR_MOUSE_GRAD_END_ALPHA,
+      ),
+      ...createSocialMotionColours(),
     };
   }, []);
 
@@ -301,43 +371,7 @@ export default function Footer() {
     mouseY.set(((e.clientY - rect.top) / rect.height) * 100);
     setIsHovering(true);
   };
-  // ideally this should pull from some source of information with the nav, but
-  // it's not that big of a deal
-  const mainLinks = [
-    { label: "Home", href: "/", icon: <Zap className="h-4 w-4" /> },
-    { label: "About Us", href: "/about", icon: <Users className="h-4 w-4" /> },
-    {
-      label: "Events",
-      href: "/events",
-      icon: <Calendar className="h-4 w-4" />,
-    },
-    {
-      label: "Games Showcase",
-      href: "/games",
-      icon: <Gamepad2 className="h-4 w-4" />,
-    },
-    {
-      label: "Artwork",
-      href: "/artwork",
-      icon: <Palette className="h-4 w-4" />,
-    },
-  ];
 
-  // these should be stored elsewhere... like in a data directory so
-  // they can be easily changed
-  const socialLinks = [
-    // we can easily infer the domain
-    { url: "https://discord.com", label: "Discord" },
-    { url: "https://twitter.com", label: "X (Twitter)" },
-    { url: "https://github.com", label: "GitHub" },
-    { url: "https://youtube.com", label: "YouTube" },
-  ];
-  const quickLinks = [
-    { label: "Join the Club", href: "#" },
-    { label: "Submit Your Game", href: "#" },
-    { label: "Upcoming Jams", href: "#" },
-    { label: "Resources", href: "#" },
-  ];
   return (
     <footer
       ref={footerRef}
@@ -350,6 +384,10 @@ export default function Footer() {
         smoothX={smoothX}
         smoothY={smoothY}
         isHovering={isHovering}
+        motionColours={{
+          mouseGradStart: motionColoursRef.current.mouseGradStart,
+          mouseGradEnd: motionColoursRef.current.mouseGradEnd,
+        }}
       />
       {isClient && (
         <NetworkCanvas
@@ -380,14 +418,12 @@ export default function Footer() {
         <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
           <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-3">
             <div className="space-y-4 lg:col-span-1">
-              {/* UPDATED: Logo now blends directly with background - no box container */}
               <div className="group flex items-center gap-4">
                 <motion.div
                   className="relative flex-shrink-0"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                  {/* Arrow logo - transparent PNG, no background box */}
                   <Image
                     src="/navbar_arr.png"
                     alt="CFC Game Development Logo"
@@ -429,82 +465,30 @@ export default function Footer() {
               </p>
               <div className="flex gap-3 pt-2">
                 {socialLinks.map((social, index) => (
-                  <motion.div
+                  <SocialIconButton
                     key={index}
-                    className={`--light-1 group rounded-xl border border-white/10 bg-white/5 p-2.5`}
-                    aria-label={social.label}
-                    whileHover={{
-                      scale: 1.1,
-                      y: -4,
-                      backgroundColor: motionColoursRef.current.socialBGHov,
-                      borderColor: motionColoursRef.current.socialBorderHov,
+                    url={social.url}
+                    label={social.label}
+                    motionColours={{
+                      socialBGHov: motionColoursRef.current.socialBGHov,
+                      socialBorderHov:
+                        motionColoursRef.current.socialBorderHov,
                     }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                  >
-                    <motion.span
-                      whileHover={{ rotate: 12 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 17,
-                      }}
-                    >
-                      <SocialIcon url={social.url} className="h-5 w-5" />
-                    </motion.span>
-                  </motion.div>
+                  />
                 ))}
               </div>
             </div>
-            <div className="space-y-3 lg:col-span-1">
-              <h4 className="flex items-center gap-2 font-jersey10 text-xl font-semibold uppercase tracking-wider text-white">
-                <Zap className="h-4 w-4 text-accent" />
-                Quick Links
-              </h4>
-              <ul className="space-y-2">
-                {quickLinks.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="group flex items-center gap-2 font-jersey10 text-xl text-gray-400 transition-all duration-300 hover:text-purple-400"
-                      onMouseEnter={() => setIsHovered(link.label)}
-                      onMouseLeave={() => setIsHovered(null)}
-                    >
-                      <ChevronRight
-                        className={`h-3 w-3 transition-transform duration-300 ${isHovered === link.label ? "translate-x-1" : ""}`}
-                      />
-                      <span className="relative">
-                        {link.label}
-                        {isHovered === link.label && (
-                          <span className="absolute inset-x-0 -bottom-0.5 h-px bg-gradient-to-r from-purple-400 to-pink-400" />
-                        )}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="space-y-3 lg:col-span-1">
-              <h4 className="flex items-center gap-2 font-jersey10 text-xl font-semibold uppercase tracking-wider text-white">
-                <Code2 className="h-4 w-4 text-purple-400" />
-                Explore
-              </h4>
-              <ul className="space-y-2">
-                {mainLinks.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="group flex items-center gap-2 font-jersey10 text-xl text-gray-400 transition-all duration-300 hover:text-purple-400"
-                    >
-                      <span className="text-purple-500/50 transition-transform duration-300 group-hover:scale-110 group-hover:text-purple-400">
-                        {link.icon}
-                      </span>
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <FooterLinkList
+              title="Quick Links"
+              titleIcon={<Zap className="h-4 w-4 text-accent" />}
+              links={quickLinks}
+              useChevron
+            />
+            <FooterLinkList
+              title="Explore"
+              titleIcon={<Code2 className="h-4 w-4 text-purple-400" />}
+              links={mainLinks}
+            />
           </div>
           <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
@@ -512,7 +496,7 @@ export default function Footer() {
             </div>
             <div className="relative flex justify-center">
               <span className="bg-slate-950/50 px-4">
-                <Gamepad2 className="h-5 w-5 animate-pulse text-purple-400" />
+                <Gamepad2 className="h-5 w-5 text-purple-400" />
               </span>
             </div>
           </div>
