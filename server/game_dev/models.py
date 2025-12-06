@@ -22,14 +22,16 @@ class Art(models.Model):
     def __str__(self):
         return str(self.name)
 
+
 class ArtContributor(models.Model):
     art = models.ForeignKey('Art', on_delete=models.CASCADE, related_name='contributors')
     member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='art_contributions')
     role = models.CharField(max_length=100)
+
     class Meta:
         unique_together = ('art', 'member')
         verbose_name = 'Art Contributor'
         verbose_name_plural = 'Art Contributors'
-    
+
     def __str__(self):
         return f"{self.member.name} - {self.art.name} ({self.role})"
