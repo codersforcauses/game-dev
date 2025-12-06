@@ -3,13 +3,15 @@ import { useRouter } from "next/router";
 
 import { useEvent } from "@/hooks/useEvent";
 
-function formatDate(dateString: string): string {
+function formatDateTime(dateString: string): string {
   try {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     }).format(date);
   } catch {
     return dateString; // Fallback to original string if parsing fails
@@ -77,8 +79,7 @@ export default function EventPage() {
               aria-hidden="true"
             />
             <p className="mt-6 text-lg">
-              {formatDate(event.date)}{" "}
-              {event.startTime && `· ${event.startTime}`} · {event.location}
+              {formatDateTime(event.date)} · {event.location}
             </p>
             <p className="mt-4 max-w-lg text-base leading-relaxed">
               {event.description}

@@ -2,6 +2,7 @@ from django.test import TestCase
 from .models import Event
 import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.utils import timezone
 
 
 class EventModelTest(TestCase):
@@ -11,13 +12,16 @@ class EventModelTest(TestCase):
             b"dummy image data",
             content_type="image/jpeg",
         )
-        self.date = datetime.date(2025, 12, 25)
-        self.start_time = datetime.time(15, 30)
+        naive_dt = datetime.datetime(2025, 12, 25, 15, 30)
+        self.event_datetime = timezone.make_aware(
+            naive_dt,
+            timezone.get_default_timezone(),
+        )
+
         self.pub_date = datetime.date(2025, 11, 29)
         self.event = Event.objects.create(
             name="Super Fun Event",
-            date=self.date,
-            startTime=self.start_time,
+            date=self.event_datetime,
             description="Yayayyayayay!",
             publicationDate=self.pub_date,
             cover_image=image_file,
@@ -41,10 +45,10 @@ class EventModelTest(TestCase):
     def test_publication_date_not_empty(self):
         self.assertTrue(bool(self.event.publicationDate))
 
-    def test_event_date_matches(self):
+    def test_event_date_is_datetime(self):
         event = Event.objects.get(pk=self.event.pk)
-        self.assertEqual(event.date, self.date)
+        self.assertIsInstance(event.date, datetime.datetime)
 
-    def test_start_time_matches(self):
+    def test_event_datetime_matches(self):
         event = Event.objects.get(pk=self.event.pk)
-        self.assertEqual(event.startTime, self.start_time)
+        self.assertEqual(event.date, self.event_datetime)
