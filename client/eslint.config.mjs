@@ -5,11 +5,11 @@ import tsParser from "@typescript-eslint/parser";
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
-})
- 
-const eslintConfig = [
+});
+
+const eslintConfig =[
   ...compat.config({
-    extends:  ["next/core-web-vitals", "next/typescript"]
+    extends: ["next/core-web-vitals", "next/typescript"]
   }),
   {
     files: ["**/*.ts", "**/*.tsx"],
@@ -31,6 +31,6 @@ const eslintConfig = [
   {
     ignores: ["node_modules/**", ".next/**", "next-env.d.ts"]
   }
-]
- 
+];
+
 export default eslintConfig

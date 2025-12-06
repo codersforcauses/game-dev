@@ -11,7 +11,13 @@ Django + Nextjs Template: Standardised CFC Tech Stack
 
 ### Installation Steps
 
-#### 1. Clone the Repository
+#### 1. Install Prerequisites
+
+- **Node.js 20+** and **npm** - [Download here](https://nodejs.org/)
+- **Python 3.12+** - [Download here](https://python.org/)
+- **Poetry** (Python package manager) - [Installation guide](https://python-poetry.org/docs/#installation)
+
+#### 2. Clone the Repository
 ```bash
 git clone <your-repo-url>
 cd <project-name>
@@ -75,9 +81,8 @@ npm install
 npm run dev
 ```
 
-#### 7. Verify Installation
+#### 6. Verify Installation
 - Frontend: [http://localhost:3000](http://localhost:3000)
-- Backend API: [http://localhost:8000](http://localhost:8000)
 - Admin panel: [http://localhost:8000/admin](http://localhost:8000/admin)
 
 ---

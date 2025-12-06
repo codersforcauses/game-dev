@@ -3,7 +3,6 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 import animate from "tailwindcss-animate";
 
 const config = {
-  darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -22,7 +21,10 @@ const config = {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        jersey10: ["var(--font-jersey10)", ...fontFamily.sans],
+        firaCode: ["var(--font-firaCode)", ...fontFamily.sans],
       },
+
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
