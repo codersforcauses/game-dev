@@ -33,13 +33,14 @@ class Games(models.Model):
     name = models.CharField(max_length=200, null=False)
     description = models.CharField(max_length=4500)
     completion = models.IntegerField(
-        choices=CompletionStatus.choices,   # ← important
+        choices=CompletionStatus.choices,
         default=CompletionStatus.WIP,
         null=False,
     )
     active = models.BooleanField(default=True, null=False)
     hostURL = models.CharField(max_length=2083)
     isItch = models.BooleanField(default=True, null=False)
+    itchEmbeddedID = models.PositiveIntegerField(default=None)
     pathToMedia = models.CharField(max_length=2083)
     event = models.ForeignKey(Events, on_delete=models.CASCADE, null=False)
     # event reference uuid events.id model
