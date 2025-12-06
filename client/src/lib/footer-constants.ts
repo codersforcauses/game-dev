@@ -62,4 +62,3 @@ export const SOCIAL_ICON_SPRING_DAMPING = 17;
 // Default dimensions
 export const DEFAULT_FOOTER_WIDTH = 1920;
 export const DEFAULT_FOOTER_HEIGHT = 400;
-

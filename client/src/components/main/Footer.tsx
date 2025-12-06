@@ -121,14 +121,10 @@ function SimpleParticle({
 }) {
   // Particles react to mouse movement when hovering
   const offsetX = useTransform(smoothX, (mx) =>
-    isHovering
-      ? (mx - MOUSE_CENTER_OFFSET) * MOUSE_OFFSET_MULTIPLIER
-      : 0,
+    isHovering ? (mx - MOUSE_CENTER_OFFSET) * MOUSE_OFFSET_MULTIPLIER : 0,
   );
   const offsetY = useTransform(smoothY, (my) =>
-    isHovering
-      ? (my - MOUSE_CENTER_OFFSET) * MOUSE_OFFSET_MULTIPLIER
-      : 0,
+    isHovering ? (my - MOUSE_CENTER_OFFSET) * MOUSE_OFFSET_MULTIPLIER : 0,
   );
   return (
     <motion.div
@@ -177,13 +173,10 @@ function NetworkCanvas({
       particlesRef.current = Array.from({ length: PARTICLE_COUNT }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx:
-          (Math.random() - 0.5) * NETWORK_PARTICLE_VELOCITY_MULTIPLIER,
-        vy:
-          (Math.random() - 0.5) * NETWORK_PARTICLE_VELOCITY_MULTIPLIER,
+        vx: (Math.random() - 0.5) * NETWORK_PARTICLE_VELOCITY_MULTIPLIER,
+        vy: (Math.random() - 0.5) * NETWORK_PARTICLE_VELOCITY_MULTIPLIER,
         size:
-          NETWORK_PARTICLE_SIZE_MIN +
-          Math.random() * NETWORK_PARTICLE_SIZE_MAX,
+          NETWORK_PARTICLE_SIZE_MIN + Math.random() * NETWORK_PARTICLE_SIZE_MAX,
       }));
       initializedRef.current = true;
     }
@@ -232,7 +225,10 @@ function NetworkCanvas({
           grad.addColorStop(0, cssVarAsHSL("--logo-blue-1", op));
           grad.addColorStop(
             0.5,
-            cssVarAsHSL("--light-2", op * NETWORK_CONNECTION_OPACITY_MULTIPLIER),
+            cssVarAsHSL(
+              "--light-2",
+              op * NETWORK_CONNECTION_OPACITY_MULTIPLIER,
+            ),
           );
           grad.addColorStop(1, cssVarAsHSL("--light-alt", op));
           ctx.strokeStyle = grad;
@@ -296,9 +292,7 @@ export default function Footer() {
     height: DEFAULT_FOOTER_HEIGHT,
   });
   const [isClient, setIsClient] = useState(false); // Prevent SSR issues with canvas/animations
-  const [particleConfigs, setParticleConfigs] = useState<ParticleConfig[]>(
-    [],
-  );
+  const [particleConfigs, setParticleConfigs] = useState<ParticleConfig[]>([]);
 
   // Mouse position tracking with spring physics for smooth movement
   const mouseX = useMotionValue(50);
@@ -328,12 +322,9 @@ export default function Footer() {
         baseY: Math.random() * 100,
         size: PARTICLE_SIZE_MIN + Math.random() * PARTICLE_SIZE_MAX,
         delay: Math.random() * PARTICLE_DELAY_MAX,
-        duration:
-          PARTICLE_DURATION_MIN + Math.random() * PARTICLE_DURATION_MAX,
+        duration: PARTICLE_DURATION_MIN + Math.random() * PARTICLE_DURATION_MAX,
         color:
-          particlecolours[
-            Math.floor(Math.random() * particlecolours.length)
-          ],
+          particlecolours[Math.floor(Math.random() * particlecolours.length)],
       })),
     );
     // Unfortunately, motion cannot animate named colours.
@@ -471,8 +462,7 @@ export default function Footer() {
                     label={social.label}
                     motionColours={{
                       socialBGHov: motionColoursRef.current.socialBGHov,
-                      socialBorderHov:
-                        motionColoursRef.current.socialBorderHov,
+                      socialBorderHov: motionColoursRef.current.socialBorderHov,
                     }}
                   />
                 ))}
