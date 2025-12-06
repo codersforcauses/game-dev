@@ -38,12 +38,13 @@ class Games(models.Model):
         null=False,
     )
     active = models.BooleanField(default=True, null=False)
-    hostURL = models.CharField(max_length=2083)
+    hostURL = models.CharField(
+        max_length=2083,
+        help_text="If game is stored on itch.io, please enter the 7 digit long game id as its hostURL, i.e., 1000200"
+    )         # If isItch is true then input only the Game ID
     isItch = models.BooleanField(default=True, null=False)
-    itchEmbeddedID = models.PositiveIntegerField(default=None)
-    pathToMedia = models.CharField(max_length=2083)
-    event = models.ForeignKey(Events, on_delete=models.CASCADE, null=False)
-    # event reference uuid events.id model
+    pathToThumbnail = models.ImageField(upload_to="games/", null=True)
+    event = models.ForeignKey(Events, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.name)
