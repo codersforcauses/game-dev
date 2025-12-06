@@ -1,97 +1,33 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
-type ApiEvent = {
-  id: number;
-  name: string;
-  description: string;
-  publicationDate: string;
-  date: string;
-  startTime: string | null;
-  location: string;
-  cover_image: string | null;
-};
+import { useEvent } from "@/hooks/useEvent";
 
-type UiEvent = {
-  name: string;
-  description: string;
-  publicationDate: string;
-  date: string;
-  startTime?: string | null;
-  location: string;
-  coverImage: string;
-};
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+function formatDate(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
+  } catch {
+    return dateString; // Fallback to original string if parsing fails
+  }
+}
 
 export default function EventPage() {
   const router = useRouter();
   const { id } = router.query;
+  // Wait for router to be ready before fetching (router.query is empty on initial SSR)
+  const {
+    data: event,
+    isPending,
+    error,
+    isError,
+  } = useEvent(router.isReady ? id : undefined);
 
-  const [event, setEvent] = useState<UiEvent | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // for testing
-  useEffect(() => {
-    if (event) {
-      console.log("Event state updated:", event);
-    }
-  }, [event]);
-
-  useEffect(() => {
-    if (!id) return;
-
-    const controller = new AbortController();
-
-    async function fetchEvent() {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const res = await fetch(`${API_BASE}/api/events/${id}/`, {
-          signal: controller.signal,
-        });
-
-        if (!res.ok) {
-          if (res.status === 404) {
-            setError("Event not found.");
-          } else {
-            setError("Failed to load event.");
-          }
-          return;
-        }
-
-        const data: ApiEvent = await res.json();
-
-        // for testing
-        console.log("Fetched event data:", data);
-
-        setEvent({
-          name: data.name,
-          description: data.description,
-          publicationDate: data.publicationDate,
-          location: data.location,
-          coverImage: data.cover_image ?? "/game_dev_club_logo.svg",
-          date: data.date,
-          startTime: data.startTime,
-        });
-      } catch (err: unknown) {
-        if (err instanceof Error && err.name !== "AbortError") {
-          setError("Failed to load event.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchEvent();
-
-    return () => controller.abort();
-  }, [id]);
-
-  if (loading) {
+  if (isPending) {
     return (
       <main className="min-h-screen px-6 py-16 md:px-20">
         <div className="mx-auto max-w-6xl">
@@ -101,11 +37,18 @@ export default function EventPage() {
     );
   }
 
-  if (error) {
+  if (isError) {
+    const errorMessage =
+      error?.response?.status === 404
+        ? "Event not found."
+        : "Failed to load event.";
+
     return (
       <main className="min-h-screen px-6 py-16 md:px-20">
         <div className="mx-auto max-w-6xl">
-          <p className="text-red-500">{error}</p>
+          <p className="text-red-500" role="alert">
+            {errorMessage}
+          </p>
         </div>
       </main>
     );
@@ -129,25 +72,29 @@ export default function EventPage() {
             <h1 className="font-jersey10 text-4xl text-primary">
               {event.name}
             </h1>
-            <div className="mt-4 w-full border-t border-gray-600"></div>
-
+            <div
+              className="mt-4 w-full border-t border-gray-600"
+              aria-hidden="true"
+            />
             <p className="mt-6 text-lg">
-              {event.date} {event.startTime && `· ${event.startTime}`} ·{" "}
-              {event.location}
+              {formatDate(event.date)}{" "}
+              {event.startTime && `· ${event.startTime}`} · {event.location}
             </p>
-
             <p className="mt-4 max-w-lg text-base leading-relaxed">
               {event.description}
             </p>
           </div>
-
           <div className="w-full flex-shrink-0 md:w-[380px] lg:w-[500px]">
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gray-700">
               <Image
                 src={event.coverImage}
-                alt={event.name}
+                alt={`Cover image for ${event.name}`}
                 fill
                 className="object-cover"
+                onError={(e) => {
+                  // Fallback to default image if load fails
+                  e.currentTarget.src = "/game_dev_club_logo.svg";
+                }}
               />
             </div>
           </div>
