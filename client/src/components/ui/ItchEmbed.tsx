@@ -13,11 +13,13 @@ type ItchEmbedProps = {
 
 export function ItchEmbed({ embedID, name }: ItchEmbedProps) {
   return (
-    <div className="aspect-[552/167] w-full">
+    <div className="w-full" style={{ maxHeight: 167 }}>
       <iframe
         className="h-full w-full border-0"
         src={`https://itch.io/embed/${embedID}`}
         title={name}
+        allowFullScreen
+        style={{ maxHeight: 167 }}
       />
     </div>
   );
