@@ -16,7 +16,12 @@ import FooterLinkList from "@/components/footer/FooterLinkList";
 import SocialIconButton, {
   createSocialMotionColours,
 } from "@/components/footer/SocialIconButton";
-import { mainLinks, quickLinks, socialLinks } from "@/data/footer-data";
+import {
+  mainLinks,
+  quickLinks,
+  socialLinks,
+  type SocialLink,
+} from "@/data/footer-data";
 import {
   DEFAULT_FOOTER_HEIGHT,
   DEFAULT_FOOTER_WIDTH,
@@ -455,7 +460,7 @@ export default function Footer() {
                 development club
               </p>
               <div className="flex gap-3 pt-2">
-                {socialLinks.map((social, index) => (
+                {socialLinks.map((social: SocialLink, index: number) => (
                   <SocialIconButton
                     key={index}
                     url={social.url}
