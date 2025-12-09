@@ -21,7 +21,7 @@ import {
   quickLinks,
   socialLinks,
   type SocialLink,
-} from "@/data/footer-data";
+} from "@/static-data/footer-data";
 import {
   DEFAULT_FOOTER_HEIGHT,
   DEFAULT_FOOTER_WIDTH,
