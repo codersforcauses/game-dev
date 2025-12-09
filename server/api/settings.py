@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     "corsheaders",
     "api.healthcheck",
     "game_dev",
-    "api.events",
 ]
 
 MIDDLEWARE = [
