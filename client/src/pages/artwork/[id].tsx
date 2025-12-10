@@ -121,7 +121,7 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
             alt="Artwork image"
             width={500}
             height={500}
-            className="relative block sm:h-auto sm:max-w-full md:max-h-full md:w-auto"
+            className="relative block sm:h-auto sm:max-w-full md:max-h-full"
           />
         </div>
         <div
