@@ -8,7 +8,7 @@ class ArtContributorSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ArtContributor
-        fields = ['id', 'art_id', 'member', 'member_name', 'role']
+        fields = ['id', 'art', 'art_id', 'member', 'member_name', 'role']
 
 class ArtSerializer(serializers.ModelSerializer):
     class Meta:
