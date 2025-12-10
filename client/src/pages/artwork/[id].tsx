@@ -102,7 +102,7 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
       </div>
       <div
         data-layer="Frame 1100"
-        className="Frame1100 inline-flex flex-col items-start justify-center gap-10 bg-slate-950 py-3 sm:pl-3 md:pl-12"
+        className="Frame1100 inline-flex flex-col items-start justify-center gap-10 bg-slate-950 p-3 md:pl-12"
       >
         <div
           data-layer="< Gallery"
