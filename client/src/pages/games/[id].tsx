@@ -9,14 +9,14 @@ export default function IndividualGamePage() {
   const gameCover =
     "https://upload.wikimedia.org/wikipedia/en/b/b6/Minecraft_2024_cover_art.png";
   const gameDescription = [
-    "Lorem ipsum dolor sit amet. Non numquam dicta nam autem dicta 33 error molestias...",
-    "Et laborum vitae est inventore obcaecati...",
-    "Qui quisquam nihil non porro velit hic magni...",
-    "Eum veniam quisquam et veniam distinctio.",
-    "In laudantium adipisci aut molestiae consequatur.",
-    "Eum itaque rerum qui enim aliquam.",
-    "Id dolor consequatur ut aperiam omnis.",
     "Minecraft is a sandbox game developed and published by Mojang Studios. Formally released on 18 November 2011 for personal computers following its initial public alpha release on 17 May 2009, it has been ported to numerous platforms, including mobile devices and various video game consoles....",
+    "In Minecraft, players explore a procedurally generated, three-dimensional world with virtually infinite terrain made up of voxels (cubes). Players can discover and extract raw materials, craft tools and items, and build structures, earthworks, and machines. Depending on the game mode, players can fight hostile mobs, as well as cooperate with or compete against other players in multiplayer. The game's large community offers a wide variety of user-generated content, such as modifications, servers, player skins, texture packs, and custom maps, which add new game mechanics and possibilities.",
+    "The game has several modes, including Survival mode, where players must acquire resources to build the world and maintain health; Creative mode, where players have unlimited resources to build with and the ability to fly; Adventure mode, where players can play custom maps created by other players with certain restrictions; and Spectator mode, where players can freely move throughout a world without being affected by gravity or world interactions.",
+    "Minecraft has been praised for its creativity and freedom, allowing players to build complex structures and mechanisms using redstone circuits. It has also been used in educational settings to teach subjects such as mathematics, history, and computer programming.",
+    "The game has received numerous updates since its release, adding new features, blocks, mobs, and gameplay mechanics. Notable updates include the 'Nether Update,' which revamped the Nether dimension; the 'Caves & Cliffs Update,' which introduced new cave generation and mountain biomes; and the 'Wild Update,' which added new mobs like the Warden and new biomes such as the Deep Dark.",
+    "Minecraft has become one of the best-selling video games of all time, with over 200 million copies sold across all platforms by 2021. It has a large and active player base, with millions of players logging in daily to explore, build, and create in its expansive worlds.",
+    "The game's success has led to various spin-offs and merchandise, including books, toys, and an upcoming feature film. Minecraft's impact on gaming culture is significant, influencing many other games and inspiring a generation of gamers and developers.",
+    "Overall, Minecraft's combination of creativity, exploration, and community-driven content has solidified its place as a beloved and enduring title in the gaming industry.",
   ];
   const contributors = ["Developer 1", "Developer 2", "Artist 1"];
   const devStage = "Beta";
@@ -38,80 +38,80 @@ export default function IndividualGamePage() {
   ];
   return (
     <div className="min-h-screen bg-[#181a25] font-sans text-[#e3e6f3]">
-      <section className="flex justify-center bg-[#232345] py-8">
-        <div className="flex w-[832px] max-w-full items-center justify-center rounded-2xl bg-[#232345] shadow-xl">
-          <Image
-            src={gameCover}
-            alt="Game Cover"
-            width={832}
-            height={540}
-            className="h-auto max-h-[66vh] w-full max-w-full rounded-2xl bg-[#232345] object-contain shadow-lg"
-            priority
-          />
-        </div>
-      </section>
-      <main className="mx-auto max-w-4xl p-8">
-        <h1 className="mb-4 text-center font-jersey10 text-4xl font-bold tracking-wide text-[#7ecfff] drop-shadow-lg">
-          {gameTitle}
-        </h1>
-        <section className="mb-8 flex items-center justify-center rounded-xl bg-[#232345] p-6 shadow-lg">
-          <div className="flex flex-wrap items-start gap-8">
-            <div className="min-w-[260px] flex-[2]">
-              {gameDescription.slice(0, 1).map((desc, i) => (
-                <p key={i}>{desc}</p>
-              ))}
-              <ul>
-                {gameDescription.slice(1, 3).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-              <p>
-                <strong>{gameDescription[3]}</strong>
-              </p>
-              <p>
-                <em>{gameDescription[4]}</em>
-              </p>
-              <p>
-                <strong>{gameDescription[5]}</strong>
-              </p>
-              <p>
-                <em>{gameDescription[6]}</em>
-              </p>
-              <p>{gameDescription[7]}</p>
+      <main className="mx-auto max-w-7xl p-8">
+        <section className="mb-8 flex flex-col items-center justify-center gap-8 rounded-xl bg-[#232345] p-6 shadow-lg">
+          <div className="flex w-full flex-wrap items-start justify-center gap-8">
+            <div className="flex w-full justify-center md:flex-1">
+              <Image
+                src={gameCover}
+                alt="Game Cover"
+                width={800}
+                height={800}
+                className="h-auto max-h-[60vh] w-full max-w-full rounded-2xl bg-[#232345] object-contain shadow-lg md:max-w-[60vw]"
+                priority
+              />
             </div>
-            <table className="w-full min-w-[220px] flex-1 border-collapse border-spacing-0">
-              <tbody>
-                <tr className="border-b-2 border-gray-300">
-                  <td className="py-2 pr-2">Contributors</td>
-                  <td className="py-2">
-                    {contributors.map((c, i) => (
-                      <span key={c}>
-                        {c}
-                        {i < contributors.length - 1 && <br />}
-                      </span>
-                    ))}
-                  </td>
-                </tr>
-                <tr className="border-b-2 border-gray-300">
-                  <td className="py-2 pr-2">Development Stage</td>
-                  <td className="py-2">{devStage}</td>
-                </tr>
-                <tr className="border-b-2 border-gray-300">
-                  <td className="py-2 pr-2">Host Site</td>
-                  <td className="py-2">{hostSite}</td>
-                </tr>
-                <tr>
-                  <td className="py-2 pr-2">Event</td>
-                  <td className="py-2">{event}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="w-full md:w-auto">
+              <table className="mt-4 w-full min-w-[220px] border-collapse border-spacing-0">
+                <tbody>
+                  <tr className="border-b-2 border-gray-300">
+                    <td className="py-2 pr-2">Contributors</td>
+                    <td className="py-2">
+                      {contributors.map((c, i) => (
+                        <span key={c}>
+                          {c}
+                          {i < contributors.length - 1 && <br />}
+                        </span>
+                      ))}
+                    </td>
+                  </tr>
+                  <tr className="border-b-2 border-gray-300">
+                    <td className="py-2 pr-2">Development Stage</td>
+                    <td className="py-2">{devStage}</td>
+                  </tr>
+                  <tr className="border-b-2 border-gray-300">
+                    <td className="py-2 pr-2">Host Site</td>
+                    <td className="py-2">{hostSite}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 pr-2">Event</td>
+                    <td className="py-2">{event}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="mt-8 flex w-full min-w-[260px] flex-col gap-4">
+            <h1 className="mb-2 text-center font-jersey10 text-4xl font-bold tracking-wide text-[#7ecfff] drop-shadow-lg">
+              {gameTitle}
+            </h1>
+            {gameDescription.slice(0, 1).map((desc, i) => (
+              <p key={i}>{desc}</p>
+            ))}
+            <ul>
+              {gameDescription.slice(1, 3).map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+            <p>
+              <strong>{gameDescription[3]}</strong>
+            </p>
+            <p>
+              <em>{gameDescription[4]}</em>
+            </p>
+            <p>
+              <strong>{gameDescription[5]}</strong>
+            </p>
+            <p>
+              <em>{gameDescription[6]}</em>
+            </p>
+            <p>{gameDescription[7]}</p>
           </div>
         </section>
         <section className="mt-8 flex flex-col items-center">
           <ItchEmbed embedID="3" name="X-Moon by leafy" />
           <h2 className="mb-4 font-jersey10 text-3xl tracking-wide text-[#7ecfff]">
-            GAME ART
+            ARTWORK
           </h2>
 
           <div className="mx-auto mb-6 flex h-[240px] w-full max-w-4xl justify-center gap-6 overflow-hidden">
