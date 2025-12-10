@@ -85,27 +85,11 @@ export default function IndividualGamePage() {
             <h1 className="mb-2 text-center font-jersey10 text-4xl font-bold tracking-wide text-[#7ecfff] drop-shadow-lg">
               {gameTitle}
             </h1>
-            {gameDescription.slice(0, 1).map((desc, i) => (
-              <p key={i}>{desc}</p>
-            ))}
             <ul>
-              {gameDescription.slice(1, 3).map((item, i) => (
-                <li key={i}>{item}</li>
+              {gameDescription.map((desc, i) => (
+                <li key={i}>{desc}</li>
               ))}
             </ul>
-            <p>
-              <strong>{gameDescription[3]}</strong>
-            </p>
-            <p>
-              <em>{gameDescription[4]}</em>
-            </p>
-            <p>
-              <strong>{gameDescription[5]}</strong>
-            </p>
-            <p>
-              <em>{gameDescription[6]}</em>
-            </p>
-            <p>{gameDescription[7]}</p>
           </div>
         </section>
         <section className="mt-8 flex flex-col items-center">
