@@ -102,7 +102,7 @@ export default function ArtworkPage({
                         {contributor.member_name}
                       </div>
                       <div>
-                        {contributor.discordUrl && (
+                        {contributor.discord_url && (
                           <div
                             data-svg-wrapper
                             data-layer="Vector"
@@ -122,7 +122,7 @@ export default function ArtworkPage({
                             </svg>
                           </div>
                         )}
-                        {contributor.instagramUrl && (
+                        {contributor.instagram_url && (
                           <div
                             data-svg-wrapper
                             data-layer="Icon"
