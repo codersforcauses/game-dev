@@ -1,4 +1,4 @@
-import { Calendar, Code2, Gamepad2, Palette, Users, Zap } from "lucide-react";
+import { Calendar, Gamepad2, Palette, Users, Zap } from "lucide-react";
 import type { ReactNode } from "react";
 
 /**

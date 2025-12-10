@@ -17,22 +17,16 @@ import SocialIconButton, {
   createSocialMotionColours,
 } from "@/components/footer/SocialIconButton";
 import {
-  mainLinks,
-  quickLinks,
-  socialLinks,
-  type SocialLink,
-} from "@/static-data/footer-data";
-import {
   DEFAULT_FOOTER_HEIGHT,
   DEFAULT_FOOTER_WIDTH,
   GRADIENT_CIRCLE_SIZE,
   GRADIENT_OPACITY_DEFAULT,
   GRADIENT_OPACITY_HOVERING,
   GRADIENT_TRANSITION_DURATION,
-  MOUSE_CENTER_OFFSET,
-  MOUSE_OFFSET_MULTIPLIER,
   MOTION_COLOUR_MOUSE_GRAD_END_ALPHA,
   MOTION_COLOUR_MOUSE_GRAD_START_ALPHA,
+  MOUSE_CENTER_OFFSET,
+  MOUSE_OFFSET_MULTIPLIER,
   NETWORK_CONNECTION_DISTANCE,
   NETWORK_CONNECTION_MAX_PER_PARTICLE,
   NETWORK_CONNECTION_OPACITY_BASE,
@@ -59,6 +53,12 @@ import {
   SPRING_STIFFNESS,
 } from "@/lib/footer-constants";
 import { cssVarAsHSL } from "@/lib/utils";
+import {
+  mainLinks,
+  quickLinks,
+  type SocialLink,
+  socialLinks,
+} from "@/static-data/footer-data";
 
 // Type definitions for particle system
 type ParticleConfig = {

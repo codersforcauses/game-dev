@@ -2,8 +2,8 @@
 
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 
 interface FooterLink {
   label: string;
