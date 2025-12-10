@@ -40,7 +40,7 @@ export default function ArtworkPage({
       <div data-layer="Frame 1099" className="Frame1099 flex justify-start">
         <div
           data-layer="Placeholder image"
-          className="PlaceholderImage border-light-2 flex h-[792px] basis-1/2 items-center justify-center rounded-[10px] border-2 border-solid"
+          className="PlaceholderImage border-light-2 flex basis-1/2 items-center justify-center rounded-[10px] border-2 border-solid"
         >
           <div className="relative h-full w-full">
             <Image
