@@ -4,17 +4,12 @@ import Link from "next/link";
 
 import api from "@/lib/api";
 import { Art } from "@/types/art";
-import { ArtContributor } from "@/types/art-contributor";
 
 interface ArtworkPageProps {
   artwork: Art;
-  contributors: ArtContributor[];
 }
 
-export default function ArtworkPage({
-  artwork,
-  contributors,
-}: ArtworkPageProps) {
+export default function ArtworkPage({ artwork }: ArtworkPageProps) {
   return (
     <div
       data-layer="Individual Game Page alt 9"
@@ -93,7 +88,7 @@ export default function ArtworkPage({
                   data-layer="Frame 1164"
                   className="Frame1164 relative flex flex-col gap-3 p-3"
                 >
-                  {contributors?.map((contributor) => (
+                  {artwork.contributors?.map((contributor) => (
                     <div
                       className="flex flex-row justify-between"
                       key={contributor.id}
@@ -186,12 +181,5 @@ export const getServerSideProps: GetServerSideProps<ArtworkPageProps> = async (
   const { id } = context.params as { id: string };
   const artResponse = await api.get<Art>(`game-dev/arts/${id}`);
   const artwork = artResponse.data;
-  const contributorsResponse = await api.get<ArtContributor[]>(
-    `game-dev/art-contributors`,
-  );
-  const contributors: ArtContributor[] = contributorsResponse.data.filter(
-    (x) => x.art_id === Number(id),
-  );
-  // TODO [HanMinh] to filter on backend
-  return { props: { artwork, contributors } };
+  return { props: { artwork } };
 };
