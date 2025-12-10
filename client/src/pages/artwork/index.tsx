@@ -4,9 +4,10 @@ import Link from "next/link";
 
 import api from "@/lib/api";
 import { Art } from "@/types/art";
+import { PageResult } from "@/types/page-response";
 
 interface ArtworksPageProps {
-  artworks: Art[];
+  pages: PageResult<Art>;
 }
 
 const PLACEHOLDER_ICON = (
@@ -52,7 +53,7 @@ function renderArtworkCard(artwork: Art) {
   );
 }
 
-export default function ArtworksPage({ artworks }: ArtworksPageProps) {
+export default function ArtworksPage({ pages }: ArtworksPageProps) {
   return (
     <div data-layer="Art Page General" className="ArtPageGeneral">
       <div
@@ -99,7 +100,7 @@ export default function ArtworksPage({ artworks }: ArtworksPageProps) {
 
       <div data-layer="Frame 1159" className="Frame1159 relative self-stretch">
         <div className="Frame1098 aligne flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-20 bg-slate-950 py-14 pl-28 pr-24">
-          {artworks.map((artwork) => renderArtworkCard(artwork))}
+          {pages.results.map((artwork) => renderArtworkCard(artwork))}
         </div>
       </div>
       <div
@@ -115,7 +116,7 @@ export default function ArtworksPage({ artworks }: ArtworksPageProps) {
 export const getServerSideProps: GetServerSideProps<
   ArtworksPageProps
 > = async () => {
-  const res = await api.get<Art[]>("game-dev/arts");
-  const arts = res.data;
-  return { props: { artworks: arts } };
+  const res = await api.get<PageResult<Art>>("game-dev/arts");
+  const pages = res.data;
+  return { props: { pages } };
 };
