@@ -1,18 +1,12 @@
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
-type Artwork = {
-  id: string;
-  name: string;
-  description: string;
-  sourceGame: string;
-  pathToMedia: string;
-  active: boolean;
-  createdAt: string;
-};
+import api from "@/lib/api";
+import { Art } from "@/types/art";
 
 interface ArtworksPageProps {
-  artworks: Artwork[];
+  artworks: Art[];
 }
 
 const PLACEHOLDER_ICON = (
@@ -32,18 +26,27 @@ const PLACEHOLDER_ICON = (
   </div>
 );
 
-function renderArtworkCard(artwork: Artwork) {
+function renderArtworkCard(artwork: Art) {
   return (
     <Link
       href={`/artwork/${artwork.id}`}
       data-layer="Frame 1120"
       className="Frame1120"
+      title={artwork.name}
     >
       <div
         data-layer="Placeholder image"
-        className="PlaceholderImage bg-light-2 flex h-[20rem] w-[25rem] flex-1 items-center justify-center self-stretch rounded-[10px]"
+        className="PlaceholderImage border-light-2 flex h-[20rem] w-[25rem] flex-1 items-center justify-center self-stretch rounded-[10px] border-2 border-solid p-1"
       >
-        {PLACEHOLDER_ICON}
+        <div className="relative h-full w-full">
+          <Image
+            src={artwork.path_to_media}
+            alt="Artwork image"
+            fill
+            objectFit="contain"
+            className="relative"
+          />
+        </div>
       </div>
     </Link>
   );
@@ -112,20 +115,7 @@ export default function ArtworksPage({ artworks }: ArtworksPageProps) {
 export const getServerSideProps: GetServerSideProps<
   ArtworksPageProps
 > = async () => {
-  // const res = await fetch(`https://your-backend.com/api/artwork/${id}`);
-  const artworks: Artwork[] = [];
-  for (let i = 0; i < 12; i++) {
-    const artwork: Artwork = {
-      id: i + "",
-      name: "title of art" + i,
-      description: "description of art",
-      sourceGame: "",
-      pathToMedia: "",
-      active: false,
-      createdAt: new Date().toISOString(),
-    };
-    artworks.push(artwork);
-  }
-
-  return { props: { artworks } };
+  const res = await api.get<Art[]>("game-dev/arts");
+  const arts = res.data;
+  return { props: { artworks: arts } };
 };

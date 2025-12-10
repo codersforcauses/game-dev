@@ -2,28 +2,19 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-type Contributor = {
-  id: string;
-  name: string;
-  instagramUrl?: string;
-  discordUrl?: string;
-};
-type Artwork = {
-  id: string;
-  name: string;
-  description: string;
-  sourceGame: string;
-  pathToMedia: string;
-  active: boolean;
-  createdAt: string;
-  contributors?: Contributor[];
-};
+import api from "@/lib/api";
+import { Art } from "@/types/art";
+import { ArtContributor } from "@/types/art-contributor";
 
 interface ArtworkPageProps {
-  artwork: Artwork;
+  artwork: Art;
+  contributors: ArtContributor[];
 }
 
-export default function ArtworkPage({ artwork }: ArtworkPageProps) {
+export default function ArtworkPage({
+  artwork,
+  contributors,
+}: ArtworkPageProps) {
   return (
     <div
       data-layer="Individual Game Page alt 9"
@@ -46,32 +37,24 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
           <Link href="/artwork">&lt; Gallery</Link>
         </div>
       </div>
-      <div
-        data-layer="Frame 1099"
-        className="Frame1099 bg-neutral-1 flex justify-start gap-10"
-      >
+      <div data-layer="Frame 1099" className="Frame1099 flex justify-start">
         <div
           data-layer="Placeholder image"
-          className="PlaceholderImage bg-light-2 flex h-[792px] basis-1/2 items-center justify-center rounded-[10px]"
+          className="PlaceholderImage border-light-2 flex h-[792px] basis-1/2 items-center justify-center rounded-[10px] border-2 border-solid"
         >
-          <div data-svg-wrapper data-layer="Vector" className="Vector">
-            <svg
-              width="96"
-              height="96"
-              viewBox="0 0 96 96"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M96 85.3333V10.6667C96 4.8 91.2 0 85.3333 0H10.6667C4.8 0 0 4.8 0 10.6667V85.3333C0 91.2 4.8 96 10.6667 96H85.3333C91.2 96 96 91.2 96 85.3333ZM29.3333 56L42.6667 72.0533L61.3333 48L85.3333 80H10.6667L29.3333 56Z"
-                fill="var(--neutral-1, #1B1F4C)"
-              />
-            </svg>
+          <div className="relative h-full w-full">
+            <Image
+              src={artwork.path_to_media}
+              alt="Artwork image"
+              fill
+              objectFit="contain"
+              className="relative"
+            />
           </div>
         </div>
         <div
           data-layer="Frame 1162"
-          className="Frame1162 bg-neutral-1 relative basis-1/2 p-2"
+          className="Frame1162 bg-neutral-1 relative basis-1/2 p-10"
         >
           <div className="flex flex-col gap-10">
             <div
@@ -110,16 +93,16 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
                   data-layer="Frame 1164"
                   className="Frame1164 relative flex flex-col gap-3 p-3"
                 >
-                  {artwork.contributors?.map((contributor) => (
+                  {contributors?.map((contributor) => (
                     <div
                       className="flex flex-row justify-between"
                       key={contributor.id}
                     >
                       <div className="text-light-1 justify-center font-['DM_Sans'] text-xl font-normal leading-8 tracking-wide [text-shadow:_0px_4px_4px_rgb(0_0_0_/_0.25)]">
-                        {contributor.name}
+                        {contributor.member_name}
                       </div>
                       <div>
-                        {contributor.discordUrl ? (
+                        {contributor.discordUrl && (
                           <div
                             data-svg-wrapper
                             data-layer="Vector"
@@ -138,10 +121,8 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
                               />
                             </svg>
                           </div>
-                        ) : (
-                          ""
                         )}
-                        {contributor.instagramUrl ? (
+                        {contributor.instagramUrl && (
                           <div
                             data-svg-wrapper
                             data-layer="Icon"
@@ -163,8 +144,6 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
                               />
                             </svg>
                           </div>
-                        ) : (
-                          ""
                         )}
                       </div>
                     </div>
@@ -205,21 +184,14 @@ export const getServerSideProps: GetServerSideProps<ArtworkPageProps> = async (
   context,
 ) => {
   const { id } = context.params as { id: string };
-  console.log("Fetching artwork with id:", id);
-  // const res = await fetch(`https://your-backend.com/api/artwork/${id}`);
-  const artwork: Artwork = {
-    id: "abc of art",
-    name: "title of art",
-    description: "description of art",
-    sourceGame: "",
-    pathToMedia: "",
-    active: false,
-    createdAt: new Date().toISOString(),
-    contributors: [
-      { id: "1", name: "Contributor 1", discordUrl: "discordUrl" },
-      { id: "2", name: "Contributor 2", instagramUrl: "instagramUrl" },
-    ],
-  };
-
-  return { props: { artwork } };
+  const artResponse = await api.get<Art>(`game-dev/arts/${id}`);
+  const artwork = artResponse.data;
+  const contributorsResponse = await api.get<ArtContributor[]>(
+    `game-dev/art-contributors`,
+  );
+  const contributors: ArtContributor[] = contributorsResponse.data.filter(
+    (x) => x.art_id === Number(id),
+  );
+  // TODO [HanMinh] to filter on backend
+  return { props: { artwork, contributors } };
 };

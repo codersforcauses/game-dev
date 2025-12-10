@@ -66,3 +66,6 @@
 .text-light-3 {
   color: var(--light-3);
 }
+.border-light-2 {
+  border-color: var(--light-2);
+}
