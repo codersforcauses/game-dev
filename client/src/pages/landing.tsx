@@ -3,28 +3,29 @@ import Image from "next/image";
 export default function Landing() {
   return (
     <div>
-      <section className="flex w-full justify-center bg-[#182150] px-12 py-20">
+      <section className="flex w-full justify-center bg-[#182150] px-12 py-10">
         <div className="flex w-full max-w-[1440px] flex-col items-center justify-between gap-12 md:flex-row">
           <div className="flex max-w-lg flex-col gap-6 text-white">
-            <h1 className="text-4xl font-bold">Game Development UWA</h1>
+            <h1 className="font-jersey10 text-4xl font-bold">
+              Game Development UWA
+            </h1>
 
-            <p className="text-base leading-relaxed text-white/80">
+            <p className="font-sans text-base leading-relaxed text-white/80">
               Little eye catching intro about what the club does here. Maybe
               something about the purpose of the club, maybe something about the
               type of events that the club runs.
             </p>
 
             <div className="mt-4 flex gap-4">
-              <button className="rounded-lg border border-[#9CA4FD] px-6 py-3 font-medium text-white transition hover:bg-[#9CA4FD]">
+              <button className="rounded-lg border border-[#9CA4FD] px-6 py-3 font-jersey10 font-medium text-white transition hover:bg-[#9CA4FD]">
                 More about us &gt;
               </button>
-              <button className="rounded-lg border border-[#9CA4FD] px-6 py-3 font-medium text-white transition hover:bg-[#9CA4FD]">
+              <button className="rounded-lg border border-[#9CA4FD] px-6 py-3 font-jersey10 font-medium text-white transition hover:bg-[#9CA4FD]">
                 Join our Discord &gt;
               </button>
             </div>
           </div>
 
-          {/* 右侧图像占位卡片 */}
           <div className="relative flex h-[280px] w-[400px] items-center justify-center rounded-xl bg-[#cfc2ff] shadow-xl">
             <Image
               src="/placeholder.png"
@@ -41,7 +42,7 @@ export default function Landing() {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[702fr_513fr]">
             <div>
-              <div className="rounded-md border border-purple-400 px-4 py-2 font-semibold text-purple-300">
+              <div className="rounded-md border border-purple-400 px-4 py-2 font-jersey10 font-semibold text-purple-300">
                 Game Jams
               </div>
 
@@ -65,7 +66,7 @@ export default function Landing() {
             </div>
 
             <div>
-              <div className="rounded-md border border-purple-400 px-4 py-2 font-semibold text-purple-300">
+              <div className="rounded-md border border-purple-400 px-4 py-2 font-jersey10 font-semibold text-purple-300">
                 Social Events
               </div>
 
@@ -83,7 +84,7 @@ export default function Landing() {
 
           <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[233fr_275fr_111fr]">
             <div className="flex flex-col">
-              <div className="rounded-md border border-purple-400 px-4 py-2 font-semibold text-purple-300">
+              <div className="rounded-md border border-purple-400 px-4 py-2 font-jersey10 font-semibold text-purple-300">
                 Other Event Type
               </div>
 
@@ -99,8 +100,22 @@ export default function Landing() {
             </div>
 
             <div className="flex flex-col">
-              <div className="rounded-md border border-purple-400 px-4 py-2 font-semibold text-purple-300">
-                Workshops
+              <div
+                style={{
+                  clipPath:
+                    "polygon(0% 0%, 71% 0%, 78% 8px, 100% 8px, 100% calc(100% - 8px), 0% calc(100% - 8px))",
+                }}
+                className="relative bg-purple-400 p-[1px]"
+              >
+                <div
+                  style={{
+                    clipPath:
+                      "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
+                  }}
+                  className="bg-[#0d1025] p-4 pt-3 font-jersey10 font-semibold text-purple-300"
+                >
+                  Workshops
+                </div>
               </div>
 
               <div className="mt-4 rounded-md border border-[#1B1F4C] bg-[#0f132e] p-4 text-gray-200">
@@ -115,33 +130,31 @@ export default function Landing() {
               </div>
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-row items-center justify-center gap-4 lg:flex-col lg:items-start">
               <Image
                 src="/godot-1.png"
                 width={135}
                 height={46}
-                alt="Placeholder"
-                className="mb-5"
+                alt="Godot Logo"
+                className="lg:mb-5"
               />
               <Image
                 src="/unity-logo.png"
                 width={135}
                 height={46}
-                alt="Placeholder"
-                className="mb-5 self-end"
+                alt="Unity Logo"
+                className="lg:mb-5 lg:self-end"
               />
               <Image
                 src="/godot-1.png"
                 width={135}
                 height={46}
-                alt="Placeholder"
+                alt="Godot Logo"
               />
             </div>
           </div>
         </div>
       </section>
-
-      <section>third component</section>
     </div>
   );
 }
