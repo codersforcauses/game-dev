@@ -161,14 +161,8 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="relative flex h-[280px] w-[400px] items-center justify-center rounded-xl bg-[#cfc2ff] shadow-xl">
-            <Image
-              src={mainPic.url}
-              width={80}
-              height={80}
-              alt={mainPic.alt}
-              className="opacity-60"
-            />
+          <div className="flex h-[280px] w-[400px] items-center justify-center rounded-xl bg-[#cfc2ff]">
+            <Image src={mainPic.url} width={80} height={80} alt={mainPic.alt} />
           </div>
         </div>
       </section>
