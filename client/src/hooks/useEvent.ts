@@ -14,13 +14,7 @@ type ApiEvent = {
   cover_image: string | null;
 };
 
-type UiEvent = {
-  name: string;
-  description: string;
-  publicationDate: string;
-  date: string;
-  startTime?: string | null;
-  location: string;
+type UiEvent = Omit<ApiEvent, "cover_image"> & {
   coverImage: string;
 };
 
@@ -37,12 +31,7 @@ function normalizeEventId(
 
 function transformApiEventToUiEvent(data: ApiEvent): UiEvent {
   return {
-    name: data.name,
-    description: data.description,
-    publicationDate: data.publicationDate,
-    date: data.date,
-    startTime: data.startTime,
-    location: data.location,
+    ...data,
     coverImage: data.cover_image ?? "/game_dev_club_logo.svg",
   };
 }
