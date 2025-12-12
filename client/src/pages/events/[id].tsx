@@ -76,7 +76,7 @@ export default function EventPage() {
             {event.description}
           </p>
         </div>
-        <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-lg bg-gray-700 md:w-[380px] lg:w-[500px]">
+        <div className="lg:w-128 relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-lg bg-gray-700 md:w-96">
           <Image
             src={event.coverImage}
             alt={`Cover image for ${event.name}`}
