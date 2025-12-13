@@ -3,19 +3,12 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/imageFrame";
-
-type Artwork = {
-  id: string;
-  name: string;
-  description: string;
-  sourceGame: string;
-  pathToMedia: string;
-  active: boolean;
-  createdAt: string;
-};
+import api from "@/lib/api";
+import { Art } from "@/types/art";
+import { PageResult } from "@/types/page-response";
 
 interface ArtworksPageProps {
-  artworks: Artwork[];
+  artworks: PageResult<Art>;
 }
 
 const PLACEHOLDER_ICON = (
@@ -35,16 +28,20 @@ const PLACEHOLDER_ICON = (
   </div>
 );
 
-function renderArtworkCard(artwork: Artwork) {
+function renderArtworkCard(artwork: Art) {
   return (
     <Link
       href={`/artwork/${artwork.id}`}
       key={artwork.id}
       data-layer="Frame 1120"
       className="Frame1120"
+      title={artwork.name}
     >
-      <Card imageSrc={artwork.pathToMedia || undefined} imageAlt={artwork.name}>
-        {!artwork.pathToMedia && PLACEHOLDER_ICON}
+      <Card
+        imageSrc={artwork.path_to_media || undefined}
+        imageAlt={artwork.name}
+      >
+        {!artwork.path_to_media && PLACEHOLDER_ICON}
       </Card>
     </Link>
   );
@@ -93,7 +90,7 @@ export default function ArtworksPage({ artworks }: ArtworksPageProps) {
 
       <div data-layer="Frame 1159" className="Frame1159 relative self-stretch">
         <div className="Frame1098 aligne flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-20 bg-slate-950 py-14 pl-28 pr-24">
-          {artworks.map((artwork) => renderArtworkCard(artwork))}
+          {artworks.results.map((artwork) => renderArtworkCard(artwork))}
         </div>
       </div>
       <div
@@ -106,23 +103,24 @@ export default function ArtworksPage({ artworks }: ArtworksPageProps) {
   );
 }
 
+// ...existing code...
+
 export const getServerSideProps: GetServerSideProps<
   ArtworksPageProps
 > = async () => {
-  // const res = await fetch(`https://your-backend.com/api/artwork/${id}`);
-  const artworks: Artwork[] = [];
-  for (let i = 0; i < 12; i++) {
-    const artwork: Artwork = {
-      id: i + "",
-      name: "title of art" + i,
-      description: "description of art",
-      sourceGame: "",
-      pathToMedia: "",
-      active: false,
-      createdAt: new Date().toISOString(),
+  try {
+    const res = await api.get<PageResult<Art>>("game-dev/arts");
+    return { props: { artworks: res.data } };
+  } catch {
+    return {
+      props: {
+        artworks: {
+          count: 0,
+          next: null as unknown as string,
+          previous: null as unknown as string,
+          results: [] as Art[],
+        },
+      },
     };
-    artworks.push(artwork);
   }
-
-  return { props: { artworks } };
 };

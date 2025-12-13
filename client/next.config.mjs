@@ -19,6 +19,16 @@ const config = {
     //     pollIntervalMs: 1000
     //   }
     // : undefined,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+        port: '',
+        pathname: '**'
+      }
+    ]
+  }
 };
 
 export default config;

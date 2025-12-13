@@ -16,6 +16,7 @@ gunicorn = "^23.0.0"
 python-dotenv = "^1.0.1"
 django-extensions = "^3.2.3"
 pillow = "^11.3.0"
+django-filter = "^25.2"
 
 
 [tool.poetry.group.dev.dependencies]
