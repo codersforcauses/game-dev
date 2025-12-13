@@ -1,6 +1,9 @@
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+import Card from "@/components/ui/imageFrame";
+
 type Artwork = {
   id: string;
   name: string;
@@ -36,15 +39,13 @@ function renderArtworkCard(artwork: Artwork) {
   return (
     <Link
       href={`/artwork/${artwork.id}`}
+      key={artwork.id}
       data-layer="Frame 1120"
       className="Frame1120"
     >
-      <div
-        data-layer="Placeholder image"
-        className="PlaceholderImage bg-light-2 flex h-[20rem] w-[25rem] flex-1 items-center justify-center self-stretch rounded-[10px]"
-      >
-        {PLACEHOLDER_ICON}
-      </div>
+      <Card imageSrc={artwork.pathToMedia || undefined} imageAlt={artwork.name}>
+        {!artwork.pathToMedia && PLACEHOLDER_ICON}
+      </Card>
     </Link>
   );
 }
@@ -80,17 +81,13 @@ export default function ArtworksPage({ artworks }: ArtworksPageProps) {
           data-layer="Auto Layout Horizontal"
           className="AutoLayoutHorizontal items-start justify-start gap-6"
         >
-          <div
-            data-layer="Button/Style2"
-            className="ButtonStyle2 size- bg-neutral-1 outline-neutral-1 flex items-center justify-center gap-2.5 overflow-hidden rounded-[10px] px-5 py-3 outline outline-1 outline-offset-[-1px]"
+          <Button
+            variant="outline"
+            size="lg"
+            className="rounded-[10px] font-['Jersey_10'] text-xl font-normal leading-6 tracking-wide"
           >
-            <div
-              data-layer="Filled Button"
-              className="FilledButton text-light-1 justify-start font-['Jersey_10'] text-xl font-normal leading-6 tracking-wide"
-            >
-              More about us →
-            </div>
-          </div>
+            More about us →
+          </Button>
         </div>
       </div>
 

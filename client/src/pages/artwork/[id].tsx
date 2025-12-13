@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
-import Link from "next/link";
+
+import ButtonGallery from "@/components/ui/goBack";
 
 type Contributor = {
   id: string;
@@ -37,13 +38,13 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
       </div>
       <div
         data-layer="Frame 1100"
-        className="Frame1100 inline-flex flex-col items-start justify-center gap-10 bg-slate-950 py-3 pl-12"
+        className="Frame1100 mb-4 inline-flex flex-col items-start justify-center gap-10 bg-slate-950 py-3 pl-12"
       >
         <div
           data-layer="< Gallery"
           className="Gallery text-light-1 h-10 justify-start font-['DM_Sans'] text-3xl font-bold leading-10 tracking-tight"
         >
-          <Link href="/artwork">&lt; Gallery</Link>
+          <ButtonGallery />
         </div>
       </div>
       <div
