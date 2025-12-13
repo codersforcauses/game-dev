@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 import { Fira_Code, Inter as FontSans, Jersey_10 } from "next/font/google";
 
+import Footer from "@/components/main/Footer";
 import Navbar from "@/components/main/Navbar";
 
 const fontSans = FontSans({
@@ -36,6 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
       >
         <Navbar />
         <Component {...pageProps} />
+        <Footer />
       </main>
     </QueryClientProvider>
   );
