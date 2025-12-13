@@ -24,7 +24,7 @@ export const generateMockArtwork = (id: string): Art => {
     description:
       "Lorem ipsum dolor sit amet. Non numquam dicta nam autem dicta 33 error molestias et repellat consequatur eum iste expedita est dolorem libero et quas provident!",
     //source_game: "Mock Game",
-    path_to_media: "/placeholder1293x405.svg",
+    path_to_media: "",
     active: true,
     //created_at: new Date().toISOString(),
     contributors: [
