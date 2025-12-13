@@ -13,7 +13,7 @@ class Member(models.Model):
 
 
 # Sample Events Class made
-class Events(models.Model):
+class Event(models.Model):
     name = models.CharField(max_length=200, null=False)
     description = models.CharField(max_length=4500)
 
@@ -21,7 +21,7 @@ class Events(models.Model):
         return str(self.name)
 
 
-class Games(models.Model):
+class Game(models.Model):
 
     # Enum choices
     class CompletionStatus(models.IntegerChoices):
@@ -44,7 +44,7 @@ class Games(models.Model):
     )         # If isItch is true then input only the Game ID
     isItch = models.BooleanField(default=True, null=False)
     pathToThumbnail = models.ImageField(upload_to="games/", null=True)
-    event = models.ForeignKey(Events, on_delete=models.SET_NULL, null=True, blank=True)
+    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.name)

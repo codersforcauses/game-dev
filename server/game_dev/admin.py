@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Member, Games, Events
+from .models import Member, Game, Event
 
 
 class MemberAdmin(admin.ModelAdmin):
@@ -16,5 +16,5 @@ class GamesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Member, MemberAdmin)
-admin.site.register(Events, EventsAdmin)
-admin.site.register(Games, GamesAdmin)
+admin.site.register(Event, EventsAdmin)
+admin.site.register(Game, GamesAdmin)

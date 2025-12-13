@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Games
+from .models import Game
 
 
 class GamesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Games
+        model = Game
         fields = ('id', 'name', 'description', 'completion', 'active', 'hostURL', 'isItch', 'pathToThumbnail', 'event')
