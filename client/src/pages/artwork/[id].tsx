@@ -3,6 +3,7 @@ import Image from "next/image";
 import { JSX } from "react";
 
 import ButtonGallery from "@/components/ui/goBack";
+import { generateMockArtwork } from "@/hooks/useArtworkData";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
 
@@ -201,7 +202,13 @@ export const getServerSideProps: GetServerSideProps<ArtworkPageProps> = async (
   context,
 ) => {
   const { id } = context.params as { id: string };
-  const artResponse = await api.get<Art>(`game-dev/arts/${id}`);
-  const artwork = artResponse.data;
-  return { props: { artwork } };
+  try {
+    const artResponse = await api.get<Art>(`game-dev/arts/${id}`);
+    const artwork = artResponse.data;
+    return { props: { artwork } };
+  } catch {
+    // Return mock data when API fails or DB is empty
+    const mockArtwork = generateMockArtwork(id);
+    return { props: { artwork: mockArtwork } };
+  }
 };
