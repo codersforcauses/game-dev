@@ -21,7 +21,7 @@ from game_dev import views
 from rest_framework import routers
 
 Games_API_Router = routers.DefaultRouter()
-Games_API_Router.register(r'tasks', views.GamesView, 'task')
+Games_API_Router.register(r'games', views.GamesView, 'game')
 
 
 urlpatterns = [
