@@ -23,7 +23,7 @@ function FeatureBox({ title, text }: contents): React.JSX.Element {
             clipPath: "inherit",
             boxSizing: "inherit",
           }}
-          className="mb-[0.15rem] ml-[0.15rem] bg-[hsl(var(--dark-alt))] p-10"
+          className="mb-[0.15rem] ml-[0.15rem] bg-dark_alt p-10"
         >
           <h3 className="mb-4 font-jersey10 text-4xl">{title}</h3>
           <p className="font-sans">{text}</p>
