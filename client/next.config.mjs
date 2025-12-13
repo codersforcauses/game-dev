@@ -19,6 +19,10 @@ const config = {
         protocol: 'https',
         hostname: 'upload.wikimedia.org',
       },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+      },
     ],
   },
   // Turns on file change polling for the Windows Dev Container

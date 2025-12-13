@@ -19,6 +19,9 @@ from django.contrib import admin
 from django.urls import path, include
 from game_dev import views
 from rest_framework import routers
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 Games_API_Router = routers.DefaultRouter()
 Games_API_Router.register(r'games', views.GamesView, 'game')
@@ -29,3 +32,6 @@ urlpatterns = [
     path("api/healthcheck/", include(("api.healthcheck.urls"))),
     path("gamesAPI/", include(Games_API_Router.urls))
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
