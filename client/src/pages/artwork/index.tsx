@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/imageFrame";
+import { generateMockArtworks } from "@/hooks/useArtworkData";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
 import { PageResult } from "@/types/page-response";
@@ -112,13 +113,24 @@ export const getServerSideProps: GetServerSideProps<
     const res = await api.get<PageResult<Art>>("game-dev/arts");
     return { props: { artworks: res.data } };
   } catch {
+    // return {
+    //   props: {
+    //     artworks: {
+    //       count: 0,
+    //       next: null as unknown as string,
+    //       previous: null as unknown as string,
+    //       results: [] as Art[],
+    //     },
+    //   },
+    // }; ==> use when successfully populate db
+    const mockArtworks = generateMockArtworks(12);
     return {
       props: {
         artworks: {
-          count: 0,
-          next: null as unknown as string,
-          previous: null as unknown as string,
-          results: [] as Art[],
+          count: mockArtworks.length,
+          next: "",
+          previous: "",
+          results: mockArtworks,
         },
       },
     };
