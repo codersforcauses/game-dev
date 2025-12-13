@@ -6,6 +6,15 @@ from .models import Event
 from .serializers import EventSerializer
 
 
+class EventListAPIView(generics.ListAPIView):
+    """
+    GET /api/events/
+    Returns a list of all events
+    """
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+
 class EventDetailAPIView(generics.RetrieveAPIView):
     """
     GET /api/events/<id>/
