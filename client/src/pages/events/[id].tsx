@@ -6,7 +6,7 @@ import { useEvent } from "@/hooks/useEvent";
 function formatDateTime(dateString: string): string {
   try {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat("en-US", {
+    return new Intl.DateTimeFormat("en-AU", {
       year: "numeric",
       month: "long",
       day: "numeric",
