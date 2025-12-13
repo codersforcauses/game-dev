@@ -17,8 +17,15 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from game_dev import views
+from rest_framework import routers
+
+Games_API_Router = routers.DefaultRouter()
+Games_API_Router.register(r'tasks', views.GamesView, 'task')
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/healthcheck/", include(("api.healthcheck.urls"))),
+    path("gamesAPI/", include(Games_API_Router.urls))
 ]
