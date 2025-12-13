@@ -1,8 +1,9 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { JSX } from "react";
 
+import ButtonGallery from "@/components/ui/goBack";
+import { generateMockArtwork } from "@/hooks/useArtworkData";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
 
@@ -102,13 +103,13 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
       </div>
       <div
         data-layer="Frame 1100"
-        className="Frame1100 inline-flex flex-col items-start justify-center gap-10 bg-slate-950 p-3 md:pl-12"
+        className="Frame1100 mb-4 inline-flex flex-col items-start justify-center gap-10 bg-slate-950 p-3 md:pl-12"
       >
         <div
           data-layer="< Gallery"
           className="Gallery text-light-1 h-10 justify-start font-['DM_Sans'] text-3xl font-bold leading-10 tracking-tight"
         >
-          <Link href="/artwork">&lt; Gallery</Link>
+          <ButtonGallery />
         </div>
       </div>
       <div
@@ -116,13 +117,36 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
         className="Frame1099 bg-neutral-1 justify-start md:flex"
       >
         <div className="relative flex content-center justify-center">
-          <Image
-            src={artwork.path_to_media}
-            alt="Artwork image"
-            width={500}
-            height={500}
-            className="relative block sm:h-auto sm:max-w-full md:max-h-full"
-          />
+          {artwork.path_to_media ? (
+            <Image
+              src={artwork.path_to_media}
+              alt="Artwork image"
+              width={500}
+              height={500}
+              className="relative block sm:h-auto sm:max-w-full md:max-h-full"
+            />
+          ) : (
+            // in case fail to load image or no image in db yet
+            <div
+              data-layer="Placeholder image"
+              className="PlaceholderImage bg-light-2 flex h-[500px] w-[500px] items-center justify-center rounded-[10px]"
+            >
+              <div data-svg-wrapper data-layer="Vector" className="Vector">
+                <svg
+                  width="96"
+                  height="96"
+                  viewBox="0 0 96 96"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M96 85.3333V10.6667C96 4.8 91.2 0 85.3333 0H10.6667C4.8 0 0 4.8 0 10.6667V85.3333C0 91.2 4.8 96 10.6667 96H85.3333C91.2 96 96 91.2 96 85.3333ZM29.3333 56L42.6667 72.0533L61.3333 48L85.3333 80H10.6667L29.3333 56Z"
+                    fill="var(--neutral-1, #1B1F4C)"
+                  />
+                </svg>
+              </div>
+            </div>
+          )}
         </div>
         <div
           data-layer="Frame 1162"
@@ -201,7 +225,13 @@ export const getServerSideProps: GetServerSideProps<ArtworkPageProps> = async (
   context,
 ) => {
   const { id } = context.params as { id: string };
-  const artResponse = await api.get<Art>(`game-dev/arts/${id}`);
-  const artwork = artResponse.data;
-  return { props: { artwork } };
+  try {
+    const artResponse = await api.get<Art>(`game-dev/arts/${id}`);
+    const artwork = artResponse.data;
+    return { props: { artwork } };
+  } catch {
+    // Return mock data when API fails or DB is empty
+    const mockArtwork = generateMockArtwork(id);
+    return { props: { artwork: mockArtwork } };
+  }
 };

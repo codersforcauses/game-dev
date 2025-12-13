@@ -1,13 +1,15 @@
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+import Card from "@/components/ui/imageFrame";
+import { generateMockArtworks } from "@/hooks/useArtworkData";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
 import { PageResult } from "@/types/page-response";
 
 interface ArtworksPageProps {
-  pages: PageResult<Art>;
+  artworks: PageResult<Art>;
 }
 
 const PLACEHOLDER_ICON = (
@@ -31,29 +33,22 @@ function renderArtworkCard(artwork: Art) {
   return (
     <Link
       href={`/artwork/${artwork.id}`}
+      key={artwork.id}
       data-layer="Frame 1120"
       className="Frame1120"
       title={artwork.name}
     >
-      <div
-        data-layer="Placeholder image"
-        className="PlaceholderImage border-light-2 flex h-[20rem] w-[25rem] flex-1 items-center justify-center self-stretch rounded-[10px] border-2 border-solid p-1"
+      <Card
+        imageSrc={artwork.path_to_media || undefined}
+        imageAlt={artwork.name}
       >
-        <div className="relative h-full w-full">
-          <Image
-            src={artwork.path_to_media}
-            alt="Artwork image"
-            fill
-            objectFit="contain"
-            className="relative"
-          />
-        </div>
-      </div>
+        {!artwork.path_to_media && PLACEHOLDER_ICON}
+      </Card>
     </Link>
   );
 }
 
-export default function ArtworksPage({ pages }: ArtworksPageProps) {
+export default function ArtworksPage({ artworks }: ArtworksPageProps) {
   return (
     <div data-layer="Art Page General" className="ArtPageGeneral">
       <div
@@ -84,23 +79,19 @@ export default function ArtworksPage({ pages }: ArtworksPageProps) {
           data-layer="Auto Layout Horizontal"
           className="AutoLayoutHorizontal items-start justify-start gap-6"
         >
-          <div
-            data-layer="Button/Style2"
-            className="ButtonStyle2 size- bg-neutral-1 outline-neutral-1 flex items-center justify-center gap-2.5 overflow-hidden rounded-[10px] px-5 py-3 outline outline-1 outline-offset-[-1px]"
+          <Button
+            variant="outline"
+            size="lg"
+            className="rounded-[10px] font-['Jersey_10'] text-xl font-normal leading-6 tracking-wide"
           >
-            <div
-              data-layer="Filled Button"
-              className="FilledButton text-light-1 justify-start font-['Jersey_10'] text-xl font-normal leading-6 tracking-wide"
-            >
-              More about us →
-            </div>
-          </div>
+            More about us →
+          </Button>
         </div>
       </div>
 
       <div data-layer="Frame 1159" className="Frame1159 relative self-stretch">
         <div className="Frame1098 aligne flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-20 bg-slate-950 py-14 pl-28 pr-24">
-          {pages.results.map((artwork) => renderArtworkCard(artwork))}
+          {artworks.results.map((artwork) => renderArtworkCard(artwork))}
         </div>
       </div>
       <div
@@ -113,10 +104,35 @@ export default function ArtworksPage({ pages }: ArtworksPageProps) {
   );
 }
 
+// ...existing code...
+
 export const getServerSideProps: GetServerSideProps<
   ArtworksPageProps
 > = async () => {
-  const res = await api.get<PageResult<Art>>("game-dev/arts");
-  const pages = res.data;
-  return { props: { pages } };
+  try {
+    const res = await api.get<PageResult<Art>>("game-dev/arts");
+    return { props: { artworks: res.data } };
+  } catch {
+    // return {
+    //   props: {
+    //     artworks: {
+    //       count: 0,
+    //       next: null as unknown as string,
+    //       previous: null as unknown as string,
+    //       results: [] as Art[],
+    //     },
+    //   },
+    // }; ==> use when successfully populate db
+    const mockArtworks = generateMockArtworks(12);
+    return {
+      props: {
+        artworks: {
+          count: mockArtworks.length,
+          next: "",
+          previous: "",
+          results: mockArtworks,
+        },
+      },
+    };
+  }
 };

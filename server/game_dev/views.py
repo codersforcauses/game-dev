@@ -8,11 +8,13 @@ class ArtContributorViewSet(viewsets.ModelViewSet):
     queryset = ArtContributor.objects.all()
     serializer_class = ArtContributorSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields=['art']
+    filterset_fields = ['art']
+
 
 class ArtViewSet(viewsets.ModelViewSet):
     queryset = Art.objects.all()
     serializer_class = ArtSerializer
+
 
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all()
