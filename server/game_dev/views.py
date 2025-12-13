@@ -10,5 +10,8 @@ class EventDetailAPIView(generics.RetrieveAPIView):
     """
     GET /api/events/<id>/
     """
-    queryset = Event.objects.all()
     serializer_class = EventSerializer
+    lookup_url_kwarg = "id"
+
+    def get_queryset(self):
+        return Event.objects.filter(id=self.kwargs["id"])
