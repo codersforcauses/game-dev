@@ -30,6 +30,7 @@ Games_API_Router.register(r'games', views.GamesView, 'game')
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/healthcheck/", include(("api.healthcheck.urls"))),
+    path("gamesAPI/itch-embed/<str:embed_id>/", views.itch_embed_proxy, name="itch-embed-proxy"),
     path("gamesAPI/", include(Games_API_Router.urls))
 ]
 

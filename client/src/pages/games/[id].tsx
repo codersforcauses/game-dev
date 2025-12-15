@@ -19,14 +19,47 @@ export default function IndividualGamePage() {
     event: string | null;
   };
   const [game, setGame] = useState<Game | null>(null);
+  const [hostSite, setHostSite] = useState<string>("");
 
+  // Fetch itch.io host URL through backend proxy
+  async function fetchItchGameUrlProxy(
+    embedID: string,
+  ): Promise<string | null> {
+    try {
+      const res = await fetch(
+        `http://localhost:8000/gamesAPI/itch-embed/${embedID}/`,
+      );
+      const data = await res.json();
+      const html = data.html;
+      const match = html.match(
+        /href="(https:\/\/[a-zA-Z0-9\-]+\.itch\.io\/[a-zA-Z0-9\-]+)"/,
+      );
+      if (match) return match[1];
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  // Fetch game data from backend
   useEffect(() => {
     if (!id) return;
     fetch(`http://127.0.0.1:8000/gamesAPI/games/${id}/`)
       .then((res) => res.json())
       .then(setGame);
   }, [id]);
-  // Example data variables (replace with backend data in the future)
+
+  // Set host site URL
+  useEffect(() => {
+    if (!game) return;
+    if (game.isItch && game.hostURL) {
+      fetchItchGameUrlProxy(game.hostURL).then((url) => {
+        setHostSite(url || "");
+      });
+    } else if (game) {
+      setHostSite(game.hostURL);
+    }
+  }, [game]);
 
   if (!game) return <div>Loading...</div>;
   const gameTitle = game.name;
@@ -40,9 +73,6 @@ export default function IndividualGamePage() {
     4: "Completed",
   };
   const devStage = completionLabels[game.completion] || `Stage Unknown`;
-  const hostSite = game.isItch
-    ? `https://itch.io/${game.hostURL}`
-    : game.hostURL;
 
   // const event = game.event;
   // TODO: Map contributors and artImages if available in API
@@ -63,8 +93,6 @@ export default function IndividualGamePage() {
   //   "Overall, Minecraft's combination of creativity, exploration, and community-driven content has solidified its place as a beloved and enduring title in the gaming industry.",
   // ];
   const contributors = ["Developer 1", "Developer 2", "Artist 1"];
-  // const devStage = "Beta";
-  // const hostSite = "itch.io/xxx";
   const event = "Game Jam November 2025";
   const artImages = [
     {
@@ -115,8 +143,22 @@ export default function IndividualGamePage() {
                   </tr>
                   <tr className="border-b-2 border-gray-300">
                     <td className="py-2 pr-2">Host Site</td>
-                    <td className="py-2">{hostSite}</td>
+                    <td className="py-2">
+                      {hostSite ? (
+                        <a
+                          href={hostSite}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="cursor-pointer text-[#7ecfff] underline hover:text-blue-400"
+                        >
+                          {hostSite.replace(/^https?:\/\//, "")}
+                        </a>
+                      ) : (
+                        "N/A"
+                      )}
+                    </td>
                   </tr>
+
                   <tr>
                     <td className="py-2 pr-2">Event</td>
                     <td className="py-2">{event}</td>
@@ -137,7 +179,7 @@ export default function IndividualGamePage() {
           </div>
         </section>
         <section className="mt-8 flex flex-col items-center">
-          <ItchEmbed embedID="3" name="X-Moon by leafy" />
+          {game.isItch && <ItchEmbed embedID={game.hostURL} name={gameTitle} />}
           <h2 className="mb-4 font-jersey10 text-3xl tracking-wide text-[#7ecfff]">
             ARTWORK
           </h2>
