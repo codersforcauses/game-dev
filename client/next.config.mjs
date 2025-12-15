@@ -12,7 +12,6 @@ const config = {
     root: import.meta.dirname,
   },
   outputFileTracingRoot: import.meta.dirname,
-  // Include external image domains to display images for example game covers and arts
   images: {
     domains: ["localhost"],
   },
