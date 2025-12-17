@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { SocialIcon } from "react-social-icons";
 
@@ -10,7 +9,7 @@ import { cssVarAsHSL } from "@/lib/utils";
 export type SocialMedia = {
   url: string;
   socialMediaName: string;
-  username?: string;
+  altText?: string;
   // modify this type to support optional modification to the
   // social media icons, like a one-size-fits-all styling property
   // specifically for react-icons
@@ -24,7 +23,7 @@ export type SocialMedia = {
 export default function SocialIconButton({
   url,
   socialMediaName,
-  // username, // potentially so we can have alt text like username@socialmedia.com
+  altText,
 }: SocialMedia) {
   return (
     <motion.div
@@ -51,7 +50,12 @@ export default function SocialIconButton({
           damping: 17,
         }}
       >
-        <SocialIcon url={url} className="h-5 w-5" />
+        <SocialIcon
+          network={socialMediaName}
+          url={url}
+          label={altText}
+          className="h-5 w-5"
+        />
       </motion.span>
     </motion.div>
   );

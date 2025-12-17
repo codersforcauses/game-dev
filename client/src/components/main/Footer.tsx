@@ -1,19 +1,71 @@
 "use client";
 import { motion } from "framer-motion";
-import { Code2, Gamepad2, Heart, Sparkles, Zap } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  Gamepad2,
+  Handshake,
+  Heart,
+  Home,
+  Link as LucideLink,
+  Map,
+  Palette,
+  Pencil,
+  Sparkles,
+  Upload,
+  Users,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { useRef } from "react";
 
 import LinksList from "@/components/ui/LinksList";
 import NetworkCanvas from "@/components/ui/NetworkCanvas";
 import SocialIconButton from "@/components/ui/SocialIconButton";
-import {
-  mainLinks,
-  quickLinks,
-  type SocialLink,
-  socialLinks,
-} from "@/static-data/footer-data";
+import { social_media } from "@/gamedev-metadata.json";
+
+export interface ListLink {
+  label: string;
+  href: string;
+  icon: ReactNode;
+}
+
+const quickLinks: ListLink[] = [
+  {
+    label: "Join the Club",
+    href: "#",
+    icon: <Handshake className="h-4 w-4" />,
+  },
+  {
+    label: "Submit Your Game",
+    href: "#",
+    icon: <Upload className="h-4 w-4" />,
+  },
+  { label: "Upcoming Jams", href: "#", icon: <Clock className="h-4 w-4" /> },
+  { label: "Resources", href: "#", icon: <Pencil className="h-4 w-4" /> },
+];
+
+// Main navigation links (ideally should be shared with Navbar)
+export const mainLinks: ListLink[] = [
+  { label: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
+  { label: "About Us", href: "/about", icon: <Users className="h-4 w-4" /> },
+  {
+    label: "Events",
+    href: "/events",
+    icon: <Calendar className="h-4 w-4" />,
+  },
+  {
+    label: "Games Showcase",
+    href: "/games",
+    icon: <Gamepad2 className="h-4 w-4" />,
+  },
+  {
+    label: "Artwork",
+    href: "/artwork",
+    icon: <Palette className="h-4 w-4" />,
+  },
+];
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement | null>(null);
@@ -73,24 +125,25 @@ export default function Footer() {
                   development club
                 </p>
                 <div className="flex gap-3 pt-2">
-                  {socialLinks.map((social: SocialLink, index: number) => (
-                    <SocialIconButton
-                      key={index}
-                      url={social.url}
-                      socialMediaName={social.label}
-                    />
-                  ))}
+                  {Object.entries(social_media).map(
+                    ([platform, data], index) => (
+                      <SocialIconButton
+                        key={index}
+                        url={data.url}
+                        socialMediaName={platform}
+                      />
+                    ),
+                  )}
                 </div>
               </div>
               <LinksList
                 title="Quick Links"
-                titleIcon={<Zap className="h-4 w-4 text-accent" />}
+                titleIcon={<LucideLink className="h-4 w-4 text-accent" />}
                 links={quickLinks}
-                useChevron
               />
               <LinksList
                 title="Explore"
-                titleIcon={<Code2 className="h-4 w-4 text-purple-400" />}
+                titleIcon={<Map className="h-4 w-4 text-purple-400" />}
                 links={mainLinks}
               />
             </div>
@@ -119,14 +172,14 @@ export default function Footer() {
                 </span>
               </Link>
               <div className="flex items-center gap-2 font-jersey10 text-xl text-gray-400">
-                <span>Made with</span>
+                Made with
                 <motion.div
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 >
                   <Heart className="h-4 w-4 fill-current text-red-500" />
                 </motion.div>
-                <span>in Perth, UWA</span>
+                in Perth, UWA
               </div>
             </div>
           </div>
