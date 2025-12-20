@@ -110,7 +110,9 @@ export const getServerSideProps: GetServerSideProps<
   try {
     const res = await api.get<PageResult<Art>>("arts");
     return { props: { artworks: res.data } };
-  } catch (err: { message: string }) {
-    return { props: { error: err.message || "Failed to load artworks." } };
+  } catch (err: unknown) {
+    return {
+      props: { error: (err as Error).message || "Failed to load artworks." },
+    };
   }
 };

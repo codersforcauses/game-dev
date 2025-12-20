@@ -211,7 +211,9 @@ export const getServerSideProps: GetServerSideProps<ArtworkPageProps> = async (
     const artResponse = await api.get<Art>(`arts/${id}`);
     const artwork = artResponse.data;
     return { props: { artwork } };
-  } catch (err: { message: string }) {
-    return { props: { error: err.message || "Failed to load artwork." } };
+  } catch (err: unknown) {
+    return {
+      props: { error: (err as Error).message || "Failed to load artwork." },
+    };
   }
 };
