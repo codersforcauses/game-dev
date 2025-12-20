@@ -1,3 +1,5 @@
+"use client";
+
 import {
   motion,
   MotionValue,
@@ -8,7 +10,8 @@ import {
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
-import { cssVarAsHSL } from "@/lib/utils";
+import useInView from "@/hooks/useInView";
+import { hslVarWithOpacity } from "@/lib/utils";
 
 // Type definitions for particle system
 type ParticleConfig = {
@@ -74,7 +77,7 @@ function SimpleParticle({
   smoothX,
   smoothY,
   isHovering,
-  color = cssVarAsHSL("--light-1", 0.6),
+  color = hslVarWithOpacity("--light-1", 0.6),
 }: ParticleConfig & {
   smoothX: MotionValue<number>;
   smoothY: MotionValue<number>;
@@ -204,13 +207,14 @@ function NetworkFrame({
           .sort((a, b) => a.dist - b.dist)
           .slice(0, 2);
 
+        // we need to fix debouncing for color setting...
         dists.forEach(({ index, dist }) => {
           const pB = pts[index];
           const op = (1 - dist / frameconf.network_connection_distance) * 0.25; // the opacity base of the connections
           const grad = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
-          grad.addColorStop(0, cssVarAsHSL("--logo-blue-1", op));
-          grad.addColorStop(0.5, cssVarAsHSL("--light-2", op * 1.5));
-          grad.addColorStop(1, cssVarAsHSL("--light-alt", op));
+          grad.addColorStop(0, hslVarWithOpacity("--logo-blue-1", op));
+          grad.addColorStop(0.5, hslVarWithOpacity("--light-2", op * 1.5));
+          grad.addColorStop(1, hslVarWithOpacity("--light-alt", op));
           ctx.strokeStyle = grad;
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -229,8 +233,8 @@ function NetworkFrame({
           if (dist < frameconf.mouse_connection_distance) {
             const op = (1 - dist / frameconf.mouse_connection_distance) * 0.4; // the base opacity for connection lines with the mouse
             const grad = ctx.createLinearGradient(p.x, p.y, mx, my);
-            grad.addColorStop(0, cssVarAsHSL("--light-alt", op));
-            grad.addColorStop(1, cssVarAsHSL("--light-1", op * 0.5));
+            grad.addColorStop(0, hslVarWithOpacity("--light-alt", op));
+            grad.addColorStop(1, hslVarWithOpacity("--light-1", op * 0.5));
             ctx.strokeStyle = grad;
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -284,7 +288,8 @@ export default function NetworkCanvas({
     ...defaultFrameConfig,
     ...frameConfig,
   };
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerRef, inView] = useInView<HTMLDivElement>();
+  // const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
@@ -300,7 +305,7 @@ export default function NetworkCanvas({
     resizeObserver.observe(containerRef.current);
 
     return () => resizeObserver.disconnect();
-  }, []);
+  }, [containerRef]);
 
   const [isHovering, setIsHovering] = useState(false);
   const [isClient, setIsClient] = useState(false); // Prevent SSR issues with canvas/animations
@@ -323,9 +328,9 @@ export default function NetworkCanvas({
     setIsClient(true);
     const particlecolours = [
       // could make this configurable, but probably doesn't matter
-      cssVarAsHSL("--light-1", 0.3),
-      cssVarAsHSL("--light-alt", 0.4),
-      cssVarAsHSL("--light-alt-2", 0.4),
+      hslVarWithOpacity("--light-1", 0.3),
+      hslVarWithOpacity("--light-alt", 0.4),
+      hslVarWithOpacity("--light-alt-2", 0.4),
     ];
     setParticleConfigs(
       Array.from({ length: conf.count }, () => ({
@@ -356,17 +361,16 @@ export default function NetworkCanvas({
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* <div className="absolute inset-0 bg-secondary-foreground" /> */}
-      <MouseGradient
-        smoothX={smoothX}
-        smoothY={smoothY}
-        isHovering={isHovering}
-        mouseGradStart={mouseGradientStart || "light-alt"}
-        mouseGradEnd={mouseGradientEnd || "light-2"}
-      />
       {/* Only render when we have valid dimensions */}
-      {isClient && dimensions.width > 0 && dimensions.height > 0 && (
+      {isClient && inView && dimensions.width > 0 && dimensions.height > 0 && (
         <>
+          <MouseGradient
+            smoothX={smoothX}
+            smoothY={smoothY}
+            isHovering={isHovering}
+            mouseGradStart={mouseGradientStart || "light-alt"}
+            mouseGradEnd={mouseGradientEnd || "light-2"}
+          />
           <NetworkFrame
             width={dimensions.width}
             height={dimensions.height}

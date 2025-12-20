@@ -42,7 +42,7 @@ export default function LinksList({
           <li key={link.label}>
             <Link
               href={link.href}
-              className="group flex items-center gap-2 font-jersey10 text-xl text-gray-400 decoration-2 underline-offset-4 transition-all duration-300 hover:text-purple-400 hover:underline"
+              className="hover:text-light-alt group flex items-center gap-2 font-jersey10 text-xl text-gray-400 decoration-2 underline-offset-4 transition-all duration-300 hover:underline"
               onMouseEnter={() => setIsHovered(link.label)}
               onMouseLeave={() => setIsHovered(null)}
             >
