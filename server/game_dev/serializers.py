@@ -1,6 +1,19 @@
 from rest_framework import serializers
-from .models import Art, ArtContributor, Member
+from .models import Event, Art, ArtContributor, Member
 
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = [
+            "id",
+            "name",
+            "date",
+            "description",
+            "publicationDate",
+            "cover_image",
+            "location",
+        ]
 
 class ArtContributorSerializer(serializers.ModelSerializer):
     member_name = serializers.CharField(source='member.name', read_only=True)
