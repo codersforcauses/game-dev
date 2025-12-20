@@ -103,12 +103,6 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
       className="IndividualGamePageAlt9"
     >
       <div
-        data-layer="Navbar"
-        className="Navbar self-stretch rounded-[5px] border-b-[5px] bg-slate-950 px-20 py-7"
-      >
-        TODO add Header
-      </div>
-      <div
         data-layer="Frame 1100"
         className="Frame1100 mb-4 inline-flex flex-col items-start justify-center gap-10 bg-slate-950 p-3 md:pl-12"
       >
@@ -214,7 +208,7 @@ export const getServerSideProps: GetServerSideProps<ArtworkPageProps> = async (
 ) => {
   const { id } = context.params as { id: string };
   try {
-    const artResponse = await api.get<Art>(`game-dev/arts/${id}`);
+    const artResponse = await api.get<Art>(`arts/${id}`);
     const artwork = artResponse.data;
     return { props: { artwork } };
   } catch (err: { message: string }) {

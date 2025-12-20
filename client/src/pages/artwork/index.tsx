@@ -58,12 +58,6 @@ export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
   return (
     <div data-layer="Art Page General" className="ArtPageGeneral">
       <div
-        data-layer="Navbar"
-        className="Navbar self-stretch rounded-[5px] border-b-[5px] bg-slate-950 px-20 py-7"
-      >
-        TODO add Header
-      </div>
-      <div
         data-layer="Frame 1158"
         className="Frame1158 bg-light-2 relative flex flex-col items-center gap-2 py-40"
       >
@@ -114,7 +108,7 @@ export const getServerSideProps: GetServerSideProps<
   ArtworksPageProps
 > = async () => {
   try {
-    const res = await api.get<PageResult<Art>>("game-dev/arts");
+    const res = await api.get<PageResult<Art>>("arts");
     return { props: { artworks: res.data } };
   } catch (err: { message: string }) {
     return { props: { error: err.message || "Failed to load artworks." } };
