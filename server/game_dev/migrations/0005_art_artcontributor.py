@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("game_dev", "0001_initial"),
+        ("game_dev", "0004_alter_event_date"),
     ]
 
     operations = [
