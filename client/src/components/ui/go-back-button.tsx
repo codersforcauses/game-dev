@@ -1,8 +1,12 @@
 import Link from "next/link";
 
-const ButtonGallery = () => {
+interface GoBackButtonProps {
+  url: string;
+  label: string;
+}
+const GoBackButton = ({ url, label }: GoBackButtonProps) => {
   return (
-    <Link href="/artwork" aria-label="Go back to gallery">
+    <Link href={url} aria-label="Go back to gallery">
       <button
         className="bg-neutral-1 text-light-3 group relative mb-10 h-14 w-48 rounded-2xl text-center text-xl font-semibold"
         type="button"
@@ -25,10 +29,10 @@ const ButtonGallery = () => {
             />
           </svg>
         </div>
-        <p className="translate-x-2">Gallery</p>
+        <p className="translate-x-2">{label}</p>
       </button>
     </Link>
   );
 };
 
-export default ButtonGallery;
+export default GoBackButton;

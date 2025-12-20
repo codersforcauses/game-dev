@@ -2,8 +2,8 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import Card from "@/components/ui/imageFrame";
-import { generateMockArtworks } from "@/hooks/useArtworkData";
+import ImageCard from "@/components/ui/image-card";
+import { generateMockArtworks } from "@/hooks/use-artwork-data";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
 import { PageResult } from "@/types/page-response";
@@ -38,12 +38,12 @@ function renderArtworkCard(artwork: Art) {
       className="Frame1120"
       title={artwork.name}
     >
-      <Card
+      <ImageCard
         imageSrc={artwork.path_to_media || undefined}
         imageAlt={artwork.name}
       >
         {!artwork.path_to_media && PLACEHOLDER_ICON}
-      </Card>
+      </ImageCard>
     </Link>
   );
 }
@@ -113,16 +113,6 @@ export const getServerSideProps: GetServerSideProps<
     const res = await api.get<PageResult<Art>>("game-dev/arts");
     return { props: { artworks: res.data } };
   } catch {
-    // return {
-    //   props: {
-    //     artworks: {
-    //       count: 0,
-    //       next: null as unknown as string,
-    //       previous: null as unknown as string,
-    //       results: [] as Art[],
-    //     },
-    //   },
-    // }; ==> use when successfully populate db
     const mockArtworks = generateMockArtworks(12);
     return {
       props: {
