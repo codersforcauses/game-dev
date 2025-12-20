@@ -15,6 +15,7 @@ class EventSerializer(serializers.ModelSerializer):
             "location",
         ]
 
+
 class ArtContributorSerializer(serializers.ModelSerializer):
     member_name = serializers.CharField(source='member.name', read_only=True)
 

@@ -18,7 +18,6 @@ class EventDetailAPIView(generics.RetrieveAPIView):
         return Event.objects.filter(id=self.kwargs["id"])
 
 
-
 class ArtContributorViewSet(viewsets.ModelViewSet):
     queryset = ArtContributor.objects.all()
     serializer_class = ArtContributorSerializer
