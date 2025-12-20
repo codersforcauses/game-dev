@@ -1,15 +1,17 @@
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import ImageCard from "@/components/ui/image-card";
-import { generateMockArtworks } from "@/hooks/use-artwork-data";
+import ErrorModal from "@/components/ui/modal/error-modal";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
 import { PageResult } from "@/types/page-response";
 
 interface ArtworksPageProps {
-  artworks: PageResult<Art>;
+  artworks?: PageResult<Art>;
+  error?: string;
 }
 
 const PLACEHOLDER_ICON = (
@@ -48,7 +50,11 @@ function renderArtworkCard(artwork: Art) {
   );
 }
 
-export default function ArtworksPage({ artworks }: ArtworksPageProps) {
+export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
+  const router = useRouter();
+  if (error) {
+    return <ErrorModal message={error} onClose={() => router.back()} />;
+  }
   return (
     <div data-layer="Art Page General" className="ArtPageGeneral">
       <div
@@ -91,7 +97,7 @@ export default function ArtworksPage({ artworks }: ArtworksPageProps) {
 
       <div data-layer="Frame 1159" className="Frame1159 relative self-stretch">
         <div className="Frame1098 aligne flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-20 bg-slate-950 py-14 pl-28 pr-24">
-          {artworks.results.map((artwork) => renderArtworkCard(artwork))}
+          {artworks!.results.map((artwork) => renderArtworkCard(artwork))}
         </div>
       </div>
       <div
@@ -104,25 +110,13 @@ export default function ArtworksPage({ artworks }: ArtworksPageProps) {
   );
 }
 
-// ...existing code...
-
 export const getServerSideProps: GetServerSideProps<
   ArtworksPageProps
 > = async () => {
   try {
     const res = await api.get<PageResult<Art>>("game-dev/arts");
     return { props: { artworks: res.data } };
-  } catch {
-    const mockArtworks = generateMockArtworks(12);
-    return {
-      props: {
-        artworks: {
-          count: mockArtworks.length,
-          next: "",
-          previous: "",
-          results: mockArtworks,
-        },
-      },
-    };
+  } catch (err: { message: string }) {
+    return { props: { error: err.message || "Failed to load artworks." } };
   }
 };

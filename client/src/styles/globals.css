@@ -39,6 +39,7 @@
     --light-1: #ffffff;
     --light-2: #ced1fe;
     --light-3: #9ca4fd;
+    --error: #fa5c5c;
   }
 }
 
@@ -68,4 +69,7 @@
 }
 .border-light-2 {
   border-color: var(--light-2);
+}
+.bg-error {
+  background-color: var(--error);
 }

@@ -1,15 +1,17 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { JSX } from "react";
 
 import GoBackButton from "@/components/ui/go-back-button";
 import ImagePlaceholder from "@/components/ui/image-placeholder";
-import { generateMockArtwork } from "@/hooks/use-artwork-data";
+import ErrorModal from "@/components/ui/modal/error-modal";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
 
 interface ArtworkPageProps {
-  artwork: Art;
+  artwork?: Art;
+  error?: string;
 }
 
 const DISCORD_ICON = (
@@ -90,7 +92,11 @@ function displayContributors(artwork: Art) {
   );
 }
 
-export default function ArtworkPage({ artwork }: ArtworkPageProps) {
+export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
+  const router = useRouter();
+  if (error) {
+    return <ErrorModal message={error} onClose={() => router.back()} />;
+  }
   return (
     <div
       data-layer="Individual Game Page alt 9"
@@ -118,9 +124,9 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
         className="Frame1099 bg-neutral-1 justify-start md:flex"
       >
         <div className="relative flex content-center justify-center">
-          {artwork.path_to_media ? (
+          {artwork!.path_to_media ? (
             <Image
-              src={artwork.path_to_media}
+              src={artwork!.path_to_media}
               alt="Artwork image"
               width={500}
               height={500}
@@ -139,7 +145,7 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
               data-layer="Art Name"
               className="ArtName text-light-3 justify-start font-['Jersey_10'] text-8xl font-normal leading-[76px] tracking-wide"
             >
-              {artwork.name}
+              {artwork!.name}
             </div>
             <div
               data-layer="Frame 1153"
@@ -150,11 +156,11 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
                 className="justify-start self-stretch"
               >
                 <span className="text-light-1 font-['DM_Sans'] text-xl font-normal leading-8 tracking-wide">
-                  {artwork.description}
+                  {artwork!.description}
                 </span>
               </div>
             </div>
-            {displayContributors(artwork)}
+            {displayContributors(artwork!)}
           </div>
         </div>
       </div>
@@ -163,7 +169,7 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
           data-layer="Art Name"
           className="ArtName text-light-3 flex justify-center font-['Jersey_10'] text-8xl font-normal leading-[76px] tracking-wide"
         >
-          {artwork.name}
+          {artwork!.name}
         </div>
         <div
           data-layer="Frame 1153"
@@ -171,11 +177,11 @@ export default function ArtworkPage({ artwork }: ArtworkPageProps) {
         >
           <div className="justify-start self-stretch">
             <span className="text-light-1 font-['DM_Sans'] text-xl font-normal leading-8 tracking-wide">
-              {artwork.description}
+              {artwork!.description}
             </span>
           </div>
         </div>
-        {displayContributors(artwork)}
+        {displayContributors(artwork!)}
       </div>
 
       <div data-layer="Frame 1101" className="Frame1101 bg-slate-950 py-10">
@@ -211,9 +217,7 @@ export const getServerSideProps: GetServerSideProps<ArtworkPageProps> = async (
     const artResponse = await api.get<Art>(`game-dev/arts/${id}`);
     const artwork = artResponse.data;
     return { props: { artwork } };
-  } catch {
-    // Return mock data when API fails or DB is empty
-    const mockArtwork = generateMockArtwork(id);
-    return { props: { artwork: mockArtwork } };
+  } catch (err: { message: string }) {
+    return { props: { error: err.message || "Failed to load artwork." } };
   }
 };
