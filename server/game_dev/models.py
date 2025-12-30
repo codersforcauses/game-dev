@@ -22,3 +22,16 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+class Committee(models.Model):
+    id = models.OneToOneField(Member, on_delete=models.DO_NOTHING, primary_key=True)
+    role = {
+        "P": "President",
+        "VP": "Vice-President",
+        "SEC": "Secretary",
+        "TRE": "Treasurer",
+        "MARK": "Marketing",
+        "EV": "Events OCM",
+        "PRO": "Projects OCM",
+        "FRE": "Fresher Rep" 
+    }
