@@ -1,19 +1,13 @@
 import Image from "next/image";
+import Link from "next/link";
+
+import { Button } from "../components/ui/button";
 
 export default function Landing() {
-  const pageTitle = "Game Development UWA";
-  const description =
-    "Little eye catching intro about what the club does here. Maybe " +
-    "something about the purpose of the club, maybe something about the " +
-    "type of events that the club runs.";
   const btnList = [
-    { name: "More about us", link: "" },
+    { name: "More about us", link: "/committee/about" },
     { name: "Join our Discord", link: "" },
   ];
-  const mainPic = {
-    url: "/placeholder.png",
-    alt: "placeholder",
-  };
 
   type cardImage = {
     url: string;
@@ -29,7 +23,7 @@ export default function Landing() {
     type: string;
     image: cardImage | null;
     row: number;
-    gridColumn: string;
+    // gridColumn: string;
   };
   const eventCards = [
     {
@@ -45,7 +39,7 @@ export default function Landing() {
         alt: "Trophy",
       },
       row: 1,
-      gridColumn: "702fr",
+      //   gridColumn: "702fr",
     },
     {
       id: 2,
@@ -55,7 +49,7 @@ export default function Landing() {
       type: "default",
       image: null,
       row: 1,
-      gridColumn: "513fr",
+      //   gridColumn: "513fr",
     },
     {
       id: 3,
@@ -65,7 +59,7 @@ export default function Landing() {
       type: "default",
       image: null,
       row: 2,
-      gridColumn: "233fr",
+      //   gridColumn: "233fr",
     },
     {
       id: 4,
@@ -75,14 +69,13 @@ export default function Landing() {
       type: "special-border",
       image: null,
       row: 2,
-      gridColumn: "275fr",
+      //   gridColumn: "275fr",
     },
   ];
 
   const logoImages = [
-    { url: "/godot-1.png", alt: "Godot Logo", position: "start" },
+    { url: "/godot.png", alt: "Godot Logo", position: "start" },
     { url: "/unity-logo.png", alt: "Unity Logo", position: "end" },
-    { url: "/godot-1.png", alt: "Godot Logo", position: "start" },
   ];
 
   const row1Cards = eventCards.filter((card) => card.row === 1);
@@ -103,7 +96,7 @@ export default function Landing() {
               clipPath:
                 "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
             }}
-            className="bg-[#0d1025] p-4 pt-3 font-jersey10 font-semibold text-purple-300"
+            className="bg-[#1C1639] p-4 pt-3 font-jersey10 text-2xl font-semibold text-white"
           >
             {card.title}
           </div>
@@ -112,7 +105,7 @@ export default function Landing() {
     }
 
     return (
-      <div className="rounded-md border border-purple-400 px-4 py-2 font-jersey10 font-semibold text-purple-300">
+      <div className="rounded-md border border-purple-400 bg-[#B23FFF1A] px-4 py-2 font-jersey10 text-2xl font-semibold text-white">
         {card.title}
       </div>
     );
@@ -132,7 +125,6 @@ export default function Landing() {
               width={card.image.width}
               height={card.image.height}
               alt={card.image.alt}
-              className="opacity-60"
             />
           )}
         </div>
@@ -145,25 +137,31 @@ export default function Landing() {
       <section className="flex w-full justify-center bg-[#182150] px-12 py-10">
         <div className="flex w-full max-w-[1440px] flex-col items-center justify-between gap-12 md:flex-row">
           <div className="flex max-w-lg flex-col gap-6 text-white">
-            <h1 className="font-jersey10 text-4xl font-bold">{pageTitle}</h1>
-            <p className="font-sans text-base leading-relaxed text-white/80">
-              {description}
+            <h1 className="font-jersey10 text-4xl font-bold">
+              Game Development UWA
+            </h1>
+            <p className="text-base leading-relaxed text-white/80">
+              Little eye catching intro about what the club does here. Maybe
+              something about the purpose of the club, maybe something about the
+              type of events that the club runs.
             </p>
             <div className="mt-4 flex gap-4">
               {btnList.map((item, i) => (
-                <button
-                  key={i}
-                  className="rounded-lg border border-[#9CA4FD] px-6 py-3 font-jersey10 font-medium text-white transition hover:bg-[#9CA4FD]"
-                >
-                  {item.name} &gt;
-                </button>
+                <Link href={item.link} key={i}>
+                  <Button>{item.name} &gt;</Button>
+                </Link>
               ))}
             </div>
           </div>
 
-          <div className="flex h-[280px] w-[400px] items-center justify-center rounded-xl bg-[#cfc2ff]">
-            <Image src={mainPic.url} width={80} height={80} alt={mainPic.alt} />
-          </div>
+          {/* <div className="flex w-full max-w-md aspect-[4/3] items-center justify-center rounded-xl bg-[#CED1FE]"> */}
+          <Image
+            src="/placeholder.png"
+            width={600}
+            height={430}
+            alt="placeholder"
+          />
+          {/* </div> */}
         </div>
       </section>
 
