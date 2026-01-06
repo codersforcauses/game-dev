@@ -16,12 +16,14 @@
     --neutral-5: hsl(203 82% 18%);
     --light-1: hsl(0 0% 100%);
     --light-2: hsl(236 18% 98%);
+    --light-3: hsl(236 96% 80%);
     /* light purple */
     --light-alt: hsl(260 46% 90%);
     /* light green */
     --light-alt-2: hsl(183 100% 79%);
     --logo-blue-2: hsl(237 66% 77%);
     --logo-blue-1: hsl(236 62% 95%);
+    --error: hsl(0 93% 67%);
 
     /* Colours to be used for components */
     --background: 236 47% 7%;
@@ -52,13 +54,6 @@
     --input: 235 47% 20%;
     --ring: 236 47% 7%;
     --radius: 0.5rem;
-
-    --dark-2: #090a19;
-    --neutral-1: #1b1f4c;
-    --light-1: #ffffff;
-    --light-2: #ced1fe;
-    --light-3: #9ca4fd;
-    --error: #fa5c5c;
   }
 }
 

@@ -40,11 +40,8 @@ function renderArtworkCard(artwork: Art) {
       className="Frame1120"
       title={artwork.name}
     >
-      <ImageCard
-        imageSrc={artwork.path_to_media || undefined}
-        imageAlt={artwork.name}
-      >
-        {!artwork.path_to_media && PLACEHOLDER_ICON}
+      <ImageCard imageSrc={artwork.media || undefined} imageAlt={artwork.name}>
+        {!artwork.media && PLACEHOLDER_ICON}
       </ImageCard>
     </Link>
   );

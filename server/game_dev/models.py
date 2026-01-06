@@ -28,7 +28,7 @@ class Art(models.Model):
     name = models.CharField(null=False, max_length=200)
     description = models.CharField(max_length=200,)
     # source_game = models.ForeignKey(Games, on_delete=models.CASCADE, related_name='art_pieces') #Need implement Games model
-    path_to_media = models.CharField(null=False, max_length=500)
+    media = models.ImageField(upload_to='art_images/', null=False)
     active = models.BooleanField(null=False)
 
     def __str__(self):
@@ -39,6 +39,8 @@ class ArtContributor(models.Model):
     art = models.ForeignKey('Art', on_delete=models.CASCADE, related_name='contributors')
     member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='art_contributions')
     role = models.CharField(max_length=100)
+    discord_url = models.URLField(max_length=500, blank=True, null=True)
+    instagram_url = models.URLField(max_length=500, blank=True, null=True)
 
     class Meta:
         unique_together = ('art', 'member')

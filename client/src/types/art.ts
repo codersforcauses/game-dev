@@ -4,7 +4,7 @@ import { BaseDto } from "./base-dto";
 export interface Art extends BaseDto {
   name: string;
   description: string;
-  path_to_media: string;
+  media: string;
   active: boolean;
   contributors: ArtContributor[];
 }

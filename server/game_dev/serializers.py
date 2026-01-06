@@ -21,7 +21,7 @@ class ArtContributorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ArtContributor
-        fields = ['id', 'art', 'member', 'member_name', 'role']
+        fields = ['id', 'art', 'member', 'member_name', 'role', 'discord_url', 'instagram_url']
 
 
 class ArtSerializer(serializers.ModelSerializer):
@@ -29,7 +29,7 @@ class ArtSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Art
-        fields = ['id', 'name', 'description', 'path_to_media', 'active', 'contributors']
+        fields = ['id', 'name', 'description', 'media', 'active', 'contributors']
 
 
 class MemberSerializer(serializers.ModelSerializer):

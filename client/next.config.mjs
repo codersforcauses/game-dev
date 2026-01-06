@@ -1,12 +1,6 @@
-// import os from "node:os";
-// import isInsideContainer from "is-inside-container";
-
-// const isWindowsDevContainer = () =>
-//   os.release().toLowerCase().includes("microsoft") && isInsideContainer();
-
 /** @type {import('next').NextConfig} */
 
-const config = {
+const nextConfig = {
   reactStrictMode: true,
   turbopack: {
     root: import.meta.dirname,
@@ -14,24 +8,15 @@ const config = {
   outputFileTracingRoot: import.meta.dirname,
   images: {
     domains: ["localhost"],
-  },
-  // Turns on file change polling for the Windows Dev Container
-  // Doesn't work currently for turbopack, so file changes will not automatically update the client.
-  // watchOptions: isWindowsDevContainer()
-  // ? {
-  //     pollIntervalMs: 1000
-  //   }
-  // : undefined,
-  images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**',
-        port: '',
-        pathname: '**'
-      }
-    ]
-  }
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/media/**',
+      },
+    ],
+  },
 };
 
-export default config;
+export default nextConfig;

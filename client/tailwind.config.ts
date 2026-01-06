@@ -69,10 +69,12 @@ const config = {
         neutral_5: "var(--neutral-5)",
         light_1: "var(--light-1)",
         light_2: "var(--light-2)",
+        light_3: "var(--light-3)",
         light_alt: "var(--light-alt)",
         light_alt_2: "var(--light-alt-2)",
         logo_blue_2: "var(--logo-blue-2)",
         logo_blue_1: "var(--logo-blue-1)",
+        error: "var(--error)",
       },
       borderRadius: {
         lg: "var(--radius)",
