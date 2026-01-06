@@ -39,8 +39,8 @@ class ArtContributor(models.Model):
     art = models.ForeignKey('Art', on_delete=models.CASCADE, related_name='contributors')
     member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='art_contributions')
     role = models.CharField(max_length=100)
-    discord_url = models.URLField(max_length=500, blank=True, null=True)
-    instagram_url = models.URLField(max_length=500, blank=True, null=True)
+    discord_url = models.URLField(max_length=500, blank=True, default='')
+    instagram_url = models.URLField(max_length=500, blank=True, default='')
 
     class Meta:
         unique_together = ('art', 'member')

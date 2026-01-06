@@ -13,11 +13,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="artcontributor",
             name="discord_url",
-            field=models.URLField(max_length=500, blank=True, null=True),
+            field=models.URLField(max_length=500, blank=True, default=''),
         ),
         migrations.AddField(
             model_name="artcontributor",
             name="instagram_url",
-            field=models.URLField(max_length=500, blank=True, null=True),
+            field=models.URLField(max_length=500, blank=True, default=''),
         ),
     ]
