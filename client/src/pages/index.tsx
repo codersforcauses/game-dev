@@ -33,8 +33,8 @@ export default function Landing() {
       type: "default",
       image: {
         url: "/trophy.png",
-        width: 88,
-        height: 110,
+        width: 200,
+        height: 200,
         alt: "Trophy",
       },
       row: 1,
@@ -91,7 +91,7 @@ export default function Landing() {
               clipPath:
                 "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
             }}
-            className="bg-[#1C1639] p-4 pt-3 font-jersey10 text-2xl font-semibold text-white"
+            className="bg-landingCard1 p-4 pt-3 font-jersey10 text-2xl font-semibold text-white"
           >
             {card.title}
           </div>
@@ -100,7 +100,7 @@ export default function Landing() {
     }
 
     return (
-      <div className="rounded-md border border-purple-400 bg-[#B23FFF1A] px-4 py-2 font-jersey10 text-2xl font-semibold text-white">
+      <div className="rounded-md border border-purple-400 bg-landingCard2 px-4 py-2 font-jersey10 text-2xl font-semibold text-white">
         {card.title}
       </div>
     );
@@ -110,7 +110,7 @@ export default function Landing() {
     <div key={card.id} className="flex flex-col">
       {renderCardHeader(card)}
 
-      <div className="mt-4 rounded-md border border-[#1B1F4C] bg-[#0f132e] p-4 text-gray-200">
+      <div className="mt-4 rounded-md border border-[#1B1F4C] bg-landingCard3 p-4 text-gray-200">
         <div className="flex gap-2">
           <span>▶</span>
           <p>{card.description}</p>
@@ -120,6 +120,7 @@ export default function Landing() {
               width={card.image.width}
               height={card.image.height}
               alt={card.image.alt}
+              className="pl-[15px] pr-[30px]"
             />
           )}
         </div>

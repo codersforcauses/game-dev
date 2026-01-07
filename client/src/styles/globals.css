@@ -48,6 +48,14 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
 
+    --landing-card1: 250, 44.3%, 15.5%;
+
+    --landing-card2: 277 100% 62% / 0.1;
+
+    --landing-card3: 232, 50.8%, 12%;
+
+    --landing-border:235.1, 47.6%, 20%;
+
     --border: 235 47% 20%;
     --input: 235 47% 20%;
     --ring: 236 47% 7%;
