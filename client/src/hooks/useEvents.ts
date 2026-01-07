@@ -25,11 +25,15 @@ function transformApiEventToUiEvent(data: ApiEvent): UiEvent {
   };
 }
 
-export function useEvents() {
+export type EventTypeFilter = "past" | "upcoming";
+
+export function useEvents(type?: EventTypeFilter) {
   return useQuery<ApiEvent[], AxiosError, UiEvent[]>({
-    queryKey: ["events"],
+    queryKey: ["events", type ?? "all"],
     queryFn: async () => {
-      const response = await api.get<ApiEvent[]>("/events/");
+      const response = await api.get<ApiEvent[]>("/events/", {
+        params: type ? { type } : {},
+      });
       return response.data;
     },
     select: (data) => data.map(transformApiEventToUiEvent),

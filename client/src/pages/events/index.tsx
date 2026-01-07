@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { useEvents } from "@/hooks/useEvents";
+import { EventTypeFilter,useEvents } from "@/hooks/useEvents";
 
 function formatDateTime(dateString: string): string {
   try {
@@ -19,7 +20,20 @@ function formatDateTime(dateString: string): string {
 }
 
 export default function EventsPage() {
-  const { data: events, isPending, isError } = useEvents();
+  const router = useRouter();
+
+  const typeParam = router.query.type;
+  const type =
+    typeof typeParam === "string" &&
+    (typeParam === "past" || typeParam === "upcoming")
+      ? (typeParam as EventTypeFilter)
+      : undefined;
+
+  const {
+    data: events,
+    isPending,
+    isError,
+  } = useEvents(router.isReady ? type : undefined);
 
   if (isPending) {
     return (
@@ -51,6 +65,7 @@ export default function EventsPage() {
   return (
     <main className="mx-auto min-h-dvh max-w-6xl px-6 py-16 md:px-20">
       <h1 className="mb-8 font-jersey10 text-4xl text-primary">Events</h1>
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {events.map((event) => (
           <Link
