@@ -5,23 +5,23 @@
 @layer base {
   :root {
     /* Figma Colours */
-    --dark-1: 0 0% 0%;
-    --dark-2: 236 64% 10%;
-    --dark-alt: 260 52.38% 12.35%;
-    --neutral-1: 235 64% 30%;
-    --neutral-2: 235 64% 40%;
-    --neutral-3: 235 64% 49%;
-    --neutral-4: 235 64% 59%;
+    --dark-1: hsl(0 0% 0%);
+    --dark-2: hsl(236 64% 10%);
+    --dark-alt: hsl(260 52.38% 12.35%);
+    --neutral-1: hsl(235 64% 30%);
+    --neutral-2: hsl(235 64% 40%);
+    --neutral-3: hsl(235 64% 49%);
+    --neutral-4: hsl(235 64% 59%);
     /* the green neutral */
-    --neutral-5: 203 82% 18%;
-    --light-1: 0 0% 100%;
-    --light-2: 236 18% 98%;
+    --neutral-5: hsl(203 82% 18%);
+    --light-1: hsl(0 0% 100%);
+    --light-2: hsl(236 18% 98%);
     /* light purple */
-    --light-alt: 260 46% 90%;
+    --light-alt: hsl(260 46% 90%);
     /* light green */
-    --light-alt-2: 183 100% 79%;
-    --logo-blue-2: 237 66% 77%;
-    --logo-blue-1: 236 62% 95%;
+    --light-alt-2: hsl(183 100% 79%);
+    --logo-blue-2: hsl(237 66% 77%);
+    --logo-blue-1: hsl(236 62% 95%);
 
     /* Colours to be used for components */
     --background: 236 47% 7%;
