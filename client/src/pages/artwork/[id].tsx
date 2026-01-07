@@ -1,7 +1,7 @@
+import { Instagram,MessageSquare } from "lucide-react";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { SocialIcon } from "react-social-icons";
 
 import GoBackButton from "@/components/ui/go-back-button";
 import ImagePlaceholder from "@/components/ui/image-placeholder";
@@ -40,22 +40,24 @@ function displayContributors(artwork: Art) {
               </div>
               <div className="flex gap-2">
                 {contributor.discord_url && (
-                  <SocialIcon
-                    url={contributor.discord_url}
+                  <a
+                    href={contributor.discord_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ height: 30, width: 30 }}
-                    bgColor="#9CA4FD"
-                  />
+                    className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#9CA4FD] transition-opacity hover:opacity-80"
+                  >
+                    <MessageSquare className="h-4 w-4 text-white" />
+                  </a>
                 )}
                 {contributor.instagram_url && (
-                  <SocialIcon
-                    url={contributor.instagram_url}
+                  <a
+                    href={contributor.instagram_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ height: 30, width: 30 }}
-                    bgColor="#9CA4FD"
-                  />
+                    className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#9CA4FD] transition-opacity hover:opacity-80"
+                  >
+                    <Instagram className="h-4 w-4 text-white" />
+                  </a>
                 )}
               </div>
             </div>
