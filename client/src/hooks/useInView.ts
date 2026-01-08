@@ -4,7 +4,7 @@ import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 // this hook conditionally renders a component with the interaction observer api.
 export default function useInView<T extends Element = HTMLElement>(
   options: IntersectionObserverInit = {},
-): [RefObject<T>, boolean] {
+): [RefObject<T | null>, boolean] {
   // assume we can't see it and let the intersection observer api tell us otherwise
   const [inView, setIsInView] = useState(false);
   const thisComponent = useRef<T | null>(null);
@@ -17,8 +17,6 @@ export default function useInView<T extends Element = HTMLElement>(
     // sees the component cross the threshold, hence the use of `some`
   }, []);
 
-  // i would love to just unpack options underneath as `...options`, but then eslint wants me to
-  // add options as a dependency, which would reconstruct the observer on every render
   const { root, rootMargin, threshold }: IntersectionObserverInit = options;
   useEffect(() => {
     if (!thisComponent.current) return;

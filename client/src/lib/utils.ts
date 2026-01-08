@@ -20,9 +20,22 @@ export function cssVarAsHSL(cssvar: string, alpha?: number): string {
   const col = window.getComputedStyle(document.body).getPropertyValue(cssvar);
   return alpha !== undefined ? `hsl(${col} / ${alpha})` : `hsl(${col})`;
 }
+
+// avoid fetching the computed style of a css property more than once
+const cssVarCache = new Map<string, string>();
+function getCssVar(cssVar: string) {
+  if (!cssVarCache.has(cssVar)) {
+    cssVarCache.set(
+      cssVar,
+      window.getComputedStyle(document.body).getPropertyValue(cssVar),
+    );
+  }
+  return cssVarCache.get(cssVar)!;
+}
+
 export function hslVarWithOpacity(cssVar: string, opacity: number) {
+  const col = getCssVar(cssVar);
   // For CSS vars that already contain hsl() values
   // painfully, we must resolve the value of this color elsewhere
-  const col = window.getComputedStyle(document.body).getPropertyValue(cssVar);
   return `color-mix(in hsl, ${col} ${opacity * 100}%, transparent)`;
 }

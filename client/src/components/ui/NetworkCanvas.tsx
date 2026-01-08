@@ -1,5 +1,5 @@
 "use client";
-
+// Daniel's gnarly animation with optimisations by Sam
 import {
   motion,
   MotionValue,
@@ -31,35 +31,63 @@ type NetworkParticle = {
 };
 
 // Gradient that follows mouse cursor position for interactive effect
+// function MouseGradient({
+//   smoothX,
+//   smoothY,
+//   isHovering,
+//   mouseGradStart,
+//   mouseGradEnd,
+// }: {
+//   smoothX: MotionValue<number>;
+//   smoothY: MotionValue<number>;
+//   isHovering: boolean;
+//   mouseGradStart: string;
+//   mouseGradEnd: string;
+// }) {
+//   const background = useMotionTemplate`radial-gradient(
+//           circle 15px at ${smoothX}% ${smoothY}%,
+//            hsl((--${mouseGradStart})) 0%,
+//            hsl(var(--${mouseGradEnd})) 40%,
+//            transparent 70%
+//          )`;
+//   return (
+//     <motion.div
+//       className="absolute inset-0"
+//       style={{
+//         // background: `radial-gradient(
+//         //   circle 15px at ${smoothX}% ${smoothY}%,
+//         //   hsl(var(--color-${mouseGradStart})) 0%, hsl(var(--color-${mouseGradEnd})) 40%,
+//         //   transparent 70%
+//         // )`,
+//         background: background,
+//         opacity: isHovering ? 0.3 : 0.2,
+//       }}
+//       transition={{ duration: 0.5 }}
+//     />
+//   );
+// }
+//
+// Gradient that follows mouse cursor position for interactive effect
 function MouseGradient({
   smoothX,
   smoothY,
   isHovering,
-  mouseGradStart,
-  mouseGradEnd,
 }: {
   smoothX: MotionValue<number>;
   smoothY: MotionValue<number>;
   isHovering: boolean;
-  mouseGradStart: string;
-  mouseGradEnd: string;
+  motionColours: {
+    mouseGradStart: string;
+    mouseGradEnd: string;
+  };
 }) {
-  const background = useMotionTemplate`radial-gradient(
-          circle 15px at ${smoothX}% ${smoothY}%,
-           hsl(var(--${mouseGradStart})) 0%, 
-           hsl(var(--${mouseGradEnd})) 40%, 
-           transparent 70%
-         )`;
+  // Use Motion values for colors instead of hard-coded rgba
+  const background = useMotionTemplate`radial-gradient(circle 15px at ${smoothX}% ${smoothY}%, hsl(0 0% 100%) 10%, hsl(260 46% 90%) 40%, transparent 70%)`;
   return (
     <motion.div
       className="absolute inset-0"
       style={{
-        // background: `radial-gradient(
-        //   circle 15px at ${smoothX}% ${smoothY}%,
-        //   hsl(var(--color-${mouseGradStart})) 0%, hsl(var(--color-${mouseGradEnd})) 40%,
-        //   transparent 70%
-        // )`,
-        background: background,
+        background,
         opacity: isHovering ? 0.3 : 0.2,
       }}
       transition={{ duration: 0.5 }}
@@ -207,7 +235,6 @@ function NetworkFrame({
           .sort((a, b) => a.dist - b.dist)
           .slice(0, 2);
 
-        // we need to fix debouncing for color setting...
         dists.forEach(({ index, dist }) => {
           const pB = pts[index];
           const op = (1 - dist / frameconf.network_connection_distance) * 0.25; // the opacity base of the connections
@@ -288,7 +315,7 @@ export default function NetworkCanvas({
     ...defaultFrameConfig,
     ...frameConfig,
   };
-  const [containerRef, inView] = useInView<HTMLDivElement>();
+  const [containerRef, inView] = useInView<HTMLDivElement>({ threshold: 0.01 });
   // const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
@@ -351,7 +378,7 @@ export default function NetworkCanvas({
     const rect = e.currentTarget.getBoundingClientRect();
     mouseX.set(((e.clientX - rect.left) / rect.width) * 100);
     mouseY.set(((e.clientY - rect.top) / rect.height) * 100);
-    setIsHovering(true);
+    if (!isHovering) setIsHovering(true);
   };
 
   return (
