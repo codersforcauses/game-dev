@@ -27,7 +27,6 @@ const config = {
 
       colors: {
         border: "hsl(var(--border))",
-        landingBorder: "hsl(var(--landing-border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -45,8 +44,6 @@ const config = {
           foreground: "hsl(var(--destructive-foreground))",
         },
         landingCard1: "hsl(var(--landing-card1))",
-        landingCard2: "hsl(var(--landing-card2))",
-        landingCard3: "hsl(var(--landing-card3))",
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",

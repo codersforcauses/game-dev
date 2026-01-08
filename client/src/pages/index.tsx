@@ -91,7 +91,7 @@ export default function Landing() {
               clipPath:
                 "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
             }}
-            className="bg-landingCard1 p-4 pt-3 font-jersey10 text-2xl font-semibold text-white"
+            className="bg-dark_alt p-4 pt-3 font-jersey10 text-2xl font-semibold text-white"
           >
             {card.title}
           </div>
@@ -100,7 +100,7 @@ export default function Landing() {
     }
 
     return (
-      <div className="rounded-md border border-purple-400 bg-landingCard2 px-4 py-2 font-jersey10 text-2xl font-semibold text-white">
+      <div className="rounded-md border border-purple-400 bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold text-white">
         {card.title}
       </div>
     );
@@ -110,7 +110,7 @@ export default function Landing() {
     <div key={card.id} className="flex flex-col">
       {renderCardHeader(card)}
 
-      <div className="mt-4 rounded-md border border-[#1B1F4C] bg-landingCard3 p-4 text-gray-200">
+      <div className="mt-4 rounded-md border border-muted bg-landingCard1 p-4 text-gray-200">
         <div className="flex gap-2">
           <span>▶</span>
           <p>{card.description}</p>
@@ -155,6 +155,7 @@ export default function Landing() {
             width={600}
             height={430}
             alt="placeholder"
+            className="rounded-md"
           />
         </div>
       </section>
