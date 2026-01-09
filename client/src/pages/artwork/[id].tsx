@@ -1,4 +1,4 @@
-import { Instagram,MessageSquare } from "lucide-react";
+import { Instagram, MessageSquare } from "lucide-react";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
