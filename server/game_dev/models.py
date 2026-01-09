@@ -25,7 +25,7 @@ class Event(models.Model):
 
 class Committee(models.Model):
     id = models.OneToOneField(Member, on_delete=models.DO_NOTHING, primary_key=True)
-    role = {
+    roles = {
         "P": "President",
         "VP": "Vice-President",
         "SEC": "Secretary",
@@ -35,3 +35,6 @@ class Committee(models.Model):
         "PRO": "Projects OCM",
         "FRE": "Fresher Rep" 
     }
+    role = models.CharField(max_length=9, choices=roles, default="FRE")
+    def __str__(self):
+        return self.id.name
