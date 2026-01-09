@@ -4,40 +4,26 @@ import { useRouter } from "next/router";
 
 import { EventTypeFilter, useEvents } from "@/hooks/useEvents";
 
-function formatTimeOnly(dateString: string): string {
+function formatDateTimeLine(dateString: string): string {
   try {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat("en-AU", {
-      hour: "numeric",
-      minute: "2-digit",
+
+    const d = new Intl.DateTimeFormat("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
     }).format(date);
-  } catch {
-    return "";
-  }
-}
 
-function formatMonthShort(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat("en-AU", { month: "short" }).format(date);
-  } catch {
-    return "";
-  }
-}
+    const t = new Intl.DateTimeFormat("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })
+      .format(date)
+      .replace("AM", "am")
+      .replace("PM", "pm");
 
-function formatDay2(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    return String(date.getDate()).padStart(2, "0");
-  } catch {
-    return "";
-  }
-}
-
-function formatYear(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    return String(date.getFullYear());
+    return `${d} ・ ${t}`;
   } catch {
     return "";
   }
@@ -133,71 +119,64 @@ export default function EventsPage() {
         </button>
       </div>
 
-      {sortedYears.map((year) => (
-        <section key={year} className="mb-14">
-          <h2 className="mb-6 text-2xl tracking-wide text-gray-200">{year}</h2>
-
-          <div className="flex flex-col gap-6">
-            {eventsByYear[year].map((event) => (
-              <Link
-                key={event.id}
-                href={`/events/${event.id}`}
-                className="group block overflow-hidden rounded-lg border border-gray-700 bg-gray-800 transition-colors hover:bg-gray-700"
-              >
-                <div className="flex flex-col md:flex-row">
-                  <div className="flex items-stretch md:w-28 md:flex-col md:justify-center md:border-r md:border-gray-700">
-                    <div className="flex w-full items-center justify-between px-4 py-3 md:flex-col md:gap-1 md:py-6">
-                      <span className="text-sm text-gray-400">
-                        {formatMonthShort(event.date)}
-                      </span>
-                      <span className="font-jersey10 text-3xl text-primary">
-                        {formatDay2(event.date)}
-                      </span>
-                      <span className="text-sm text-gray-400">
-                        {formatYear(event.date)}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="relative h-56 w-full overflow-hidden bg-gray-700 md:h-auto md:w-[360px] md:flex-shrink-0">
-                    <Image
-                      src={event.coverImage}
-                      alt={`Cover image for ${event.name}`}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      onError={(e) => {
-                        e.currentTarget.src = "/game_dev_club_logo.svg";
-                      }}
-                    />
-                  </div>
-
-                  <div className="flex flex-1 flex-col gap-2 p-5">
-                    <h3 className="font-jersey10 text-3xl text-primary">
-                      {event.name}
-                    </h3>
-
-                    <p className="text-sm text-gray-300">
-                      <span className="font-semibold text-gray-200">Time:</span>{" "}
-                      {formatTimeOnly(event.date)}
-                    </p>
-
-                    <p className="text-sm text-gray-300">
-                      <span className="font-semibold text-gray-200">
-                        Location:
-                      </span>{" "}
-                      {event.location}
-                    </p>
-
-                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-200">
-                      {event.description}
-                    </p>
-                  </div>
+      <div className="flex flex-col gap-14">
+        {sortedYears.map((year) => (
+          <section key={year}>
+            <div className="flex gap-6 md:gap-10">
+              <div className="relative w-14 flex-shrink-0 md:w-20">
+                <div className="text-2xl font-semibold text-gray-200 md:text-3xl">
+                  {year}
                 </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ))}
+                <div
+                  aria-hidden="true"
+                  className="absolute bottom-0 left-2 top-12 w-px bg-gray-600/60 md:left-4"
+                />
+              </div>
+
+              <div className="flex min-w-0 flex-1 flex-col gap-6">
+                {eventsByYear[year].map((event) => (
+                  <Link
+                    key={event.id}
+                    href={`/events/${event.id}`}
+                    className="group block overflow-hidden rounded-xl border border-indigo-300/30 bg-gray-950/30 shadow-[0_0_0_1px_rgba(99,102,241,0.10)] transition-colors hover:bg-gray-950/45"
+                  >
+                    <div className="flex flex-col md:flex-row">
+                      <div className="flex min-w-0 flex-1 flex-col gap-4 px-8 py-7">
+                        <h3 className="min-w-0 font-jersey10 text-4xl text-white md:text-5xl">
+                          <span className="block truncate">{event.name}</span>
+                        </h3>
+
+                        <div className="space-y-1 text-sm md:text-base">
+                          <div className="text-primary">
+                            {formatDateTimeLine(event.date)}
+                          </div>
+                          <div className="text-primary">{event.location}</div>
+                        </div>
+
+                        <p className="max-w-3xl text-sm leading-relaxed text-gray-200/90 md:text-base">
+                          {event.description}
+                        </p>
+                      </div>
+
+                      <div className="relative h-56 w-full flex-shrink-0 border-t border-indigo-300/20 md:h-auto md:w-80 md:border-l md:border-t-0">
+                        <Image
+                          src={event.coverImage}
+                          alt={`Cover image for ${event.name}`}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          onError={(e) => {
+                            e.currentTarget.src = "/game_dev_club_logo.svg";
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        ))}
+      </div>
     </main>
   );
 }
