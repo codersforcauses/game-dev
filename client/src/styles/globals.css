@@ -7,6 +7,7 @@
     /* Figma Colours */
     --dark-1: hsl(0 0% 0%);
     --dark-2: hsl(236 64% 10%);
+    --dark-3: hsl(232.5, 48%, 9.8%);
     --dark-alt: hsl(260 52.38% 12.35%);
     --neutral-1: hsl(235 64% 30%);
     --neutral-2: hsl(235 64% 40%);
@@ -22,13 +23,14 @@
     --light-alt-2: hsl(183 100% 79%);
     --logo-blue-2: hsl(237 66% 77%);
     --logo-blue-1: hsl(236 62% 95%);
-
+    
     /* Colours to be used for components */
     --background: 236 47% 7%;
     --foreground: 0 0% 100%;
-
+    
     --card: 235 47% 20%;
     --card-foreground: 0 0% 100%;
+    --landing-card: 232, 50.8%, 12%;
 
     --popover: 235 47% 20%;
     --popover-foreground: 0 0% 100%;
@@ -47,8 +49,6 @@
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
-
-    --landing-card1: 232, 50.8%, 12%;
 
     --border: 235 47% 20%;
     --input: 235 47% 20%;

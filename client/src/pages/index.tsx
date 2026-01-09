@@ -29,7 +29,7 @@ export default function Landing() {
       id: 1,
       title: "Game Jams",
       description:
-        "Compete with a team over a short time period to develop your own game! Each game jam has a different theme so be prepared to think creatively.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut",
       type: "default",
       image: {
         url: "/trophy.png",
@@ -43,16 +43,16 @@ export default function Landing() {
       id: 2,
       title: "Social Events",
       description:
-        "Meet other folks interested in game dev, play games, and maybe even recruit members for your next game jam team :P",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
       type: "default",
       image: null,
       row: 1,
     },
     {
       id: 3,
-      title: "Other Event Type",
+      title: "Other Events",
       description:
-        "Some other event type that the club runs! I'm not sure what, but this section might look better with four boxes…",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       type: "default",
       image: null,
       row: 2,
@@ -61,7 +61,7 @@ export default function Landing() {
       id: 4,
       title: "Workshops",
       description:
-        "Learn core Game Development technologies, such as Godot, Unity and more. Most workshops are presented by committee members with the chance to produce your own small game.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
       type: "special-border",
       image: null,
       row: 2,
@@ -82,16 +82,16 @@ export default function Landing() {
         <div
           style={{
             clipPath:
-              "polygon(0% 0%, 71% 0%, 78% 8px, 100% 8px, 100% calc(100% - 8px), 0% calc(100% - 8px))",
+              "polygon(0% 0%, 71% 0%, 78% 7px, 100% 7px, 100% calc(100% - 8px), 0% calc(100% - 8px))",
           }}
-          className="relative bg-purple-400 p-[1px]"
+          className="relative bg-accent"
         >
           <div
             style={{
               clipPath:
                 "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
             }}
-            className="bg-dark_alt p-4 pt-3 font-jersey10 text-2xl font-semibold text-white"
+            className="bg-dark_alt p-4 pt-3 font-jersey10 text-2xl font-semibold"
           >
             {card.title}
           </div>
@@ -100,7 +100,7 @@ export default function Landing() {
     }
 
     return (
-      <div className="rounded-md border border-purple-400 bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold text-white">
+      <div className="rounded-md border border-accent bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold">
         {card.title}
       </div>
     );
@@ -110,7 +110,7 @@ export default function Landing() {
     <div key={card.id} className="flex flex-col">
       {renderCardHeader(card)}
 
-      <div className="mt-4 rounded-md border border-muted bg-landingCard1 p-4 text-gray-200">
+      <div className="mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
         <div className="flex gap-2">
           <span>▶</span>
           <p>{card.description}</p>
@@ -120,7 +120,7 @@ export default function Landing() {
               width={card.image.width}
               height={card.image.height}
               alt={card.image.alt}
-              className="pl-[15px] pr-[30px]"
+              className="size-20 px-3"
             />
           )}
         </div>
@@ -130,21 +130,22 @@ export default function Landing() {
 
   return (
     <div>
-      <section className="flex w-full justify-center bg-[#182150] px-12 py-10">
+      <section className="flex w-full justify-center bg-muted px-12 py-10">
         <div className="flex w-full max-w-[1440px] flex-col items-center justify-between gap-12 md:flex-row">
-          <div className="flex max-w-lg flex-col gap-6 text-white">
+          <div className="flex max-w-lg flex-col gap-6">
             <h1 className="font-jersey10 text-4xl font-bold">
               Game Development UWA
             </h1>
             <p className="text-base leading-relaxed text-white/80">
-              Little eye catching intro about what the club does here. Maybe
-              something about the purpose of the club, maybe something about the
-              type of events that the club runs.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
             </p>
             <div className="mt-4 flex gap-4">
               {btnList.map((item, i) => (
                 <Link href={item.link} key={i}>
-                  <Button>{item.name} &gt;</Button>
+                  <Button>{item.name}</Button>
                 </Link>
               ))}
             </div>
@@ -160,7 +161,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="bg-[#0d1025] py-16">
+      <section className="bg-dark_3 py-16">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
             {row1Cards.map(renderCard)}
