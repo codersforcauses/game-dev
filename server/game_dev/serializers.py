@@ -18,10 +18,11 @@ class EventSerializer(serializers.ModelSerializer):
 
 class ArtContributorSerializer(serializers.ModelSerializer):
     member_name = serializers.CharField(source='member.name', read_only=True)
+    art_id = serializers.IntegerField(source='art.id', read_only=True)
 
     class Meta:
         model = ArtContributor
-        fields = ['id', 'art', 'member', 'member_name', 'role', 'discord_url', 'instagram_url']
+        fields = ['id', 'art_id', 'member', 'member_name', 'role', 'discord_url', 'instagram_url']
 
 
 class ArtSerializer(serializers.ModelSerializer):

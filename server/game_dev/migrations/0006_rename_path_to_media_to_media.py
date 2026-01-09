@@ -1,5 +1,3 @@
-# Generated manually for changing path_to_media to media (ImageField)
-
 from django.db import migrations, models
 
 
