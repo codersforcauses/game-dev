@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import ImageCard from "@/components/ui/image-card";
 import ErrorModal from "@/components/ui/modal/error-modal";
+import { generateMockArtworks } from "@/hooks/use-artwork-data";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
 import { PageResult } from "@/types/page-response";
@@ -107,9 +108,23 @@ export const getServerSideProps: GetServerSideProps<
   try {
     const res = await api.get<PageResult<Art>>("arts");
     return { props: { artworks: res.data } };
-  } catch (err: unknown) {
+    //} catch (err: unknown) {
+  } catch {
+    // return {
+    //   props: { error: (err as Error).message || "Failed to load artworks." },
+    // };
+
+    // Fallback to mock data on error
+    const mockArtworks = generateMockArtworks(12);
     return {
-      props: { error: (err as Error).message || "Failed to load artworks." },
+      props: {
+        artworks: {
+          results: mockArtworks,
+          count: mockArtworks.length,
+          next: "",
+          previous: "",
+        },
+      },
     };
   }
 };
