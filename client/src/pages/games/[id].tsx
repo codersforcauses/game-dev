@@ -47,7 +47,7 @@ export default function IndividualGamePage() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`http://localhost:8000/gamesAPI/games/${id}`)
+    fetch(`http://localhost:8000/gamesAPI/games/${id}/`)
       .then((res) => res.json())
       .then((data: Game) => {
         setGame(data);
