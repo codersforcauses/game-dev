@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Art, ArtContributor, Member, Event
+from .models import Art, ArtContributor, ArtShowcase, Member, Event
 
 
 class MemberAdmin(admin.ModelAdmin):
@@ -14,3 +14,4 @@ admin.site.register(Member, MemberAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Art)
 admin.site.register(ArtContributor)
+admin.site.register(ArtShowcase)

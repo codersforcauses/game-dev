@@ -2,8 +2,8 @@
 
 # Create your views here.
 from rest_framework import generics
-from .models import Event, Art
-from .serializers import EventSerializer, ArtSerializer
+from .models import Event, Art, ArtShowcase
+from .serializers import EventSerializer, ArtSerializer, ArtShowcaseSerializer
 
 
 class EventDetailAPIView(generics.RetrieveAPIView):
@@ -26,3 +26,13 @@ class ArtDetailAPIView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         return Art.objects.filter(id=self.kwargs["id"])
+
+
+class FeatureArtAPIView(generics.ListAPIView):
+    """
+    GET /api/arts/featured/
+    """
+    serializer_class = ArtSerializer
+
+    def get_queryset(self):
+        return Art.objects.filter(showcase__isnull=False)

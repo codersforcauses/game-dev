@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Art, ArtContributor, Member
+from .models import ArtShowcase, Event, Art, ArtContributor, Member
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -37,3 +37,11 @@ class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ['name']
+
+
+class ArtShowcaseSerializer(serializers.ModelSerializer):
+    art_name = serializers.CharField(source='art.name', read_only=True)
+
+    class Meta:
+        model = ArtShowcase
+        fields = ['id', 'description', 'art', 'art_name']
