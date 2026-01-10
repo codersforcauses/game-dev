@@ -148,7 +148,7 @@ export default function IndividualGamePage() {
             </div>
           </div>
           <div className="mt-8 flex w-full min-w-[260px] flex-col gap-4">
-            <h1 className="mb-2 text-center font-jersey10 text-4xl font-bold tracking-wide text-[#7ecfff] drop-shadow-lg">
+            <h1 className="mb-2 text-center font-jersey10 text-4xl font-bold tracking-wide text-[#7ecfff]">
               {gameTitle}
             </h1>
             <ul>
