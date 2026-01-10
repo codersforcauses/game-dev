@@ -24,8 +24,20 @@ class Event(models.Model):
         return self.name
 
 
-class Game(models.Model):
+# GameContributors table: links Game, Member, and role (composite PK)
+class GameContributors(models.Model):
+    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_contributors')
+    member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='member_games')
+    role = models.CharField(max_length=100)
 
+    class Meta:
+        unique_together = (('game', 'member'),)
+
+    def __str__(self):
+        return f"{self.member.name} ({self.role}) for {self.game.name}"
+
+
+class Game(models.Model):
     # Enum choices
     class CompletionStatus(models.IntegerChoices):
         WIP = 1, "Work in Progress (Unplayable)"
