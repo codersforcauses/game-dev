@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from .serializers import GamesSerializer
 from .models import Game
 import urllib.request
@@ -21,8 +21,7 @@ def itch_embed_proxy(request, embed_id):
             html = response.read().decode("utf-8")
         return JsonResponse({"html": html})
     except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)from rest_framework import generics
-
+        return JsonResponse({"error": str(e)}, status=500)
 
 
 class EventDetailAPIView(generics.RetrieveAPIView):
