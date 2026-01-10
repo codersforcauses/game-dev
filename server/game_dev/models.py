@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.functions import Now
 
 
 class Member(models.Model):
@@ -11,10 +12,10 @@ class Member(models.Model):
     def __str__(self):
         return str(self.name)
 
-      
+
 class Event(models.Model):
     name = models.CharField(max_length=200)
-    date = models.DateTimeField()
+    date = models.DateTimeField(db_default=Now())
     description = models.CharField(max_length=256, blank=True)
     publicationDate = models.DateField()
     cover_image = models.ImageField(upload_to="events/", null=True)
@@ -51,5 +52,3 @@ class Game(models.Model):
 
     def __str__(self):
         return str(self.name)
-      
-
