@@ -35,7 +35,9 @@ export default function App({ Component, pageProps }: AppProps) {
         className={`font-sans ` + fonts.map((font) => font.variable).join(" ")}
       >
         <Navbar />
-        <Component {...pageProps} />
+        <div className="pt-24">
+          <Component {...pageProps} />
+        </div>
       </main>
     </QueryClientProvider>
   );
