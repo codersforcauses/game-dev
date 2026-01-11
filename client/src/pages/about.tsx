@@ -10,9 +10,9 @@ export default function AboutPage() {
   ];
 
   const bottomRow = [
-    { name: "FirstName LastName", role: "Marketing Officer" },
-    { name: "FirstName LastName", role: "OCM" },
-    { name: "FirstName LastName", role: "OCM" },
+    { name: "FirstName LastName", pronouns: "(he/him)", role: "President" },
+    { name: "FirstName LastName", pronouns: "(he/him)", role: "President" },
+    { name: "FirstName LastName", pronouns: "(he/him)", role: "President" },
   ];
 
   return (
@@ -59,7 +59,7 @@ export default function AboutPage() {
           {/* Top row - 4 Presidents */}
           <div className="flex flex-wrap justify-center gap-6 md:gap-10">
             {topRow.map((member, idx) => (
-              <div key={`top-${idx}`} className="flex flex-col items-center gap-2">
+              <div key={`top-${idx}`} className="flex flex-col items-start gap-0">
                 <div
                   className="relative flex items-center justify-center bg-contain bg-center bg-no-repeat"
                   style={{
@@ -70,9 +70,9 @@ export default function AboutPage() {
                 >
                   <ImageIcon className="h-16 w-16 text-white/60" />
                 </div>
-                <div className="text-center font-firaCode text-[9px] leading-tight">
-                  <p className="text-white">{member.name} {member.pronouns}</p>
-                  <p className="mt-0.5 rounded bg-blue-600 px-2 py-0.5 text-white">{member.role}</p>
+                <div className="text-left font-firaCode text-[9px] leading-tight w-[180px]">
+                  <p className="text-white bg-[#1B1F4C] px-2 py-1 inline-block">{member.name} {member.pronouns}</p>
+                  <p className="text-[#9ca4fd] bg-[#1B1F4C] px-2 py-1 inline-block">{member.role}</p>
                 </div>
               </div>
             ))}
@@ -81,7 +81,7 @@ export default function AboutPage() {
           {/* Bottom row - 3 other roles */}
           <div className="mt-10 flex flex-wrap justify-center gap-6 md:gap-10">
             {bottomRow.map((member, idx) => (
-              <div key={`bottom-${idx}`} className="flex flex-col items-center gap-2">
+              <div key={`bottom-${idx}`} className="flex flex-col items-start gap-0">
                 <div
                   className="relative flex items-center justify-center bg-contain bg-center bg-no-repeat"
                   style={{
@@ -92,9 +92,9 @@ export default function AboutPage() {
                 >
                   <ImageIcon className="h-16 w-16 text-white/60" />
                 </div>
-                <div className="text-center font-firaCode text-[9px] leading-tight">
-                  <p className="rounded border border-white/30 px-2 py-0.5 text-white">{member.name}</p>
-                  <p className="mt-1 rounded bg-blue-600 px-2 py-0.5 text-white">{member.role}</p>
+                <div className="text-left font-firaCode text-[9px] leading-tight w-[180px]">
+                  <p className="text-white bg-[#1B1F4C] px-2 py-1 inline-block">{member.name} {member.pronouns}</p>
+                  <p className="text-[#9ca4fd] bg-[#1B1F4C] px-2 py-1 inline-block">{member.role}</p>
                 </div>
               </div>
             ))}
