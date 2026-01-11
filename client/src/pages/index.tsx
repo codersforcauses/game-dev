@@ -1,6 +1,47 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useRef,useState } from "react";
+
+import FeatureBox from "@/components/ui/featureBox";
+import { useEvent } from "@/hooks/useEvent";
+
+import { Button } from "../components/ui/button";
+
+// function formatDateTime(dateString: string): string {
+//     try {
+//         const date = new Date(dateString);
+//         return new Intl.DateTimeFormat("en-AU", {
+//             year: "numeric",
+//             month: "long",
+//             day: "numeric",
+//             hour: "2-digit",
+//             minute: "2-digit",
+//         }).format(date);
+//     } catch {
+//         return dateString;
+//     }
+//   }
 
 export default function Landing() {
+  const btnList2 = [
+    { name: "See more games by our members", link: "/" },
+    { name: "See other cool stuff our members have created", link: "/" },
+  ];
+
+  const router = useRouter();
+  const { id } = router.query;
+
+  const {
+    data: event,
+    // isPending,
+    // error,
+    // isError,
+  } = useEvent(router.isReady ? id : undefined);
+
+  console.log("event", event);
+
   const upcomingEvents = [
     {
       id: 1,
@@ -43,10 +84,19 @@ export default function Landing() {
     },
   ];
 
+  const VISIBLE_COUNT = 3;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const maxIndex = Math.max(upcomingEvents.length - VISIBLE_COUNT, 0);
+  const slideLeft = () => setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  const slideRight = () =>
+    setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
+
   return (
     <div>
-      <section className="bg-[#0d1025] px-10">
-        <div className="container mx-auto rounded-[10px] bg-[#1B1F4C] px-4 py-8 lg:px-12">
+      <section className="bg-background px-10">
+        <div className="container mx-auto rounded-lg bg-primary-foreground px-4 py-8 lg:px-12">
           {/* Title Row */}
           <div className="flex items-center justify-between px-10">
             <div className="flex items-center justify-between">
@@ -55,51 +105,70 @@ export default function Landing() {
               </h2>
 
               {/* Arrow controls */}
-              <div className="ml-[20] flex gap-3 text-lg text-white/60">
-                <span className="cursor-pointer hover:text-white">&lt;</span>
-                <span className="cursor-pointer hover:text-white">&gt;</span>
+              <div className="ml-5 flex gap-3 text-lg text-white/60">
+                <ChevronLeft
+                  className={`hover:text-white ${currentIndex === 0 ? "opacity-40" : "cursor-pointer"}`}
+                  onClick={slideLeft}
+                />
+                <ChevronRight
+                  className={`hover:text-white ${currentIndex === maxIndex ? "opacity-40" : "cursor-pointer"}`}
+                  onClick={slideRight}
+                />
               </div>
             </div>
             <div>
-              <span className="font-jersey10">See More </span>
+              <Link href="/events">
+                <span className="font-jersey10">See More </span>
+              </Link>
               <span className="cursor-pointer font-jersey10 hover:text-white">
                 &gt;
               </span>
             </div>
           </div>
 
-          <div className="mt-10 grid grid-cols-3 gap-10">
-            {upcomingEvents.map((event) => (
-              <div key={event.id} className="flex flex-col">
-                {/* Image */}
-                <div className="flex h-[180px] w-full items-center justify-center rounded-[10px] bg-[#d6d1ff]">
-                  <Image
-                    src={event.image}
-                    alt={event.title}
-                    width={60}
-                    height={60}
-                  />
-                </div>
+          <div className="mt-10 px-10">
+            <div ref={containerRef} className="mt-10 overflow-hidden">
+              <div
+                className="flex gap-10 transition-transform duration-300 ease-out"
+                style={{
+                  transform: `translateX(calc(-${currentIndex} * (33.333% + 2.5rem)))`,
+                }}
+              >
+                {upcomingEvents.map((event) => (
+                  <div
+                    key={event.id}
+                    className="flex-shrink-0 basis-[calc((100%-5rem)/3)]"
+                  >
+                    <div className="flex h-44 w-full items-center justify-center rounded-lg bg-muted-foreground">
+                      <Image
+                        src={event.image}
+                        alt={event.title}
+                        width={60}
+                        height={60}
+                      />
+                    </div>
 
-                <h3 className="mt-6 text-lg font-semibold tracking-wide text-white">
-                  {event.title}
-                </h3>
+                    <h3 className="mt-6 text-lg font-semibold tracking-wide text-white">
+                      {event.title}
+                    </h3>
 
-                <p className="text-sm tracking-wide text-white/70">
-                  {event.time}
-                </p>
+                    <p className="text-sm tracking-wide text-white/70">
+                      {event.time}
+                    </p>
 
-                <div className="mt-3 w-full border-b border-white/20"></div>
+                    <div className="mt-3 w-full border-b border-white/20"></div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-[#0d1025] px-10 py-10">
+      <section className="bg-background px-10 py-10">
         <div className="flex w-full justify-between px-4">
           <div>
-            <div className="flex w-[200px] justify-around">
+            <div className="flex w-52 justify-around">
               <Image
                 src="/placeholder.png"
                 width={27}
@@ -108,7 +177,7 @@ export default function Landing() {
               />
               <div className="font-jersey10">Join our Discord </div>
             </div>
-            <div className="flex w-[200px] justify-around">
+            <div className="flex w-52 justify-around">
               <Image
                 src="/placeholder.png"
                 width={27}
@@ -119,41 +188,21 @@ export default function Landing() {
             </div>
           </div>
 
-          <div
-            style={{
-              clipPath:
-                "polygon(0% 0%, 27% 0%, 31% 1rem, 100% 1rem, 100% calc(100% - 1rem), 97% 100%, 70% 100%, 67% calc(100% - 1rem), 0% calc(100% - 1rem))",
-            }}
-            className="relative w-[60vw] bg-secondary p-[1px]"
-          >
-            <div
-              style={{
-                clipPath:
-                  "polygon(1px 1px, calc(27% - 1px) 1px, calc(31% - 1px) 1rem, calc(100% - 1px) 1rem, calc(100% - 1px) calc(100% - 1rem - 1px), calc(97% - 1px) calc(100% - 1px), calc(70% + 1px) calc(100% - 1px), calc(67% + 1px) calc(100% - 1rem - 1px), 1px calc(100% - 1rem - 1px))",
-              }}
-              className="h-full bg-[#0d1025] p-10"
-            >
-              <h3 className="mb-[15px] font-jersey10 text-4xl">
-                So... How do I get involved?
-              </h3>
-              <p>
-                {
-                  "The easiest way to get involved is to come along to one of our events! Most events don't need registration- just check the event description to make sure. If you aren't feeling up to an event, just join our discord. React out to our friendly committee members if you need any help!"
-                }
-              </p>
-            </div>
-          </div>
+          <FeatureBox
+            title="So... How do I get involved?"
+            text="The easiest way to get involved is to come along to one of our events! Most events don't need registration- just check the event description to make sure. If you aren't feeling up to an event, just join our discord. React out to our friendly committee members if you need any help!"
+          />
         </div>
       </section>
 
-      <section className="relative w-full overflow-hidden bg-[#0d1025] px-6 py-20 lg:px-12">
-        <div className="relative z-10 mx-auto max-w-[1400px]">
+      <section className="relative w-full overflow-hidden bg-background px-6 py-20 lg:px-12">
+        <div className="relative z-10 mx-auto max-w-7xl">
           <div className="flex w-full flex-row items-start justify-between">
             {/* --- Title & Intro Text --- */}
             <div className="mb-10 flex flex-col items-start">
               <h2 className="flex items-center gap-3 font-jersey10 text-5xl text-white">
                 Featured Member Creations
-                <span className="text-4xl text-red-400">❤️</span>
+                <Image src="/heart.png" alt="" width={60} height={50} />
               </h2>
 
               <div className="inline-block">
@@ -161,18 +210,17 @@ export default function Landing() {
                   Some of our favourite games made by our members
                 </p>
 
-                <div className="mt-8 h-[2px] bg-white/30"></div>
+                <div className="mt-8 h-px bg-white/30"></div>
               </div>
             </div>
 
             {/* --- Buttons Row --- */}
             <div className="mb-12 flex flex-col items-start gap-4">
-              <button className="rounded-md border border-purple-300 bg-[#090A19] px-6 py-3 text-white transition hover:bg-purple-300 hover:text-black">
-                See more games by our members &gt;
-              </button>
-              <button className="rounded-md border border-purple-300 bg-[#090A19] px-6 py-3 text-white transition hover:bg-purple-300 hover:text-black">
-                See other cool stuff our members have created &gt;
-              </button>
+              {btnList2.map((item, i) => (
+                <Link href={item.link} key={i}>
+                  <Button>{item.name} &gt;</Button>
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -181,48 +229,46 @@ export default function Landing() {
             {gamesData.map((game) => (
               <div
                 key={game.id}
-                className="rounded-xl p-6 text-[#0d1025] shadow-lg"
+                className="rounded-xl p-6 text-background shadow-lg"
               >
-                <div className="mb-6 flex h-[180px] items-center justify-center rounded-xl bg-[#d0c5ff]">
+                <div className="mb-6 flex h-44 items-center justify-center rounded-xl">
                   <Image
                     src={game.image}
                     alt={game.title}
-                    width={80}
-                    height={80}
+                    width={340}
+                    height={195}
                   />
                 </div>
 
                 <h3 className="mb-2 text-2xl text-white">{game.title}</h3>
 
-                <p className="mb-4 text-sm text-[#9CA4FD]">
-                  {game.description}
-                </p>
+                <p className="mb-4 text-sm text-primary">{game.description}</p>
 
-                <div className="h-[2px] w-full bg-white/30"></div>
+                <div className="h-px w-full bg-white/30"></div>
               </div>
             ))}
           </div>
         </div>
         <Image
-          src="/fire1.png"
+          src="/fire.png"
           alt=""
           width={400}
           height={400}
-          className="absolute left-[-250px] top-1/2 z-10 -translate-y-1/2"
+          className="absolute -left-64 top-1/2 z-10 -translate-y-1/2"
         />
         <Image
-          src="/fire2.png"
+          src="/fire.png"
           alt=""
           width={400}
           height={400}
-          className="absolute right-[-200px] top-1/2 z-10 -translate-y-1/2"
+          className="absolute -right-52 top-1/2 z-10 -translate-y-1/2"
         />
         <Image
-          src="/fire3.png"
+          src="/fire.png"
           alt=""
           width={300}
           height={300}
-          className="absolute bottom-[-150px] left-1/2 z-10 -translate-x-1/2"
+          className="absolute -bottom-36 left-1/2 z-10 -translate-x-1/2"
         />
       </section>
     </div>
