@@ -2,7 +2,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef,useState } from "react";
+import { useRef, useState } from "react";
 
 import FeatureBox from "@/components/ui/featureBox";
 import { useEvent } from "@/hooks/useEvent";
@@ -25,6 +25,130 @@ import { Button } from "../components/ui/button";
 //   }
 
 export default function Landing() {
+  const btnList = [
+    { name: "More about us", link: "/committee/about" },
+    { name: "Join our Discord", link: "" },
+  ];
+
+  type cardImage = {
+    url: string;
+    width: number;
+    height: number;
+    alt: string;
+  };
+
+  type cardType = {
+    id: number;
+    title: string;
+    description: string;
+    type: string;
+    image: cardImage | null;
+    row: number;
+  };
+  const eventCards = [
+    {
+      id: 1,
+      title: "Game Jams",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut",
+      type: "default",
+      image: {
+        url: "/trophy.png",
+        width: 200,
+        height: 200,
+        alt: "Trophy",
+      },
+      row: 1,
+    },
+    {
+      id: 2,
+      title: "Social Events",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      type: "default",
+      image: null,
+      row: 1,
+    },
+    {
+      id: 3,
+      title: "Other Events",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      type: "default",
+      image: null,
+      row: 2,
+    },
+    {
+      id: 4,
+      title: "Workshops",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      type: "special-border",
+      image: null,
+      row: 2,
+    },
+  ];
+
+  const logoImages = [
+    { url: "/godot.png", alt: "Godot Logo", position: "start" },
+    { url: "/unity-logo.png", alt: "Unity Logo", position: "end" },
+  ];
+
+  const row1Cards = eventCards.filter((card) => card.row === 1);
+  const row2Cards = eventCards.filter((card) => card.row === 2);
+
+  const renderCardHeader = (card: cardType) => {
+    if (card.type === "special-border") {
+      return (
+        <div
+          style={{
+            clipPath:
+              "polygon(0% 0%, 71% 0%, 78% 7px, 100% 7px, 100% calc(100% - 8px), 0% calc(100% - 8px))",
+          }}
+          className="relative bg-accent"
+        >
+          <div
+            style={{
+              clipPath:
+                "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
+            }}
+            className="bg-dark_alt p-4 pt-3 font-jersey10 text-2xl font-semibold"
+          >
+            {card.title}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="rounded-md border border-accent bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold">
+        {card.title}
+      </div>
+    );
+  };
+
+  const renderCard = (card: cardType) => (
+    <div key={card.id} className="flex flex-col">
+      {renderCardHeader(card)}
+
+      <div className="mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
+        <div className="flex gap-2">
+          <span>▶</span>
+          <p>{card.description}</p>
+          {card.image && (
+            <Image
+              src={card.image.url}
+              width={card.image.width}
+              height={card.image.height}
+              alt={card.image.alt}
+              className="size-20 px-3"
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
   const btnList2 = [
     { name: "See more games by our members", link: "/" },
     { name: "See other cool stuff our members have created", link: "/" },
@@ -95,6 +219,62 @@ export default function Landing() {
 
   return (
     <div>
+      <section className="flex w-full justify-center bg-muted px-12 py-10">
+        <div className="flex w-full max-w-[1440px] flex-col items-center justify-between gap-12 md:flex-row">
+          <div className="flex max-w-lg flex-col gap-6">
+            <h1 className="font-jersey10 text-4xl font-bold">
+              Game Development UWA
+            </h1>
+            <p className="text-base leading-relaxed text-white/80">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </p>
+            <div className="mt-4 flex gap-4">
+              {btnList.map((item, i) => (
+                <Link href={item.link} key={i}>
+                  <Button>{item.name}</Button>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <Image
+            src="/landing_placeholder.png"
+            width={600}
+            height={430}
+            alt="placeholder"
+            className="rounded-md"
+          />
+        </div>
+      </section>
+
+      <section className="bg-dark_3 py-16">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+            {row1Cards.map(renderCard)}
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[23fr_27fr_11fr]">
+            {row2Cards.map(renderCard)}
+
+            <div className="flex flex-row items-center justify-center gap-4 md:hidden lg:flex lg:flex-col lg:items-start">
+              {logoImages.map((logo, index) => (
+                <Image
+                  key={index}
+                  src={logo.url}
+                  width={135}
+                  height={46}
+                  alt={logo.alt}
+                  className={`${index < logoImages.length - 1 ? "lg:mb-5" : ""} ${logo.position === "end" ? "lg:self-end" : ""}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="bg-background px-10">
         <div className="container mx-auto rounded-lg bg-primary-foreground px-4 py-8 lg:px-12">
           {/* Title Row */}

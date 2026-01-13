@@ -7,6 +7,7 @@
     /* Figma Colours */
     --dark-1: hsl(0 0% 0%);
     --dark-2: hsl(236 64% 10%);
+    --dark-3: hsl(232.5, 48%, 9.8%);
     --dark-alt: hsl(260 52.38% 12.35%);
     --neutral-1: hsl(235 64% 30%);
     --neutral-2: hsl(235 64% 40%);
@@ -29,6 +30,7 @@
 
     --card: 235 47% 20%;
     --card-foreground: 0 0% 100%;
+    --landing-card: 232, 50.8%, 12%;
 
     --popover: 235 47% 20%;
     --popover-foreground: 0 0% 100%;
