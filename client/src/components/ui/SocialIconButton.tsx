@@ -32,12 +32,12 @@ export default function SocialIconButton({
       whileHover={{
         scale: 1.1,
         y: -4,
-        backgroundColor: cssVarAsHSL("--light-1", 0.1),
-        borderColor: cssVarAsHSL("--light-alt", 0.5),
+        backgroundColor: "var(--light-alt-2)",
+        borderColor: cssVarAsHSL("--light-alt-2", 0.5),
       }}
       whileTap={{ scale: 0.95 }}
       transition={{
-        type: "spring",
+        type: "tween",
         stiffness: 400,
         damping: 17,
       }}
@@ -45,7 +45,7 @@ export default function SocialIconButton({
       <motion.span
         whileHover={{ rotate: 12 }}
         transition={{
-          type: "spring",
+          type: "tween",
           stiffness: 400,
           damping: 17,
         }}

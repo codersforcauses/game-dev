@@ -182,6 +182,14 @@ function NetworkFrame({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<NetworkParticle[]>([]);
   const initializedRef = useRef(false);
+  const [, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    // set up a listener to the window width
+    const widthlistener = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", widthlistener);
+    return () => removeEventListener("resize", widthlistener);
+  }, []);
 
   useEffect(() => {
     // Initialize particles only once to prevent regeneration on re-render
@@ -211,7 +219,7 @@ function NetworkFrame({
 
       // Update particle positions with boundary collision
       pts.forEach((p) => {
-        p.x += p.vx;
+        p.x += p.vx; // velocity is frame dependent...
         p.y += p.vy;
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
@@ -288,7 +296,7 @@ function NetworkFrame({
 }
 
 const defaultFrameConfig: NetworkFrameConfig = {
-  count: 22,
+  count: 50,
   particle_velocity: 0.15,
   min_particle_size: 1.5,
   max_particle_size: 1.5,
@@ -395,8 +403,8 @@ export default function NetworkCanvas({
             smoothX={smoothX}
             smoothY={smoothY}
             isHovering={isHovering}
-            mouseGradStart={mouseGradientStart || "light-alt"}
-            mouseGradEnd={mouseGradientEnd || "light-2"}
+            mouseGradStart={mouseGradientStart}
+            mouseGradEnd={mouseGradientEnd}
           />
           <NetworkFrame
             width={dimensions.width}
