@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
 
 type Contributor = {
+  member_id: number;
   name: string;
   role: string;
 };
@@ -128,12 +129,19 @@ export default function IndividualGamePage() {
                   <tr className="border-b-2 border-gray-300">
                     <td className="py-2 pr-2">Contributors</td>
                     <td className="py-2">
-                      {game.contributors.map((c, i) => (
-                        <span key={`${c.name}-${c.role}`}>
-                          {c.name} {c.role}
-                          {i < game.contributors.length - 1 && <br />}
-                        </span>
-                      ))}
+                      <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+                        {game.contributors.map((c) => (
+                          <React.Fragment key={c.member_id}>
+                            <a
+                              href={`/member/${c.member_id}`}
+                              className="whitespace-nowrap text-blue-400 hover:underline"
+                            >
+                              {c.name}
+                            </a>
+                            <span className="text-gray-300">{c.role}</span>
+                          </React.Fragment>
+                        ))}
+                      </div>
                     </td>
                   </tr>
                   <tr className="border-b-2 border-gray-300">
@@ -142,7 +150,14 @@ export default function IndividualGamePage() {
                   </tr>
                   <tr className="border-b-2 border-gray-300">
                     <td className="py-2 pr-2">Host Site</td>
-                    <td className="py-2">{hostSite}</td>
+                    <td className="py-2">
+                      <a
+                        href={hostSite}
+                        className="whitespace-nowrap text-blue-400 underline hover:underline"
+                      >
+                        {hostSite}
+                      </a>
+                    </td>
                   </tr>
                   <tr>
                     <td className="py-2 pr-2">Event</td>
