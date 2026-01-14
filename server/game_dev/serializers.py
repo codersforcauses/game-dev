@@ -19,11 +19,12 @@ class EventSerializer(serializers.ModelSerializer):
 
 # This is child serializer of GameSerializer
 class GameContributorSerializer(serializers.ModelSerializer):
+    member_id = serializers.IntegerField(source="member.id")  # to link contributors to their member/[id] page
     name = serializers.CharField(source="member.name")
 
     class Meta:
         model = GameContributors
-        fields = ("name", "role")
+        fields = ("member_id", "name", "role")
 
 
 class GamesSerializer(serializers.ModelSerializer):
