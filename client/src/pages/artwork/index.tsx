@@ -63,7 +63,7 @@ export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
           data-layer="ALL CATEGORIES"
           className="AllCategories text-light-3 justify-start text-center font-['Jersey_10'] text-6xl font-normal leading-[76px] tracking-wide"
         >
-          FEATURED:
+          FEATURED
           <br />
           SOME GAME
         </div>
@@ -77,13 +77,15 @@ export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
           data-layer="Auto Layout Horizontal"
           className="AutoLayoutHorizontal items-start justify-start gap-6"
         >
-          <Button
-            variant="outline"
-            size="lg"
-            className="rounded-[10px] font-['Jersey_10'] text-xl font-normal leading-6 tracking-wide"
-          >
-            More about us →
-          </Button>
+          <Link href={`/about`}>
+            <Button
+              variant="outline"
+              size="lg"
+              className="rounded-[10px] font-['Jersey_10'] text-xl font-normal leading-6 tracking-wide"
+            >
+              More about us →
+            </Button>
+          </Link>
         </div>
       </div>
 

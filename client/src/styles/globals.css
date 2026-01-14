@@ -87,3 +87,21 @@
 .bg-error {
   background-color: var(--error);
 }
+
+@layer utilities {
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s infinite;
+  }
+}
