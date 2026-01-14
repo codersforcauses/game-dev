@@ -4,6 +4,11 @@ import React, { useEffect, useState } from "react";
 
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
 
+type Contributor = {
+  name: string;
+  role: string;
+};
+
 type Game = {
   name: string;
   description: string;
@@ -13,6 +18,7 @@ type Game = {
   isItch: boolean;
   pathToThumbnail: string | null;
   event: number | null;
+  contributors: Contributor[];
 };
 
 export default function IndividualGamePage() {
@@ -76,7 +82,6 @@ export default function IndividualGamePage() {
   const gameTitle = game.name;
   const gameCover = game.pathToThumbnail || ""; // can have placeholder of just GDUWA Logo as default placeholder
   const gameDescription = game.description.split("\n");
-  const contributors = ["Developer 1", "Developer 2", "Artist 1"];
   const completionLabels: { [key: number]: string } = {
     1: "WIP",
     2: "Playable Dev",
@@ -123,10 +128,10 @@ export default function IndividualGamePage() {
                   <tr className="border-b-2 border-gray-300">
                     <td className="py-2 pr-2">Contributors</td>
                     <td className="py-2">
-                      {contributors.map((c, i) => (
-                        <span key={c}>
-                          {c}
-                          {i < contributors.length - 1 && <br />}
+                      {game.contributors.map((c, i) => (
+                        <span key={`${c.name}-${c.role}`}>
+                          {c.name} {c.role}
+                          {i < game.contributors.length - 1 && <br />}
                         </span>
                       ))}
                     </td>
