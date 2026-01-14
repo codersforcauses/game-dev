@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Member, Game, Event
+from .models import Member, Game, Event, GameContributors
 
 
 class MemberAdmin(admin.ModelAdmin):
@@ -11,6 +11,10 @@ class EventsAdmin(admin.ModelAdmin):
     pass
 
 
+class GameContributorAdmin(admin.ModelAdmin):
+    pass
+
+
 class GamesAdmin(admin.ModelAdmin):
     list_display = ("name", "description", "completion", "active", "hostURL", "isItch", "pathToThumbnail", "event")
 
@@ -18,3 +22,4 @@ class GamesAdmin(admin.ModelAdmin):
 admin.site.register(Member, MemberAdmin)
 admin.site.register(Event, EventsAdmin)
 admin.site.register(Game, GamesAdmin)
+admin.site.register(GameContributors, GameContributorAdmin)
