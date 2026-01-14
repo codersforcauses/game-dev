@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from rest_framework.routers import DefaultRouter
 from .views import EventDetailAPIView, ArtContributorViewSet, ArtViewSet, MemberViewSet
 
@@ -9,5 +9,4 @@ router.register(r'members', MemberViewSet, basename="member")
 
 urlpatterns = [
     path("events/<int:id>/", EventDetailAPIView.as_view()),
-    path('', include(router.urls)),
-]
+] + router.urls
