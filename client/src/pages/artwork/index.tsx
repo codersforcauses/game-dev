@@ -57,11 +57,11 @@ export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
     <div data-layer="Art Page General" className="ArtPageGeneral">
       <div
         data-layer="Frame 1158"
-        className="Frame1158 bg-light-2 relative flex flex-col items-center gap-2 py-40"
+        className="Frame1158 relative flex flex-col items-center gap-2 bg-light_2 py-40"
       >
         <div
           data-layer="ALL CATEGORIES"
-          className="AllCategories text-light-3 justify-start text-center font-['Jersey_10'] text-6xl font-normal leading-[76px] tracking-wide"
+          className="AllCategories justify-start text-center font-jersey10 text-6xl font-normal leading-[76px] tracking-wide text-light_3"
         >
           FEATURED
           <br />

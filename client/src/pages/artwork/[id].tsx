@@ -18,24 +18,27 @@ function displayContributors(artwork: Art) {
   return (
     <div>
       <div
-        data-layer="Right Panel"
-        className="RightPanel flex flex-col justify-start gap-2.5 py-5"
+        data-layer="Artwork Details"
+        className="ArtworkDetails flex flex-col justify-start gap-2.5 py-5"
       >
-        <div data-layer="Frame 1163" className="Frame1163 relative">
+        <div
+          data-layer="Contributors Section"
+          className="ContributorsSection relative"
+        >
           <div
             data-layer="Contributors"
-            className="Contributors text-light-3 justify-start font-['Jersey_10'] text-4xl font-normal tracking-wide"
+            className="Contributors justify-start font-jersey10 text-4xl font-normal tracking-wide text-light_3"
           >
             Contributors
           </div>
         </div>
         <div
-          data-layer="Frame 1164"
-          className="Frame1164 relative flex flex-col gap-3 p-3"
+          data-layer="Contributors List"
+          className="ContributorsList relative flex flex-col gap-3 p-3"
         >
           {artwork.contributors?.map((contributor) => (
             <div className="flex flex-row justify-between" key={contributor.id}>
-              <div className="text-light-1 justify-center font-['DM_Sans'] text-xl font-normal leading-8 tracking-wide [text-shadow:_0px_4px_4px_rgb(0_0_0_/_0.25)]">
+              <div className="justify-center font-dmSans text-xl font-normal leading-8 tracking-wide text-light_1 [text-shadow:_0px_4px_4px_rgb(0_0_0_/_0.25)]">
                 {contributor.member_name}
               </div>
               <div className="flex gap-2">
@@ -84,16 +87,19 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
       >
         <div
           data-layer="< Gallery"
-          className="Gallery text-light-1 h-10 justify-start font-['DM_Sans'] text-3xl font-bold leading-10 tracking-tight"
+          className="Gallery h-10 justify-start font-dmSans text-3xl font-bold leading-10 tracking-tight text-light_1"
         >
           <GoBackButton url="/artwork" label="Gallery" />
         </div>
       </div>
       <div
-        data-layer="Frame 1099"
-        className="Frame1099 bg-neutral-1 justify-start md:flex"
+        data-layer="Artwork Content"
+        className="ArtworkContent justify-start bg-neutral_1 md:flex"
       >
-        <div className="relative flex content-center justify-center">
+        <div
+          data-layer="Artwork Image Panel"
+          className="ArtworkImagePanel relative flex content-center justify-center"
+        >
           {artwork!.media ? (
             <Image
               src={artwork!.media}
@@ -107,25 +113,25 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
           )}
         </div>
         <div
-          data-layer="Frame 1162"
-          className="Frame1162 relative hidden flex-auto p-10 md:flex"
+          data-layer="Desktop Artwork Info"
+          className="DesktopArtworkInfo relative hidden flex-auto p-10 md:flex"
         >
           <div className="flex flex-1 flex-col gap-10">
             <div
               data-layer="Art Name"
-              className="ArtName text-light-3 justify-start font-['Jersey_10'] text-8xl font-normal leading-[76px] tracking-wide"
+              className="ArtName justify-start font-jersey10 text-8xl font-normal leading-[76px] tracking-wide text-light_3"
             >
               {artwork!.name}
             </div>
             <div
-              data-layer="Frame 1153"
-              className="Frame1153 flex-col items-start justify-start gap-7"
+              data-layer="Description Section"
+              className="DescriptionSection flex-col items-start justify-start gap-7"
             >
               <div
-                data-layer="Lorem ipsum dolor sit amet. Non numquam dicta nam autem dicta 33 error molestias et repellat consequatur eum iste expedita est dolorem libero et quas provident! Eos placeat sunt nam expedita ratione sed quia voluptatem. Et laborum vitae est inventore obcaecati qui velit assumenda ab placeat voluptatem? Qui quisquam nihil non porro velit hic magni voluptatem nam porro voluptatem."
+                data-layer="Artwork Description"
                 className="justify-start self-stretch"
               >
-                <span className="text-light-1 font-['DM_Sans'] text-xl font-normal leading-8 tracking-wide">
+                <span className="font-dmSans text-xl font-normal leading-8 tracking-wide text-light_1">
                   {artwork!.description}
                 </span>
               </div>
@@ -137,16 +143,16 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
       <div className="p-10 md:hidden">
         <div
           data-layer="Art Name"
-          className="ArtName text-light-3 flex justify-center font-['Jersey_10'] text-8xl font-normal leading-[76px] tracking-wide"
+          className="ArtName flex justify-center font-jersey10 text-8xl font-normal leading-[76px] tracking-wide text-light_3"
         >
           {artwork!.name}
         </div>
         <div
-          data-layer="Frame 1153"
-          className="Frame1153 flex-col items-start justify-start pt-7"
+          data-layer="Description Section Mobile"
+          className="DescriptionSectionMobile flex-col items-start justify-start pt-7"
         >
           <div className="justify-start self-stretch">
-            <span className="text-light-1 font-['DM_Sans'] text-xl font-normal leading-8 tracking-wide">
+            <span className="font-dmSans text-xl font-normal leading-8 tracking-wide text-light_1">
               {artwork!.description}
             </span>
           </div>
@@ -157,7 +163,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
       <div data-layer="Frame 1101" className="Frame1101 bg-slate-950 py-10">
         <div
           data-layer="Game Page"
-          className="GamePage bg-dark-2 flex items-center justify-center"
+          className="GamePage flex items-center justify-center bg-dark_2"
         >
           <Image
             alt="Game Image"

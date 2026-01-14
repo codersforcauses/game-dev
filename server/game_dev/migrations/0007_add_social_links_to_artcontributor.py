@@ -1,5 +1,3 @@
-# Generated manually for adding discord_url and instagram_url to ArtContributor
-
 from django.db import migrations, models
 
 
