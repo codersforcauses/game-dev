@@ -18,7 +18,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 flex h-24 w-full flex-wrap items-center justify-center rounded-md border-b border-border/20 bg-background px-20 font-jersey10">
+      <header className="z-100 sticky top-0 flex h-24 w-full flex-wrap items-center justify-center rounded-md border-b border-border/20 bg-background px-20 font-jersey10">
         <Link
           href="/"
           className="flex flex-none items-center gap-3 text-2xl md:mr-5"
