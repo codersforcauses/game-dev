@@ -109,74 +109,73 @@ export default function IndividualGamePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#181a25] font-sans text-[#e3e6f3]">
-      <main className="mx-auto max-w-7xl p-8">
-        <section className="mb-8 flex flex-col items-center justify-center gap-8 rounded-xl bg-[#232345] p-6 shadow-lg">
-          <div className="flex w-full flex-wrap items-start justify-center gap-8">
-            <div className="flex w-full justify-center md:flex-1">
-              <Image
-                src={gameCover}
-                alt="Game Cover"
-                width={800}
-                height={800}
-                className="h-auto max-h-[60vh] w-full max-w-full rounded-2xl bg-[#232345] object-contain shadow-lg md:max-w-[60vw]"
-                priority
-              />
-            </div>
-            <div className="w-full md:w-auto">
-              <table className="mt-4 w-full min-w-[220px] border-collapse border-spacing-0">
-                <tbody>
-                  <tr className="border-b-2 border-gray-300">
-                    <td className="py-2 pr-2">Contributors</td>
-                    <td className="py-2">
-                      <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
-                        {game.contributors.map((c) => (
-                          <React.Fragment key={c.member_id}>
-                            <a
-                              href={`/member/${c.member_id}`}
-                              className="whitespace-nowrap text-blue-400 hover:underline"
-                            >
-                              {c.name}
-                            </a>
-                            <span className="text-gray-300">{c.role}</span>
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="border-b-2 border-gray-300">
-                    <td className="py-2 pr-2">Development Stage</td>
-                    <td className="py-2">{devStage}</td>
-                  </tr>
-                  <tr className="border-b-2 border-gray-300">
-                    <td className="py-2 pr-2">Host Site</td>
-                    <td className="py-2">
-                      <a
-                        href={hostSite}
-                        className="whitespace-nowrap text-blue-400 underline hover:underline"
-                      >
-                        {hostSite}
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 pr-2">Event</td>
-                    <td className="py-2">{event}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+    <div className="min-h-screen bg-[#090a19] font-sans text-[#e3e6f3]">
+      <main>
+        <section className="w-full bg-[#1b1f4c]">
+          <div className="mx-auto max-w-7xl p-8">
+            <Image
+              src={gameCover}
+              alt="Game Cover"
+              width={800}
+              height={800}
+              className="mx-auto h-auto max-h-[60vh] w-full max-w-full rounded-2xl object-contain"
+              priority
+            />
           </div>
-          <div className="mt-8 flex w-full min-w-[260px] flex-col gap-4">
-            <h1 className="mb-2 text-center font-jersey10 text-4xl font-bold tracking-wide text-[#7ecfff]">
-              {gameTitle}
-            </h1>
-            <ul>
-              {gameDescription.map((desc, i) => (
-                <li key={i}>{desc}</li>
-              ))}
-            </ul>
+        </section>
+
+        <section className="mx-auto mt-8 max-w-7xl p-8">
+          <h1 className="mb-2 text-center font-jersey10 text-4xl font-bold tracking-wide text-[#9ca4fd]">
+            {gameTitle}
+          </h1>
+          <div className="w-full sm:float-right sm:mb-4 sm:ml-6 sm:w-80">
+            <table className="w-full min-w-[220px] border-collapse border-spacing-0">
+              <tbody>
+                <tr className="border-b-2 border-gray-300">
+                  <td className="py-2 pr-2">Contributors</td>
+                  <td className="py-2">
+                    <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+                      {game.contributors.map((c) => (
+                        <React.Fragment key={c.member_id}>
+                          <a
+                            href={`/member/${c.member_id}`}
+                            className="whitespace-nowrap text-blue-400 hover:underline"
+                          >
+                            {c.name}
+                          </a>
+                          <span className="text-gray-300">{c.role}</span>
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-b-2 border-gray-300">
+                  <td className="py-2 pr-2">Development Stage</td>
+                  <td className="py-2">{devStage}</td>
+                </tr>
+                <tr className="border-b-2 border-gray-300">
+                  <td className="py-2 pr-2">Host Site</td>
+                  <td className="py-2">
+                    <a
+                      href={hostSite}
+                      className="whitespace-nowrap text-blue-400 underline hover:underline"
+                    >
+                      {hostSite}
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-2 pr-2">Event</td>
+                  <td className="py-2">{event}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+          <ul>
+            {gameDescription.map((desc, i) => (
+              <li key={i}>{desc}</li>
+            ))}
+          </ul>
         </section>
 
         {game.isItch && (
