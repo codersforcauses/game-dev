@@ -149,7 +149,7 @@ export default function Landing() {
     </div>
   );
 
-  const btnList2 = [
+  const gameShowcaseBtnList = [
     { name: "See more games by our members", link: "/" },
     { name: "See other cool stuff our members have created", link: "/" },
   ];
@@ -296,6 +296,7 @@ export default function Landing() {
                 />
               </div>
             </div>
+
             <div>
               <Link href="/events">
                 <span className="font-jersey10">See More </span>
@@ -347,27 +348,6 @@ export default function Landing() {
 
       <section className="bg-background px-10 py-10">
         <div className="flex w-full justify-between px-4">
-          <div>
-            <div className="flex w-52 justify-around">
-              <Image
-                src="/placeholder.png"
-                width={27}
-                height={20}
-                alt="Placeholder"
-              />
-              <div className="font-jersey10">Join our Discord </div>
-            </div>
-            <div className="flex w-52 justify-around">
-              <Image
-                src="/placeholder.png"
-                width={27}
-                height={20}
-                alt="Placeholder"
-              />
-              <div className="font-jersey10">Join our Discord </div>
-            </div>
-          </div>
-
           <FeatureBox
             title="So... How do I get involved?"
             text="The easiest way to get involved is to come along to one of our events! Most events don't need registration- just check the event description to make sure. If you aren't feeling up to an event, just join our discord. React out to our friendly committee members if you need any help!"
@@ -377,7 +357,7 @@ export default function Landing() {
 
       <section className="relative w-full overflow-hidden bg-background px-6 py-20 lg:px-12">
         <div className="relative z-10 mx-auto max-w-7xl">
-          <div className="flex w-full flex-row items-start justify-between">
+          <div className="grid grid-cols-1 md:grid-cols-2">
             {/* --- Title & Intro Text --- */}
             <div className="mb-10 flex flex-col items-start">
               <h2 className="flex items-center gap-3 font-jersey10 text-5xl text-white">
@@ -396,7 +376,7 @@ export default function Landing() {
 
             {/* --- Buttons Row --- */}
             <div className="mb-12 flex flex-col items-start gap-4">
-              {btnList2.map((item, i) => (
+              {gameShowcaseBtnList.map((item, i) => (
                 <Link href={item.link} key={i}>
                   <Button>{item.name} &gt;</Button>
                 </Link>
@@ -420,9 +400,13 @@ export default function Landing() {
                   />
                 </div>
 
-                <h3 className="mb-2 text-2xl text-white">{game.title}</h3>
+                <h3 className="mb-2 font-firaCode font-jersey10 text-2xl text-white">
+                  {game.title}
+                </h3>
 
-                <p className="mb-4 text-sm text-primary">{game.description}</p>
+                <p className="mb-4 font-firaCode text-sm text-primary">
+                  {game.description}
+                </p>
 
                 <div className="h-px w-full bg-white/30"></div>
               </div>
