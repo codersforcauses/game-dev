@@ -1,10 +1,6 @@
-# from django.shortcuts import render
-
-# Create your views here.
 from rest_framework import generics, viewsets
 from .models import Event, Art, ArtContributor, Member
 from .serializers import EventSerializer, ArtContributorSerializer, ArtSerializer, MemberSerializer
-from django_filters.rest_framework import DjangoFilterBackend
 
 
 class EventDetailAPIView(generics.RetrieveAPIView):
@@ -21,8 +17,6 @@ class EventDetailAPIView(generics.RetrieveAPIView):
 class ArtContributorViewSet(viewsets.ModelViewSet):
     queryset = ArtContributor.objects.all()
     serializer_class = ArtContributorSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['art']
 
 
 class ArtViewSet(viewsets.ModelViewSet):
