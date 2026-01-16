@@ -182,25 +182,23 @@ export default function IndividualGamePage() {
           </ul>
         </section>
 
-        {game.isItch && (
-          <section className="mt-8 flex flex-col items-center gap-6">
-            <ItchEmbed embedID={game.hostURL} name={gameTitle} />
-            <h2 className="font-jersey10 text-3xl text-[#7ecfff]">ARTWORK</h2>
+        <section className="mt-8 flex flex-col items-center gap-6">
+          {game.isItch && <ItchEmbed embedID={game.hostURL} name={gameTitle} />}
+          <h2 className="font-jersey10 text-5xl text-primary">ARTWORK</h2>
 
-            <div className="mx-auto mb-6 flex h-[240px] w-full max-w-4xl justify-center gap-6 overflow-hidden">
-              {artImages.map((img) => (
-                <Image
-                  key={img.alt}
-                  src={img.src}
-                  alt={img.alt}
-                  width={240}
-                  height={240}
-                  className="rounded-lg bg-[#232345] object-contain shadow-md"
-                />
-              ))}
-            </div>
-          </section>
-        )}
+          <div className="mx-auto mb-6 flex h-[240px] w-full max-w-4xl justify-center gap-6 overflow-hidden">
+            {artImages.map((img) => (
+              <Image
+                key={img.alt}
+                src={img.src}
+                alt={img.alt}
+                width={240}
+                height={240}
+                className="rounded-lg bg-[#232345] object-contain shadow-md"
+              />
+            ))}
+          </div>
+        </section>
       </main>
       {/* <Footer /> */}
     </div>
