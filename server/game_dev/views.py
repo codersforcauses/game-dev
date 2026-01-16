@@ -1,3 +1,6 @@
+# from django.shortcuts import render
+
+# Create your views here.
 from rest_framework import generics, viewsets
 from .models import Event, Art, ArtContributor, Member
 from .serializers import EventSerializer, ArtContributorSerializer, ArtSerializer, MemberSerializer
@@ -27,4 +30,3 @@ class ArtViewSet(viewsets.ModelViewSet):
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all()
     serializer_class = MemberSerializer
-
