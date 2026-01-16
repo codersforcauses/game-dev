@@ -124,11 +124,11 @@ export default function IndividualGamePage() {
           </div>
         </section>
 
-        <section className="mx-auto mt-8 max-w-7xl p-8">
-          <h1 className="mb-2 text-center font-jersey10 text-4xl font-bold tracking-wide text-[#9ca4fd]">
+        <section className="mx-auto max-w-7xl px-24 py-12">
+          <h1 className="mb-10 text-center font-jersey10 text-6xl font-bold tracking-wide text-[#9ca4fd]">
             {gameTitle}
           </h1>
-          <div className="w-full sm:float-right sm:mb-4 sm:ml-6 sm:w-80">
+          <div className="w-full max-w-full sm:float-right sm:mb-4 sm:ml-6 sm:w-80">
             <table className="w-full min-w-[220px] border-collapse border-spacing-0">
               <tbody>
                 <tr className="border-b-2 border-gray-300">
@@ -171,7 +171,7 @@ export default function IndividualGamePage() {
               </tbody>
             </table>
           </div>
-          <ul>
+          <ul className="space-y-3 text-xl leading-8">
             {gameDescription.map((desc, i) => (
               <li key={i}>{desc}</li>
             ))}
