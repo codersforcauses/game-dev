@@ -5,8 +5,8 @@ import { Button } from "../components/ui/button";
 
 export default function Landing() {
   const btnList = [
-    { name: "More about us", link: "/committee/about" },
-    { name: "Join our Discord", link: "" },
+    { name: "More about us", link: "/committee/about", type: "default" },
+    { name: "Join our Discord", link: "", type: "outline" },
   ];
 
   type cardImage = {
@@ -145,7 +145,11 @@ export default function Landing() {
             <div className="mt-4 flex gap-4">
               {btnList.map((item, i) => (
                 <Link href={item.link} key={i}>
-                  <Button>{item.name}</Button>
+                  <Button
+                    variant={item.type == "default" ? "default" : "outline"}
+                  >
+                    {item.name}
+                  </Button>
                 </Link>
               ))}
             </div>
