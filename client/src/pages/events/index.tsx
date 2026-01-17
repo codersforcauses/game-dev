@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useMemo } from "react";
 
 import { EventTypeFilter, useEvents } from "@/hooks/useEvents";
 
@@ -45,18 +46,27 @@ function groupEventsByYear<T extends { date: string }>(
 export default function EventsPage() {
   const router = useRouter();
 
-  const typeParam = router.query.type;
-  const type =
-    typeof typeParam === "string" &&
-    (typeParam === "past" || typeParam === "upcoming")
-      ? (typeParam as EventTypeFilter)
-      : undefined;
+  const rawType = useMemo(() => {
+    const t = router.query.type;
+    return typeof t === "string" && (t === "past" || t === "upcoming")
+      ? t
+      : null;
+  }, [router.query.type]);
 
-  const {
-    data: events,
-    isPending,
-    isError,
-  } = useEvents(router.isReady ? type : undefined);
+  const type: EventTypeFilter = rawType ?? "upcoming";
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (rawType === null) {
+      router.replace(
+        { pathname: "/events", query: { type: "upcoming" } },
+        undefined,
+        { shallow: true },
+      );
+    }
+  }, [router.isReady, rawType, router]);
+
+  const { data: events, isPending, isError } = useEvents(type);
 
   const isEmpty = !isPending && !isError && (!events || events.length === 0);
 
@@ -73,7 +83,13 @@ export default function EventsPage() {
       <div className="mb-10 flex w-fit overflow-hidden rounded-md border border-gray-600">
         <button
           type="button"
-          onClick={() => router.push("/events?type=past")}
+          onClick={() =>
+            router.push(
+              { pathname: "/events", query: { type: "past" } },
+              undefined,
+              { shallow: true },
+            )
+          }
           className={`px-6 py-2 text-sm font-medium transition-colors ${
             type === "past"
               ? "bg-white text-black"
@@ -85,7 +101,13 @@ export default function EventsPage() {
         </button>
         <button
           type="button"
-          onClick={() => router.push("/events?type=upcoming")}
+          onClick={() =>
+            router.push(
+              { pathname: "/events", query: { type: "upcoming" } },
+              undefined,
+              { shallow: true },
+            )
+          }
           className={`px-6 py-2 text-sm font-medium transition-colors ${
             type === "upcoming"
               ? "bg-white text-black"

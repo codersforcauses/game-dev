@@ -27,12 +27,12 @@ function transformApiEventToUiEvent(data: ApiEvent): UiEvent {
 
 export type EventTypeFilter = "past" | "upcoming";
 
-export function useEvents(type?: EventTypeFilter) {
+export function useEvents(type: EventTypeFilter = "upcoming") {
   return useQuery<ApiEvent[], AxiosError, UiEvent[]>({
-    queryKey: ["events", type ?? "all"],
+    queryKey: ["events", type],
     queryFn: async () => {
       const response = await api.get<ApiEvent[]>("/events/", {
-        params: type ? { type } : {},
+        params: { type },
       });
       return response.data;
     },
