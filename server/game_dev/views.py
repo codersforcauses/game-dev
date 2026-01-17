@@ -1,9 +1,9 @@
 # from django.shortcuts import render
 
 # Create your views here.
-from rest_framework import generics, viewsets
-from .models import Event, Art, ArtContributor, Member
-from .serializers import EventSerializer, ArtContributorSerializer, ArtSerializer, MemberSerializer
+from rest_framework import generics
+from .models import Event, Art
+from .serializers import EventSerializer, ArtSerializer
 
 
 class EventDetailAPIView(generics.RetrieveAPIView):
@@ -17,16 +17,12 @@ class EventDetailAPIView(generics.RetrieveAPIView):
         return Event.objects.filter(id=self.kwargs["id"])
 
 
-class ArtContributorViewSet(viewsets.ModelViewSet):
-    queryset = ArtContributor.objects.all()
-    serializer_class = ArtContributorSerializer
-
-
-class ArtViewSet(viewsets.ModelViewSet):
-    queryset = Art.objects.all()
+class ArtDetailAPIView(generics.RetrieveAPIView):
+    """
+    GET /api/artworks/<id>/
+    """
     serializer_class = ArtSerializer
+    lookup_url_kwarg = "id"
 
-
-class MemberViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.all()
-    serializer_class = MemberSerializer
+    def get_queryset(self):
+        return Art.objects.filter(id=self.kwargs["id"])
