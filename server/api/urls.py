@@ -17,24 +17,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from game_dev import views
-from rest_framework import routers
 from django.conf import settings
 from django.conf.urls.static import static
 
 
-Games_API_Router = routers.DefaultRouter()
-Games_API_Router.register(r'games', views.GamesView, 'game')
-
-Gameshowcase_API_Router = routers.DefaultRouter()
-Gameshowcase_API_Router.register(r'', views.GameshowcaseView, 'gameshowcase')
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/healthcheck/", include(("api.healthcheck.urls"))),
-    path("gamesAPI/itch-embed/<str:embed_id>/", views.itch_embed_proxy, name="itch-embed-proxy"),
-    path("gamesAPI/", include(Games_API_Router.urls)),
-    path("gameshowcaseAPI/", include(Gameshowcase_API_Router.urls))
+    path("api/", include("game_dev.urls")),
 ]
 
 if settings.DEBUG:
