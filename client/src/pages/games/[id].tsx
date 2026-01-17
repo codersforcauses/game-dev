@@ -125,21 +125,23 @@ export default function IndividualGamePage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-24 py-12">
-          <h1 className="mb-10 text-center font-jersey10 text-6xl font-bold tracking-wide text-[#9ca4fd]">
+          <h1 className="mb-10 text-center font-jersey10 text-6xl font-bold tracking-wide text-primary">
             {gameTitle}
           </h1>
-          <div className="w-full max-w-full sm:float-right sm:mb-4 sm:ml-6 sm:w-80">
+          <div className="w-full max-w-full sm:float-right sm:mb-4 sm:ml-8 sm:w-96">
             <table className="w-full min-w-[220px] border-collapse border-spacing-0">
               <tbody>
                 <tr className="border-b-2 border-gray-300">
-                  <td className="py-2 pr-2">Contributors</td>
-                  <td className="py-2">
-                    <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+                  <td className="py-2 pr-2 text-muted-foreground">
+                    Contributors
+                  </td>
+                  <td className="py-2 text-right">
+                    <div className="grid grid-cols-[auto_auto] gap-x-1 gap-y-1">
                       {game.contributors.map((c) => (
                         <React.Fragment key={c.member_id}>
                           <a
                             href={`/member/${c.member_id}`}
-                            className="whitespace-nowrap text-blue-400 hover:underline"
+                            className="whitespace-nowrap text-primary hover:underline"
                           >
                             {c.name}
                           </a>
@@ -150,23 +152,25 @@ export default function IndividualGamePage() {
                   </td>
                 </tr>
                 <tr className="border-b-2 border-gray-300">
-                  <td className="py-2 pr-2">Development Stage</td>
-                  <td className="py-2">{devStage}</td>
+                  <td className="py-2 pr-2 text-muted-foreground">
+                    Development Stage
+                  </td>
+                  <td className="py-2 text-right">{devStage}</td>
                 </tr>
                 <tr className="border-b-2 border-gray-300">
-                  <td className="py-2 pr-2">Host Site</td>
-                  <td className="py-2">
+                  <td className="py-2 pr-2 text-muted-foreground">Host Site</td>
+                  <td className="py-2 text-right">
                     <a
                       href={hostSite}
-                      className="whitespace-nowrap text-blue-400 underline hover:underline"
+                      className="whitespace-nowrap text-primary underline hover:underline"
                     >
                       {hostSite}
                     </a>
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2 pr-2">Event</td>
-                  <td className="py-2">{event}</td>
+                  <td className="py-2 pr-2 text-muted-foreground">Event</td>
+                  <td className="py-2 text-right">{event}</td>
                 </tr>
               </tbody>
             </table>
@@ -178,25 +182,23 @@ export default function IndividualGamePage() {
           </ul>
         </section>
 
-        {game.isItch && (
-          <section className="mt-8 flex flex-col items-center gap-6">
-            <ItchEmbed embedID={game.hostURL} name={gameTitle} />
-            <h2 className="font-jersey10 text-3xl text-[#7ecfff]">ARTWORK</h2>
+        <section className="mt-8 flex flex-col items-center gap-6">
+          {game.isItch && <ItchEmbed embedID={game.hostURL} name={gameTitle} />}
+          <h2 className="font-jersey10 text-5xl text-primary">ARTWORK</h2>
 
-            <div className="mx-auto mb-6 flex h-[240px] w-full max-w-4xl justify-center gap-6 overflow-hidden">
-              {artImages.map((img) => (
-                <Image
-                  key={img.alt}
-                  src={img.src}
-                  alt={img.alt}
-                  width={240}
-                  height={240}
-                  className="rounded-lg bg-[#232345] object-contain shadow-md"
-                />
-              ))}
-            </div>
-          </section>
-        )}
+          <div className="mx-auto mb-6 flex h-[240px] w-full max-w-4xl justify-center gap-6 overflow-hidden">
+            {artImages.map((img) => (
+              <Image
+                key={img.alt}
+                src={img.src}
+                alt={img.alt}
+                width={240}
+                height={240}
+                className="rounded-lg bg-[#232345] object-contain shadow-md"
+              />
+            ))}
+          </div>
+        </section>
       </main>
       {/* <Footer /> */}
     </div>
