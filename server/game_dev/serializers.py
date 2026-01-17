@@ -15,6 +15,7 @@ class EventSerializer(serializers.ModelSerializer):
             "location",
         ]
 
+
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
