@@ -1,9 +1,33 @@
-# from django.shortcuts import render
-
-# Create your views here.
 from rest_framework import generics
+from .serializers import GamesSerializer
+from .models import Game
+import urllib.request
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from .models import Event
 from .serializers import EventSerializer
+
+
+class GamesDetailAPIView(generics.RetrieveAPIView):
+    """
+    GET /api/games/<id>/
+    """
+    serializer_class = GamesSerializer
+    lookup_url_kwarg = "id"
+
+    def get_queryset(self):
+        return Game.objects.filter(id=self.kwargs["id"])
+
+
+@csrf_exempt
+def itch_embed_proxy(request, embed_id):
+    url = f"https://itch.io/embed/{embed_id}"
+    try:
+        with urllib.request.urlopen(url, timeout=10) as response:
+            html = response.read().decode("utf-8")
+        return JsonResponse({"html": html})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 
 class EventDetailAPIView(generics.RetrieveAPIView):
