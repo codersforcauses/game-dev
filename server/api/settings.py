@@ -154,4 +154,4 @@ MEDIA_URL = "/media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-TIME_ZONE = "GMT+8"
+#TIME_ZONE = "AWST"
