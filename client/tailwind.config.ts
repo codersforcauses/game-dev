@@ -44,6 +44,7 @@ const config = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        landingCard: "hsl(var(--landing-card))",
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -62,6 +63,7 @@ const config = {
         },
         dark_1: "var(--dark-1)",
         dark_2: "var(--dark-2)",
+        dark_3: "var(--dark-3)",
         dark_alt: "var(--dark-alt)",
         neutral_1: "var(--neutral-1)",
         neutral_2: "var(--neutral-2)",
