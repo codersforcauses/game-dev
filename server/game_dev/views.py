@@ -1,4 +1,4 @@
-from rest_framework import viewsets, generics
+from rest_framework import generics
 from .serializers import GamesSerializer
 from .models import Game
 import urllib.request
@@ -8,9 +8,15 @@ from .models import Event
 from .serializers import EventSerializer
 
 
-class GamesView(viewsets.ModelViewSet):
+class GamesDetailAPIView(generics.RetrieveAPIView):
+    """
+    GET /api/games/<id>/
+    """
     serializer_class = GamesSerializer
-    queryset = Game.objects.all()
+    lookup_url_kwarg = "id"
+
+    def get_queryset(self):
+        return Game.objects.filter(id=self.kwargs["id"])
 
 
 @csrf_exempt
