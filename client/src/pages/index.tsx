@@ -151,13 +151,22 @@ export default function Landing() {
             </div>
           </div>
 
-          <Image
-            src="/landing_placeholder.png"
-            width={600}
-            height={430}
-            alt="placeholder"
-            className="rounded-md"
-          />
+          <div className="relative">
+            <Image
+              src="/landing_placeholder.png"
+              width={600}
+              height={430}
+              alt="placeholder"
+              className="static rounded-md"
+            />
+            <Image
+              src="/vector.png"
+              width={117}
+              height={165}
+              alt="placeholder"
+              className="absolute bottom-0 left-0 -translate-x-1/3 rounded-md"
+            />
+          </div>
         </div>
       </section>
 
