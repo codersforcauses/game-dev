@@ -113,7 +113,7 @@ export default function EventsPage() {
             <section key={year}>
               <div className="flex gap-6 md:gap-10">
                 <div className="relative w-14 flex-shrink-0 md:w-20">
-                  <div className="text-2xl font-semibold text-gray-200 md:text-3xl">
+                  <div className="font-mono text-2xl font-semibold text-gray-200 md:text-3xl">
                     {year}
                   </div>
                   <div
