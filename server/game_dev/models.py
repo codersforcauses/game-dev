@@ -72,4 +72,4 @@ class GameShowcase(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return f"{self.game.name} ({self.member}) for {self.game.name}"
+        return f"{self.game.name}"
