@@ -21,8 +21,9 @@ class EventListAPIView(generics.ListAPIView):
 
         now = timezone.now()
 
-        if type_param is None or type_param == "":
-            return qs.order_by("date")
+        # Default to upcoming when type is missing/empty
+        if not type_param:
+            return qs.filter(date__gte=now).order_by("date")
 
         if type_param == "past":
             return qs.filter(date__lt=now).order_by("-date")
