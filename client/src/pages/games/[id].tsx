@@ -81,7 +81,7 @@ export default function IndividualGamePage() {
 
   // Example data variables (replace with backend data in the future)
   const gameTitle = game.name;
-  const gameCover = game.pathToThumbnail || ""; // can have placeholder of just GDUWA Logo as default placeholder
+  const gameCover = game.pathToThumbnail || "/game_dev_club_logo.svg"; // can have placeholder of just GDUWA Logo as default placeholder
   const gameDescription = game.description.split("\n");
   const completionLabels: { [key: number]: string } = {
     1: "WIP",
