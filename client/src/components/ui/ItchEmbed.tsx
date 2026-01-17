@@ -1,13 +1,5 @@
-/*
-relevant game model values:
-    name 
-    hostURL
-    itchEmbedID
-*/
-
 type ItchEmbedProps = {
   embedID: string;
-  // hostURL: string;
   name: string;
 };
 
