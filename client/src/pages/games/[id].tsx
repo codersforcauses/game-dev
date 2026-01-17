@@ -1,95 +1,65 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
-
-type Contributor = {
-  member_id: number;
-  name: string;
-  role: string;
-};
-
-type Game = {
-  name: string;
-  description: string;
-  completion: number;
-  active: boolean;
-  hostURL: string;
-  isItch: boolean;
-  pathToThumbnail: string | null;
-  event: number | null;
-  contributors: Contributor[];
-};
+import { useGame } from "@/hooks/useGames";
 
 export default function IndividualGamePage() {
   const router = useRouter();
   const { id } = router.query;
 
-  const [game, setGame] = useState<Game | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [hostSite, setHostSite] = useState<string>("");
+  const {
+    data: game,
+    isPending,
+    error,
+    isError,
+  } = useGame(router.isReady ? id : undefined);
 
-  // Fetch itch.io host URL through backend proxy
-  async function fetchItchGameUrlProxy(
-    embedID: string,
-  ): Promise<string | null> {
-    try {
-      const res = await fetch(
-        `http://localhost:8000/gamesAPI/itch-embed/${embedID}/`,
-      );
-      const data = await res.json();
-      const html = data.html;
-      const match = html.match(
-        /href="(https:\/\/[a-zA-Z0-9\-]+\.itch\.io\/[a-zA-Z0-9\-]+)"/,
-      );
-      if (match) return match[1];
-      return null;
-    } catch {
-      return null;
-    }
+  if (isPending) {
+    return (
+      <main className="mx-auto min-h-dvh max-w-6xl px-6 py-16 md:px-20">
+        <p>Loading Game...</p>
+      </main>
+    );
   }
 
-  // Fetch game data from backend
-  useEffect(() => {
-    if (!id) return;
+  if (isError) {
+    const errorMessage =
+      error?.response?.status === 404
+        ? "Game not found."
+        : "Failed to Load Game";
 
-    fetch(`http://localhost:8000/gamesAPI/games/${id}/`)
-      .then((res) => res.json())
-      .then((data: Game) => {
-        setGame(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [id]);
+    return (
+      <main className="mx-auto min-h-screen max-w-6xl px-6 py-16 md:px-20">
+        <p className="text-red-500" role="alert">
+          {errorMessage}
+        </p>
+      </main>
+    );
+  }
 
-  // Set host site URL
-  useEffect(() => {
-    if (!game) return;
+  if (!game) {
+    return (
+      <main className="mx-auto min-h-dvh max-w-6xl px-6 py-16 md:px-20">
+        <p>No Game data available.</p>
+      </main>
+    );
+  }
 
-    if (game.isItch && game.hostURL) {
-      fetchItchGameUrlProxy(game.hostURL).then((url) => {
-        setHostSite(url || "");
-      });
-    } else if (game) {
-      setHostSite(game.hostURL);
-    }
-  }, [game]);
-
-  if (loading) return <div>Loading...</div>;
-  if (!game) return <div>Game not found</div>;
-
-  // Example data variables (replace with backend data in the future)
   const gameTitle = game.name;
-  const gameCover = game.pathToThumbnail || ""; // can have placeholder of just GDUWA Logo as default placeholder
+  const gameCover = game.gameCover;
   const gameDescription = game.description.split("\n");
-  const completionLabels: { [key: number]: string } = {
+
+  const completionLabels: Record<number, string> = {
     1: "WIP",
     2: "Playable Dev",
     3: "Beta",
     4: "Completed",
   };
-  const devStage = completionLabels[game.completion] || `Stage Unknown`;
+
+  const devStage = completionLabels[game.completion] ?? "Stage Unknown";
+
   // TODO ADD EVENT
   const event = "Game Jam November 2025";
   // TODO ADD ARTIMAGES
@@ -163,10 +133,10 @@ export default function IndividualGamePage() {
                   </td>
                   <td className="py-1 text-right sm:py-2">
                     <a
-                      href={hostSite}
+                      href={game.hostSite}
                       className="text-primary underline hover:underline"
                     >
-                      {hostSite}
+                      {game.hostSite}
                     </a>
                   </td>
                 </tr>
