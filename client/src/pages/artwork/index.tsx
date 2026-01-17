@@ -2,7 +2,6 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
 import ImageCard from "@/components/ui/image-card";
 import ErrorModal from "@/components/ui/modal/error-modal";
 import { generateMockArtworks } from "@/hooks/use-artwork-data";
@@ -53,53 +52,18 @@ export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
   if (error) {
     return <ErrorModal message={error} onClose={() => router.back()} />;
   }
-  return (
-    <div data-layer="Art Page General" className="ArtPageGeneral">
-      <div
-        data-layer="Frame 1158"
-        className="Frame1158 relative flex flex-col items-center gap-2 bg-light_2 py-40"
-      >
-        <div
-          data-layer="ALL CATEGORIES"
-          className="AllCategories justify-start text-center font-jersey10 text-6xl font-normal leading-[76px] tracking-wide text-light_3"
-        >
-          FEATURED
-          <br />
-          SOME GAME
-        </div>
-        <div
-          data-layer="Placeholder image"
-          className="PlaceholderImage inline-flex items-center justify-center gap-2.5 p-2.5"
-        >
-          {PLACEHOLDER_ICON}
-        </div>
-        <div
-          data-layer="Auto Layout Horizontal"
-          className="AutoLayoutHorizontal items-start justify-start gap-6"
-        >
-          <Link href={`/about`}>
-            <Button
-              variant="outline"
-              size="lg"
-              className="rounded-[10px] font-['Jersey_10'] text-xl font-normal leading-6 tracking-wide"
-            >
-              More about us →
-            </Button>
-          </Link>
-        </div>
-      </div>
 
-      <div data-layer="Frame 1159" className="Frame1159 relative self-stretch">
-        <div className="Frame1098 aligne flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-20 bg-slate-950 py-14 pl-28 pr-24">
-          {artworks!.results.map((artwork) => renderArtworkCard(artwork))}
+  return (
+    <div className="bg-gamedev-dark min-h-screen">
+      <section className="px-6 py-10 md:px-24 md:py-14">
+        <h1 className="text-gamedev-medium-purple mb-12 text-center font-jersey10 text-5xl leading-tight tracking-wide md:mb-16 md:text-6xl lg:text-[64px]">
+          FEATURED
+        </h1>
+
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
+          {artworks?.results.map(renderArtworkCard)}
         </div>
-      </div>
-      <div
-        data-layer="footer"
-        className="Footer relative h-72 self-stretch overflow-hidden bg-indigo-950"
-      >
-        TODO add footer
-      </div>
+      </section>
     </div>
   );
 }
