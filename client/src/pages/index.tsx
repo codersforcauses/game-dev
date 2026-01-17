@@ -171,19 +171,19 @@ export default function Landing() {
       id: 1,
       title: "Summer 2026 Game Jam",
       time: "Monday 24th Oct 11:00am–4:00pm",
-      image: "/placeholder.png",
+      image: "/landing_placeholder.png",
     },
     {
       id: 2,
       title: "Godot Workshop",
       time: "Thursday 2nd Nov 2:00–4:00pm",
-      image: "/placeholder.png",
+      image: "/landing_placeholder.png",
     },
     {
       id: 3,
       title: "World domination",
       time: "Thursday 2nd Nov 2:00–4:00pm",
-      image: "/placeholder.png",
+      image: "/landing_placeholder.png",
     },
   ];
 
@@ -192,19 +192,19 @@ export default function Landing() {
       id: 1,
       title: "Cool Game",
       description: "Cool game is a game about being cool.",
-      image: "/placeholder.png",
+      image: "/landing_placeholder.png",
     },
     {
       id: 2,
       title: "Cool Game 2",
       description: "Cool game 2 is a game about being cool.",
-      image: "/placeholder.png",
+      image: "/landing_placeholder.png",
     },
     {
       id: 3,
       title: "Cool Game 3",
       description: "Cool game 3 is a game about being cool.",
-      image: "/placeholder.png",
+      image: "/landing_placeholder.png",
     },
   ];
 
@@ -275,7 +275,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="bg-background px-10">
+      <section className="bg-background px-10 py-10">
         <div className="container mx-auto rounded-lg bg-primary-foreground px-4 py-8 lg:px-12">
           {/* Title Row */}
           <div className="flex items-center justify-between px-10">
@@ -346,7 +346,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="bg-background px-10 py-10">
+      <section className="bg-background px-4 py-10 md:px-10">
         <div className="flex w-full justify-between px-4">
           <FeatureBox
             title="So... How do I get involved?"
