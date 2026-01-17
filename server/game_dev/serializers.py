@@ -21,7 +21,6 @@ class MemberSerializer(serializers.ModelSerializer):
         model = Member
         fields = [
             "name",
-            "active",
             "profile_picture",
             "about",
             "pronouns"
