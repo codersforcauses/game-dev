@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event
+from .models import Event, Member
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -13,4 +13,15 @@ class EventSerializer(serializers.ModelSerializer):
             "publicationDate",
             "cover_image",
             "location",
+        ]
+
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = [
+            "name",
+            "active",
+            "profile_picture",
+            "about",
+            "pronouns"
         ]
