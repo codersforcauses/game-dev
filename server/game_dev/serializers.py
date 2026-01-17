@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import Event
-from .models import Game, GameContributors
+from .models import Event, Member, Game, GameContributors,
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -37,3 +36,13 @@ class GamesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ('id', 'name', 'description', 'completion', 'active', 'hostURL', 'isItch', 'pathToThumbnail', 'event', "contributors")
+
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = [
+            "name",
+            "profile_picture",
+            "about",
+            "pronouns"
+        ]
