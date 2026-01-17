@@ -1,11 +1,26 @@
 "use client";
 
+import { useRouter } from "next/router";
+
+import { useMember } from "@/hooks/useMember";
+
 // import { Menu } from "lucide-react";
 // import Image from "next/image";
 // import Link from "next/link";
 // import { useState } from "react";
 
 export function MemberProfile() {
+  const router = useRouter();
+  const id = Number(router.query.id);
+  const { data: member, isLoading } = useMember(id);
+
+  if (isLoading) {
+    return <p>Loading member...</p>;
+  }
+
+  if (!member) {
+    return <p>Member not found</p>;
+  }
   return (
     <>
       <div className="m-auto min-h-80 w-4/5 bg-primary">
@@ -15,7 +30,6 @@ export function MemberProfile() {
             profile picture
           </div>
           <div className="w-4/5 bg-muted p-2.5">
-            Name | Pronouns
             <br />
             About
           </div>
