@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Member, Game, GameContributors
+from .models import Event, Member, Game, GameContributor
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class GameContributorSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source="member.name")
 
     class Meta:
-        model = GameContributors
+        model = GameContributor
         fields = ("member_id", "name", "role")
 
 

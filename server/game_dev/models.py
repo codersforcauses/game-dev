@@ -25,8 +25,8 @@ class Event(models.Model):
         return self.name
 
 
-# GameContributors table: links Game, Member, and role (composite PK)
-class GameContributors(models.Model):
+# GameContributor table: links Game, Member, and role (composite PK)
+class GameContributor(models.Model):
     game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_contributors')
     member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='member_games')
     role = models.CharField(max_length=100)

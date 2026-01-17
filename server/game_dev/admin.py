@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Member, Game, Event, GameContributors
+from .models import Member, Game, Event, GameContributor
 
 
 class MemberAdmin(admin.ModelAdmin):
@@ -22,4 +22,4 @@ class GamesAdmin(admin.ModelAdmin):
 admin.site.register(Member, MemberAdmin)
 admin.site.register(Event, EventsAdmin)
 admin.site.register(Game, GamesAdmin)
-admin.site.register(GameContributors, GameContributorAdmin)
+admin.site.register(GameContributor, GameContributorAdmin)
