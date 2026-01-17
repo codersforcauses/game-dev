@@ -36,4 +36,9 @@ class ArtSerializer(serializers.ModelSerializer):
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = ['name']
+        fields = [
+            "name",
+            "profile_picture",
+            "about",
+            "pronouns"
+        ]
