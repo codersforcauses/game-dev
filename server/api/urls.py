@@ -26,12 +26,15 @@ from django.conf.urls.static import static
 Games_API_Router = routers.DefaultRouter()
 Games_API_Router.register(r'games', views.GamesView, 'game')
 
+Gameshowcase_API_Router = routers.DefaultRouter()
+Gameshowcase_API_Router.register(r'', views.GameshowcaseView, 'gameshowcase')
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/healthcheck/", include(("api.healthcheck.urls"))),
     path("gamesAPI/itch-embed/<str:embed_id>/", views.itch_embed_proxy, name="itch-embed-proxy"),
-    path("gamesAPI/", include(Games_API_Router.urls))
+    path("gamesAPI/", include(Games_API_Router.urls)),
+    path("gameshowcaseAPI/", include(Gameshowcase_API_Router.urls))
 ]
 
 if settings.DEBUG:

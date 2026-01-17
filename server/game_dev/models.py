@@ -64,3 +64,12 @@ class Game(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+
+class GameShowcase(models.Model):
+    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_showcases')
+    member = models.ManyToManyField('Member', related_name='showcased_games')
+    description = models.TextField()
+
+    def __str__(self):
+        return f"{self.game.name} ({self.member}) for {self.game.name}"

@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics
-from .serializers import GamesSerializer
-from .models import Game
+from .serializers import GamesSerializer, GameshowcaseSerializer
+from .models import Game, GameShowcase
 import urllib.request
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -33,3 +33,8 @@ class EventDetailAPIView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         return Event.objects.filter(id=self.kwargs["id"])
+
+
+class GameshowcaseView(viewsets.ModelViewSet):
+    serializer_class = GameshowcaseSerializer
+    queryset = GameShowcase.objects.all()
