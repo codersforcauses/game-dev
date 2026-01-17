@@ -63,6 +63,6 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         fields = ('game_id', 'game_name', 'game_description', 'description', 'contributors', 'game_cover_thumbnail')
 
     def get_contributors(self, obj):
-        # Get all contributors for this game
+        # Always fetch contributors from GameContributors for the related game
         contributors = GameContributors.objects.filter(game=obj.game)
         return ShowcaseContributorSerializer(contributors, many=True).data

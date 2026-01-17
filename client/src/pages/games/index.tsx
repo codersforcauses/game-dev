@@ -21,7 +21,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8000/gameshowcaseAPI/")
+    fetch("http://localhost:8000/api/gameshowcase/")
       .then((res) => res.json())
       .then((data: ShowcaseGame[]) => {
         setShowcases(data);
@@ -56,7 +56,11 @@ export default function HomePage() {
                   <div className="flex min-h-[400px] min-w-[350px] max-w-[600px] flex-1 items-center justify-center rounded-lg bg-[#c3c3f5]">
                     {showcase.game_cover_thumbnail ? (
                       <Image
-                        src={showcase.game_cover_thumbnail}
+                        src={
+                          showcase.game_cover_thumbnail.startsWith("http")
+                            ? showcase.game_cover_thumbnail
+                            : `http://localhost:8000${showcase.game_cover_thumbnail}`
+                        }
                         alt={showcase.game_name + " cover"}
                         width={600}
                         height={350}

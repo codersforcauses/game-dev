@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import EventDetailAPIView, GamesDetailAPIView, itch_embed_proxy
+from .views import EventDetailAPIView, GamesDetailAPIView, itch_embed_proxy, GameshowcaseAPIView
 
 urlpatterns = [
     path("events/<int:id>/", EventDetailAPIView.as_view()),
     path("games/<int:id>/", GamesDetailAPIView.as_view()),
     path("itch-embed/<str:embed_id>/", itch_embed_proxy),
+    path("gameshowcase/", GameshowcaseAPIView.as_view(), name="gameshowcase-api"),  # Updated line for GameShowcase endpoint
 ]
