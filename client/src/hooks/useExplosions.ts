@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 /**
  * Position of a single explosion within a container.
@@ -28,8 +28,64 @@ export type ExplosionConfig = {
 export function useExplosions() {
   const [explosions, setExplosions] = useState<ExplosionPosition[]>([]);
 
+  const triggerExplosions = useCallback(
+    (
+      config: ExplosionConfig = {},
+      containerBounds?: DOMRect | null
+    ) => {
+      const {
+        count = 1,
+        minDelay = 0,
+        maxDelay = 100,
+        duration = 1000,
+      } = config;
+
+      // Generate explosion positions
+      const now = Date.now();
+
+      for (let i = 0; i < count; i++) {
+        let x: number;
+        let y: number;
+
+        if (containerBounds) {
+          // Random position within container bounds (10% margin)
+          const margin = 10;
+          x = margin + Math.random() * (100 - margin * 2);
+          y = margin + Math.random() * (100 - margin * 2);
+        } else {
+          // Random position across full area
+          x = Math.random() * 100;
+          y = Math.random() * 100;
+        }
+
+        const delay = minDelay + Math.random() * (maxDelay - minDelay);
+
+        setTimeout(() => {
+          const explosionId = `${now}-${i}-${Math.random()}`;
+          const explosion: ExplosionPosition = {
+            id: explosionId,
+            x,
+            y,
+            createdAt: Date.now(),
+          };
+
+          setExplosions((prev) => [...prev, explosion]);
+
+          // Clean up after duration
+          setTimeout(() => {
+            setExplosions((prev) =>
+              prev.filter((exp) => exp.id !== explosionId)
+            );
+          }, duration);
+        }, delay);
+      }
+    },
+    []
+  );
+
   return {
     explosions,
+    triggerExplosions,
   };
 }
 
