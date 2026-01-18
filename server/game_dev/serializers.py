@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import Event
-from .models import Game, GameContributors, GameShowcase
+from .models import Event, Game, Member, GameContributors, GameShowcase
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -23,7 +22,7 @@ class GameContributorSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source="member.name")
 
     class Meta:
-        model = GameContributors
+        model = GameContributor
         fields = ("member_id", "name", "role")
 
 
@@ -66,3 +65,12 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         # Always fetch contributors from GameContributors for the related game
         contributors = GameContributors.objects.filter(game=obj.game)
         return ShowcaseContributorSerializer(contributors, many=True).data
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = [
+            "name",
+            "profile_picture",
+            "about",
+            "pronouns"
+        ]
