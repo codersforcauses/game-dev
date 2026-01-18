@@ -6,10 +6,10 @@ type ApiMember = {
   name: string;
   about: string;
   pronouns: string;
-  profile_picture: string;
+  profile_picture?: string;
 };
 
-// return an api member type
+// return api member, import id number from router
 export const useMember = (
   id: number,
   args?: Omit<UseQueryOptions<ApiMember>, "queryKey" | "queryFn">,

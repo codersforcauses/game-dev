@@ -1,44 +1,70 @@
 "use client";
 
-import { useRouter } from "next/router";
+import Image from "next/image";
 
-import { useMember } from "@/hooks/useMember";
+// unused atm, as the member isnt linked a project on the backend
+/* export type MemberProfileProject = {
+  id: string;
+  name: string;
+  description?: string;
+  href?: string;
+}; */
 
-// import { Menu } from "lucide-react";
-// import Image from "next/image";
-// import Link from "next/link";
-// import { useState } from "react";
+export type MemberProfileData = {
+  name: string;
+  about: string;
+  pronouns?: string;
+  profile_picture?: string;
+};
 
-export function MemberProfile() {
-  const router = useRouter();
-  const id = Number(router.query.id);
-  const { data: member, isLoading } = useMember(id);
+type MemberProfileProps = {
+  member: MemberProfileData;
+  //projects?: MemberProfileProject[];
+};
 
-  if (isLoading) {
-    return <p>Loading member...</p>;
-  }
+function initialsFromName(name: string) {
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
+}
 
-  if (!member) {
-    return <p>Member not found</p>;
-  }
+export function MemberProfile({ member }: MemberProfileProps) {
+  const initials = initialsFromName(member.name);
   return (
     <>
       <div className="m-auto h-fit w-4/5 rounded-md bg-card">
         <div className="mx-2 flex flex-wrap justify-center gap-y-5 py-10 lg:mx-10">
-          <div className="mr-2 size-32 overflow-clip rounded-full bg-accent text-center lg:mr-10">
-            profile picture
+          <div className="relative mr-2 size-32 overflow-clip rounded-full bg-accent text-center lg:mr-10">
+            {member.profile_picture ? (
+              <Image
+                src={member.profile_picture}
+                alt={`${member.name} profile picture`}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center font-jersey10 text-5xl text-muted-foreground">
+                {initials}
+              </div>
+            )}
           </div>
           <div className="flex w-4/5 flex-col gap-2 rounded-md p-2.5 font-firaCode">
             <div className="font-jersey10 text-4xl">
               {" "}
               <div className="flex">
-                <div className="min-w-fit">Jane Doe</div>
+                <div className="min-w-fit">
+                  <p>{member.name}</p>
+                </div>
                 <hr className="hidden lg:ml-5 lg:flex lg:w-full lg:self-center" />{" "}
               </div>{" "}
-              <div className="font-firaCode text-lg"> they/them </div>
+              <div className="font-firaCode text-lg">
+                <p>{member.pronouns}</p>
+              </div>
             </div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <p>{member.about}</p>
           </div>
         </div>
       </div>
