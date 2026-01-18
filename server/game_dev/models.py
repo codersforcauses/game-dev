@@ -36,5 +36,9 @@ class Committee(models.Model):
         "FRE": "Fresher Rep" 
     }
     role = models.CharField(max_length=9, choices=roles, default="FRE")
+    
+    def get_member(self):
+        return self.id
+    
     def __str__(self):
         return self.id.name
