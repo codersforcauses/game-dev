@@ -7,6 +7,7 @@ type ApiMember = {
   about: string;
   pronouns: string;
   profile_picture?: string;
+  active: boolean;
 };
 
 // return api member, import id number from router
@@ -16,8 +17,9 @@ export const useMember = (
 ) => {
   return useQuery<ApiMember>({
     queryKey: ["member", id],
-    queryFn: () => {
-      return api.get(`/members/${id}/`).then((res) => res.data);
+    queryFn: async () => {
+      const res = await api.get(`/members/${id}/`);
+      return res.data;
     },
     enabled: !!id,
     ...args,

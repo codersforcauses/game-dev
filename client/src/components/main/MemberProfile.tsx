@@ -15,6 +15,7 @@ export type MemberProfileData = {
   about: string;
   pronouns?: string;
   profile_picture?: string;
+  active: boolean;
 };
 
 type MemberProfileProps = {
@@ -33,6 +34,17 @@ function initialsFromName(name: string) {
 
 export function MemberProfile({ member }: MemberProfileProps) {
   const initials = initialsFromName(member.name);
+
+  if (!member.active) {
+    return (
+      <div className="m-auto h-fit w-4/5 rounded-md bg-card p-10 text-center">
+        <p className="text-lg text-muted-foreground">
+          This member profile is no longer active.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="m-auto h-fit w-4/5 rounded-md bg-card">

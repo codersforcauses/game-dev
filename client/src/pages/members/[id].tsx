@@ -12,8 +12,10 @@ export default function MemberPage() {
   if (isLoading) {
     return <p>Loading member...</p>;
   }
+
   if (!member) {
     return <p>Member not found</p>;
   }
+
   return <MemberProfile member={member} />;
 }
