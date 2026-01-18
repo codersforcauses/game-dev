@@ -13,8 +13,16 @@ export default function AboutPage() {
   const topRow: any[] = [];
   const bottomRow: any[] = [];
   //lists that will be populated with member objects in the committee
-  const roleOrder = ["President", "Vice President", "Secretary", "Treasurer", "Marketing", "Events OCM", "Projects OCM", "Fresher Rep"]
-  
+  const roleOrder = [
+    "President",
+    "Vice President",
+    "Secretary",
+    "Treasurer",
+    "Marketing",
+    "Events OCM",
+    "Projects OCM",
+    "Fresher Rep",
+  ];
 
   if (isPending) {
     for (let i = 0; i < 8; i++) {
@@ -137,7 +145,7 @@ export default function AboutPage() {
                     {member.name} {member.pronouns}
                   </p>
                   <p className="inline-block bg-[#1B1F4C] px-2 py-1 text-[#9ca4fd]">
-                    {roleOrder[4+idx]}
+                    {roleOrder[4 + idx]}
                   </p>
                 </div>
               </div>
