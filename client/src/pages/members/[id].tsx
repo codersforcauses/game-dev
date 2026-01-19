@@ -13,6 +13,8 @@ export default function MemberPage() {
     return <p>Loading member...</p>;
   }
 
+  // currently displays member not found but can be improved with routing to 404 page (issue #46) :)
+  //
   if (isError || !member) {
     return <p>Member not found</p>;
   }
