@@ -19,6 +19,9 @@ export const useMember = (
     queryKey: ["member", id],
     queryFn: async () => {
       const res = await api.get(`/members/${id}/`);
+      if (!res.data.active) {
+        throw new Error("Member not found");
+      }
       return res.data;
     },
     enabled: !!id,
