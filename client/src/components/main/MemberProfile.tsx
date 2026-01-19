@@ -38,20 +38,27 @@ export function MemberProfile({ member }: MemberProfileProps) {
   return (
     <>
       <div className="m-auto h-fit w-4/5 rounded-md bg-card">
-        <div className="mx-2 flex flex-wrap justify-center gap-y-5 py-10 lg:mx-10">
-          <div className="relative mr-2 size-32 overflow-clip rounded-full bg-accent text-center lg:mr-10">
-            {member.profile_picture ? (
-              <Image
-                src={member.profile_picture}
-                alt={`${member.name} profile picture`}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center font-jersey10 text-5xl text-muted-foreground">
-                {initials}
-              </div>
-            )}
+        <div className="mx-2 flex flex-wrap items-center justify-center gap-y-5 py-7 lg:mx-10">
+          <div className="grid grid-cols-1 grid-rows-1 items-center justify-items-center lg:mr-6">
+            <div className="absolute size-32 overflow-clip bg-accent text-center">
+              {member.profile_picture ? (
+                <Image
+                  src={member.profile_picture}
+                  alt={`${member.name} profile picture`}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center font-jersey10 text-5xl text-muted-foreground">
+                  {initials}
+                </div>
+              )}
+            </div>
+            <Image
+              src="/frame.png"
+              alt="golden pixel art frame around profile picture"
+              className="z-10 mt-4 h-48 w-44"
+            />
           </div>
           <div className="flex w-4/5 flex-col gap-2 rounded-md p-2.5 font-firaCode">
             <div className="font-jersey10 text-4xl">
