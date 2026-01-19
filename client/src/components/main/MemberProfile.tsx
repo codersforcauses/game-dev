@@ -57,6 +57,8 @@ export function MemberProfile({ member }: MemberProfileProps) {
             <Image
               src="/frame.png"
               alt="golden pixel art frame around profile picture"
+              width={1200}
+              height={1200}
               className="z-10 mt-4 h-48 w-44"
             />
           </div>
