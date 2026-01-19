@@ -20,7 +20,7 @@ export const useMember = (
     queryFn: async () => {
       const res = await api.get(`/members/${id}/`);
       if (!res.data.active) {
-        throw new Error("Member not found");
+        throw new Error("Member is not active; raising error");
       }
       return res.data;
     },
