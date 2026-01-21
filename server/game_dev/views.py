@@ -6,19 +6,26 @@ from .models import Event
 from .serializers import EventSerializer
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
+from rest_framework.pagination import PageNumberPagination
+
+
+class EventPagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = "page_size"
+    max_page_size = 100
 
 
 class EventListAPIView(generics.ListAPIView):
     """
     GET /api/events/
-    Returns a list of events (optionally filtered by time)
+    Returns a paginated list of events (optionally filtered by time)
     """
     serializer_class = EventSerializer
+    pagination_class = EventPagination
 
     def get_queryset(self):
         qs = Event.objects.all()
         type_param = self.request.query_params.get("type")
-
         now = timezone.now()
 
         # Default to upcoming when type is missing/empty

@@ -14,7 +14,7 @@ type ApiEvent = {
   cover_image: string | null;
 };
 
-type UiEvent = Omit<ApiEvent, "cover_image"> & {
+export type UiEvent = Omit<ApiEvent, "cover_image"> & {
   coverImage: string;
 };
 
@@ -27,15 +27,48 @@ function transformApiEventToUiEvent(data: ApiEvent): UiEvent {
 
 export type EventTypeFilter = "past" | "upcoming";
 
-export function useEvents(type: EventTypeFilter = "upcoming") {
-  return useQuery<ApiEvent[], AxiosError, UiEvent[]>({
-    queryKey: ["events", type],
+type PaginatedResponse<T> = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+};
+
+export type EventsPageData = {
+  items: UiEvent[];
+  count: number;
+  next: string | null;
+  previous: string | null;
+};
+
+type UseEventsParams = {
+  type?: EventTypeFilter;
+  page?: number;
+  pageSize?: number;
+};
+
+export function useEvents({
+  type = "upcoming",
+  page = 1,
+  pageSize,
+}: UseEventsParams = {}) {
+  return useQuery<PaginatedResponse<ApiEvent>, AxiosError, EventsPageData>({
+    queryKey: ["events", type, page, pageSize ?? "default"],
     queryFn: async () => {
-      const response = await api.get<ApiEvent[]>("/events/", {
-        params: { type },
+      const response = await api.get<PaginatedResponse<ApiEvent>>("/events/", {
+        params: {
+          type,
+          page,
+          ...(pageSize ? { page_size: pageSize } : {}),
+        },
       });
       return response.data;
     },
-    select: (data) => data.map(transformApiEventToUiEvent),
+    select: (data) => ({
+      items: data.results.map(transformApiEventToUiEvent),
+      count: data.count,
+      next: data.next,
+      previous: data.previous,
+    }),
   });
 }

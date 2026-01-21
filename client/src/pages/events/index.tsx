@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { EventTypeFilter, useEvents } from "@/hooks/useEvents";
+import { EventTypeFilter, UiEvent,useEvents } from "@/hooks/useEvents";
 
 function formatDateTimeLine(dateString: string): string {
   try {
@@ -45,6 +45,9 @@ function groupEventsByYear<T extends { date: string }>(
 
 export default function EventsPage() {
   const router = useRouter();
+  const [page, setPage] = useState(1);
+
+  const pageSize = 20;
 
   const rawType = useMemo(() => {
     const t = router.query.type;
@@ -66,7 +69,23 @@ export default function EventsPage() {
     }
   }, [router.isReady, rawType, router]);
 
-  const { data: events, isPending, isError } = useEvents(type);
+  useEffect(() => {
+    setPage(1);
+  }, [type]);
+
+  const { data, isPending, isError, isFetching } = useEvents({
+    type,
+    page,
+    pageSize,
+  });
+
+  const events: UiEvent[] | undefined = data?.items;
+  const count = data?.count ?? 0;
+
+  const hasNext = Boolean(data?.next);
+  const hasPrev = Boolean(data?.previous);
+
+  const shouldShowPagination = !isPending && !isError && count > pageSize;
 
   const isEmpty = !isPending && !isError && (!events || events.length === 0);
 
@@ -118,6 +137,45 @@ export default function EventsPage() {
           Upcoming
         </button>
       </div>
+
+      {shouldShowPagination && (
+        <div className="mb-10 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={!hasPrev || isPending || isFetching}
+            className={`rounded-md border px-4 py-2 text-sm transition-colors ${
+              !hasPrev || isPending || isFetching
+                ? "border-gray-700 text-gray-500"
+                : "border-gray-600 text-gray-200 hover:bg-gray-800"
+            }`}
+          >
+            Prev
+          </button>
+
+          <div className="text-sm text-gray-300">
+            Page <span className="font-semibold text-gray-100">{page}</span>
+            <span className="text-gray-400"> ・ {count} total</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setPage((p) => p + 1)}
+            disabled={!hasNext || isPending || isFetching}
+            className={`rounded-md border px-4 py-2 text-sm transition-colors ${
+              !hasNext || isPending || isFetching
+                ? "border-gray-700 text-gray-500"
+                : "border-gray-600 text-gray-200 hover:bg-gray-800"
+            }`}
+          >
+            Next
+          </button>
+
+          {isFetching && !isPending && (
+            <span className="text-sm text-gray-400">Loading...</span>
+          )}
+        </div>
+      )}
 
       {isPending && <p>Loading events...</p>}
 
