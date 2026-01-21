@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
-import { EventTypeFilter, UiEvent,useEvents } from "@/hooks/useEvents";
+import { EventTypeFilter, UiEvent, useEvents } from "@/hooks/useEvents";
 
 function formatDateTimeLine(dateString: string): string {
   try {
