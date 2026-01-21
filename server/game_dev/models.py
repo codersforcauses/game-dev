@@ -24,7 +24,7 @@ class Event(models.Model):
         return self.name
 
 class Committee(models.Model):
-    id = models.OneToOneField(Member, on_delete=models.DO_NOTHING, primary_key=True)
+    id = models.OneToOneField(Member, on_delete=models.CASCADE, primary_key=True)
     roles = {
         "P": "President",
         "VP": "Vice-President",
@@ -35,7 +35,7 @@ class Committee(models.Model):
         "PRO": "Projects OCM",
         "FRE": "Fresher Rep" 
     }
-    role = models.CharField(max_length=9, choices=roles, default="FRE")
+    role = models.CharField(max_length=9, choices=roles, default="FRE", unique=True)
     
     def get_member(self):
         return self.id
