@@ -23,6 +23,7 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
+
 class Committee(models.Model):
     id = models.OneToOneField(Member, on_delete=models.CASCADE, primary_key=True)
     roles = {
@@ -33,12 +34,12 @@ class Committee(models.Model):
         "MARK": "Marketing",
         "EV": "Events OCM",
         "PRO": "Projects OCM",
-        "FRE": "Fresher Rep" 
+        "FRE": "Fresher Rep"
     }
     role = models.CharField(max_length=9, choices=roles, default="FRE", unique=True)
-    
+
     def get_member(self):
         return self.id
-    
+
     def __str__(self):
         return self.id.name

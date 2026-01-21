@@ -8,7 +8,8 @@ class MemberAdmin(admin.ModelAdmin):
 
 class EventAdmin(admin.ModelAdmin):
     list_display = ("name", "date", "location", "publicationDate")
-    
+
+
 class CommitteeAdmin(admin.ModelAdmin):
     pass
 

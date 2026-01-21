@@ -71,7 +71,7 @@ class EventModelTest(TestCase):
     def test_event_datetime_matches(self):
         event = Event.objects.get(pk=self.event.pk)
         self.assertEqual(event.date, self.event_datetime)
-        
+
 
 class CommitteeModelTest(TestCase):
     def setUp(self):
@@ -85,13 +85,13 @@ class CommitteeModelTest(TestCase):
         except Member.DoesNotExist:
             self.fail("Member was not properly created before testing Committee model; check Member model")
         self.committee = Committee.objects.create(id = self.member)
-        
+
     def test_committee_creation(self):
         try:
             Committee.objects.get(id=self.member)
         except Member.DoesNotExist:
             self.fail("Committee Member was not properly created")
-            
+
     def test_role_is_unique(self):
         Member.objects.create(
             name = "Jane Doe",
@@ -102,7 +102,7 @@ class CommitteeModelTest(TestCase):
             Committee.objects.create(id = Member.objects.get(name="Jane Doe"), role="P")
             self.fail("Committee Member with a duplicate role was created")
         except:
-            pass
+            return True
     
     def test_cascade_from_committee(self):
         self.committee.delete()
@@ -117,7 +117,7 @@ class CommitteeModelTest(TestCase):
             Committee.objects.get(id = self.member)
             self.fail("Deleting Member Object did not delete a possible corresponding Committee object (undesired behaviour)")
         except:
-            pass
+            return True
 
 
 class EventListAPITest(TestCase):

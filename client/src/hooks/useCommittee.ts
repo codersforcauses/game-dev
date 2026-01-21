@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 
 import api from "@/lib/api";
 
-type ApiMember = {
+export type ApiMember = {
   name: string;
   profile_picture: string;
   pronouns: string;

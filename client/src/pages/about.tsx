@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
-import { useCommittee } from "@/hooks/useCommittee";
+import { useCommittee, ApiMember } from "@/hooks/useCommittee";
 import { useRouter } from "next/router";
 
 export default function AboutPage() {
@@ -10,8 +10,8 @@ export default function AboutPage() {
 
   const { data: committee, isPending, error, isError } = useCommittee();
 
-  const topRow: any[] = [];
-  const bottomRow: any[] = [];
+  const topRow: ApiMember[] = [];
+  const bottomRow: ApiMember[] = [];
   //lists that will be populated with member objects in the committee
   const roleOrder = [
     "President",
@@ -27,9 +27,19 @@ export default function AboutPage() {
   if (isPending) {
     for (let i = 0; i < 8; i++) {
       if (i < 4) {
-        topRow.push({ name: "Loading...", pronouns: "", role: "" });
+        topRow.push({
+          name: "Loading...",
+          pronouns: "",
+          profile_picture: "",
+          about: "",
+        });
       } else {
-        bottomRow.push({ name: "Loading...", pronouns: "", role: "" });
+        bottomRow.push({
+          name: "Loading...",
+          pronouns: "",
+          profile_picture: "",
+          about: "",
+        });
       }
     }
   } else if (isError) {
@@ -114,7 +124,7 @@ export default function AboutPage() {
                     alt=""
                     width={108}
                     height={1}
-                    className="w-[106px] h-[106px] mb-3"
+                    className="mb-3 h-[106px] w-[106px]"
                   />
                 </div>
                 <div className="w-[180px] text-left font-firaCode text-[9px] leading-tight">
@@ -149,7 +159,7 @@ export default function AboutPage() {
                     alt=""
                     width={108}
                     height={1}
-                    className="w-[106px] h-[106px] mb-3"
+                    className="mb-3 h-[106px] w-[106px]"
                   />
                 </div>
                 <div className="w-[180px] text-left font-firaCode text-[9px] leading-tight">
