@@ -109,7 +109,13 @@ export default function AboutPage() {
                     backgroundImage: "url('/frame.png')",
                   }}
                 >
-                  <ImageIcon className="h-16 w-16 text-white/60" />
+                  <Image
+                    src={member.profile_picture}
+                    alt=""
+                    width={108}
+                    height={1}
+                    className="w-[106px] h-[106px] mb-3"
+                  />
                 </div>
                 <div className="w-[180px] text-left font-firaCode text-[9px] leading-tight">
                   <p className="inline-block bg-[#1B1F4C] px-2 py-1 text-white">
@@ -138,7 +144,13 @@ export default function AboutPage() {
                     backgroundImage: "url('/frame.png')",
                   }}
                 >
-                  <ImageIcon className="h-16 w-16 text-white/60" />
+                  <Image
+                    src={member.profile_picture}
+                    alt=""
+                    width={108}
+                    height={1}
+                    className="w-[106px] h-[106px] mb-3"
+                  />
                 </div>
                 <div className="w-[180px] text-left font-firaCode text-[9px] leading-tight">
                   <p className="inline-block bg-[#1B1F4C] px-2 py-1 text-white">
