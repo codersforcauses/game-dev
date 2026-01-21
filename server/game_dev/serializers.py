@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Game, Member, GameContributors, GameShowcase
+from .models import Event, Game, Member, GameShowcase, GameContributor
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -42,10 +42,11 @@ class GamesSerializer(serializers.ModelSerializer):
 class ShowcaseContributorSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='member.name', read_only=True)
     role = serializers.CharField(read_only=True)
-    #social_links = serializers.CharField(source='member.social_links', read_only=True)
-    #socialmedia_name = serializers.CharField(source='member.socialmedia_name', read_only=True)
+    # social_links = serializers.CharField(source='member.social_links', read_only=True)
+    # socialmedia_name = serializers.CharField(source='member.socialmedia_name', read_only=True)
+
     class Meta:
-        model = GameContributors
+        model = GameContributor
         fields = ("name", "role")
 
 
@@ -62,9 +63,11 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         fields = ('game_id', 'game_name', 'game_description', 'description', 'contributors', 'game_cover_thumbnail')
 
     def get_contributors(self, obj):
-        # Always fetch contributors from GameContributors for the related game
-        contributors = GameContributors.objects.filter(game=obj.game)
+        # Always fetch contributors from GameContributor for the related game
+        contributors = GameContributor.objects.filter(game=obj.game)
         return ShowcaseContributorSerializer(contributors, many=True).data
+
+
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
