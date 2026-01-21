@@ -16,17 +16,23 @@ const ImageCard = ({
   children,
   backContent,
 }: ImageCardProps) => {
-  const hasBack = Boolean(backContent);
-  const cardFlipClass = hasBack
-    ? " group-hover:[transform:rotateY(180deg)]"
-    : "";
+  const [isFlipped, setIsFlipped] = React.useState(false);
 
   return (
-    <div className="group p-4 [perspective:1200px]">
+    <div className="p-4" style={{ perspective: "1200px" }}>
       <div
-        className={`relative h-[30rem] w-[20rem] cursor-pointer select-none rounded-[10px] shadow-[12px_17px_51px_rgba(0,0,0,0.22)] transition-transform duration-500 hover:scale-105 active:rotate-1 active:scale-95 [transform-style:preserve-3d]${cardFlipClass}`}
+        className="relative h-[30rem] w-[20rem] cursor-pointer select-none rounded-[10px] shadow-[12px_17px_51px_rgba(0,0,0,0.22)] transition-transform duration-500"
+        style={{
+          transformStyle: "preserve-3d",
+          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        }}
+        onMouseEnter={() => backContent && setIsFlipped(true)}
+        onMouseLeave={() => backContent && setIsFlipped(false)}
       >
-        <div className="absolute inset-0 overflow-hidden rounded-[10px] border border-white bg-dark_alt backdrop-blur-md [backface-visibility:hidden]">
+        <div
+          className="absolute inset-0 overflow-hidden rounded-[10px] border border-white bg-dark_alt backdrop-blur-md"
+          style={{ backfaceVisibility: "hidden" }}
+        >
           {imageSrc ? (
             <>
               <Image
@@ -49,8 +55,14 @@ const ImageCard = ({
           )}
         </div>
 
-        {hasBack && (
-          <div className="absolute inset-0 flex flex-col overflow-y-auto rounded-[10px] border border-white bg-dark_3 p-6 text-light_1 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+        {backContent && (
+          <div
+            className="absolute inset-0 flex flex-col overflow-y-auto rounded-[10px] border border-white bg-dark_3 p-6 text-light_1"
+            style={{
+              backfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+            }}
+          >
             {backContent}
           </div>
         )}
