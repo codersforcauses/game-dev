@@ -69,7 +69,6 @@ const config = {
         neutral_2: "var(--neutral-2)",
         neutral_3: "var(--neutral-3)",
         neutral_4: "var(--neutral-4)",
-        neutral_5: "var(--neutral-5)",
         light_1: "var(--light-1)",
         light_2: "var(--light-2)",
         light_3: "var(--light-3)",
