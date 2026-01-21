@@ -37,7 +37,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
 
   return (
     <>
-      <div className="m-auto h-fit w-4/5 rounded-md bg-card">
+      <div className="m-auto h-fit rounded-md bg-card">
         <div className="mx-2 flex flex-wrap items-center justify-center gap-y-5 py-7 lg:mx-10">
           <div className="grid grid-cols-1 grid-rows-1 items-center justify-items-center lg:mr-6">
             <div className="absolute size-32 overflow-clip bg-accent text-center">
@@ -59,7 +59,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
               alt="golden pixel art frame around profile picture"
               width={1200}
               height={1200}
-              className="z-10 mt-4 h-48 w-44"
+              className="z-0 mt-4 h-48 w-44"
             />
           </div>
           <div className="flex w-4/5 flex-col gap-2 rounded-md p-2.5 font-firaCode">
@@ -79,12 +79,33 @@ export function MemberProfile({ member }: MemberProfileProps) {
           </div>
         </div>
       </div>
-      <div className="m-auto min-h-80 w-4/5">
-        <h2 className="mx-10 mt-5 font-jersey10 text-5xl">Projects</h2>
-        <div className="m-auto flex justify-center p-5">
-          <div className="max-w-min border">1</div>
-          <div className="max-w-min border">2</div>
-          <div className="max-w-min border">3</div>
+      <div className="m-auto min-h-80 w-11/12">
+        <h2 className="mt-7 text-center font-jersey10 text-5xl">Projects</h2>
+        <div className="m-auto my-5 flex flex-wrap justify-center gap-8">
+          <div className="w-fit rounded-md border border-[#A07CE6] bg-card p-5">
+            <p className="mb-2 h-44 w-fit rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+              Image + Link to Project Here <br /> (or maybe embed)
+            </p>
+            <p className="font-jersey10 text-4xl"> Project Title </p>
+          </div>
+          <div className="w-fit rounded-md border border-[#A07CE6] bg-card p-5">
+            <p className="mb-2 h-44 w-fit rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+              Image + Link to Project Here
+            </p>
+            <p className="font-jersey10 text-4xl"> Project Title </p>
+          </div>
+          <div className="w-fit rounded-md border border-[#A07CE6] bg-card p-5">
+            <p className="mb-2 h-44 w-fit rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+              Image + Link to Project Here
+            </p>
+            <p className="font-jersey10 text-4xl"> Project Title </p>
+          </div>
+          <div className="w-fit rounded-md border border-[#A07CE6] bg-card p-5">
+            <p className="mb-2 h-44 w-fit rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+              Image + Link to Project Here
+            </p>
+            <p className="font-jersey10 text-4xl"> Project Title </p>
+          </div>
         </div>
       </div>
     </>
