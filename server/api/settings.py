@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     "django_extensions",
     "rest_framework",
     "corsheaders",
-    "api.healthcheck",
     "game_dev",
 ]
 

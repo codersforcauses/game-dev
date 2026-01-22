@@ -3,6 +3,7 @@ from .models import Member, Event
 import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
+from django.urls import reverse
 
 
 class MemberModelTest(TestCase):
@@ -70,3 +71,76 @@ class EventModelTest(TestCase):
     def test_event_datetime_matches(self):
         event = Event.objects.get(pk=self.event.pk)
         self.assertEqual(event.date, self.event_datetime)
+
+
+class EventListAPITest(TestCase):
+    def setUp(self):
+        self.url = reverse("events-list")
+
+        now = timezone.now()
+
+        self.past_old = Event.objects.create(
+            name="Past Old Event",
+            date=now - datetime.timedelta(days=30),
+            description="past old",
+            publicationDate=now.date(),
+            location="Perth",
+        )
+        self.past_new = Event.objects.create(
+            name="Old Event2",
+            date=now - datetime.timedelta(days=1),
+            description="past new",
+            publicationDate=now.date(),
+            location="Perth",
+        )
+        self.up_soon = Event.objects.create(
+            name="Upcoming Soon",
+            date=now + datetime.timedelta(days=1),
+            description="up soon 1 day",
+            publicationDate=now.date(),
+            location="Perth",
+        )
+        self.up_later = Event.objects.create(
+            name="Upcoming Later",
+            date=now + datetime.timedelta(days=30),
+            description="up later",
+            publicationDate=now.date(),
+            location="Perth",
+        )
+
+    def _ids(self, resp_json):
+        return [item["id"] for item in resp_json["results"]]
+
+    def test_past(self):
+        res = self.client.get(self.url, {"type": "past"})
+        self.assertEqual(res.status_code, 200)
+
+        body = res.json()
+        self.assertIn("results", body)
+        self.assertIn("count", body)
+
+        ids = self._ids(body)
+        self.assertEqual(ids, [self.past_new.id, self.past_old.id])
+
+    def test_upcoming(self):
+        res = self.client.get(self.url, {"type": "upcoming"})
+        self.assertEqual(res.status_code, 200)
+
+        body = res.json()
+        self.assertIn("results", body)
+        self.assertIn("count", body)
+
+        ids = self._ids(body)
+        self.assertEqual(ids, [self.up_soon.id, self.up_later.id])
+
+    def test_default_is_upcoming(self):
+        res = self.client.get(self.url)
+        self.assertEqual(res.status_code, 200)
+
+        body = res.json()
+        ids = self._ids(body)
+        self.assertEqual(ids, [self.up_soon.id, self.up_later.id])
+
+    def test_invalid_type(self):
+        res = self.client.get(self.url, {"type": "invalid"})
+        self.assertEqual(res.status_code, 400)
