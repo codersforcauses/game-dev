@@ -35,7 +35,7 @@ class GamesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'name', 'description', 'completion', 'active', 'hostURL', 'isItch', 'pathToThumbnail', 'event', "contributors")
+        fields = ('id', 'name', 'description', 'completion', 'active', 'hostURL', 'isItch', 'itchEmbedID', 'pathToThumbnail', 'event', "contributors")
 
 
 # Contributor serializer for name and role

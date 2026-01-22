@@ -16,6 +16,8 @@ type ApiGame = {
   active: boolean;
   hostURL: string;
   isItch: boolean;
+  // TO DO: Add support for no itchEmbedID for non-itch games
+  itchEmbedID: string;
   pathToThumbnail: string | null;
   event: number | null;
   contributors: Contributor[];
@@ -23,7 +25,6 @@ type ApiGame = {
 
 type UiGame = Omit<ApiGame, "pathToThumbnail"> & {
   gameCover: string;
-  hostSite: string;
 };
 
 /**
@@ -41,7 +42,6 @@ function transformApiGameToUiGame(data: ApiGame): UiGame {
   return {
     ...data,
     gameCover: data.pathToThumbnail ?? "/game_dev_club_logo.svg",
-    hostSite: data.isItch ? `https://${data.hostURL}.itch.io` : data.hostURL,
   };
 }
 

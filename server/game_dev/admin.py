@@ -20,7 +20,7 @@ class GameShowcaseAdmin(admin.ModelAdmin):
 
 
 class GamesAdmin(admin.ModelAdmin):
-    list_display = ("name", "description", "completion", "active", "hostURL", "isItch", "pathToThumbnail", "event")
+    list_display = ("name", "description", "completion", "active", "hostURL", "isItch", "itchEmbedID", "pathToThumbnail", "event")
 
 
 admin.site.register(Member, MemberAdmin)
