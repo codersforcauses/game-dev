@@ -55,13 +55,13 @@ class EventDetailAPIView(generics.RetrieveAPIView):
 
 class CommitteeAPIView(generics.ListAPIView):
     serializer_class = MemberSerializer
-    
+
     def get_queryset(self):
         outputList = []
         roleOrder = ("P", "VP", "SEC", "TRE", "MARK", "EVE", "PRO", "FRE")
         for i in roleOrder:
             try:
                 outputList.append(Committee.objects.get(role=i).id)
-            except:
+            except Committee.DoesNotExist:
                 outputList.append({"name": "Position not filled", "profile_picture": "", "about": "", "pronouns": ""})
         return outputList

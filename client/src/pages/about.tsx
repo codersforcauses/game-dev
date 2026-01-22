@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { ImageIcon } from "lucide-react";
-import { useCommittee, ApiMember } from "@/hooks/useCommittee";
-import { useRouter } from "next/router";
+import Image from "next/image";
+
+import { ApiMember, useCommittee } from "@/hooks/useCommittee";
 
 export default function AboutPage() {
   //const router = useRouter();
@@ -83,7 +83,9 @@ export default function AboutPage() {
                 etc. Second paragraph here, a second paragraph would be pretty
                 cool. The more info the better yippee!!
               </p>
-              <p>Lorem ipsum dolor such and such I can't remember the rest.</p>
+              <p>
+                Lorem ipsum dolor such and such I can&apos;t remember the rest.
+              </p>
             </div>
           </div>
           <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-[#C5C5E8] md:w-96 lg:w-[512px]">

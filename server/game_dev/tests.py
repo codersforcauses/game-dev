@@ -4,6 +4,7 @@ import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 from django.urls import reverse
+from django.db.utils import IntegrityError
 
 
 class MemberModelTest(TestCase):
@@ -76,15 +77,15 @@ class EventModelTest(TestCase):
 class CommitteeModelTest(TestCase):
     def setUp(self):
         self.member = Member.objects.create(
-            name = "Linus Torvalds",
-            about = "Linux creator",
-            pronouns = "He/Him"
+            name="Linus Torvalds",
+            about="Linux creator",
+            pronouns="He/Him"
         )
         try:
             Member.objects.get(name="Linus Torvalds")
         except Member.DoesNotExist:
             self.fail("Member was not properly created before testing Committee model; check Member model")
-        self.committee = Committee.objects.create(id = self.member)
+        self.committee = Committee.objects.create(id=self.member, role="P")
 
     def test_committee_creation(self):
         try:
@@ -94,29 +95,29 @@ class CommitteeModelTest(TestCase):
 
     def test_role_is_unique(self):
         Member.objects.create(
-            name = "Jane Doe",
-            about = "Placeholder",
-            pronouns = "She/Her"
+            name="Jane Doe",
+            about="Placeholder",
+            pronouns="She/Her"
         )
         try:
-            Committee.objects.create(id = Member.objects.get(name="Jane Doe"), role="P")
+            Committee.objects.create(id=Member.objects.get(name="Jane Doe"), role="P")
             self.fail("Committee Member with a duplicate role was created")
-        except:
+        except IntegrityError:
             return True
-    
+
     def test_cascade_from_committee(self):
         self.committee.delete()
         try:
-            Member.objects.get(name = self.member.name)
-        except:
+            Member.objects.get(name=self.member.name)
+        except Member.DoesNotExist:
             self.fail("Deleting Committee object deleted it's corresponding Member object (undesired behaviour)")
-        
+
     def test_cascade_from_member(self):
         self.member.delete()
         try:
-            Committee.objects.get(id = self.member)
+            Committee.objects.get(id=self.member)
             self.fail("Deleting Member Object did not delete a possible corresponding Committee object (undesired behaviour)")
-        except:
+        except Committee.DoesNotExist:
             return True
 
 

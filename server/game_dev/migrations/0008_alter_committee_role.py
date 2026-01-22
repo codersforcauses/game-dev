@@ -13,6 +13,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='committee',
             name='role',
-            field=models.CharField(choices=[('P', 'President'), ('VP', 'Vice-President'), ('SEC', 'Secretary'), ('TRE', 'Treasurer'), ('MARK', 'Marketing'), ('EV', 'Events OCM'), ('PRO', 'Projects OCM'), ('FRE', 'Fresher Rep')], default='FRE', max_length=9, unique=True),
+            field=models.CharField(choices=[('P', 'President'), ('VP', 'Vice-President'), ('SEC', 'Secretary'),
+                                            ('TRE', 'Treasurer'), ('MARK', 'Marketing'), ('EV', 'Events OCM'),
+                                            ('PRO', 'Projects OCM'), ('FRE', 'Fresher Rep')], default='FRE', max_length=9, unique=True),
         ),
     ]
