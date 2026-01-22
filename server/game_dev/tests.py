@@ -113,9 +113,10 @@ class CommitteeModelTest(TestCase):
             self.fail("Deleting Committee object deleted it's corresponding Member object (undesired behaviour)")
 
     def test_cascade_from_member(self):
+        tempRole = Committee.objects.get(id=self.member).role
         self.member.delete()
         try:
-            Committee.objects.get(id=self.member)
+            Committee.objects.get(role=tempRole)
             self.fail("Deleting Member Object did not delete a possible corresponding Committee object (undesired behaviour)")
         except Committee.DoesNotExist:
             return True
