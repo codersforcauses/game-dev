@@ -133,10 +133,10 @@ export default function IndividualGamePage() {
                   </td>
                   <td className="py-1 text-right sm:py-2">
                     <a
-                      href={game.hostSite}
+                      href={game.hostURL}
                       className="text-primary underline hover:underline"
                     >
-                      {game.hostSite}
+                      {game.hostURL}
                     </a>
                   </td>
                 </tr>
@@ -157,7 +157,9 @@ export default function IndividualGamePage() {
         </section>
 
         <section className="mt-8 flex w-full flex-col items-center gap-6">
-          {game.isItch && <ItchEmbed embedID={game.hostURL} name={gameTitle} />}
+          {game.isItch && (
+            <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
+          )}
           <h2 className="font-jersey10 text-5xl text-primary">ARTWORK</h2>
 
           <div className="mx-auto mb-6 flex h-auto w-full max-w-4xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-center sm:gap-6 sm:px-6 md:h-60">
