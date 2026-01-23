@@ -24,49 +24,8 @@ export default function AboutPage() {
     "Fresher Rep",
   ];
 
-  if (isPending) {
-    for (let i = 0; i < 8; i++) {
-      if (i < 4) {
-        topRow.push({
-          name: "Loading...",
-          pronouns: "",
-          profile_picture: "",
-          about: "",
-        });
-      } else {
-        bottomRow.push({
-          name: "Loading...",
-          pronouns: "",
-          profile_picture: "",
-          about: "",
-        });
-      }
-    }
-  } else if (isError) {
-    const errorMessage =
-      error?.response?.status === 404
-        ? "Committee Page not found."
-        : "Failed to load Committee Page.";
-
-    return (
-      <main className="mx-auto min-h-screen max-w-6xl px-6 py-16 md:px-20">
-        <p className="text-red-500" role="alert">
-          {errorMessage}
-        </p>
-      </main>
-    );
-  } else {
-    for (let i = 0; i < 8; i++) {
-      if (i < 4) {
-        topRow.push(committee[i]);
-      } else {
-        bottomRow.push(committee[i]);
-      }
-    }
-  }
-
-  return (
-    <main className="min-h-screen bg-[#090A19]">
+  const about = (
+    <>
       <div className="mx-auto max-w-6xl space-y-20 px-6 py-16 md:px-20">
         <section className="flex flex-col justify-between gap-12 md:flex-row md:gap-20">
           <div className="flex-1">
@@ -95,14 +54,62 @@ export default function AboutPage() {
           </div>
         </section>
       </div>
-
       {/* Our Committee Title Section - LIGHT - Full Width */}
       <section className="w-full bg-[#1B1F4C] px-6 py-6 md:px-10 md:py-6">
         <div className="mx-auto max-w-6xl">
           <h2 className="font-jersey10 text-3xl text-white">Our Committee</h2>
         </div>
       </section>
+    </>
+  );
 
+  if (isPending) {
+    for (let i = 0; i < 8; i++) {
+      if (i < 4) {
+        topRow.push({
+          name: "Loading...",
+          pronouns: "",
+          profile_picture: "/landing_placeholder.png",
+          about: "",
+        });
+      } else {
+        bottomRow.push({
+          name: "Loading...",
+          pronouns: "",
+          profile_picture: "/landing_placeholder.png",
+          about: "",
+        });
+      }
+    }
+  } else if (isError) {
+    const errorMessage =
+      error?.response?.status === 404
+        ? "Committee Members not found."
+        : "Failed to load Committee Members.";
+
+    return (
+      <>
+        {about}
+        <main className="mx-auto min-h-screen max-w-6xl px-6 py-16 md:px-20">
+          <p className="text-red-500" role="alert">
+            {errorMessage}
+          </p>
+        </main>
+      </>
+    );
+  } else {
+    for (let i = 0; i < 8; i++) {
+      if (i < 4) {
+        topRow.push(committee[i]);
+      } else {
+        bottomRow.push(committee[i]);
+      }
+    }
+  }
+
+  return (
+    <main className="min-h-screen bg-[#090A19]">
+      {about}
       {/* Portraits Section - DARK - Full Width */}
       <section className="w-full bg-[#090A19] px-6 py-10 pt-16 md:px-10">
         <div className="mx-auto max-w-6xl">
@@ -123,9 +130,9 @@ export default function AboutPage() {
                 >
                   <Image
                     src={member.profile_picture}
-                    alt=""
-                    width={108}
-                    height={1}
+                    alt="url('/landing_placeholder.png')"
+                    width={106}
+                    height={106}
                     className="mb-3 h-[106px] w-[106px]"
                   />
                 </div>
@@ -158,9 +165,9 @@ export default function AboutPage() {
                 >
                   <Image
                     src={member.profile_picture}
-                    alt=""
-                    width={108}
-                    height={1}
+                    alt="url('/landing_placeholder.png')"
+                    width={106}
+                    height={106}
                     className="mb-3 h-[106px] w-[106px]"
                   />
                 </div>
