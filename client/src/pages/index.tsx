@@ -120,7 +120,7 @@ export default function Landing() {
               width={card.image.width}
               height={card.image.height}
               alt={card.image.alt}
-              className="pixelated size-20 px-3"
+              className="size-20 px-3 [image-rendering:pixelated]"
             />
           )}
         </div>
@@ -165,10 +165,10 @@ export default function Landing() {
             />
             <Image
               src="/bomb.png"
-              width={117}
-              height={165}
+              width={96}
+              height={156}
               alt="placeholder"
-              className="pixelated absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 rounded-md"
+              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 rounded-md [image-rendering:pixelated]"
             />
           </div>
         </div>
