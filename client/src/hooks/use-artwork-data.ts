@@ -10,7 +10,24 @@ export const generateMockArtworks = (count: number): Art[] => {
       //source_game: "Mock Game",
       media: "",
       active: true,
-      contributors: [],
+      contributors: [
+        {
+          id: i * 10 + 1,
+          art_id: i,
+          member_name: "Contributor 1",
+          role: "artist",
+          discord_url: "https://discord.com",
+          instagram_url: "https://instagram.com",
+        },
+        {
+          id: i * 10 + 2,
+          art_id: i,
+          member_name: "Contributor 2",
+          role: "designer",
+          discord_url: "https://discord.com",
+          instagram_url: "https://instagram.com",
+        },
+      ],
       //created_at: new Date().toISOString(),
     });
   }
