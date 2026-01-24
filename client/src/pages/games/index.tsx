@@ -1,39 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-type Contributor = {
-  name: string;
-  role: string;
-};
-
-type ShowcaseGame = {
-  game_id: number;
-  game_name: string;
-  description: string;
-  game_description: string;
-  contributors: Contributor[];
-  game_cover_thumbnail?: string;
-};
+import { useGameshowcase } from "@/hooks/useGameshowcase";
 
 export default function HomePage() {
-  const [showcases, setShowcases] = useState<ShowcaseGame[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: showcases, isPending, isError, error } = useGameshowcase();
 
-  useEffect(() => {
-    fetch("http://localhost:8000/api/gameshowcase/")
-      .then((res) => res.json())
-      .then((data: ShowcaseGame[]) => {
-        setShowcases(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-
-  if (loading) {
+  if (isPending) {
     return (
       <main className="mx-auto min-h-screen max-w-7xl px-6 py-16">
         <p>Loading games...</p>
+      </main>
+    );
+  }
+
+  if (isError) {
+    const errorMessage =
+      error?.response?.status === 404
+        ? "Games not found."
+        : "Failed to Load Games";
+    return (
+      <main className="mx-auto min-h-screen max-w-7xl px-6 py-16">
+        <p className="text-red-500" role="alert">
+          {errorMessage}
+        </p>
       </main>
     );
   }
@@ -56,7 +47,7 @@ export default function HomePage() {
         </h1>
       </div>
       <main className="mx-auto min-h-screen max-w-7xl px-6 py-16">
-        {showcases.length === 0 ? (
+        {!showcases || showcases.length === 0 ? (
           <p>No games available.</p>
         ) : (
           <div className="flex flex-col gap-16">
@@ -67,13 +58,9 @@ export default function HomePage() {
                 >
                   {/* Left: Cover Image */}
                   <div className="bg-logo-blue-1 flex min-h-[400px] min-w-[350px] max-w-[600px] flex-1 items-center justify-center overflow-hidden rounded-xl">
-                    {showcase.game_cover_thumbnail ? (
+                    {showcase.gameCover ? (
                       <Image
-                        src={
-                          showcase.game_cover_thumbnail.startsWith("http")
-                            ? showcase.game_cover_thumbnail
-                            : `http://localhost:8000${showcase.game_cover_thumbnail}`
-                        }
+                        src={showcase.gameCover}
                         alt={showcase.game_name + " cover"}
                         width={600}
                         height={350}
