@@ -26,7 +26,7 @@ function displayContributors(artwork: Art) {
         >
           <div
             data-layer="Contributors"
-            className="Contributors justify-start font-jersey10 text-4xl font-normal tracking-wide text-light_3"
+            className="Contributors justify-start font-sans text-4xl font-normal tracking-wide text-light_3"
           >
             Contributors
           </div>
@@ -96,7 +96,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
           <div className="flex flex-1 flex-col gap-10">
             <div
               data-layer="Art Name"
-              className="ArtName justify-start font-jersey10 text-8xl font-normal leading-[76px] tracking-wide text-light_3"
+              className="ArtName justify-start font-sans text-8xl font-normal leading-[76px] tracking-wide text-light_3"
             >
               {artwork!.name}
             </div>
@@ -120,7 +120,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
       <div className="p-10 md:hidden">
         <div
           data-layer="Art Name"
-          className="ArtName flex justify-center font-jersey10 text-8xl font-normal leading-[76px] tracking-wide text-light_3"
+          className="ArtName flex justify-center font-sans text-8xl font-normal leading-[76px] tracking-wide text-light_3"
         >
           {artwork!.name}
         </div>
