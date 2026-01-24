@@ -15,7 +15,6 @@ type ApiGame = {
   completion: number;
   active: boolean;
   hostURL: string;
-  isItch: boolean;
   // TO DO: Add support for no itchEmbedID for non-itch games
   itchEmbedID: string;
   pathToThumbnail: string | null;
