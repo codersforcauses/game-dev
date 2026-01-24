@@ -43,7 +43,7 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-light_2 md:w-96 lg:w-[512px]">
+          <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-light_2 md:w-96 lg:w-[32rem]">
             <div className="flex h-full w-full items-center justify-center">
               <Image
                 src="/landing_placeholder.png"
@@ -122,23 +122,16 @@ export default function AboutPage() {
                 key={`top-${idx}`}
                 className="flex flex-col items-start gap-0"
               >
-                <div
-                  className="relative flex items-center justify-center bg-contain bg-center bg-no-repeat"
-                  style={{
-                    width: "180px",
-                    height: "185px",
-                    backgroundImage: "url('/frame.png')",
-                  }}
-                >
+                <div className="relative flex h-[11.5625rem] w-[11.25rem] items-center justify-center bg-[url('/frame.png')] bg-contain bg-center bg-no-repeat">
                   <Image
                     src={member.profile_picture}
                     alt="url('/landing_placeholder.png')"
                     width={106}
                     height={106}
-                    className="mb-3 h-[106px] w-[106px]"
+                    className="mb-3 h-[6.625rem] w-[6.625rem]"
                   />
                 </div>
-                <div className="w-[180px] text-left font-firaCode text-[9px] leading-tight">
+                <div className="w-[11.25rem] pl-3 text-left font-firaCode text-[0.5rem] leading-tight">
                   <p className="inline-block bg-card px-2 py-1 text-white">
                     {member.name} {member.pronouns}
                   </p>
@@ -150,30 +143,23 @@ export default function AboutPage() {
             ))}
           </div>
 
-          {/* Bottom row - 3 other roles */}
+          {/* Bottom row - 4 other roles */}
           <div className="mt-10 flex flex-wrap justify-center gap-6 md:gap-10">
             {bottomRow.map((member, idx) => (
               <div
                 key={`bottom-${idx}`}
                 className="flex flex-col items-start gap-0"
               >
-                <div
-                  className="relative flex items-center justify-center bg-contain bg-center bg-no-repeat"
-                  style={{
-                    width: "180px",
-                    height: "185px",
-                    backgroundImage: "url('/frame.png')",
-                  }}
-                >
+                <div className="relative flex h-[11.5625rem] w-[11.25rem] items-center justify-center bg-[url('/frame.png')] bg-contain bg-center bg-no-repeat">
                   <Image
                     src={member.profile_picture}
                     alt="url('/landing_placeholder.png')"
                     width={106}
                     height={106}
-                    className="mb-3 h-[106px] w-[106px]"
+                    className="mb-3 h-[6.625rem] w-[6.625rem]"
                   />
                 </div>
-                <div className="w-[180px] text-left font-firaCode text-[9px] leading-tight">
+                <div className="w-[11.25rem] pl-3 text-left font-firaCode text-[0.5rem] leading-tight">
                   <p className="inline-block bg-card px-2 py-1 text-white">
                     {member.name} {member.pronouns}
                   </p>
