@@ -35,7 +35,7 @@ class GamesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'name', 'description', 'completion', 'active', 'hostURL', 'isItch', 'itchEmbedID', 'pathToThumbnail', 'event', "contributors")
+        fields = ('id', 'name', 'description', 'completion', 'active', 'hostURL', 'itchEmbedID', 'thumbnail', 'event', "contributors")
 
 
 # Contributor serializer for name and role
@@ -55,7 +55,7 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
     game_id = serializers.IntegerField(source='game.id', read_only=True)
     game_name = serializers.CharField(source='game.name', read_only=True)
     game_description = serializers.CharField(source='game.description', read_only=True)
-    game_cover_thumbnail = serializers.ImageField(source='game.pathToThumbnail', read_only=True)
+    game_cover_thumbnail = serializers.ImageField(source='game.thumbnail', read_only=True)
     contributors = serializers.SerializerMethodField()
 
     class Meta:

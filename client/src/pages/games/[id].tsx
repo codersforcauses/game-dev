@@ -157,7 +157,7 @@ export default function IndividualGamePage() {
         </section>
 
         <section className="mt-8 flex w-full flex-col items-center gap-6">
-          {game.isItch && (
+          {game.itchEmbedID && (
             <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
           )}
           <h2 className="font-jersey10 text-5xl text-primary">ARTWORK</h2>

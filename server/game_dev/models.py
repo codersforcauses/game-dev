@@ -54,16 +54,15 @@ class Game(models.Model):
         null=False,
     )
     active = models.BooleanField(default=True, null=False)
-    hostURL = models.CharField(max_length=2083)
-    isItch = models.BooleanField(default=True, null=False)
+    hostURL = models.URLField(max_length=2083)
     itchEmbedID = models.PositiveIntegerField(
         default=None,
         null=True,
         blank=True,
-        help_text="If game is stored on itch.io, please enter the 7 digit long game id as its itchEmbedID, i.e., 1000200"
+        help_text="If game is stored on itch.io, please enter the itchEmbedID, i.e., 1000200"
     )
 
-    pathToThumbnail = models.ImageField(upload_to="games/", null=True)
+    thumbnail = models.ImageField(upload_to="games/", null=True)
     event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
