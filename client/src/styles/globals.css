@@ -55,3 +55,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer base {
+  .pixelated {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges; /* Firefox-specific */
+    image-rendering: crisp-edges; /* Cross-browser support */
+  }
+}

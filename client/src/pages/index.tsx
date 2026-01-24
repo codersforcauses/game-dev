@@ -120,7 +120,7 @@ export default function Landing() {
               width={card.image.width}
               height={card.image.height}
               alt={card.image.alt}
-              className="size-20 px-3"
+              className="pixelated size-20 px-3"
             />
           )}
         </div>
@@ -164,11 +164,11 @@ export default function Landing() {
               className="min-w-[360px] rounded-md border-[26px] border-accent [clip-path:polygon(20px_20px,calc(100%-20px)_20px,100%_32px,100%_30%,calc(100%-20px)_45%,calc(100%-20px)_calc(100%-8px),80%_calc(100%-8px),75%_calc(100%-20px),20px_calc(100%-20px),0%_60%,0%_30%,20px_25%)]"
             />
             <Image
-              src="/vector.png"
+              src="/bomb.png"
               width={117}
               height={165}
               alt="placeholder"
-              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 rounded-md"
+              className="pixelated absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 rounded-md"
             />
           </div>
         </div>
