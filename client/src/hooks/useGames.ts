@@ -17,12 +17,12 @@ type ApiGame = {
   hostURL: string;
   // TO DO: Add support for no itchEmbedID for non-itch games
   itchEmbedID: string;
-  pathToThumbnail: string | null;
+  thumbnail: string | null;
   event: number | null;
   contributors: Contributor[];
 };
 
-type UiGame = Omit<ApiGame, "pathToThumbnail"> & {
+type UiGame = Omit<ApiGame, "thumbnail"> & {
   gameCover: string;
 };
 
@@ -40,7 +40,7 @@ function normalizeGameId(
 function transformApiGameToUiGame(data: ApiGame): UiGame {
   return {
     ...data,
-    gameCover: data.pathToThumbnail ?? "/game_dev_club_logo.svg",
+    gameCover: data.thumbnail ?? "/game_dev_club_logo.svg",
   };
 }
 
