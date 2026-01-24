@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
 interface ImageCardProps {
@@ -8,6 +9,8 @@ interface ImageCardProps {
   children?: React.ReactNode;
   /** Optional content rendered on the back when hovering/focused. */
   backContent?: React.ReactNode;
+  /** Optional href for navigation when clicking the front face */
+  href?: string;
 }
 
 const ImageCard = ({
@@ -15,19 +18,41 @@ const ImageCard = ({
   imageAlt = "Image",
   children,
   backContent,
+  href,
 }: ImageCardProps) => {
+  const router = useRouter();
   const [isFlipped, setIsFlipped] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const handleClick = () => {
+    // On mobile, navigate directly if href is provided
+    if (isMobile && href) {
+      router.push(href);
+    } else if (backContent) {
+      // On desktop, toggle flip state
+      setIsFlipped(!isFlipped);
+    }
+  };
 
   return (
     <div className="p-4" style={{ perspective: "1200px" }}>
       <div
-        className="relative h-[30rem] w-[20rem] cursor-pointer select-none rounded-[10px] shadow-[12px_17px_51px_rgba(0,0,0,0.22)] transition-transform duration-500"
+        className="relative h-[30rem] w-full max-w-[20rem] cursor-pointer select-none rounded-[10px] shadow-[12px_17px_51px_rgba(0,0,0,0.22)] transition-transform duration-500"
         style={{
           transformStyle: "preserve-3d",
           transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
         }}
-        onMouseEnter={() => backContent && setIsFlipped(true)}
-        onMouseLeave={() => backContent && setIsFlipped(false)}
+        onClick={handleClick}
       >
         <div
           className="absolute inset-0 overflow-hidden rounded-[10px] border border-white bg-dark_alt backdrop-blur-md"
