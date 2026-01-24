@@ -1,7 +1,7 @@
 import { ArtContributor } from "./art-contributor";
-import { BaseDto } from "./base-dto";
 
-export interface Art extends BaseDto {
+export interface Art {
+  id: number;
   name: string;
   description: string;
   media: string;

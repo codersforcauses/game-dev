@@ -7,7 +7,13 @@ import ErrorModal from "@/components/ui/modal/error-modal";
 import { generateMockArtworks } from "@/hooks/use-artwork-data";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
-import { PageResult } from "@/types/page-response";
+
+export interface PageResult<T> {
+  count: number;
+  next: string;
+  previous: string;
+  results: T[];
+}
 
 interface ArtworksPageProps {
   artworks?: PageResult<Art>;

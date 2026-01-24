@@ -1,6 +1,5 @@
-import { BaseDto } from "./base-dto";
-
-export interface ArtContributor extends BaseDto {
+export interface ArtContributor {
+  id: number;
   art_id: number;
   member_name: string;
   role: string;
