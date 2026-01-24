@@ -76,10 +76,6 @@ function MouseGradient({
   smoothX: MotionValue<number>;
   smoothY: MotionValue<number>;
   isHovering: boolean;
-  motionColours: {
-    mouseGradStart: string;
-    mouseGradEnd: string;
-  };
 }) {
   // Use Motion values for colors instead of hard-coded rgba
   const background = useMotionTemplate`radial-gradient(circle 15px at ${smoothX}% ${smoothY}%, hsl(0 0% 100%) 10%, hsl(260 46% 90%) 40%, transparent 70%)`;
@@ -307,15 +303,11 @@ const defaultFrameConfig: NetworkFrameConfig = {
 export default function NetworkCanvas({
   frameConfig,
   frameClasses,
-  mouseGradientStart,
-  mouseGradientEnd,
   children,
 }: {
   className?: string;
   frameConfig?: Partial<NetworkFrameConfig>;
   frameClasses?: string;
-  mouseGradientStart?: string;
-  mouseGradientEnd?: string;
   children?: React.ReactNode;
 }) {
   const conf = {
@@ -365,7 +357,7 @@ export default function NetworkCanvas({
       // could make this configurable, but probably doesn't matter
       hslVarWithOpacity("--light-1", 0.3),
       hslVarWithOpacity("--light-alt", 0.4),
-      hslVarWithOpacity("--light-alt-2", 0.4),
+      hslVarWithOpacity("--light-alt", 0.4),
     ];
     setParticleConfigs(
       Array.from({ length: conf.count }, () => ({
@@ -403,8 +395,6 @@ export default function NetworkCanvas({
             smoothX={smoothX}
             smoothY={smoothY}
             isHovering={isHovering}
-            mouseGradStart={mouseGradientStart}
-            mouseGradEnd={mouseGradientEnd}
           />
           <NetworkFrame
             width={dimensions.width}
