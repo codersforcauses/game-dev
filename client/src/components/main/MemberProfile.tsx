@@ -37,7 +37,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
 
   return (
     <>
-      <div className="m-auto h-fit bg-[#1B1F4C]">
+      <div className="m-auto h-fit bg-[#1B1F4C] text-[#CED1FE]">
         <div className="border-y-[#9CA4FD]lg:mx-10 mx-2 flex flex-wrap items-center justify-center gap-y-5 py-7">
           <div className="grid grid-cols-1 grid-rows-1 items-center justify-items-center lg:mr-6">
             <div className="absolute size-32 overflow-clip bg-accent text-center">
