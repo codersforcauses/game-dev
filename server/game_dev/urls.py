@@ -1,9 +1,7 @@
 from django.urls import path
-from rest_framework.routers import DefaultRouter
-from .views import EventDetailAPIView
-
-router = DefaultRouter()
+from .views import EventListAPIView, EventDetailAPIView
 
 urlpatterns = [
+    path("events/", EventListAPIView.as_view(), name="events-list"),
     path("events/<int:id>/", EventDetailAPIView.as_view()),
-] + router.urls
+]
