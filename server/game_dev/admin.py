@@ -7,8 +7,8 @@ class MemberAdmin(admin.ModelAdmin):
 
 
 # Sample EventsAdmin Class made
-class EventsAdmin(admin.ModelAdmin):
-    pass
+class EventAdmin(admin.ModelAdmin):
+    list_display = ("name", "date", "location", "publicationDate")
 
 
 class GameContributorAdmin(admin.ModelAdmin):
@@ -20,6 +20,6 @@ class GamesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Member, MemberAdmin)
-admin.site.register(Event, EventsAdmin)
+admin.site.register(Event, EventAdmin)
 admin.site.register(Game, GamesAdmin)
 admin.site.register(GameContributor, GameContributorAdmin)
