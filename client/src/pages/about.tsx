@@ -1,4 +1,3 @@
-import { ImageIcon } from "lucide-react";
 import Image from "next/image";
 
 import { ApiMember, useCommittee } from "@/hooks/useCommittee";
