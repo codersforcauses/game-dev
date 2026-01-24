@@ -82,29 +82,44 @@ export function MemberProfile({ member }: MemberProfileProps) {
       <div className="m-auto min-h-80 w-11/12">
         <h2 className="mt-7 text-center font-jersey10 text-5xl">Projects</h2>
         <div className="m-auto my-5 flex flex-wrap justify-center gap-8">
-          <div className="w-fit rounded-md border border-[#A07CE6] bg-card p-5">
-            <p className="mb-2 h-44 w-fit rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
-              Image + Link to Project Here <br /> (or maybe embed)
-            </p>
-            <p className="font-jersey10 text-4xl"> Project Title </p>
-          </div>
-          <div className="w-fit rounded-md border border-[#A07CE6] bg-card p-5">
-            <p className="mb-2 h-44 w-fit rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+          <div className="w-fit rounded-md p-5">
+            <p className="mb-2 h-44 w-96 rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
               Image + Link to Project Here
             </p>
-            <p className="font-jersey10 text-4xl"> Project Title </p>
+            <p className="font-firaCode text-xl font-semibold">
+              {" "}
+              Project Title{" "}
+            </p>
+            <p className="text-md line-clamp-1 font-firaCode text-[#9CA4FD]">
+              {" "}
+              Project description{" "}
+            </p>
           </div>
-          <div className="w-fit rounded-md border border-[#A07CE6] bg-card p-5">
-            <p className="mb-2 h-44 w-fit rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+          <div className="w-fit rounded-md p-5">
+            <p className="mb-2 h-44 w-96 rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
               Image + Link to Project Here
             </p>
-            <p className="font-jersey10 text-4xl"> Project Title </p>
+            <p className="font-firaCode text-xl font-semibold">
+              {" "}
+              Project Title{" "}
+            </p>
+            <p className="line-clamp-1 font-firaCode text-[#9CA4FD]">
+              {" "}
+              Project description{" "}
+            </p>
           </div>
-          <div className="w-fit rounded-md border border-[#A07CE6] bg-card p-5">
-            <p className="mb-2 h-44 w-fit rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+          <div className="w-fit rounded-md p-5">
+            <p className="mb-2 h-44 w-96 rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
               Image + Link to Project Here
             </p>
-            <p className="font-jersey10 text-4xl"> Project Title </p>
+            <p className="font-firaCode text-xl font-semibold">
+              {" "}
+              Project Title{" "}
+            </p>
+            <p className="line-clamp-1 font-firaCode text-[#9CA4FD]">
+              {" "}
+              Project description{" "}
+            </p>
           </div>
         </div>
       </div>
