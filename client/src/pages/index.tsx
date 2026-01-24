@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRef } from "react";
 
 import { Button } from "../components/ui/button";
 import { useExplosions } from "../hooks/useExplosions";
@@ -7,6 +8,7 @@ import { Explosion } from "../components/ui/Explosion";
 
 export default function Landing() {
   const { explosions, triggerExplosions } = useExplosions();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleExplosionClick = () => {
     triggerExplosions({
@@ -16,6 +18,47 @@ export default function Landing() {
       duration: 1500,
       playSound: true,
     });
+  };
+
+  const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    // Create explosion at click position
+    triggerExplosions({
+      count: 1,
+      minDelay: 0,
+      maxDelay: 0,
+      duration: 1500,
+      playSound: true,
+    });
+
+    // Manually set the position for the last explosion
+    // (A bit hacky but works for click-to-explode)
+    const explosionElement = document.elementFromPoint(e.clientX, e.clientY);
+    if (explosionElement) {
+      const newExplosion = document.createElement("div");
+      newExplosion.className = "pointer-events-none absolute z-50";
+      newExplosion.style.left = `${x}%`;
+      newExplosion.style.top = `${y}%`;
+      newExplosion.style.transform = "translate(-50%, -50%)";
+      
+      const img = document.createElement("img");
+      img.src = "/explosions/samj_cartoon_explosion.gif";
+      img.alt = "Explosion";
+      img.width = 150;
+      img.height = 150;
+      
+      newExplosion.appendChild(img);
+      containerRef.current.appendChild(newExplosion);
+      
+      setTimeout(() => {
+        newExplosion.remove();
+      }, 1500);
+    }
   };
   const btnList = [
     { name: "More about us", link: "/committee/about" },
@@ -142,7 +185,7 @@ export default function Landing() {
   );
 
   return (
-    <div className="relative">
+    <div className="relative" ref={containerRef} onClick={handlePageClick}>
       {/* Render explosions */}
       {explosions.map((explosion) => (
         <Explosion key={explosion.id} explosion={explosion} />
@@ -165,7 +208,7 @@ export default function Landing() {
                   <Button>{item.name}</Button>
                 </Link>
               ))}
-              <Button onClick={handleExplosionClick}>💥 Explosions!</Button>
+              <Button onClick={handleExplosionClick}>Press Me!</Button>
             </div>
           </div>
 
