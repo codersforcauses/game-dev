@@ -142,7 +142,7 @@ export default function Landing() {
               enim ad minim veniam, quis nostrud exercitation ullamco laboris
               nisi ut aliquip ex ea commodo consequat.
             </p>
-            <div className="mt-4 flex gap-4">
+            <div className="my-4 flex gap-4">
               {btnList.map((item, i) => (
                 <Link href={item.link} key={i}>
                   <Button
