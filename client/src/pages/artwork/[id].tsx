@@ -1,4 +1,3 @@
-import { Instagram, MessageSquare } from "lucide-react";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -37,31 +36,9 @@ function displayContributors(artwork: Art) {
           className="ContributorsList relative flex flex-col gap-3 p-3"
         >
           {artwork.contributors?.map((contributor) => (
-            <div className="flex flex-row justify-between" key={contributor.id}>
+            <div className="flex flex-row" key={contributor.id}>
               <div className="justify-center font-dmSans text-xl font-normal leading-8 tracking-wide text-light_1 [text-shadow:_0px_4px_4px_rgb(0_0_0_/_0.25)]">
                 {contributor.member_name}
-              </div>
-              <div className="flex gap-2">
-                {contributor.discord_url && (
-                  <a
-                    href={contributor.discord_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#9CA4FD] transition-opacity hover:opacity-80"
-                  >
-                    <MessageSquare className="h-4 w-4 text-white" />
-                  </a>
-                )}
-                {contributor.instagram_url && (
-                  <a
-                    href={contributor.instagram_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#9CA4FD] transition-opacity hover:opacity-80"
-                  >
-                    <Instagram className="h-4 w-4 text-white" />
-                  </a>
-                )}
               </div>
             </div>
           ))}
