@@ -1,9 +1,6 @@
 from rest_framework import generics
 from .serializers import GamesSerializer, GameshowcaseSerializer, EventSerializer
 from .models import Game, GameShowcase
-import urllib.request
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from .models import Event
 from rest_framework.views import APIView
@@ -21,17 +18,6 @@ class GamesDetailAPIView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         return Game.objects.filter(id=self.kwargs["id"])
-
-
-@csrf_exempt
-def itch_embed_proxy(request, embed_id):
-    url = f"https://itch.io/embed/{embed_id}"
-    try:
-        with urllib.request.urlopen(url, timeout=10) as response:
-            html = response.read().decode("utf-8")
-        return JsonResponse({"html": html})
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
 
 
 class EventPagination(PageNumberPagination):
