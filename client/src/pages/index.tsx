@@ -161,20 +161,20 @@ export default function Landing() {
               width={600}
               height={430}
               alt="placeholder"
-              className="min-w-[360px] rounded-md border-[26px] border-accent [clip-path:polygon(20px_20px,calc(100%-20px)_20px,100%_32px,100%_30%,calc(100%-20px)_45%,calc(100%-20px)_calc(100%-8px),80%_calc(100%-8px),75%_calc(100%-20px),20px_calc(100%-20px),0%_60%,0%_30%,20px_25%)]"
+              className="min-w-80 border-[26px] border-accent [clip-path:polygon(20px_20px,calc(100%-20px)_20px,100%_32px,100%_30%,calc(100%-20px)_45%,calc(100%-20px)_calc(100%-8px),80%_calc(100%-8px),75%_calc(100%-20px),20px_calc(100%-20px),0%_60%,0%_30%,20px_25%)]"
             />
             <Image
               src="/bomb.png"
               width={96}
               height={156}
               alt="placeholder"
-              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 rounded-md [image-rendering:pixelated]"
+              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 [image-rendering:pixelated]"
             />
           </div>
         </div>
       </section>
 
-      <section className="-m-8 bg-dark_3 py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
+      <section className="-mt-8 bg-dark_3 py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
             {row1Cards.map(renderCard)}
