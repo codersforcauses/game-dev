@@ -2,8 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "../components/ui/button";
+import { useExplosions } from "../hooks/useExplosions";
+import { Explosion } from "../components/ui/Explosion";
 
 export default function Landing() {
+  const { explosions, triggerExplosions } = useExplosions();
+
+  const handleExplosionClick = () => {
+    triggerExplosions({
+      count: 5,
+      minDelay: 0,
+      maxDelay: 300,
+      duration: 1500,
+      playSound: true,
+    });
+  };
   const btnList = [
     { name: "More about us", link: "/committee/about" },
     { name: "Join our Discord", link: "" },
@@ -129,7 +142,11 @@ export default function Landing() {
   );
 
   return (
-    <div>
+    <div className="relative">
+      {/* Render explosions */}
+      {explosions.map((explosion) => (
+        <Explosion key={explosion.id} explosion={explosion} />
+      ))}
       <section className="flex w-full justify-center bg-muted px-12 py-10">
         <div className="flex w-full max-w-[1440px] flex-col items-center justify-between gap-12 md:flex-row">
           <div className="flex max-w-lg flex-col gap-6">
@@ -148,6 +165,7 @@ export default function Landing() {
                   <Button>{item.name}</Button>
                 </Link>
               ))}
+              <Button onClick={handleExplosionClick}>💥 Explosions!</Button>
             </div>
           </div>
 
