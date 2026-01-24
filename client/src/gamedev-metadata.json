@@ -1,9 +1,9 @@
 {
   "social_media": {
-    "x": {"url": "twitter.com", "alt_text": "X (Twitter)"},
-    "discord": {"url": "discord.com"},
-    "github": {"url": "github.com", "alt_text": "GitHub"}, 
-    "youtube": {"url": "youtube.com", "alt_text": "YouTube"}
+    "x": { "url": "twitter.com", "alt_text": "X (Twitter)" },
+    "discord": { "url": "discord.com" },
+    "github": { "url": "github.com", "alt_text": "GitHub" },
+    "youtube": { "url": "youtube.com", "alt_text": "YouTube" }
   },
   "art_showcase_description": "Here are some of our favourite artworks from this years gamejams!",
   "game_showcase_description": "Here are some winning games of our recent game jams"
