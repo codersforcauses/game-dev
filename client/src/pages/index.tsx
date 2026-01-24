@@ -120,7 +120,7 @@ export default function Landing() {
               width={card.image.width}
               height={card.image.height}
               alt={card.image.alt}
-              className="size-20 px-3 [image-rendering:pixelated]"
+              className="m-3 size-20 [image-rendering:pixelated]"
             />
           )}
         </div>
