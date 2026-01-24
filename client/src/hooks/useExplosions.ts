@@ -1,6 +1,19 @@
 import { useCallback, useState } from "react";
 
 /**
+ * Plays a random explosion sound effect.
+ */
+function playExplosionSound(): void {
+  const soundIndex = Math.floor(Math.random() * 4); // 0-3 for xplsion_0 to xplsion_3
+  const audio = new Audio(`/sfx/xplsion_${soundIndex}.mp3`);
+  audio.volume = 0.3; // Set volume to 30% to avoid being too loud
+  audio.play().catch((error) => {
+    // Handle autoplay restrictions gracefully
+    console.warn("Could not play explosion sound:", error);
+  });
+}
+
+/**
  * Position of a single explosion within a container.
  * Coordinates are percentages (0-100) relative to container size.
  */
@@ -19,6 +32,7 @@ export type ExplosionConfig = {
   minDelay?: number; // Minimum delay between explosions in ms (default: 0)
   maxDelay?: number; // Maximum delay between explosions in ms (default: 100)
   duration?: number; // How long explosions stay visible in ms (default: 1000)
+  playSound?: boolean; // Whether to play sound effects (default: true)
 };
 
 /**
@@ -38,6 +52,7 @@ export function useExplosions() {
         minDelay = 0,
         maxDelay = 100,
         duration = 1000,
+        playSound = true,
       } = config;
 
       // Generate explosion positions
@@ -70,6 +85,11 @@ export function useExplosions() {
           };
 
           setExplosions((prev) => [...prev, explosion]);
+
+          // Play sound effect
+          if (playSound) {
+            playExplosionSound();
+          }
 
           // Clean up after duration
           setTimeout(() => {
