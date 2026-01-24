@@ -55,7 +55,7 @@ class EventDetailAPIView(generics.RetrieveAPIView):
 
 class MemberAPIView(generics.RetrieveAPIView):
     serializer_class = MemberSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "id"
 
     def get_queryset(self):
-        return Member.objects.filter(id=self.kwargs["id"])
+        return Member.objects.filter(active=True)

@@ -24,5 +24,4 @@ class MemberSerializer(serializers.ModelSerializer):
             "profile_picture",
             "about",
             "pronouns",
-            "active"
         ]
