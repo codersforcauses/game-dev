@@ -1,3 +1,6 @@
+# media
+/server/media/**
+
 # local development data
 data/
 
