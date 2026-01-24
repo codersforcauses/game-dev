@@ -29,14 +29,11 @@ export default function AboutPage() {
       <div className="mx-auto max-w-6xl space-y-20 px-6 py-16 md:px-20">
         <section className="flex flex-col justify-between gap-12 md:flex-row md:gap-20">
           <div className="flex-1">
-            <h1 className="mb-4 font-jersey10 text-5xl text-[#9B9BDE] md:text-6xl">
+            <h1 className="mb-4 font-jersey10 text-5xl text-primary md:text-6xl">
               About Us
             </h1>
-            <div
-              className="mb-6 w-full border-t border-[#5E5ECC]"
-              aria-hidden="true"
-            />
-            <div className="space-y-4 font-jersey10 text-base leading-relaxed text-white md:text-lg">
+            <div className="mb-6 w-full border-t" aria-hidden="true" />
+            <div className="space-y-4 font-sans text-base leading-relaxed text-white md:text-lg">
               <p>
                 Description of the clubs aims, why it exists, its mission, etc
                 etc. Second paragraph here, a second paragraph would be pretty
@@ -47,17 +44,23 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-[#C5C5E8] md:w-96 lg:w-[512px]">
+          <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-light_2 md:w-96 lg:w-[512px]">
             <div className="flex h-full w-full items-center justify-center">
-              <ImageIcon className="h-32 w-32 text-white/40" />
+              <Image
+                src="/landing_placeholder.png"
+                alt="/landing_placeholder.png"
+                width={128}
+                height={128}
+                className="h-[90%] w-[90%]"
+              />
             </div>
           </div>
         </section>
       </div>
       {/* Our Committee Title Section - LIGHT - Full Width */}
-      <section className="w-full bg-[#1B1F4C] px-6 py-6 md:px-10 md:py-6">
+      <section className="w-full bg-card px-6 py-6 md:px-10 md:py-6">
         <div className="mx-auto max-w-6xl">
-          <h2 className="font-jersey10 text-3xl text-white">Our Committee</h2>
+          <h2 className="font-jersey10 text-3xl text-light_2">Our Committee</h2>
         </div>
       </section>
     </>
@@ -108,10 +111,10 @@ export default function AboutPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#090A19]">
+    <main className="min-h-screen bg-background">
       {about}
       {/* Portraits Section - DARK - Full Width */}
-      <section className="w-full bg-[#090A19] px-6 py-10 pt-16 md:px-10">
+      <section className="w-full bg-background px-6 py-10 pt-16 md:px-10">
         <div className="mx-auto max-w-6xl">
           {/* Top row - 4 Presidents */}
           <div className="flex flex-wrap justify-center gap-6 md:gap-10">
@@ -137,10 +140,10 @@ export default function AboutPage() {
                   />
                 </div>
                 <div className="w-[180px] text-left font-firaCode text-[9px] leading-tight">
-                  <p className="inline-block bg-[#1B1F4C] px-2 py-1 text-white">
+                  <p className="inline-block bg-card px-2 py-1 text-white">
                     {member.name} {member.pronouns}
                   </p>
-                  <p className="inline-block bg-[#1B1F4C] px-2 py-1 text-[#9ca4fd]">
+                  <p className="inline-block bg-card px-2 py-1 text-primary">
                     {roleOrder[idx]}
                   </p>
                 </div>
@@ -172,10 +175,10 @@ export default function AboutPage() {
                   />
                 </div>
                 <div className="w-[180px] text-left font-firaCode text-[9px] leading-tight">
-                  <p className="inline-block bg-[#1B1F4C] px-2 py-1 text-white">
+                  <p className="inline-block bg-card px-2 py-1 text-white">
                     {member.name} {member.pronouns}
                   </p>
-                  <p className="inline-block bg-[#1B1F4C] px-2 py-1 text-[#9ca4fd]">
+                  <p className="inline-block bg-card px-2 py-1 text-primary">
                     {roleOrder[4 + idx]}
                   </p>
                 </div>
