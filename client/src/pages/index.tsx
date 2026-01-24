@@ -2,27 +2,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import FeatureBox from "@/components/ui/featureBox";
 import { useEvent } from "@/hooks/useEvent";
 
 import { Button } from "../components/ui/button";
-
-// function formatDateTime(dateString: string): string {
-//     try {
-//         const date = new Date(dateString);
-//         return new Intl.DateTimeFormat("en-AU", {
-//             year: "numeric",
-//             month: "long",
-//             day: "numeric",
-//             hour: "2-digit",
-//             minute: "2-digit",
-//         }).format(date);
-//     } catch {
-//         return dateString;
-//     }
-//   }
 
 export default function Landing() {
   const btnList = [
@@ -45,7 +30,8 @@ export default function Landing() {
     image: cardImage | null;
     row: number;
   };
-  const eventCards = [
+
+  const eventCards: cardType[] = [
     {
       id: 1,
       title: "Game Jams",
@@ -157,12 +143,7 @@ export default function Landing() {
   const router = useRouter();
   const { id } = router.query;
 
-  const {
-    data: event,
-    // isPending,
-    // error,
-    // isError,
-  } = useEvent(router.isReady ? id : undefined);
+  const { data: event } = useEvent(router.isReady ? id : undefined);
 
   console.log("event", event);
 
@@ -181,6 +162,12 @@ export default function Landing() {
     },
     {
       id: 3,
+      title: "World domination",
+      time: "Thursday 2nd Nov 2:00–4:00pm",
+      image: "/landing_placeholder.png",
+    },
+    {
+      id: 4,
       title: "World domination",
       time: "Thursday 2nd Nov 2:00–4:00pm",
       image: "/landing_placeholder.png",
@@ -208,14 +195,56 @@ export default function Landing() {
     },
   ];
 
-  const VISIBLE_COUNT = 3;
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const GAP = 40; // gap-10 = 40px
 
-  const maxIndex = Math.max(upcomingEvents.length - VISIBLE_COUNT, 0);
-  const slideLeft = () => setCurrentIndex((prev) => Math.max(prev - 1, 0));
-  const slideRight = () =>
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const firstItemRef = useRef<HTMLDivElement>(null);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [itemWidth, setItemWidth] = useState(0);
+
+  /**
+   * ✅ Responsive visible count
+   */
+  useEffect(() => {
+    const updateVisibleCount = () => {
+      if (window.innerWidth < 768) {
+        setVisibleCount(1);
+      } else {
+        setVisibleCount(3);
+      }
+    };
+
+    updateVisibleCount();
+    window.addEventListener("resize", updateVisibleCount);
+    return () => window.removeEventListener("resize", updateVisibleCount);
+  }, []);
+
+  /** Observe item width */
+  useEffect(() => {
+    if (!firstItemRef.current) return;
+
+    const observer = new ResizeObserver(() => {
+      const width = firstItemRef.current?.clientWidth ?? 0;
+      setItemWidth(width);
+    });
+
+    observer.observe(firstItemRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const maxIndex = Math.max(upcomingEvents.length - visibleCount, 0);
+
+  const slideLeft = () => {
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const slideRight = () => {
     setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
+  };
+
+  const translateX = -(currentIndex * (itemWidth + GAP));
 
   return (
     <div>
@@ -227,10 +256,9 @@ export default function Landing() {
             </h1>
             <p className="text-base leading-relaxed text-white/80">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
+
             <div className="mt-4 flex gap-4">
               {btnList.map((item, i) => (
                 <Link href={item.link} key={i}>
@@ -267,7 +295,9 @@ export default function Landing() {
                   width={135}
                   height={46}
                   alt={logo.alt}
-                  className={`${index < logoImages.length - 1 ? "lg:mb-5" : ""} ${logo.position === "end" ? "lg:self-end" : ""}`}
+                  className={`${index < logoImages.length - 1 ? "lg:mb-5" : ""} ${
+                    logo.position === "end" ? "lg:self-end" : ""
+                  }`}
                 />
               ))}
             </div>
@@ -277,55 +307,54 @@ export default function Landing() {
 
       <section className="bg-background px-10 py-10">
         <div className="container mx-auto rounded-lg bg-primary-foreground px-4 py-8 lg:px-12">
-          {/* Title Row */}
           <div className="flex items-center justify-between px-10">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center">
               <h2 className="font-jersey10 text-4xl tracking-wide text-white">
                 Upcoming Events
               </h2>
 
-              {/* Arrow controls */}
               <div className="ml-5 flex gap-3 text-lg text-white/60">
                 <ChevronLeft
-                  className={`hover:text-white ${currentIndex === 0 ? "opacity-40" : "cursor-pointer"}`}
+                  className={`hover:text-white ${
+                    currentIndex === 0 ? "opacity-40" : "cursor-pointer"
+                  }`}
                   onClick={slideLeft}
                 />
                 <ChevronRight
-                  className={`hover:text-white ${currentIndex === maxIndex ? "opacity-40" : "cursor-pointer"}`}
+                  className={`hover:text-white ${
+                    currentIndex === maxIndex ? "opacity-40" : "cursor-pointer"
+                  }`}
                   onClick={slideRight}
                 />
               </div>
             </div>
 
-            <div>
-              <Link href="/events">
-                <span className="font-jersey10">See More </span>
-              </Link>
-              <span className="cursor-pointer font-jersey10 hover:text-white">
-                &gt;
-              </span>
-            </div>
+            <Link href="/events" className="font-jersey10">
+              See More &gt;
+            </Link>
           </div>
 
           <div className="mt-10 px-10">
-            <div ref={containerRef} className="mt-10 overflow-hidden">
+            <div ref={viewportRef} className="overflow-hidden">
               <div
-                className="flex gap-10 transition-transform duration-300 ease-out"
+                className="flex transition-transform duration-300 ease-out"
                 style={{
-                  transform: `translateX(calc(-${currentIndex} * (33.333% + 2.5rem)))`,
+                  gap: GAP,
+                  transform: `translateX(${translateX}px)`,
                 }}
               >
-                {upcomingEvents.map((event) => (
+                {upcomingEvents.map((event, index) => (
                   <div
                     key={event.id}
-                    className="flex-shrink-0 basis-[calc((100%-5rem)/3)]"
+                    ref={index === 0 ? firstItemRef : undefined}
+                    className="w-full flex-shrink-0 md:w-[calc((100%-80px)/3)]"
                   >
-                    <div className="flex h-44 w-full items-center justify-center rounded-lg bg-muted-foreground">
+                    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
                       <Image
                         src={event.image}
                         alt={event.title}
-                        width={60}
-                        height={60}
+                        fill
+                        className="object-cover"
                       />
                     </div>
 
@@ -337,7 +366,7 @@ export default function Landing() {
                       {event.time}
                     </p>
 
-                    <div className="mt-3 w-full border-b border-white/20"></div>
+                    <div className="mt-3 w-full border-b border-white/20" />
                   </div>
                 ))}
               </div>
@@ -350,7 +379,7 @@ export default function Landing() {
         <div className="flex w-full justify-between px-4">
           <FeatureBox
             title="So... How do I get involved?"
-            text="The easiest way to get involved is to come along to one of our events! Most events don't need registration- just check the event description to make sure. If you aren't feeling up to an event, just join our discord. React out to our friendly committee members if you need any help!"
+            text="The easiest way to get involved is to come along to one of our events!"
           />
         </div>
       </section>
@@ -358,23 +387,13 @@ export default function Landing() {
       <section className="relative w-full overflow-hidden bg-background px-6 py-20 lg:px-12">
         <div className="relative z-10 mx-auto max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* --- Title & Intro Text --- */}
             <div className="mb-10 flex flex-col items-start">
               <h2 className="flex items-center gap-3 font-jersey10 text-5xl text-white">
                 Featured Member Creations
                 <Image src="/heart.png" alt="" width={60} height={50} />
               </h2>
-
-              <div className="inline-block">
-                <p className="mt-3 text-lg text-white/70">
-                  Some of our favourite games made by our members
-                </p>
-
-                <div className="mt-8 h-px bg-white/30"></div>
-              </div>
             </div>
 
-            {/* --- Buttons Row --- */}
             <div className="mb-12 flex flex-col items-start gap-4">
               {gameShowcaseBtnList.map((item, i) => (
                 <Link href={item.link} key={i}>
@@ -384,56 +403,31 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* --- Card Container --- */}
           <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
             {gamesData.map((game) => (
               <div
                 key={game.id}
                 className="rounded-xl p-6 text-background shadow-lg"
               >
-                <div className="mb-6 flex h-44 items-center justify-center rounded-xl">
-                  <Image
-                    src={game.image}
-                    alt={game.title}
-                    width={340}
-                    height={195}
-                  />
-                </div>
+                <Image
+                  src={game.image}
+                  alt={game.title}
+                  width={340}
+                  height={195}
+                  className="rounded-xl"
+                />
 
-                <h3 className="mb-2 font-firaCode font-jersey10 text-2xl text-white">
+                <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
                   {game.title}
                 </h3>
 
-                <p className="mb-4 font-firaCode text-sm text-primary">
-                  {game.description}
-                </p>
+                <p className="mb-4 text-sm text-primary">{game.description}</p>
 
-                <div className="h-px w-full bg-white/30"></div>
+                <div className="h-px w-full bg-white/30" />
               </div>
             ))}
           </div>
         </div>
-        <Image
-          src="/fire.png"
-          alt=""
-          width={400}
-          height={400}
-          className="absolute -left-64 top-1/2 z-10 -translate-y-1/2"
-        />
-        <Image
-          src="/fire.png"
-          alt=""
-          width={400}
-          height={400}
-          className="absolute -right-52 top-1/2 z-10 -translate-y-1/2"
-        />
-        <Image
-          src="/fire.png"
-          alt=""
-          width={300}
-          height={300}
-          className="absolute -bottom-36 left-1/2 z-10 -translate-x-1/2"
-        />
       </section>
     </div>
   );
