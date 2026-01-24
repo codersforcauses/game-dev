@@ -37,8 +37,8 @@ export function MemberProfile({ member }: MemberProfileProps) {
 
   return (
     <>
-      <div className="m-auto h-fit rounded-md bg-card">
-        <div className="mx-2 flex flex-wrap items-center justify-center gap-y-5 py-7 lg:mx-10">
+      <div className="m-auto h-fit bg-[#1B1F4C]">
+        <div className="border-y-[#9CA4FD]lg:mx-10 mx-2 flex flex-wrap items-center justify-center gap-y-5 py-7">
           <div className="grid grid-cols-1 grid-rows-1 items-center justify-items-center lg:mr-6">
             <div className="absolute size-32 overflow-clip bg-accent text-center">
               {member.profile_picture ? (
@@ -69,7 +69,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
                 <div className="min-w-fit">
                   <p>{member.name}</p>
                 </div>
-                <hr className="hidden lg:ml-5 lg:flex lg:w-full lg:self-center" />{" "}
+                <hr className="hidden border-[#CED1FE] lg:ml-5 lg:flex lg:w-full lg:self-center" />{" "}
               </div>{" "}
               <div className="font-firaCode text-lg">
                 <p>{member.pronouns}</p>
@@ -83,40 +83,37 @@ export function MemberProfile({ member }: MemberProfileProps) {
         <h2 className="mt-7 text-center font-jersey10 text-5xl">Projects</h2>
         <div className="m-auto my-5 flex flex-wrap justify-center gap-8">
           <div className="w-fit rounded-md p-5">
-            <p className="mb-2 h-44 w-96 rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
               Image + Link to Project Here
             </p>
-            <p className="font-firaCode text-xl font-semibold">
-              {" "}
-              Project Title{" "}
+            <p className="max-w-96 font-firaCode text-xl font-semibold">
+              Project Title
             </p>
-            <p className="text-md line-clamp-1 font-firaCode text-[#9CA4FD]">
-              {" "}
-              Project description{" "}
+            <p className="line-clamp-1 max-w-96 font-firaCode text-[#9CA4FD]">
+              Project description
             </p>
           </div>
           <div className="w-fit rounded-md p-5">
-            <p className="mb-2 h-44 w-96 rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
               Image + Link to Project Here
             </p>
-            <p className="font-firaCode text-xl font-semibold">
-              {" "}
-              Project Title{" "}
+            <p className="max-w-96 font-firaCode text-xl font-semibold">
+              Project Title Project Title Project Title Project Title
             </p>
-            <p className="line-clamp-1 font-firaCode text-[#9CA4FD]">
-              {" "}
-              Project description{" "}
+            <p className="text-md line-clamp-1 max-w-96 font-firaCode text-[#9CA4FD]">
+              Project description Project description Project description
+              Project description
             </p>
           </div>
           <div className="w-fit rounded-md p-5">
-            <p className="mb-2 h-44 w-96 rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
               Image + Link to Project Here
             </p>
-            <p className="font-firaCode text-xl font-semibold">
+            <p className="max-w-96 font-firaCode text-xl font-semibold">
               {" "}
               Project Title{" "}
             </p>
-            <p className="line-clamp-1 font-firaCode text-[#9CA4FD]">
+            <p className="line-clamp-1 max-w-96 font-firaCode text-[#9CA4FD]">
               {" "}
               Project description{" "}
             </p>
