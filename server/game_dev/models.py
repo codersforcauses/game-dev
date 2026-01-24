@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.functions import Now
 
 
 class Member(models.Model):
@@ -15,7 +14,7 @@ class Member(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=200)
-    date = models.DateTimeField(db_default=Now())
+    date = models.DateTimeField()
     description = models.CharField(max_length=256, blank=True)
     publicationDate = models.DateField()
     cover_image = models.ImageField(upload_to="events/", null=True)
