@@ -83,7 +83,25 @@ export function DebrisBurst({
     lastT.current = performance.now();
 
     const step = (t: number) => {
-      // Animation step will be implemented in next commit
+      const dt = Math.min(0.033, (t - lastT.current) / 1000); // seconds, cap big frames
+      lastT.current = t;
+
+      setDebris((prev) => {
+        const next = prev.map((d) => {
+          // Update position based on velocity
+          const px = d.x + d.vx * dt;
+          const py = d.y + d.vy * dt;
+
+          return {
+            ...d,
+            x: px,
+            y: py,
+          };
+        });
+
+        return next;
+      });
+
       rafRef.current = requestAnimationFrame(step);
     };
 
