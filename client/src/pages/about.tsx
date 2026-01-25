@@ -125,7 +125,7 @@ export default function AboutPage() {
                 <div className="relative flex h-[11.5625rem] w-[11.25rem] items-center justify-center bg-[url('/frame.png')] bg-contain bg-center bg-no-repeat">
                   <Image
                     src={member.profile_picture}
-                    alt="url('/landing_placeholder.png')"
+                    alt="/landing_placeholder.png"
                     width={106}
                     height={106}
                     className="mb-3 h-[6.625rem] w-[6.625rem]"
@@ -153,10 +153,10 @@ export default function AboutPage() {
                 <div className="relative flex h-[11.5625rem] w-[11.25rem] items-center justify-center bg-[url('/frame.png')] bg-contain bg-center bg-no-repeat">
                   <Image
                     src={member.profile_picture}
-                    alt="url('/landing_placeholder.png')"
+                    alt="/landing_placeholder.png"
                     width={106}
                     height={106}
-                    className="mb-3 h-[6.625rem] w-[6.625rem]"
+                    className="mb-3 h-[6.625rem] w-[6.625rem] pl-[0.03125rem]"
                   />
                 </div>
                 <div className="w-[11.25rem] pl-3 text-left font-firaCode text-[0.5rem] leading-tight">
