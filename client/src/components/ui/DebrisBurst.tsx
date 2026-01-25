@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
 
 type Debris = {
   id: number;
@@ -72,6 +72,26 @@ export function DebrisBurst({
     }
     return arr;
   }, [count, power, spreadDeg]);
+
+  const [debris, setDebris] = useState<Debris[]>([]);
+  const rafRef = useRef<number | null>(null);
+  const lastT = useRef<number>(0);
+
+  // Set up animation loop
+  useEffect(() => {
+    setDebris(initial);
+    lastT.current = performance.now();
+
+    const step = (t: number) => {
+      // Animation step will be implemented in next commit
+      rafRef.current = requestAnimationFrame(step);
+    };
+
+    rafRef.current = requestAnimationFrame(step);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [initial]);
 
   return null;
 }
