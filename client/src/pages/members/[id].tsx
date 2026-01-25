@@ -4,17 +4,33 @@ import { useMember } from "@/hooks/useMember";
 
 import { MemberProfile } from "../../components/main/MemberProfile";
 
-export default function MemberPage() {
-  const router = useRouter();
-  const id = Number(router.query.id);
-  const { data: member, isLoading, isError } = useMember(id);
-
-  if (isLoading) {
-    return <p>Loading member...</p>;
+function normaliseId(id: string | string[] | number | undefined) {
+  if (typeof id === "number" && Number.isFinite(id)) {
+    return id;
   }
 
-  // currently displays member not found but can be improved with routing to 404 page (issue #46) :)
-  //
+  if (typeof id === "string") {
+    const parsed = Number(id);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  return undefined;
+}
+
+export default function MemberPage() {
+  const router = useRouter();
+  const id = normaliseId(router.query.id);
+
+  const {
+    data: member,
+    isPending,
+    isError,
+  } = useMember(router.isReady ? id : undefined);
+
+  if (isPending) {
+    return null;
+  }
+
   if (isError || !member) {
     return <p>Member not found</p>;
   }
