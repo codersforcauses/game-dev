@@ -1,14 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { Button } from "../components/ui/button";
 import { useExplosions } from "../hooks/useExplosions";
 import { Explosion } from "../components/ui/Explosion";
+import { DebrisBurst } from "../components/ui/DebrisBurst";
 
 export default function Landing() {
   const { explosions, triggerExplosions } = useExplosions();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [clickDebris, setClickDebris] = useState<Array<{ id: number; x: number; y: number }>>([]);
 
   const handleExplosionClick = () => {
     triggerExplosions({
@@ -27,6 +29,10 @@ export default function Landing() {
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
 
+    // Get absolute pixel position for DebrisBurst
+    const absoluteX = e.clientX;
+    const absoluteY = e.clientY;
+
     // Create explosion at click position
     triggerExplosions({
       count: 1,
@@ -35,6 +41,15 @@ export default function Landing() {
       duration: 1500,
       playSound: true,
     });
+
+    // Add DebrisBurst for click
+    const debrisId = Date.now();
+    setClickDebris((prev) => [...prev, { id: debrisId, x: absoluteX, y: absoluteY }]);
+    
+    // Remove after animation completes
+    setTimeout(() => {
+      setClickDebris((prev) => prev.filter((d) => d.id !== debrisId));
+    }, 3000);
 
     // Manually create explosion with crater at click position
     if (containerRef.current) {
@@ -61,67 +76,6 @@ export default function Landing() {
       crater.style.clipPath = craterPath;
       crater.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
       crater.style.animation = "crater-fade 3s ease-out forwards";
-
-      // Create debris pieces with flight animation
-      const debrisCount = 8;
-      for (let i = 0; i < debrisCount; i++) {
-        const size = 50 + Math.random() * 40; // 50-90px
-        const hue = 235 + Math.random() * 20; // Match page theme colors
-        const lightness = 20 + Math.random() * 15;
-        const angle = (i / debrisCount) * Math.PI * 2 + Math.random() * 0.5; // Random direction
-        const distance = 120 + Math.random() * 80; // 120-200px distance
-        const rotation = Math.random() * 360; // Random rotation
-        const delay = Math.random() * 0.2; // Slight delay variation
-        const finalX = Math.cos(angle) * distance;
-        const finalY = Math.sin(angle) * distance;
-
-        // Generate irregular polygon shape for each piece (4-6 points for torn look)
-        const points = 4 + Math.floor(Math.random() * 3); // 4-6 points
-        const polygonPoints = Array.from({ length: points }, () => {
-          return `${Math.random() * 100}% ${Math.random() * 100}%`;
-        }).join(", ");
-
-        const debris = document.createElement("div");
-        debris.className = "pointer-events-none absolute z-45";
-        debris.style.left = `${x}%`;
-        debris.style.top = `${y}%`;
-        debris.style.width = `${size}px`;
-        debris.style.height = `${size}px`;
-        debris.style.backgroundColor = "hsl(236, 47%, 7%)"; // Match page background
-        debris.style.border = "1px solid rgba(255, 255, 255, 0.15)";
-        debris.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.6), inset 0 0 8px rgba(0, 0, 0, 0.4)";
-        debris.style.filter = "brightness(0.9) contrast(1.1)";
-        debris.style.clipPath = `polygon(${polygonPoints})`; // Irregular torn shape
-        debris.style.transform = "translate(-50%, -50%)";
-        debris.style.animation = `debris-fly-click-${Date.now()}-${i} 1.5s ease-out forwards`;
-        debris.style.animationDelay = `${delay}s`;
-        debris.style.opacity = "1";
-
-        // Inject animation
-        const styleId = `debris-click-${Date.now()}-${i}`;
-        const style = document.createElement("style");
-        style.id = styleId;
-        style.textContent = `
-          @keyframes debris-fly-click-${Date.now()}-${i} {
-            0% {
-              transform: translate(-50%, -50%) translate(0, 0) rotate(0deg);
-              opacity: 1;
-            }
-            100% {
-              transform: translate(-50%, -50%) translate(${finalX}px, ${finalY}px) rotate(${rotation}deg);
-              opacity: 0;
-            }
-          }
-        `;
-        document.head.appendChild(style);
-        containerRef.current.appendChild(debris);
-
-        setTimeout(() => {
-          debris.remove();
-          const styleEl = document.getElementById(styleId);
-          if (styleEl) styleEl.remove();
-        }, 2500); // Animation + buffer
-      }
       
       // Create the explosion GIF
       const newExplosion = document.createElement("div");
@@ -143,7 +97,6 @@ export default function Landing() {
       setTimeout(() => {
         crater.remove();
         newExplosion.remove();
-        // Debris pieces are removed individually above
       }, 3000);
     }
   };
@@ -276,6 +229,19 @@ export default function Landing() {
       {/* Render explosions */}
       {explosions.map((explosion) => (
         <Explosion key={explosion.id} explosion={explosion} />
+      ))}
+      {/* Render DebrisBurst for clicks */}
+      {clickDebris.map((debris) => (
+        <DebrisBurst
+          key={debris.id}
+          x={debris.x}
+          y={debris.y}
+          count={26}
+          power={520}
+          spreadDeg={360}
+          gravity={1500}
+          bounce={0.28}
+        />
       ))}
       <section className="flex w-full justify-center bg-muted px-12 py-10">
         <div className="flex w-full max-w-[1440px] flex-col items-center justify-between gap-12 md:flex-row">

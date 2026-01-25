@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { ExplosionPosition } from "../../hooks/useExplosions";
+import { DebrisBurst } from "./DebrisBurst";
 
 interface ExplosionProps {
   explosion: ExplosionPosition;
@@ -32,57 +33,29 @@ function generateIrregularCraterPath(): string {
 export function Explosion({ explosion }: ExplosionProps) {
   // Generate irregular crater shape (unique per explosion)
   const craterPath = generateIrregularCraterPath();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [debrisPosition, setDebrisPosition] = useState<{ x: number; y: number } | null>(null);
 
-  // Generate debris pieces with flight paths
-  const debrisCount = 8;
-  const debris = Array.from({ length: debrisCount }, (_, i) => {
-    const size = 50 + Math.random() * 40; // 50-90px
-    const hue = 235 + Math.random() * 20; // Match page theme colors
-    const lightness = 20 + Math.random() * 15;
-    const angle = (i / debrisCount) * Math.PI * 2 + Math.random() * 0.5; // Random direction
-    const distance = 120 + Math.random() * 80; // 120-200px distance
-    const rotation = Math.random() * 360; // Random rotation
-    const delay = Math.random() * 0.2; // Slight delay variation
-    return { size, hue, lightness, angle, distance, rotation, delay };
-  });
-
-  // Inject debris animation keyframes
+  // Convert percentage position to pixel coordinates for DebrisBurst
   useEffect(() => {
-    const styleId = `debris-animations-${explosion.id}`;
-    if (document.getElementById(styleId)) return; // Already injected
+    if (!containerRef.current) return;
+    const container = containerRef.current.closest('[class*="relative"]') as HTMLElement;
+    if (!container) {
+      // Fallback: use window if no relative container found
+      const x = (explosion.x / 100) * window.innerWidth;
+      const y = (explosion.y / 100) * window.innerHeight;
+      setDebrisPosition({ x, y });
+      return;
+    }
 
-    const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = debris
-      .map(
-        (piece, i) => {
-          const finalX = Math.cos(piece.angle) * piece.distance;
-          const finalY = Math.sin(piece.angle) * piece.distance;
-          return `
-            @keyframes debris-fly-${explosion.id}-${i} {
-              0% {
-                transform: translate(-50%, -50%) translate(0, 0) rotate(0deg);
-                opacity: 1;
-              }
-              100% {
-                transform: translate(-50%, -50%) translate(${finalX}px, ${finalY}px) rotate(${piece.rotation}deg);
-                opacity: 0;
-              }
-            }
-          `;
-        }
-      )
-      .join("");
-    document.head.appendChild(style);
-
-    return () => {
-      const existingStyle = document.getElementById(styleId);
-      if (existingStyle) existingStyle.remove();
-    };
-  }, [explosion.id, debris]);
+    const rect = container.getBoundingClientRect();
+    const x = rect.left + (explosion.x / 100) * rect.width;
+    const y = rect.top + (explosion.y / 100) * rect.height;
+    setDebrisPosition({ x, y });
+  }, [explosion.x, explosion.y]);
 
   return (
-    <>
+    <div ref={containerRef}>
       {/* Black crater - irregular jagged shape */}
       <div
         className="pointer-events-none absolute z-40"
@@ -97,36 +70,18 @@ export function Explosion({ explosion }: ExplosionProps) {
           animation: "crater-fade 3s ease-out forwards",
         }}
       />
-      {/* Debris pieces with flight animation */}
-      {debris.map((piece, i) => {
-        // Generate irregular polygon shape for each piece (4-6 points for torn look)
-        const points = 4 + Math.floor(Math.random() * 3); // 4-6 points
-        const polygonPoints = Array.from({ length: points }, () => {
-          return `${Math.random() * 100}% ${Math.random() * 100}%`;
-        }).join(", ");
-
-        return (
-          <div
-            key={i}
-            className="pointer-events-none absolute z-45"
-            style={{
-              left: `${explosion.x}%`,
-              top: `${explosion.y}%`,
-              width: `${piece.size}px`,
-              height: `${piece.size}px`,
-              backgroundColor: "hsl(236, 47%, 7%)", // Match page background
-              border: "1px solid rgba(255, 255, 255, 0.15)",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.6), inset 0 0 8px rgba(0, 0, 0, 0.4)",
-              filter: "brightness(0.9) contrast(1.1)",
-              clipPath: `polygon(${polygonPoints})`, // Irregular torn shape
-              transform: "translate(-50%, -50%)",
-              animation: `debris-fly-${explosion.id}-${i} 1.5s ease-out forwards`,
-              animationDelay: `${piece.delay}s`,
-              opacity: 1,
-            }}
-          />
-        );
-      })}
+      {/* Physics-based debris burst */}
+      {debrisPosition && (
+        <DebrisBurst
+          x={debrisPosition.x}
+          y={debrisPosition.y}
+          count={26}
+          power={520}
+          spreadDeg={360}
+          gravity={1500}
+          bounce={0.28}
+        />
+      )}
       {/* The actual explosion GIF */}
       <div
         className="pointer-events-none absolute z-50"
@@ -145,7 +100,7 @@ export function Explosion({ explosion }: ExplosionProps) {
           unoptimized // GIFs need unoptimized to animate
         />
       </div>
-    </>
+    </div>
   );
 }
 
