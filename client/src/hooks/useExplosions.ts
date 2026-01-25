@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 function playExplosionSound(): void {
   const soundIndex = Math.floor(Math.random() * 4); // 0-3 for xplsion_0 to xplsion_3
   const audio = new Audio(`/sfx/xplsion_${soundIndex}.mp3`);
-  audio.volume = 0.3; // Set volume to 30% to avoid being too loud
+  audio.volume = 0.1; // Set volume to 10% to avoid being too loud
   audio.play().catch((error) => {
     // Handle autoplay restrictions gracefully
     console.warn("Could not play explosion sound:", error);
