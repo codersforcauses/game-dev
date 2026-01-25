@@ -62,12 +62,18 @@ export default function Landing() {
       crater.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
       crater.style.animation = "crater-fade 3s ease-out forwards";
 
-      // Create basic debris pieces (static, no animation yet)
+      // Create debris pieces with flight animation
       const debrisCount = 6;
       for (let i = 0; i < debrisCount; i++) {
         const size = 15 + Math.random() * 10; // 15-25px
         const hue = 235 + Math.random() * 20; // Match page theme colors
         const lightness = 20 + Math.random() * 15;
+        const angle = (i / debrisCount) * Math.PI * 2 + Math.random() * 0.5; // Random direction
+        const distance = 80 + Math.random() * 40; // 80-120px distance
+        const rotation = Math.random() * 360; // Random rotation
+        const delay = Math.random() * 0.2; // Slight delay variation
+        const finalX = Math.cos(angle) * distance;
+        const finalY = Math.sin(angle) * distance;
 
         const debris = document.createElement("div");
         debris.className = "pointer-events-none absolute z-45";
@@ -78,11 +84,34 @@ export default function Landing() {
         debris.style.backgroundColor = `hsl(${hue}, 47%, ${lightness}%)`;
         debris.style.borderRadius = "2px";
         debris.style.transform = "translate(-50%, -50%)";
+        debris.style.animation = `debris-fly-click-${Date.now()}-${i} 1s ease-out forwards`;
+        debris.style.animationDelay = `${delay}s`;
+        debris.style.opacity = "0.8";
+
+        // Inject animation
+        const styleId = `debris-click-${Date.now()}-${i}`;
+        const style = document.createElement("style");
+        style.id = styleId;
+        style.textContent = `
+          @keyframes debris-fly-click-${Date.now()}-${i} {
+            0% {
+              transform: translate(-50%, -50%) translate(0, 0) rotate(0deg);
+              opacity: 0.8;
+            }
+            100% {
+              transform: translate(-50%, -50%) translate(${finalX}px, ${finalY}px) rotate(${rotation}deg);
+              opacity: 0;
+            }
+          }
+        `;
+        document.head.appendChild(style);
         containerRef.current.appendChild(debris);
 
         setTimeout(() => {
           debris.remove();
-        }, 3000);
+          const styleEl = document.getElementById(styleId);
+          if (styleEl) styleEl.remove();
+        }, 2000); // Animation + buffer
       }
       
       // Create the explosion GIF

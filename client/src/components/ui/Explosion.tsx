@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useEffect } from "react";
 import { ExplosionPosition } from "../../hooks/useExplosions";
 
 interface ExplosionProps {
@@ -32,14 +33,53 @@ export function Explosion({ explosion }: ExplosionProps) {
   // Generate irregular crater shape (unique per explosion)
   const craterPath = generateIrregularCraterPath();
 
-  // Generate basic debris pieces (static, no animation yet)
+  // Generate debris pieces with flight paths
   const debrisCount = 6;
   const debris = Array.from({ length: debrisCount }, (_, i) => {
     const size = 15 + Math.random() * 10; // 15-25px
     const hue = 235 + Math.random() * 20; // Match page theme colors
     const lightness = 20 + Math.random() * 15;
-    return { size, hue, lightness };
+    const angle = (i / debrisCount) * Math.PI * 2 + Math.random() * 0.5; // Random direction
+    const distance = 80 + Math.random() * 40; // 80-120px distance
+    const rotation = Math.random() * 360; // Random rotation
+    const delay = Math.random() * 0.2; // Slight delay variation
+    return { size, hue, lightness, angle, distance, rotation, delay };
   });
+
+  // Inject debris animation keyframes
+  useEffect(() => {
+    const styleId = `debris-animations-${explosion.id}`;
+    if (document.getElementById(styleId)) return; // Already injected
+
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = debris
+      .map(
+        (piece, i) => {
+          const finalX = Math.cos(piece.angle) * piece.distance;
+          const finalY = Math.sin(piece.angle) * piece.distance;
+          return `
+            @keyframes debris-fly-${explosion.id}-${i} {
+              0% {
+                transform: translate(-50%, -50%) translate(0, 0) rotate(0deg);
+                opacity: 0.8;
+              }
+              100% {
+                transform: translate(-50%, -50%) translate(${finalX}px, ${finalY}px) rotate(${piece.rotation}deg);
+                opacity: 0;
+              }
+            }
+          `;
+        }
+      )
+      .join("");
+    document.head.appendChild(style);
+
+    return () => {
+      const existingStyle = document.getElementById(styleId);
+      if (existingStyle) existingStyle.remove();
+    };
+  }, [explosion.id, debris]);
 
   return (
     <>
@@ -57,7 +97,7 @@ export function Explosion({ explosion }: ExplosionProps) {
           animation: "crater-fade 3s ease-out forwards",
         }}
       />
-      {/* Basic debris pieces - static placement */}
+      {/* Debris pieces with flight animation */}
       {debris.map((piece, i) => (
         <div
           key={i}
@@ -70,6 +110,9 @@ export function Explosion({ explosion }: ExplosionProps) {
             backgroundColor: `hsl(${piece.hue}, 47%, ${piece.lightness}%)`,
             borderRadius: "2px",
             transform: "translate(-50%, -50%)",
+            animation: `debris-fly-${explosion.id}-${i} 1s ease-out forwards`,
+            animationDelay: `${piece.delay}s`,
+            opacity: 0.8,
           }}
         />
       ))}
