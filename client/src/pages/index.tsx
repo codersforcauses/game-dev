@@ -36,10 +36,20 @@ export default function Landing() {
       playSound: true,
     });
 
-    // Manually set the position for the last explosion
-    // (A bit hacky but works for click-to-explode)
-    const explosionElement = document.elementFromPoint(e.clientX, e.clientY);
-    if (explosionElement) {
+    // Manually create explosion with crater at click position
+    if (containerRef.current) {
+      // Create the crater
+      const crater = document.createElement("div");
+      crater.className = "pointer-events-none absolute z-40";
+      crater.style.left = `${x}%`;
+      crater.style.top = `${y}%`;
+      crater.style.transform = "translate(-50%, -50%)";
+      crater.style.width = "100px";
+      crater.style.height = "100px";
+      crater.style.borderRadius = "50%";
+      crater.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
+      
+      // Create the explosion GIF
       const newExplosion = document.createElement("div");
       newExplosion.className = "pointer-events-none absolute z-50";
       newExplosion.style.left = `${x}%`;
@@ -53,9 +63,11 @@ export default function Landing() {
       img.height = 150;
       
       newExplosion.appendChild(img);
+      containerRef.current.appendChild(crater);
       containerRef.current.appendChild(newExplosion);
       
       setTimeout(() => {
+        crater.remove();
         newExplosion.remove();
       }, 1500);
     }
