@@ -87,34 +87,41 @@ export function DebrisBurst({
       lastT.current = t;
 
       setDebris((prev) => {
-        const next = prev.map((d) => {
-          // Apply air drag to velocity
-          let vx = d.vx * (1 - 0.25 * dt); // a little air drag
-          let vy = d.vy + gravity * dt; // apply gravity
+        const next = prev
+          .map((d) => {
+            const life = d.life - dt * 1000; // decrease lifetime
 
-          // Update position based on velocity
-          let px = d.x + vx * dt;
-          let py = d.y + vy * dt;
+            // Apply air drag to velocity
+            let vx = d.vx * (1 - 0.25 * dt); // a little air drag
+            let vy = d.vy + gravity * dt; // apply gravity
 
-          // Optional bounce off ground
-          if (groundY !== undefined) {
-            const absoluteY = y + py;
-            if (absoluteY > groundY) {
-              py = groundY - y; // clamp
-              vy = -vy * bounce; // bounce up
-              vx = vx * (0.7 + Math.random() * 0.1); // lose some horizontal speed
+            // Update position based on velocity
+            let px = d.x + vx * dt;
+            let py = d.y + vy * dt;
+
+            // Optional bounce off ground
+            if (groundY !== undefined) {
+              const absoluteY = y + py;
+              if (absoluteY > groundY) {
+                py = groundY - y; // clamp
+                vy = -vy * bounce; // bounce up
+                vx = vx * (0.7 + Math.random() * 0.1); // lose some horizontal speed
+              }
             }
-          }
 
-          return {
-            ...d,
-            x: px,
-            y: py,
-            vx,
-            vy,
-          };
-        });
+            return {
+              ...d,
+              x: px,
+              y: py,
+              vx,
+              vy,
+              rot: d.rot + d.vr * dt, // update rotation
+              life,
+            };
+          })
+          .filter((d) => d.life > 0); // remove debris when lifetime expires
 
+        if (next.length === 0) onDone?.(); // call callback when all debris is gone
         return next;
       });
 
