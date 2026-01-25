@@ -22,6 +22,20 @@ export default function Landing() {
     });
   };
 
+  const handleBombClick = () => {
+    // Trigger a massive explosion across the whole page
+    if (!containerRef.current) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    triggerExplosions({
+      count: 10, // Lots of explosions!
+      minDelay: 0,
+      maxDelay: 500, // Stagger them over half a second
+      duration: 2000,
+      playSound: true,
+    }, rect);
+  };
+
   const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
 
@@ -265,7 +279,6 @@ export default function Landing() {
                   </Button>
                 </Link>
               ))}
-              <Button onClick={handleExplosionClick}>Press Me!</Button>
             </div>
           </div>
 
@@ -281,8 +294,9 @@ export default function Landing() {
               src="/bomb.png"
               width={96}
               height={156}
-              alt="placeholder"
-              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 [image-rendering:pixelated]"
+              alt="Bomb - click to explode!"
+              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 cursor-pointer transition-transform hover:scale-110 [image-rendering:pixelated]"
+              onClick={handleBombClick}
             />
           </div>
         </div>
