@@ -34,13 +34,13 @@ export function Explosion({ explosion }: ExplosionProps) {
   const craterPath = generateIrregularCraterPath();
 
   // Generate debris pieces with flight paths
-  const debrisCount = 6;
+  const debrisCount = 8;
   const debris = Array.from({ length: debrisCount }, (_, i) => {
-    const size = 15 + Math.random() * 10; // 15-25px
+    const size = 50 + Math.random() * 40; // 50-90px
     const hue = 235 + Math.random() * 20; // Match page theme colors
     const lightness = 20 + Math.random() * 15;
     const angle = (i / debrisCount) * Math.PI * 2 + Math.random() * 0.5; // Random direction
-    const distance = 80 + Math.random() * 40; // 80-120px distance
+    const distance = 120 + Math.random() * 80; // 120-200px distance
     const rotation = Math.random() * 360; // Random rotation
     const delay = Math.random() * 0.2; // Slight delay variation
     return { size, hue, lightness, angle, distance, rotation, delay };
@@ -110,7 +110,7 @@ export function Explosion({ explosion }: ExplosionProps) {
             backgroundColor: `hsl(${piece.hue}, 47%, ${piece.lightness}%)`,
             borderRadius: "2px",
             transform: "translate(-50%, -50%)",
-            animation: `debris-fly-${explosion.id}-${i} 1s ease-out forwards`,
+            animation: `debris-fly-${explosion.id}-${i} 1.5s ease-out forwards`,
             animationDelay: `${piece.delay}s`,
             opacity: 0.8,
           }}

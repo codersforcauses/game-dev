@@ -63,13 +63,13 @@ export default function Landing() {
       crater.style.animation = "crater-fade 3s ease-out forwards";
 
       // Create debris pieces with flight animation
-      const debrisCount = 6;
+      const debrisCount = 8;
       for (let i = 0; i < debrisCount; i++) {
-        const size = 15 + Math.random() * 10; // 15-25px
+        const size = 50 + Math.random() * 40; // 50-90px
         const hue = 235 + Math.random() * 20; // Match page theme colors
         const lightness = 20 + Math.random() * 15;
         const angle = (i / debrisCount) * Math.PI * 2 + Math.random() * 0.5; // Random direction
-        const distance = 80 + Math.random() * 40; // 80-120px distance
+        const distance = 120 + Math.random() * 80; // 120-200px distance
         const rotation = Math.random() * 360; // Random rotation
         const delay = Math.random() * 0.2; // Slight delay variation
         const finalX = Math.cos(angle) * distance;
@@ -84,7 +84,7 @@ export default function Landing() {
         debris.style.backgroundColor = `hsl(${hue}, 47%, ${lightness}%)`;
         debris.style.borderRadius = "2px";
         debris.style.transform = "translate(-50%, -50%)";
-        debris.style.animation = `debris-fly-click-${Date.now()}-${i} 1s ease-out forwards`;
+        debris.style.animation = `debris-fly-click-${Date.now()}-${i} 1.5s ease-out forwards`;
         debris.style.animationDelay = `${delay}s`;
         debris.style.opacity = "0.8";
 
@@ -111,7 +111,7 @@ export default function Landing() {
           debris.remove();
           const styleEl = document.getElementById(styleId);
           if (styleEl) styleEl.remove();
-        }, 2000); // Animation + buffer
+        }, 2500); // Animation + buffer
       }
       
       // Create the explosion GIF
