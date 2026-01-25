@@ -16,6 +16,7 @@
 
     --light-1: hsl(0 0% 100%);
     --light-2: hsl(236.25, 96%, 90.2%);
+    --light-3: hsl(235, 96%, 80%);
 
     /* Colours to be used for components */
     --background: 236 47% 7%;

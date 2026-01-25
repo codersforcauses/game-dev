@@ -36,8 +36,8 @@ export function MemberProfile({ member }: MemberProfileProps) {
 
   return (
     <>
-      <div className="m-auto h-fit bg-[#1B1F4C] text-[#CED1FE]">
-        <div className="border-y-[#9CA4FD]lg:mx-10 mx-2 flex flex-wrap items-center justify-center gap-y-5 py-7">
+      <div className="m-auto h-fit bg-card text-light_2">
+        <div className="mx-2 flex flex-wrap items-center justify-center gap-y-5 py-7 lg:mx-10">
           <div className="grid grid-cols-1 grid-rows-1 items-center justify-items-center lg:mr-6">
             <div className="absolute size-32 overflow-clip bg-accent text-center">
               {member.profile_picture ? (
@@ -54,7 +54,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
               )}
             </div>
             <Image
-              src="/frame.png"
+              src="/frame.svg"
               alt="golden pixel art frame around profile picture"
               width={1200}
               height={1200}
@@ -63,13 +63,12 @@ export function MemberProfile({ member }: MemberProfileProps) {
           </div>
           <div className="flex w-4/5 flex-col gap-2 rounded-md p-2.5 font-firaCode">
             <div className="font-jersey10 text-4xl">
-              {" "}
               <div className="flex">
                 <div className="min-w-fit">
                   <p>{member.name}</p>
                 </div>
-                <hr className="hidden border-[#CED1FE] lg:ml-5 lg:flex lg:w-full lg:self-center" />{" "}
-              </div>{" "}
+                <hr className="hidden border-light_2 lg:ml-5 lg:flex lg:w-full lg:self-center" />
+              </div>
               <div className="font-firaCode text-lg">
                 <p>{member.pronouns}</p>
               </div>
@@ -82,39 +81,37 @@ export function MemberProfile({ member }: MemberProfileProps) {
         <h2 className="mt-7 text-center font-jersey10 text-5xl">Projects</h2>
         <div className="m-auto my-5 flex flex-wrap justify-center gap-8">
           <div className="w-fit rounded-md p-5">
-            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-light_2 p-5 text-neutral_1">
               Image + Link to Project Here
             </p>
             <p className="max-w-96 font-firaCode text-xl font-semibold">
               Project Title
             </p>
-            <p className="line-clamp-1 max-w-96 font-firaCode text-[#9CA4FD]">
+            <p className="line-clamp-1 max-w-96 font-firaCode text-[--light-3]">
               Project description
             </p>
           </div>
           <div className="w-fit rounded-md p-5">
-            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-light_2 p-5 text-neutral_1">
               Image + Link to Project Here
             </p>
             <p className="max-w-96 font-firaCode text-xl font-semibold">
               Project Title Project Title Project Title Project Title
             </p>
-            <p className="text-md line-clamp-1 max-w-96 font-firaCode text-[#9CA4FD]">
+            <p className="line-clamp-1 max-w-96 font-firaCode text-[--light-3]">
               Project description Project description Project description
               Project description
             </p>
           </div>
           <div className="w-fit rounded-md p-5">
-            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-[#CED1FE] p-5 text-[#1B1F4C]">
+            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-light_2 p-5 text-neutral_1">
               Image + Link to Project Here
             </p>
             <p className="max-w-96 font-firaCode text-xl font-semibold">
-              {" "}
-              Project Title{" "}
+              Project Title
             </p>
-            <p className="line-clamp-1 max-w-96 font-firaCode text-[#9CA4FD]">
-              {" "}
-              Project description{" "}
+            <p className="line-clamp-1 max-w-96 font-firaCode text-[--light-3]">
+              Project description
             </p>
           </div>
         </div>
