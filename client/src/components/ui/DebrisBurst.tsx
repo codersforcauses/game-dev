@@ -11,6 +11,7 @@ type Debris = {
   size: number;
   life: number; // ms remaining
   maxLife: number; // ms
+  heightRatio: number; // height to width ratio
 };
 
 type Props = {
@@ -55,6 +56,7 @@ export function DebrisBurst({
       const vy = -Math.abs(Math.sin(angle) * speed) * (0.75 + Math.random() * 0.4);
 
       const size = 6 + Math.random() * 14;
+      const heightRatio = 0.7 + Math.random() * 0.5; // Store height ratio
       const maxLife = 650 + Math.random() * 600;
 
       arr.push({
@@ -68,6 +70,7 @@ export function DebrisBurst({
         size,
         life: maxLife,
         maxLife,
+        heightRatio, // Add height ratio to debris
       });
     }
     return arr;
@@ -134,6 +137,33 @@ export function DebrisBurst({
     };
   }, [initial, gravity, groundY, bounce, y]);
 
-  return null;
+  return (
+    <div
+      style={{
+        position: "fixed",
+        left: x,
+        top: y,
+        transform: "translate(-50%, -50%)",
+        pointerEvents: "none",
+        zIndex: 45,
+      }}
+    >
+      {debris.map((d) => {
+        const alpha = Math.max(0, Math.min(1, d.life / d.maxLife));
+        return (
+          <span
+            key={d.id}
+            className="debris-chunk"
+            style={{
+              width: d.size,
+              height: d.size * d.heightRatio,
+              transform: `translate(${d.x}px, ${d.y}px) rotate(${d.rot}deg)`,
+              opacity: alpha,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
 }
 
