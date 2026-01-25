@@ -62,7 +62,7 @@ export function Explosion({ explosion }: ExplosionProps) {
             @keyframes debris-fly-${explosion.id}-${i} {
               0% {
                 transform: translate(-50%, -50%) translate(0, 0) rotate(0deg);
-                opacity: 0.8;
+                opacity: 1;
               }
               100% {
                 transform: translate(-50%, -50%) translate(${finalX}px, ${finalY}px) rotate(${piece.rotation}deg);
@@ -98,24 +98,35 @@ export function Explosion({ explosion }: ExplosionProps) {
         }}
       />
       {/* Debris pieces with flight animation */}
-      {debris.map((piece, i) => (
-        <div
-          key={i}
-          className="pointer-events-none absolute z-45"
-          style={{
-            left: `${explosion.x}%`,
-            top: `${explosion.y}%`,
-            width: `${piece.size}px`,
-            height: `${piece.size}px`,
-            backgroundColor: `hsl(${piece.hue}, 47%, ${piece.lightness}%)`,
-            borderRadius: "2px",
-            transform: "translate(-50%, -50%)",
-            animation: `debris-fly-${explosion.id}-${i} 1.5s ease-out forwards`,
-            animationDelay: `${piece.delay}s`,
-            opacity: 0.8,
-          }}
-        />
-      ))}
+      {debris.map((piece, i) => {
+        // Generate irregular polygon shape for each piece (4-6 points for torn look)
+        const points = 4 + Math.floor(Math.random() * 3); // 4-6 points
+        const polygonPoints = Array.from({ length: points }, () => {
+          return `${Math.random() * 100}% ${Math.random() * 100}%`;
+        }).join(", ");
+
+        return (
+          <div
+            key={i}
+            className="pointer-events-none absolute z-45"
+            style={{
+              left: `${explosion.x}%`,
+              top: `${explosion.y}%`,
+              width: `${piece.size}px`,
+              height: `${piece.size}px`,
+              backgroundColor: "hsl(236, 47%, 7%)", // Match page background
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.6), inset 0 0 8px rgba(0, 0, 0, 0.4)",
+              filter: "brightness(0.9) contrast(1.1)",
+              clipPath: `polygon(${polygonPoints})`, // Irregular torn shape
+              transform: "translate(-50%, -50%)",
+              animation: `debris-fly-${explosion.id}-${i} 1.5s ease-out forwards`,
+              animationDelay: `${piece.delay}s`,
+              opacity: 1,
+            }}
+          />
+        );
+      })}
       {/* The actual explosion GIF */}
       <div
         className="pointer-events-none absolute z-50"

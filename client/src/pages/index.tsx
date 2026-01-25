@@ -75,18 +75,27 @@ export default function Landing() {
         const finalX = Math.cos(angle) * distance;
         const finalY = Math.sin(angle) * distance;
 
+        // Generate irregular polygon shape for each piece (4-6 points for torn look)
+        const points = 4 + Math.floor(Math.random() * 3); // 4-6 points
+        const polygonPoints = Array.from({ length: points }, () => {
+          return `${Math.random() * 100}% ${Math.random() * 100}%`;
+        }).join(", ");
+
         const debris = document.createElement("div");
         debris.className = "pointer-events-none absolute z-45";
         debris.style.left = `${x}%`;
         debris.style.top = `${y}%`;
         debris.style.width = `${size}px`;
         debris.style.height = `${size}px`;
-        debris.style.backgroundColor = `hsl(${hue}, 47%, ${lightness}%)`;
-        debris.style.borderRadius = "2px";
+        debris.style.backgroundColor = "hsl(236, 47%, 7%)"; // Match page background
+        debris.style.border = "1px solid rgba(255, 255, 255, 0.15)";
+        debris.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.6), inset 0 0 8px rgba(0, 0, 0, 0.4)";
+        debris.style.filter = "brightness(0.9) contrast(1.1)";
+        debris.style.clipPath = `polygon(${polygonPoints})`; // Irregular torn shape
         debris.style.transform = "translate(-50%, -50%)";
         debris.style.animation = `debris-fly-click-${Date.now()}-${i} 1.5s ease-out forwards`;
         debris.style.animationDelay = `${delay}s`;
-        debris.style.opacity = "0.8";
+        debris.style.opacity = "1";
 
         // Inject animation
         const styleId = `debris-click-${Date.now()}-${i}`;
@@ -96,7 +105,7 @@ export default function Landing() {
           @keyframes debris-fly-click-${Date.now()}-${i} {
             0% {
               transform: translate(-50%, -50%) translate(0, 0) rotate(0deg);
-              opacity: 0.8;
+              opacity: 1;
             }
             100% {
               transform: translate(-50%, -50%) translate(${finalX}px, ${finalY}px) rotate(${rotation}deg);
