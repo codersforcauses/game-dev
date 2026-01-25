@@ -63,5 +63,5 @@ class CommitteeAPIView(generics.ListAPIView):
             try:
                 outputList.append(Committee.objects.get(role=i).id)
             except Committee.DoesNotExist:
-                outputList.append({"name": "Position not filled", "profile_picture": "", "about": "", "pronouns": ""})
+                outputList.append({"name": "Position not filled", "profile_picture": "url('/landing_placeholder.png')", "about": "", "pronouns": ""})
         return outputList

@@ -124,7 +124,11 @@ export default function AboutPage() {
               >
                 <div className="relative flex h-[11.5625rem] w-[11.25rem] items-center justify-center bg-[url('/frame.png')] bg-contain bg-center bg-no-repeat">
                   <Image
-                    src={member.profile_picture}
+                    src={
+                      member.profile_picture === null
+                        ? "/landing_placeholder.png"
+                        : member.profile_picture
+                    }
                     alt="/landing_placeholder.png"
                     width={106}
                     height={106}
@@ -152,7 +156,11 @@ export default function AboutPage() {
               >
                 <div className="relative flex h-[11.5625rem] w-[11.25rem] items-center justify-center bg-[url('/frame.png')] bg-contain bg-center bg-no-repeat">
                   <Image
-                    src={member.profile_picture}
+                    src={
+                      member.profile_picture === null
+                        ? "/landing_placeholder.png"
+                        : member.profile_picture
+                    }
                     alt="/landing_placeholder.png"
                     width={106}
                     height={106}
