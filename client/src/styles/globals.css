@@ -55,3 +55,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes crater-fade {
+  0% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

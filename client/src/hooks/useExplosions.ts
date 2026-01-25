@@ -51,7 +51,7 @@ export function useExplosions() {
         count = 1,
         minDelay = 0,
         maxDelay = 100,
-        duration = 1000,
+        duration = 3000,
         playSound = true,
       } = config;
 

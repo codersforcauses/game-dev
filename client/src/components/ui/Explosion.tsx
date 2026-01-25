@@ -23,6 +23,7 @@ export function Explosion({ explosion }: ExplosionProps) {
           height: "100px",
           borderRadius: "50%",
           backgroundColor: "rgba(0, 0, 0, 0.9)",
+          animation: "crater-fade 3s ease-out forwards",
         }}
       />
       {/* The actual explosion GIF */}

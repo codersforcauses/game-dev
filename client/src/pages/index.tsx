@@ -48,6 +48,7 @@ export default function Landing() {
       crater.style.height = "100px";
       crater.style.borderRadius = "50%";
       crater.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
+      crater.style.animation = "crater-fade 3s ease-out forwards";
       
       // Create the explosion GIF
       const newExplosion = document.createElement("div");
@@ -69,7 +70,7 @@ export default function Landing() {
       setTimeout(() => {
         crater.remove();
         newExplosion.remove();
-      }, 1500);
+      }, 3000);
     }
   };
   const btnList = [
