@@ -77,41 +77,21 @@ export function MemberProfile({ member }: MemberProfileProps) {
           </div>
         </div>
       </div>
+      {/* Template for Projects section */}
       <div className="m-auto min-h-80 w-11/12">
-        <h2 className="mt-7 text-center font-jersey10 text-5xl">Projects</h2>
+        <h2 className="mt-7 text-center font-jersey10 text-5xl">
+          {/* Projects Header */}
+        </h2>
         <div className="m-auto my-5 flex flex-wrap justify-center gap-8">
           <div className="w-fit rounded-md p-5">
-            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-light_2 p-5 text-neutral_1">
-              Image + Link to Project Here
-            </p>
+            <div className="mb-2 h-44 w-96 overflow-clip rounded-md p-5 text-neutral_1">
+              {/* Image and/or Link to Project */}
+            </div>
             <p className="max-w-96 font-firaCode text-xl font-semibold">
-              Project Title
+              {/* Project Title */}
             </p>
             <p className="line-clamp-1 max-w-96 font-firaCode text-[--light-3]">
-              Project description
-            </p>
-          </div>
-          <div className="w-fit rounded-md p-5">
-            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-light_2 p-5 text-neutral_1">
-              Image + Link to Project Here
-            </p>
-            <p className="max-w-96 font-firaCode text-xl font-semibold">
-              Project Title Project Title Project Title Project Title
-            </p>
-            <p className="line-clamp-1 max-w-96 font-firaCode text-[--light-3]">
-              Project description Project description Project description
-              Project description
-            </p>
-          </div>
-          <div className="w-fit rounded-md p-5">
-            <p className="mb-2 h-44 w-96 overflow-clip rounded-md bg-light_2 p-5 text-neutral_1">
-              Image + Link to Project Here
-            </p>
-            <p className="max-w-96 font-firaCode text-xl font-semibold">
-              Project Title
-            </p>
-            <p className="line-clamp-1 max-w-96 font-firaCode text-[--light-3]">
-              Project description
+              {/* Project description */}
             </p>
           </div>
         </div>
