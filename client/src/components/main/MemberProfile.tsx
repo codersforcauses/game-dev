@@ -62,17 +62,11 @@ export function MemberProfile({ member }: MemberProfileProps) {
             />
           </div>
           <div className="flex w-4/5 flex-col gap-2 rounded-md p-2.5 font-firaCode">
-            <div className="font-jersey10 text-4xl">
-              <div className="flex">
-                <div className="min-w-fit">
-                  <p>{member.name}</p>
-                </div>
-                <hr className="hidden border-light_2 lg:ml-5 lg:flex lg:w-full lg:self-center" />
-              </div>
-              <div className="font-firaCode text-lg">
-                <p>{member.pronouns}</p>
-              </div>
+            <div className="flex">
+              <p className="min-w-fit font-jersey10 text-4xl">{member.name}</p>
+              <hr className="ml-5 hidden w-full self-center border-light_2 lg:flex" />
             </div>
+            <p className="text-lg">{member.pronouns}</p>
             <p>{member.about}</p>
           </div>
         </div>
