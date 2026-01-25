@@ -73,10 +73,9 @@ export function MemberProfile({ member }: MemberProfileProps) {
       </div>
       {/* Template for Projects section */}
       <div className="m-auto min-h-80 w-11/12">
-        <h2 className="mt-7 text-center font-jersey10 text-5xl">
-          {/* Projects Header */}
-        </h2>
+        <h2 className="mt-7 text-center font-jersey10 text-5xl">Projects</h2>
         <div className="m-auto my-5 flex flex-wrap justify-center gap-8">
+          {/* Div below is a single project card */}
           <div className="w-fit rounded-md p-5">
             <div className="mb-2 h-44 w-96 overflow-clip rounded-md p-5 text-neutral_1">
               {/* Image and/or Link to Project */}
