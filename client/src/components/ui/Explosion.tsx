@@ -31,6 +31,16 @@ function generateIrregularCraterPath(): string {
 export function Explosion({ explosion }: ExplosionProps) {
   // Generate irregular crater shape (unique per explosion)
   const craterPath = generateIrregularCraterPath();
+
+  // Generate basic debris pieces (static, no animation yet)
+  const debrisCount = 6;
+  const debris = Array.from({ length: debrisCount }, (_, i) => {
+    const size = 15 + Math.random() * 10; // 15-25px
+    const hue = 235 + Math.random() * 20; // Match page theme colors
+    const lightness = 20 + Math.random() * 15;
+    return { size, hue, lightness };
+  });
+
   return (
     <>
       {/* Black crater - irregular jagged shape */}
@@ -47,6 +57,22 @@ export function Explosion({ explosion }: ExplosionProps) {
           animation: "crater-fade 3s ease-out forwards",
         }}
       />
+      {/* Basic debris pieces - static placement */}
+      {debris.map((piece, i) => (
+        <div
+          key={i}
+          className="pointer-events-none absolute z-45"
+          style={{
+            left: `${explosion.x}%`,
+            top: `${explosion.y}%`,
+            width: `${piece.size}px`,
+            height: `${piece.size}px`,
+            backgroundColor: `hsl(${piece.hue}, 47%, ${piece.lightness}%)`,
+            borderRadius: "2px",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      ))}
       {/* The actual explosion GIF */}
       <div
         className="pointer-events-none absolute z-50"

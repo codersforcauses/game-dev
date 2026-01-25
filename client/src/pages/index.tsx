@@ -61,6 +61,29 @@ export default function Landing() {
       crater.style.clipPath = craterPath;
       crater.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
       crater.style.animation = "crater-fade 3s ease-out forwards";
+
+      // Create basic debris pieces (static, no animation yet)
+      const debrisCount = 6;
+      for (let i = 0; i < debrisCount; i++) {
+        const size = 15 + Math.random() * 10; // 15-25px
+        const hue = 235 + Math.random() * 20; // Match page theme colors
+        const lightness = 20 + Math.random() * 15;
+
+        const debris = document.createElement("div");
+        debris.className = "pointer-events-none absolute z-45";
+        debris.style.left = `${x}%`;
+        debris.style.top = `${y}%`;
+        debris.style.width = `${size}px`;
+        debris.style.height = `${size}px`;
+        debris.style.backgroundColor = `hsl(${hue}, 47%, ${lightness}%)`;
+        debris.style.borderRadius = "2px";
+        debris.style.transform = "translate(-50%, -50%)";
+        containerRef.current.appendChild(debris);
+
+        setTimeout(() => {
+          debris.remove();
+        }, 3000);
+      }
       
       // Create the explosion GIF
       const newExplosion = document.createElement("div");
@@ -82,6 +105,7 @@ export default function Landing() {
       setTimeout(() => {
         crater.remove();
         newExplosion.remove();
+        // Debris pieces are removed individually above
       }, 3000);
     }
   };
