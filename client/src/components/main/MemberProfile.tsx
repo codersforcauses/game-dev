@@ -15,7 +15,6 @@ export type MemberProfileData = {
   about: string;
   pronouns?: string;
   profile_picture?: string;
-  active: boolean;
 };
 
 type MemberProfileProps = {
