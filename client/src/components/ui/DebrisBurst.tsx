@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 type Debris = {
   id: number;
@@ -36,6 +36,43 @@ export function DebrisBurst({
   bounce = 0.35,
   onDone,
 }: Props) {
+  // Generate initial debris array with random properties
+  const initial = useMemo(() => {
+    const arr: Debris[] = [];
+    const spread = (spreadDeg * Math.PI) / 180;
+
+    for (let i = 0; i < count; i++) {
+      // Angle around the crater
+      const a = (Math.random() - 0.5) * spread; // centered spread
+      // If you want "all around", keep it; if you want directional, offset by an angle.
+      const angle = a + (spreadDeg === 360 ? Math.random() * Math.PI * 2 : 0);
+
+      // Speed (biased: a few big chunks, some small)
+      const speed = power * (0.45 + Math.random() * 0.65);
+
+      // Lift a bit so it arcs
+      const vx = Math.cos(angle) * speed;
+      const vy = -Math.abs(Math.sin(angle) * speed) * (0.75 + Math.random() * 0.4);
+
+      const size = 6 + Math.random() * 14;
+      const maxLife = 650 + Math.random() * 600;
+
+      arr.push({
+        id: i,
+        x: 0,
+        y: 0,
+        vx,
+        vy,
+        rot: Math.random() * 360,
+        vr: (Math.random() - 0.5) * 720, // deg/s
+        size,
+        life: maxLife,
+        maxLife,
+      });
+    }
+    return arr;
+  }, [count, power, spreadDeg]);
+
   return null;
 }
 
