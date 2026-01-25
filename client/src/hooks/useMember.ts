@@ -9,7 +9,7 @@ type ApiMember = {
   profile_picture?: string;
 };
 
-// return api member, import id number from router
+// return api member, import id number from router, is not enabled if not a number type
 export const useMember = (id?: number) => {
   return useQuery<ApiMember>({
     queryKey: ["member", id],

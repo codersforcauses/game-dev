@@ -4,6 +4,7 @@ import { useMember } from "@/hooks/useMember";
 
 import { MemberProfile } from "../../components/main/MemberProfile";
 
+// hook assumes correct input, page sanitises to correct type
 function normaliseId(id: string | string[] | number | undefined) {
   if (typeof id === "number" && Number.isFinite(id)) {
     return id;
