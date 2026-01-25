@@ -88,14 +88,30 @@ export function DebrisBurst({
 
       setDebris((prev) => {
         const next = prev.map((d) => {
+          // Apply air drag to velocity
+          let vx = d.vx * (1 - 0.25 * dt); // a little air drag
+          let vy = d.vy + gravity * dt; // apply gravity
+
           // Update position based on velocity
-          const px = d.x + d.vx * dt;
-          const py = d.y + d.vy * dt;
+          let px = d.x + vx * dt;
+          let py = d.y + vy * dt;
+
+          // Optional bounce off ground
+          if (groundY !== undefined) {
+            const absoluteY = y + py;
+            if (absoluteY > groundY) {
+              py = groundY - y; // clamp
+              vy = -vy * bounce; // bounce up
+              vx = vx * (0.7 + Math.random() * 0.1); // lose some horizontal speed
+            }
+          }
 
           return {
             ...d,
             x: px,
             y: py,
+            vx,
+            vy,
           };
         });
 
@@ -109,7 +125,7 @@ export function DebrisBurst({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [initial]);
+  }, [initial, gravity, groundY, bounce, y]);
 
   return null;
 }
