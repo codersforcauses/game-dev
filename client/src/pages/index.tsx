@@ -38,6 +38,18 @@ export default function Landing() {
 
     // Manually create explosion with crater at click position
     if (containerRef.current) {
+      // Generate irregular crater path
+      const points = 12;
+      const path: string[] = [];
+      for (let i = 0; i < points; i++) {
+        const angle = (i / points) * Math.PI * 2;
+        const randomRadius = 0.7 + Math.random() * 0.3;
+        const px = 50 + Math.cos(angle) * randomRadius * 50;
+        const py = 50 + Math.sin(angle) * randomRadius * 50;
+        path.push(`${px}% ${py}%`);
+      }
+      const craterPath = `polygon(${path.join(", ")})`;
+
       // Create the crater
       const crater = document.createElement("div");
       crater.className = "pointer-events-none absolute z-40";
@@ -46,7 +58,7 @@ export default function Landing() {
       crater.style.transform = "translate(-50%, -50%)";
       crater.style.width = "100px";
       crater.style.height = "100px";
-      crater.style.borderRadius = "50%";
+      crater.style.clipPath = craterPath;
       crater.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
       crater.style.animation = "crater-fade 3s ease-out forwards";
       
