@@ -75,11 +75,11 @@ export function Explosion({ explosion }: ExplosionProps) {
         <DebrisBurst
           x={debrisPosition.x}
           y={debrisPosition.y}
-          count={26}
-          power={520}
+          count={8}
+          power={450}
           spreadDeg={360}
-          gravity={1500}
-          bounce={0.28}
+          gravity={1200}
+          bounce={0.3}
         />
       )}
       {/* The actual explosion GIF */}

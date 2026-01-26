@@ -1,16 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 
 import { Button } from "../components/ui/button";
 import { useExplosions } from "../hooks/useExplosions";
 import { Explosion } from "../components/ui/Explosion";
 import { DebrisBurst } from "../components/ui/DebrisBurst";
 
+// Max concurrent debris bursts to prevent lag
+const MAX_DEBRIS = 5;
+
 export default function Landing() {
   const { explosions, triggerExplosions } = useExplosions();
   const containerRef = useRef<HTMLDivElement>(null);
   const [clickDebris, setClickDebris] = useState<Array<{ id: number; x: number; y: number }>>([]);
+  const lastClickTime = useRef(0);
 
   const handleExplosionClick = () => {
     triggerExplosions({
@@ -36,8 +40,13 @@ export default function Landing() {
     }, rect);
   };
 
-  const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handlePageClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
+
+    // Throttle clicks - 100ms minimum between clicks
+    const now = Date.now();
+    if (now - lastClickTime.current < 100) return;
+    lastClickTime.current = now;
 
     const rect = containerRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -56,14 +65,18 @@ export default function Landing() {
       playSound: true,
     });
 
-    // Add DebrisBurst for click
-    const debrisId = Date.now();
-    setClickDebris((prev) => [...prev, { id: debrisId, x: absoluteX, y: absoluteY }]);
+    // Add DebrisBurst for click (limit max concurrent)
+    const debrisId = now;
+    setClickDebris((prev) => {
+      const updated = [...prev, { id: debrisId, x: absoluteX, y: absoluteY }];
+      // Keep only the most recent MAX_DEBRIS
+      return updated.slice(-MAX_DEBRIS);
+    });
     
     // Remove after animation completes
     setTimeout(() => {
       setClickDebris((prev) => prev.filter((d) => d.id !== debrisId));
-    }, 3000);
+    }, 1500);
 
     // Manually create explosion with crater at click position
     if (containerRef.current) {
@@ -113,7 +126,8 @@ export default function Landing() {
         newExplosion.remove();
       }, 3000);
     }
-  };
+  }, [triggerExplosions]);
+
   const btnList = [
     { name: "More about us", link: "/committee/about", type: "default" },
     { name: "Join our Discord", link: "", type: "outline" },
@@ -250,11 +264,11 @@ export default function Landing() {
           key={debris.id}
           x={debris.x}
           y={debris.y}
-          count={26}
-          power={520}
+          count={8}
+          power={450}
           spreadDeg={360}
-          gravity={1500}
-          bounce={0.28}
+          gravity={1200}
+          bounce={0.3}
         />
       ))}
       <section className="flex w-full justify-center bg-muted px-12 py-10">

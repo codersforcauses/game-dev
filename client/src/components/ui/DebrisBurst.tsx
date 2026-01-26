@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, useEffect } from "react";
+import React, { useMemo, useRef, useEffect, useCallback } from "react";
 
 type Debris = {
   id: number;
@@ -9,55 +9,54 @@ type Debris = {
   rot: number;
   vr: number;
   size: number;
-  life: number; // ms remaining
-  maxLife: number; // ms
-  heightRatio: number; // height to width ratio
+  life: number;
+  maxLife: number;
 };
 
 type Props = {
-  x: number; // crater center (px)
-  y: number; // crater center (px)
+  x: number;
+  y: number;
   count?: number;
-  power?: number; // launch velocity scale
-  spreadDeg?: number; // 360 = all directions, 180 = forward semicircle, etc
-  gravity?: number; // px/s^2
-  groundY?: number; // optional "ground" to bounce on (absolute px)
-  bounce?: number; // 0..1
+  power?: number;
+  spreadDeg?: number;
+  gravity?: number;
+  groundY?: number;
+  bounce?: number;
   onDone?: () => void;
 };
 
-export function DebrisBurst({
+// Use React.memo to prevent unnecessary re-renders
+export const DebrisBurst = React.memo(function DebrisBurst({
   x,
   y,
-  count = 22,
-  power = 520,
+  count = 8, // Reduced default count
+  power = 450,
   spreadDeg = 360,
-  gravity = 1400,
+  gravity = 1200,
   groundY,
-  bounce = 0.35,
+  bounce = 0.3,
   onDone,
 }: Props) {
-  // Generate initial debris array with random properties
+  const containerRef = useRef<HTMLDivElement>(null);
+  const debrisRef = useRef<Debris[]>([]);
+  const rafRef = useRef<number | null>(null);
+  const lastT = useRef<number>(0);
+
+  // Generate initial debris - memoized
   const initial = useMemo(() => {
     const arr: Debris[] = [];
     const spread = (spreadDeg * Math.PI) / 180;
 
     for (let i = 0; i < count; i++) {
-      // Angle around the crater
-      const a = (Math.random() - 0.5) * spread; // centered spread
-      // If you want "all around", keep it; if you want directional, offset by an angle.
-      const angle = a + (spreadDeg === 360 ? Math.random() * Math.PI * 2 : 0);
+      const angle = (spreadDeg === 360)
+        ? Math.random() * Math.PI * 2
+        : (Math.random() - 0.5) * spread;
 
-      // Speed (biased: a few big chunks, some small)
-      const speed = power * (0.45 + Math.random() * 0.65);
-
-      // Lift a bit so it arcs
+      const speed = power * (0.5 + Math.random() * 0.5);
       const vx = Math.cos(angle) * speed;
-      const vy = -Math.abs(Math.sin(angle) * speed) * (0.75 + Math.random() * 0.4);
-
-      const size = 6 + Math.random() * 14;
-      const heightRatio = 0.7 + Math.random() * 0.5; // Store height ratio
-      const maxLife = 650 + Math.random() * 600;
+      const vy = -Math.abs(Math.sin(angle) * speed) * (0.7 + Math.random() * 0.3);
+      const size = 6 + Math.random() * 10;
+      const maxLife = 500 + Math.random() * 400; // Shorter lifetime
 
       arr.push({
         id: i,
@@ -66,104 +65,98 @@ export function DebrisBurst({
         vx,
         vy,
         rot: Math.random() * 360,
-        vr: (Math.random() - 0.5) * 720, // deg/s
+        vr: (Math.random() - 0.5) * 600,
         size,
         life: maxLife,
         maxLife,
-        heightRatio, // Add height ratio to debris
       });
     }
     return arr;
   }, [count, power, spreadDeg]);
 
-  const [debris, setDebris] = useState<Debris[]>([]);
-  const rafRef = useRef<number | null>(null);
-  const lastT = useRef<number>(0);
+  // Animation step - using refs to avoid re-renders
+  const step = useCallback((t: number) => {
+    const dt = Math.min(0.04, (t - lastT.current) / 1000);
+    lastT.current = t;
 
-  // Set up animation loop
-  useEffect(() => {
-    setDebris(initial);
-    lastT.current = performance.now();
+    const container = containerRef.current;
+    if (!container) return;
 
-    const step = (t: number) => {
-      const dt = Math.min(0.033, (t - lastT.current) / 1000); // seconds, cap big frames
-      lastT.current = t;
+    const children = container.children;
+    let anyAlive = false;
 
-      setDebris((prev) => {
-        const next = prev
-          .map((d) => {
-            const life = d.life - dt * 1000; // decrease lifetime
+    for (let i = 0; i < debrisRef.current.length; i++) {
+      const d = debrisRef.current[i];
+      if (d.life <= 0) continue;
 
-            // Apply air drag to velocity
-            let vx = d.vx * (1 - 0.25 * dt); // a little air drag
-            let vy = d.vy + gravity * dt; // apply gravity
+      d.life -= dt * 1000;
+      if (d.life <= 0) {
+        (children[i] as HTMLElement).style.display = 'none';
+        continue;
+      }
 
-            // Update position based on velocity
-            let px = d.x + vx * dt;
-            let py = d.y + vy * dt;
+      anyAlive = true;
 
-            // Optional bounce off ground
-            if (groundY !== undefined) {
-              const absoluteY = y + py;
-              if (absoluteY > groundY) {
-                py = groundY - y; // clamp
-                vy = -vy * bounce; // bounce up
-                vx = vx * (0.7 + Math.random() * 0.1); // lose some horizontal speed
-              }
-            }
+      // Physics
+      d.vx *= (1 - 0.2 * dt);
+      d.vy += gravity * dt;
+      d.x += d.vx * dt;
+      d.y += d.vy * dt;
+      d.rot += d.vr * dt;
 
-            return {
-              ...d,
-              x: px,
-              y: py,
-              vx,
-              vy,
-              rot: d.rot + d.vr * dt, // update rotation
-              life,
-            };
-          })
-          .filter((d) => d.life > 0); // remove debris when lifetime expires
+      // Ground bounce
+      if (groundY !== undefined && y + d.y > groundY) {
+        d.y = groundY - y;
+        d.vy = -d.vy * bounce;
+        d.vx *= 0.7;
+      }
 
-        if (next.length === 0) onDone?.(); // call callback when all debris is gone
-        return next;
-      });
+      // Update DOM directly (no React re-render)
+      const el = children[i] as HTMLElement;
+      const alpha = Math.max(0, d.life / d.maxLife);
+      el.style.transform = `translate3d(${d.x}px, ${d.y}px, 0) rotate(${d.rot}deg)`;
+      el.style.opacity = String(alpha);
+    }
 
+    if (anyAlive) {
       rafRef.current = requestAnimationFrame(step);
-    };
+    } else {
+      onDone?.();
+    }
+  }, [gravity, groundY, bounce, y, onDone]);
 
+  // Set up animation
+  useEffect(() => {
+    debrisRef.current = initial.map(d => ({ ...d }));
+    lastT.current = performance.now();
     rafRef.current = requestAnimationFrame(step);
+
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [initial, gravity, groundY, bounce, y]);
+  }, [initial, step]);
 
   return (
     <div
+      ref={containerRef}
       style={{
         position: "fixed",
         left: x,
         top: y,
-        transform: "translate(-50%, -50%)",
         pointerEvents: "none",
         zIndex: 45,
       }}
     >
-      {debris.map((d) => {
-        const alpha = Math.max(0, Math.min(1, d.life / d.maxLife));
-        return (
-          <span
-            key={d.id}
-            className="debris-chunk"
-            style={{
-              width: d.size,
-              height: d.size * d.heightRatio,
-              transform: `translate(${d.x}px, ${d.y}px) rotate(${d.rot}deg)`,
-              opacity: alpha,
-            }}
-          />
-        );
-      })}
+      {initial.map((d) => (
+        <span
+          key={d.id}
+          className="debris-chunk"
+          style={{
+            width: d.size,
+            height: d.size * 0.8,
+          }}
+        />
+      ))}
     </div>
   );
-}
-
+});
