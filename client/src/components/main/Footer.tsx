@@ -164,8 +164,9 @@ export default function Footer() {
                 <span>All rights reserved</span>
               </div>
               <Link
-                href="/constitution"
+                href=""
                 className="group flex -translate-x-[52px] items-center gap-2.5 rounded-full border border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-pink-500/10 px-4 py-2 transition-all duration-300 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/20"
+                onClick={() => window.open("/Constitution-V1.pdf")}
               >
                 <span className="font-jersey10 text-xl text-gray-300 transition-colors group-hover:text-white">
                   Constitution
