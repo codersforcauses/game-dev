@@ -22,7 +22,6 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         jersey10: ["Jersey 10", ...fontFamily.sans],
-        dmSans: ["DM Sans", ...fontFamily.sans],
         firaCode: ["var(--font-firaCode)", ...fontFamily.sans],
       },
 

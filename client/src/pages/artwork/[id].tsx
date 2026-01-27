@@ -37,7 +37,7 @@ function displayContributors(artwork: Art) {
         >
           {artwork.contributors?.map((contributor) => (
             <div className="flex flex-row" key={contributor.id}>
-              <div className="justify-center font-dmSans text-xl font-normal leading-8 tracking-wide text-light_1 [text-shadow:_0px_4px_4px_rgb(0_0_0_/_0.25)]">
+              <div className="justify-center font-sans text-xl font-normal leading-8 tracking-wide text-light_1 [text-shadow:_0px_4px_4px_rgb(0_0_0_/_0.25)]">
                 {contributor.member_name}
               </div>
             </div>
@@ -64,7 +64,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
       >
         <div
           data-layer="< Gallery"
-          className="Gallery h-10 justify-start font-dmSans text-3xl font-bold leading-10 tracking-tight text-light_1"
+          className="Gallery h-10 justify-start font-sans text-3xl font-bold leading-10 tracking-tight text-light_1"
         >
           <GoBackButton url="/artwork" label="Gallery" />
         </div>
@@ -108,7 +108,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
                 data-layer="Artwork Description"
                 className="justify-start self-stretch"
               >
-                <span className="font-dmSans text-xl font-normal leading-8 tracking-wide text-light_1">
+                <span className="font-sans text-xl font-normal leading-8 tracking-wide text-light_1">
                   {artwork!.description}
                 </span>
               </div>
@@ -129,7 +129,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
           className="DescriptionSectionMobile flex-col items-start justify-start pt-7"
         >
           <div className="justify-start self-stretch">
-            <span className="font-dmSans text-xl font-normal leading-8 tracking-wide text-light_1">
+            <span className="font-sans text-xl font-normal leading-8 tracking-wide text-light_1">
               {artwork!.description}
             </span>
           </div>

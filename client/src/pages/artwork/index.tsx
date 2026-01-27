@@ -50,10 +50,10 @@ function renderArtworkCard(artwork: Art) {
             <h3 className="mb-2 text-center font-sans text-4xl leading-tight text-accent">
               {artwork.name}
             </h3>
-            <p className="mb-3 text-center font-dmSans text-xs text-light_1">
+            <p className="mb-3 text-center font-sans text-xs text-light_1">
               from GAME NAME
             </p>
-            <p className="font-dmSans text-sm leading-relaxed text-light_1">
+            <p className="font-sans text-sm leading-relaxed text-light_1">
               {artwork.description || "No description available."}
             </p>
           </div>
@@ -67,7 +67,7 @@ function renderArtworkCard(artwork: Art) {
                 {artwork.contributors.map((contributor) => (
                   <div
                     key={contributor.id}
-                    className="font-dmSans text-[15px] text-light_1"
+                    className="font-sans text-[15px] text-light_1"
                   >
                     <span className="pl-1">{contributor.member_name}</span>
                   </div>
