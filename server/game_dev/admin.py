@@ -21,6 +21,7 @@ class GameShowcaseAdmin(admin.ModelAdmin):
 
 class GamesAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "description", "completion", "active", "hostURL", "itchEmbedID", "thumbnail", "event")
+    search_fields = ["name", "description"]
 
 
 admin.site.register(Member, MemberAdmin)
