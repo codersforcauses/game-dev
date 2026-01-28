@@ -16,7 +16,6 @@ const config = {
     remotePatterns: [
       { protocol: 'http', hostname: '127.0.0.1' },
       { protocol: 'http', hostname: 'localhost' },
-      { protocol: 'https', hostname: 'upload.wikimedia.org' },
     ],
   },
   // Turns on file change polling for the Windows Dev Container
