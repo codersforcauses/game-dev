@@ -12,7 +12,7 @@ class EventAdmin(admin.ModelAdmin):
 
 
 class GameContributorAdmin(admin.ModelAdmin):
-    pass
+    raw_id_fields = ["game", "member"]
 
 
 class GameShowcaseAdmin(admin.ModelAdmin):
