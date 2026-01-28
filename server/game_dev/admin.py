@@ -16,7 +16,7 @@ class GameContributorAdmin(admin.ModelAdmin):
 
 
 class GameShowcaseAdmin(admin.ModelAdmin):
-    pass
+    raw_id_fields = ["game"]
 
 
 class GamesAdmin(admin.ModelAdmin):
