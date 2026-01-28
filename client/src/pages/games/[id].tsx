@@ -63,20 +63,21 @@ export default function IndividualGamePage() {
   // TODO ADD EVENT
   const event = "Game Jam November 2025";
   // TODO ADD ARTIMAGES
-  const artImages = [
-    {
-      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Minecraft_Zombie.png/120px-Minecraft_Zombie.png",
-      alt: "Minecraft Zombie",
-    },
-    {
-      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Minecraft_Enderman.png/120px-Minecraft_Enderman.png",
-      alt: "Minecraft Enderman",
-    },
-    {
-      src: "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Minecraft_explore_landscape.png/375px-Minecraft_explore_landscape.png",
-      alt: "Minecraft Landscape",
-    },
-  ];
+  const artImages: { src: string; alt: string }[] = [];
+  // const artImages = [
+  //   {
+  //     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Minecraft_Zombie.png/120px-Minecraft_Zombie.png",
+  //     alt: "Minecraft Zombie",
+  //   },
+  //   {
+  //     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Minecraft_Enderman.png/120px-Minecraft_Enderman.png",
+  //     alt: "Minecraft Enderman",
+  //   },
+  //   {
+  //     src: "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Minecraft_explore_landscape.png/375px-Minecraft_explore_landscape.png",
+  //     alt: "Minecraft Landscape",
+  //   },
+  // ];
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
