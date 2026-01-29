@@ -2,7 +2,7 @@
 
 # Create your views here.
 from rest_framework import generics
-from .models import Event, Committee
+from .models import Event, Member, Committee
 from .serializers import EventSerializer, MemberSerializer
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
@@ -51,6 +51,14 @@ class EventDetailAPIView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         return Event.objects.filter(id=self.kwargs["id"])
+
+
+class MemberAPIView(generics.RetrieveAPIView):
+    serializer_class = MemberSerializer
+    lookup_field = "id"
+
+    def get_queryset(self):
+        return Member.objects.filter(active=True)
 
 
 class CommitteeAPIView(generics.ListAPIView):
