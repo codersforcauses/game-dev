@@ -153,7 +153,7 @@ export default function Landing() {
         <div className="relative z-10 mx-auto max-w-7xl">
           <div className="mb-8 grid grid-cols-1 md:grid-cols-2">
             <div className="flex flex-col items-start">
-              <h2 className="flex items-center gap-3 font-jersey10 text-5xl text-white">
+              <h2 className="flex items-center gap-3 font-jersey10 text-4xl text-white">
                 Featured Member Creations
                 <Image src="/heart.png" alt="" width={60} height={50} />
               </h2>
@@ -179,14 +179,14 @@ export default function Landing() {
               >
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
                   <Image
-                    src={game.image}
-                    alt={game.title}
+                    src={game.thumbnail}
+                    alt={game.name}
                     fill
                     className="object-cover"
                   />
                 </div>
                 <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
-                  {game.title}
+                  {game.name}
                 </h3>
 
                 <p className="mb-4 text-sm text-primary">{game.description}</p>
