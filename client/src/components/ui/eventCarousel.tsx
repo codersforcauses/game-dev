@@ -77,7 +77,7 @@ export default function EventCarousel({ items }: EventCarouselProps) {
         </div>
 
         <Link href="/events" className="font-jersey10">
-          See More;
+          See More
         </Link>
       </div>
 
@@ -105,10 +105,11 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                   />
                 </div>
 
-                <h3 className="mt-6 text-lg font-semibold tracking-wide text-white">
+                <h3 className="mt-6 font-firaCode text-lg font-semibold tracking-wide text-white">
                   {event.name}
                 </h3>
 
+                {/* Needs proper processing and laying out */}
                 <p className="text-sm tracking-wide text-white/70">
                   {event.startTime}
                 </p>

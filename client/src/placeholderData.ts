@@ -1,0 +1,67 @@
+export const placeholderEvents = [
+  {
+    id: 1,
+    name: "Event 1",
+    time: "Monday 24th Oct 11:00am–4:00pm",
+    description: "",
+    publicationDate: "",
+    date: "",
+    startTime: "2:00",
+    location: "",
+    coverImage: "/landing_placeholder.png",
+  },
+  {
+    id: 2,
+    name: "Event 2",
+    time: "Monday 24th Oct 11:00am–4:00pm",
+    description: "",
+    publicationDate: "",
+    date: "",
+    startTime: "2:00",
+    location: "",
+    coverImage: "/landing_placeholder.png",
+  },
+  {
+    id: 3,
+    name: "Event 3",
+    time: "Monday 24th Oct 11:00am–4:00pm",
+    description: "",
+    publicationDate: "",
+    date: "",
+    startTime: "2:00",
+    location: "",
+    coverImage: "/landing_placeholder.png",
+  },
+  {
+    id: 4,
+    name: "Event 4",
+    time: "Monday 24th Oct 11:00am–4:00pm",
+    description: "",
+    publicationDate: "",
+    date: "",
+    startTime: "2:00",
+    location: "",
+    coverImage: "/landing_placeholder.png",
+  },
+];
+
+export const placeholderGames = [
+  {
+    id: 1,
+    title: "Cool Game",
+    description: "Cool game is a game about being cool.",
+    image: "/landing_placeholder.png",
+  },
+  {
+    id: 2,
+    title: "Cool Game 2",
+    description: "Cool game 2 is a game about being cool.",
+    image: "/landing_placeholder.png",
+  },
+  {
+    id: 3,
+    title: "Cool Game 3",
+    description: "Cool game 3 is a game about being cool.",
+    image: "/landing_placeholder.png",
+  },
+];

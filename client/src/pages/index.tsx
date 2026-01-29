@@ -7,6 +7,7 @@ import {
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
 import FeatureBox from "@/components/ui/featureBox";
+import { placeholderEvents, placeholderGames } from "@/placeholderData";
 
 import { Button } from "../components/ui/button";
 
@@ -67,74 +68,6 @@ export default function Landing() {
       type: "special-border",
       image: null,
       row: 2,
-    },
-  ];
-
-  const upcomingEvents = [
-    {
-      id: 1,
-      name: "Event 1",
-      time: "Monday 24th Oct 11:00am–4:00pm",
-      description: "",
-      publicationDate: "",
-      date: "",
-      startTime: "2:00",
-      location: "",
-      coverImage: "/landing_placeholder.png",
-    },
-    {
-      id: 2,
-      name: "Event 2",
-      time: "Monday 24th Oct 11:00am–4:00pm",
-      description: "",
-      publicationDate: "",
-      date: "",
-      startTime: "2:00",
-      location: "",
-      coverImage: "/landing_placeholder.png",
-    },
-    {
-      id: 3,
-      name: "Event 3",
-      time: "Monday 24th Oct 11:00am–4:00pm",
-      description: "",
-      publicationDate: "",
-      date: "",
-      startTime: "2:00",
-      location: "",
-      coverImage: "/landing_placeholder.png",
-    },
-    {
-      id: 4,
-      name: "Event 4",
-      time: "Monday 24th Oct 11:00am–4:00pm",
-      description: "",
-      publicationDate: "",
-      date: "",
-      startTime: "2:00",
-      location: "",
-      coverImage: "/landing_placeholder.png",
-    },
-  ];
-
-  const gamesData = [
-    {
-      id: 1,
-      title: "Cool Game",
-      description: "Cool game is a game about being cool.",
-      image: "/landing_placeholder.png",
-    },
-    {
-      id: 2,
-      title: "Cool Game 2",
-      description: "Cool game 2 is a game about being cool.",
-      image: "/landing_placeholder.png",
-    },
-    {
-      id: 3,
-      title: "Cool Game 3",
-      description: "Cool game 3 is a game about being cool.",
-      image: "/landing_placeholder.png",
     },
   ];
 
@@ -218,7 +151,7 @@ export default function Landing() {
       </section>
 
       <section className="bg-background px-10 py-10">
-        <EventCarousel items={upcomingEvents} />
+        <EventCarousel items={placeholderEvents} />
       </section>
 
       <section className="bg-background px-4 py-10 md:px-10">
@@ -250,7 +183,7 @@ export default function Landing() {
           </div>
 
           <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-            {gamesData.map((game) => (
+            {placeholderGames.map((game) => (
               <div
                 key={game.id}
                 className="rounded-xl p-6 text-background shadow-lg"
