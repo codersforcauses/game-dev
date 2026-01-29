@@ -139,7 +139,7 @@ export default function Landing() {
       <section className="bg-background px-10 py-20">
         <EventCarousel items={placeholderEvents} />
       </section>
-      {/* Leaving commented out until styling is confirmed. */}
+      {/* Leaving commented out until styling/design is confirmed. */}
       {/* <section className="bg-background px-4 py-10 md:px-10">
         <div className="flex w-full px-4">
           <FeatureBox
