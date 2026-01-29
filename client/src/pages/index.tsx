@@ -140,7 +140,7 @@ export default function Landing() {
       <section className="bg-background px-10 py-20">
         <EventCarousel items={placeholderEvents} />
       </section>
-
+      {/* Leaving commented out until styling is confirmed. */}
       {/* <section className="bg-background px-4 py-10 md:px-10">
         <div className="flex w-full px-4">
           <FeatureBox
@@ -152,15 +152,15 @@ export default function Landing() {
 
       <section className="relative w-full overflow-hidden bg-dark_3 px-6 py-20 lg:px-12">
         <div className="relative z-10 mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="mb-10 flex flex-col items-start">
+          <div className="mb-8 grid grid-cols-1 md:grid-cols-2">
+            <div className="flex flex-col items-start">
               <h2 className="flex items-center gap-3 font-jersey10 text-5xl text-white">
                 Featured Member Creations
                 <Image src="/heart.png" alt="" width={60} height={50} />
               </h2>
             </div>
 
-            <div className="mb-12 flex flex-col items-start gap-4">
+            <div className="flex flex-col items-start gap-4">
               <Link href="/">
                 <Button>See more games by our members</Button>
               </Link>
