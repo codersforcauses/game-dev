@@ -6,7 +6,6 @@ import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
-// import FeatureBox from "@/components/ui/featureBox";
 import { placeholderEvents, placeholderGames } from "@/placeholderData";
 
 import { Button } from "../components/ui/button";
@@ -160,7 +159,7 @@ export default function Landing() {
               </h2>
             </div>
 
-            <div className="flex flex-col items-start gap-4">
+            <div className="flex flex-col items-end gap-4">
               <Link href="/">
                 <Button>See more games by our members</Button>
               </Link>

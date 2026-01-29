@@ -45,23 +45,39 @@ export const placeholderEvents = [
   },
 ];
 
+// Roughly reflects the game model but may need some finetuning.
 export const placeholderGames = [
   {
     id: 1,
-    title: "Cool Game",
-    description: "Cool game is a game about being cool.",
-    image: "/landing_placeholder.png",
+    name: "Game 1",
+    description: "Game 1 description",
+    completion: 1,
+    active: true,
+    hostURL: "/",
+    itchEmbedID: "1",
+    thumbnail: "/landing_placeholder.png",
+    event: 1,
   },
   {
     id: 2,
-    title: "Cool Game 2",
-    description: "Cool game 2 is a game about being cool.",
-    image: "/landing_placeholder.png",
+    name: "Game 2",
+    description: "Game 2 description",
+    completion: 1,
+    active: true,
+    hostURL: "/",
+    itchEmbedID: "1",
+    thumbnail: "/landing_placeholder.png",
+    event: 1,
   },
   {
     id: 3,
-    title: "Cool Game 3",
-    description: "Cool game 3 is a game about being cool.",
-    image: "/landing_placeholder.png",
+    name: "Game 3",
+    description: "Game 3 description",
+    completion: 1,
+    active: true,
+    hostURL: "/",
+    itchEmbedID: "1",
+    thumbnail: "/landing_placeholder.png",
+    event: 1,
   },
 ];
