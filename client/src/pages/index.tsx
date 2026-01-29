@@ -1,22 +1,29 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
 
+import EventCarousel from "@/components/ui/eventCarousel";
 import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
 import FeatureBox from "@/components/ui/featureBox";
-import { useEvent } from "@/hooks/useEvent";
 
 import { Button } from "../components/ui/button";
 
 export default function Landing() {
-  const btnList = [
+  const quickLinksBtnList = [
     { name: "More about us", link: "/committee/about", type: "default" },
     { name: "Join our Discord", link: "", type: "outline" },
+  ];
+
+  const gameShowcaseBtnList = [
+    { name: "See more games by our members", link: "/" },
+    { name: "See other cool stuff our members have created", link: "/" },
+  ];
+
+  const gameLogoImages = [
+    { url: "/godot.png", alt: "Godot Logo", position: "start" },
+    { url: "/unity-logo.png", alt: "Unity Logo", position: "end" },
   ];
 
   const eventCards: eventHighlightCardType[] = [
@@ -63,50 +70,50 @@ export default function Landing() {
     },
   ];
 
-  const logoImages = [
-    { url: "/godot.png", alt: "Godot Logo", position: "start" },
-    { url: "/unity-logo.png", alt: "Unity Logo", position: "end" },
-  ];
-
-  const row1Cards = eventCards.filter((card) => card.row === 1);
-  const row2Cards = eventCards.filter((card) => card.row === 2);
-
-  const gameShowcaseBtnList = [
-    { name: "See more games by our members", link: "/" },
-    { name: "See other cool stuff our members have created", link: "/" },
-  ];
-
-  const router = useRouter();
-  const { id } = router.query;
-
-  const { data: event } = useEvent(router.isReady ? id : undefined);
-
-  console.log("event", event);
-
   const upcomingEvents = [
     {
       id: 1,
-      title: "Summer 2026 Game Jam",
+      name: "Event 1",
       time: "Monday 24th Oct 11:00am–4:00pm",
-      image: "/landing_placeholder.png",
+      description: "",
+      publicationDate: "",
+      date: "",
+      startTime: "2:00",
+      location: "",
+      coverImage: "/landing_placeholder.png",
     },
     {
       id: 2,
-      title: "Godot Workshop",
-      time: "Thursday 2nd Nov 2:00–4:00pm",
-      image: "/landing_placeholder.png",
+      name: "Event 2",
+      time: "Monday 24th Oct 11:00am–4:00pm",
+      description: "",
+      publicationDate: "",
+      date: "",
+      startTime: "2:00",
+      location: "",
+      coverImage: "/landing_placeholder.png",
     },
     {
       id: 3,
-      title: "World domination",
-      time: "Thursday 2nd Nov 2:00–4:00pm",
-      image: "/landing_placeholder.png",
+      name: "Event 3",
+      time: "Monday 24th Oct 11:00am–4:00pm",
+      description: "",
+      publicationDate: "",
+      date: "",
+      startTime: "2:00",
+      location: "",
+      coverImage: "/landing_placeholder.png",
     },
     {
       id: 4,
-      title: "World domination",
-      time: "Thursday 2nd Nov 2:00–4:00pm",
-      image: "/landing_placeholder.png",
+      name: "Event 4",
+      time: "Monday 24th Oct 11:00am–4:00pm",
+      description: "",
+      publicationDate: "",
+      date: "",
+      startTime: "2:00",
+      location: "",
+      coverImage: "/landing_placeholder.png",
     },
   ];
 
@@ -131,57 +138,6 @@ export default function Landing() {
     },
   ];
 
-  const GAP = 40; // gap-10 = 40px
-
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const firstItemRef = useRef<HTMLDivElement>(null);
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(3);
-  const [itemWidth, setItemWidth] = useState(0);
-
-  /**
-   * ✅ Responsive visible count
-   */
-  useEffect(() => {
-    const updateVisibleCount = () => {
-      if (window.innerWidth < 768) {
-        setVisibleCount(1);
-      } else {
-        setVisibleCount(3);
-      }
-    };
-
-    updateVisibleCount();
-    window.addEventListener("resize", updateVisibleCount);
-    return () => window.removeEventListener("resize", updateVisibleCount);
-  }, []);
-
-  /** Observe item width */
-  useEffect(() => {
-    if (!firstItemRef.current) return;
-
-    const observer = new ResizeObserver(() => {
-      const width = firstItemRef.current?.clientWidth ?? 0;
-      setItemWidth(width);
-    });
-
-    observer.observe(firstItemRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const maxIndex = Math.max(upcomingEvents.length - visibleCount, 0);
-
-  const slideLeft = () => {
-    setCurrentIndex((prev) => Math.max(prev - 1, 0));
-  };
-
-  const slideRight = () => {
-    setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
-  };
-
-  const translateX = -(currentIndex * (itemWidth + GAP));
-
   return (
     <div>
       <section className="flex w-full justify-center bg-muted px-12 py-10">
@@ -195,7 +151,7 @@ export default function Landing() {
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
             <div className="my-4 flex gap-4">
-              {btnList.map((item, i) => (
+              {quickLinksBtnList.map((item, i) => (
                 <Link href={item.link} key={i}>
                   <Button
                     variant={item.type == "default" ? "default" : "outline"}
@@ -229,25 +185,29 @@ export default function Landing() {
       <section className="-mt-8 bg-dark_3 py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-            {row1Cards.map((card) => (
-              <EventHighlightCard key={card.id} {...card} />
-            ))}
+            {eventCards
+              .filter((card) => card.row === 1)
+              .map((card) => (
+                <EventHighlightCard key={card.id} {...card} />
+              ))}
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[23fr_27fr_11fr]">
-            {row2Cards.map((card) => (
-              <EventHighlightCard key={card.id} {...card} />
-            ))}
+            {eventCards
+              .filter((card) => card.row === 2)
+              .map((card) => (
+                <EventHighlightCard key={card.id} {...card} />
+              ))}
 
             <div className="flex flex-row items-center justify-center gap-4 md:hidden lg:flex lg:flex-col lg:items-start">
-              {logoImages.map((logo, index) => (
+              {gameLogoImages.map((logo, index) => (
                 <Image
                   key={index}
                   src={logo.url}
                   width={135}
                   height={46}
                   alt={logo.alt}
-                  className={`${index < logoImages.length - 1 ? "lg:mb-5" : ""} ${
+                  className={`${index < gameLogoImages.length - 1 ? "lg:mb-5" : ""} ${
                     logo.position === "end" ? "lg:self-end" : ""
                   }`}
                 />
@@ -258,73 +218,7 @@ export default function Landing() {
       </section>
 
       <section className="bg-background px-10 py-10">
-        <div className="container mx-auto rounded-lg bg-primary-foreground px-4 py-8 lg:px-12">
-          <div className="flex items-center justify-between px-10">
-            <div className="flex items-center">
-              <h2 className="font-jersey10 text-4xl tracking-wide text-white">
-                Upcoming Events
-              </h2>
-
-              <div className="ml-5 flex gap-3 text-lg text-white/60">
-                <ChevronLeft
-                  className={`hover:text-white ${
-                    currentIndex === 0 ? "opacity-40" : "cursor-pointer"
-                  }`}
-                  onClick={slideLeft}
-                />
-                <ChevronRight
-                  className={`hover:text-white ${
-                    currentIndex === maxIndex ? "opacity-40" : "cursor-pointer"
-                  }`}
-                  onClick={slideRight}
-                />
-              </div>
-            </div>
-
-            <Link href="/events" className="font-jersey10">
-              See More &gt;
-            </Link>
-          </div>
-
-          <div className="mt-10 px-10">
-            <div ref={viewportRef} className="overflow-hidden">
-              <div
-                className="flex transition-transform duration-300 ease-out"
-                style={{
-                  gap: GAP,
-                  transform: `translateX(${translateX}px)`,
-                }}
-              >
-                {upcomingEvents.map((event, index) => (
-                  <div
-                    key={event.id}
-                    ref={index === 0 ? firstItemRef : undefined}
-                    className="w-full flex-shrink-0 md:w-[calc((100%-80px)/3)]"
-                  >
-                    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-                      <Image
-                        src={event.image}
-                        alt={event.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-
-                    <h3 className="mt-6 text-lg font-semibold tracking-wide text-white">
-                      {event.title}
-                    </h3>
-
-                    <p className="text-sm tracking-wide text-white/70">
-                      {event.time}
-                    </p>
-
-                    <div className="mt-3 w-full border-b border-white/20" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        <EventCarousel items={upcomingEvents} />
       </section>
 
       <section className="bg-background px-4 py-10 md:px-10">
