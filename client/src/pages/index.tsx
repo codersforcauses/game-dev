@@ -4,6 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
+import {
+  EventHighlightCard,
+  eventHighlightCardType,
+} from "@/components/ui/eventHighlightCard";
 import FeatureBox from "@/components/ui/featureBox";
 import { useEvent } from "@/hooks/useEvent";
 
@@ -15,23 +19,7 @@ export default function Landing() {
     { name: "Join our Discord", link: "", type: "outline" },
   ];
 
-  type cardImage = {
-    url: string;
-    width: number;
-    height: number;
-    alt: string;
-  };
-
-  type cardType = {
-    id: number;
-    title: string;
-    description: string;
-    type: string;
-    image: cardImage | null;
-    row: number;
-  };
-
-  const eventCards: cardType[] = [
+  const eventCards: eventHighlightCardType[] = [
     {
       id: 1,
       title: "Game Jams",
@@ -82,58 +70,6 @@ export default function Landing() {
 
   const row1Cards = eventCards.filter((card) => card.row === 1);
   const row2Cards = eventCards.filter((card) => card.row === 2);
-
-  const renderCardHeader = (card: cardType) => {
-    if (card.type === "special-border") {
-      return (
-        <div
-          style={{
-            clipPath:
-              "polygon(0% 0%, 71% 0%, 78% 7px, 100% 7px, 100% calc(100% - 8px), 0% calc(100% - 8px))",
-          }}
-          className="relative bg-accent"
-        >
-          <div
-            style={{
-              clipPath:
-                "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
-            }}
-            className="bg-dark_alt p-4 pt-3 font-jersey10 text-2xl font-semibold"
-          >
-            {card.title}
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="rounded-md border border-accent bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold">
-        {card.title}
-      </div>
-    );
-  };
-
-  const renderCard = (card: cardType) => (
-    <div key={card.id} className="flex flex-col">
-      {renderCardHeader(card)}
-
-      <div className="mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
-        <div className="flex gap-2">
-          <span>▶</span>
-          <p>{card.description}</p>
-          {card.image && (
-            <Image
-              src={card.image.url}
-              width={card.image.width}
-              height={card.image.height}
-              alt={card.image.alt}
-              className="m-3 size-20 [image-rendering:pixelated]"
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  );
 
   const gameShowcaseBtnList = [
     { name: "See more games by our members", link: "/" },
@@ -293,11 +229,15 @@ export default function Landing() {
       <section className="-mt-8 bg-dark_3 py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-            {row1Cards.map(renderCard)}
+            {row1Cards.map((card) => (
+              <EventHighlightCard key={card.id} {...card} />
+            ))}
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[23fr_27fr_11fr]">
-            {row2Cards.map(renderCard)}
+            {row2Cards.map((card) => (
+              <EventHighlightCard key={card.id} {...card} />
+            ))}
 
             <div className="flex flex-row items-center justify-center gap-4 md:hidden lg:flex lg:flex-col lg:items-start">
               {logoImages.map((logo, index) => (
