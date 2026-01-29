@@ -6,22 +6,12 @@ import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
-import FeatureBox from "@/components/ui/featureBox";
+// import FeatureBox from "@/components/ui/featureBox";
 import { placeholderEvents, placeholderGames } from "@/placeholderData";
 
 import { Button } from "../components/ui/button";
 
 export default function Landing() {
-  const quickLinksBtnList = [
-    { name: "More about us", link: "/committee/about", type: "default" },
-    { name: "Join our Discord", link: "", type: "outline" },
-  ];
-
-  const gameShowcaseBtnList = [
-    { name: "See more games by our members", link: "/" },
-    { name: "See other cool stuff our members have created", link: "/" },
-  ];
-
   const gameLogoImages = [
     { url: "/godot.png", alt: "Godot Logo", position: "start" },
     { url: "/unity-logo.png", alt: "Unity Logo", position: "end" },
@@ -84,15 +74,12 @@ export default function Landing() {
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
             <div className="my-4 flex gap-4">
-              {quickLinksBtnList.map((item, i) => (
-                <Link href={item.link} key={i}>
-                  <Button
-                    variant={item.type == "default" ? "default" : "outline"}
-                  >
-                    {item.name}
-                  </Button>
-                </Link>
-              ))}
+              <Link href="/committee/about">
+                <Button>More about us</Button>
+              </Link>
+              <Link href="/committee/about">
+                <Button variant={"outline"}>Join our Discord</Button>
+              </Link>
             </div>
           </div>
 
@@ -150,20 +137,20 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="bg-background px-10 py-10">
+      <section className="bg-background px-10 py-20">
         <EventCarousel items={placeholderEvents} />
       </section>
 
-      <section className="bg-background px-4 py-10 md:px-10">
-        <div className="flex w-full justify-between px-4">
+      {/* <section className="bg-background px-4 py-10 md:px-10">
+        <div className="flex w-full px-4">
           <FeatureBox
             title="So... How do I get involved?"
             text="The easiest way to get involved is to come along to one of our events!"
           />
         </div>
-      </section>
+      </section> */}
 
-      <section className="relative w-full overflow-hidden bg-background px-6 py-20 lg:px-12">
+      <section className="relative w-full overflow-hidden bg-dark_3 px-6 py-20 lg:px-12">
         <div className="relative z-10 mx-auto max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="mb-10 flex flex-col items-start">
@@ -174,11 +161,14 @@ export default function Landing() {
             </div>
 
             <div className="mb-12 flex flex-col items-start gap-4">
-              {gameShowcaseBtnList.map((item, i) => (
-                <Link href={item.link} key={i}>
-                  <Button>{item.name} &gt;</Button>
-                </Link>
-              ))}
+              <Link href="/">
+                <Button>See more games by our members</Button>
+              </Link>
+              <Link href="/">
+                <Button variant={"outline"}>
+                  See other cool stuff our members have created
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -188,14 +178,14 @@ export default function Landing() {
                 key={game.id}
                 className="rounded-xl p-6 text-background shadow-lg"
               >
-                <Image
-                  src={game.image}
-                  alt={game.title}
-                  width={340}
-                  height={195}
-                  className="rounded-xl"
-                />
-
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+                  <Image
+                    src={game.image}
+                    alt={game.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
                   {game.title}
                 </h3>
