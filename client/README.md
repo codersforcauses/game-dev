@@ -7,6 +7,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - Axios for data fetching
 - shadcn/ui for components
 - lucide for icons
+- react-social-icons for social media/brand icons
 
 ## Getting Started
 
