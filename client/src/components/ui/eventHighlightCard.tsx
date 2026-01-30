@@ -1,0 +1,80 @@
+import Image from "next/image";
+
+export type eventHighlightCardImage = {
+  url: string;
+  width: number;
+  height: number;
+  alt: string;
+};
+
+export type eventHighlightCardType = {
+  id: number;
+  title: string;
+  description: string;
+  type: string;
+  image: eventHighlightCardImage | null;
+  row: number;
+};
+
+// Purple card header section.
+const renderCardHeader = (card: eventHighlightCardType) => {
+  // Renders differently if we want the techno border.
+  if (card.type === "special-border") {
+    return (
+      <div
+        style={{
+          clipPath:
+            "polygon(0% 0%, 71% 0%, 78% 7px, 100% 7px, 100% calc(100% - 8px), 0% calc(100% - 8px))",
+        }}
+        className="relative bg-accent"
+      >
+        <div
+          style={{
+            clipPath:
+              "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
+          }}
+          className="bg-dark_alt p-4 pt-3 font-jersey10 text-2xl font-semibold"
+        >
+          {card.title}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-md border border-accent bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold">
+      {card.title}
+    </div>
+  );
+};
+
+export function EventHighlightCard({
+  id,
+  title,
+  description,
+  type,
+  image,
+  row,
+}: eventHighlightCardType) {
+  return (
+    <div key={id} className="flex flex-col">
+      {renderCardHeader({ id, title, description, type, image, row })}
+
+      <div className="mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
+        <div className="flex gap-2">
+          <span>▶</span>
+          <p>{description}</p>
+          {image && (
+            <Image
+              src={image.url}
+              width={image.width}
+              height={image.height}
+              alt={image.alt}
+              className="m-3 size-20 [image-rendering:pixelated]"
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
