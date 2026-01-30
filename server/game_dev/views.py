@@ -1,8 +1,7 @@
 from rest_framework import generics
-from .serializers import GamesSerializer, GameshowcaseSerializer, EventSerializer
-from .models import Game, GameShowcase
+from .serializers import GamesSerializer, GameshowcaseSerializer, EventSerializer, MemberSerializer
+from .models import Game, GameShowcase, Event, Member
 from django.utils import timezone
-from .models import Event
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -69,3 +68,11 @@ class GameshowcaseAPIView(APIView):
         showcases = GameShowcase.objects.all()
         serializer = GameshowcaseSerializer(showcases, many=True)
         return Response(serializer.data)
+
+
+class MemberAPIView(generics.RetrieveAPIView):
+    serializer_class = MemberSerializer
+    lookup_field = "id"
+
+    def get_queryset(self):
+        return Member.objects.filter(active=True)
