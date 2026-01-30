@@ -63,6 +63,7 @@ class ArtDetailAPIView(generics.RetrieveAPIView):
     def get_queryset(self):
         return Art.objects.all()
 
+
 class MemberAPIView(generics.RetrieveAPIView):
     serializer_class = MemberSerializer
     lookup_field = "id"
