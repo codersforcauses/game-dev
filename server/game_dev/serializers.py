@@ -40,5 +40,5 @@ class MemberSerializer(serializers.ModelSerializer):
             "name",
             "profile_picture",
             "about",
-            "pronouns"
+            "pronouns",
         ]

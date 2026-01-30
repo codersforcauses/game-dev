@@ -2,8 +2,8 @@
 
 # Create your views here.
 from rest_framework import generics
-from .models import Event, Art
-from .serializers import EventSerializer, ArtSerializer
+from .models import Event, Art, Member
+from .serializers import EventSerializer, ArtSerializer, MemberSerializer
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
@@ -47,10 +47,10 @@ class EventDetailAPIView(generics.RetrieveAPIView):
     GET /api/events/<id>/
     """
     serializer_class = EventSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "id"
 
     def get_queryset(self):
-        return Event.objects.filter(id=self.kwargs["id"])
+        return Event.objects.all()
 
 
 class ArtDetailAPIView(generics.RetrieveAPIView):
@@ -58,7 +58,14 @@ class ArtDetailAPIView(generics.RetrieveAPIView):
     GET /api/artworks/<id>/
     """
     serializer_class = ArtSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "id"
 
     def get_queryset(self):
-        return Art.objects.filter(id=self.kwargs["id"])
+        return Art.objects.all()
+
+class MemberAPIView(generics.RetrieveAPIView):
+    serializer_class = MemberSerializer
+    lookup_field = "id"
+
+    def get_queryset(self):
+        return Member.objects.filter(active=True)
