@@ -1,30 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import EventCarousel from "@/components/ui/eventCarousel";
+import {
+  EventHighlightCard,
+  eventHighlightCardType,
+} from "@/components/ui/eventHighlightCard";
+import { placeholderEvents, placeholderGames } from "@/placeholderData";
+
 import { Button } from "../components/ui/button";
 
 export default function Landing() {
-  const btnList = [
-    { name: "More about us", link: "/committee/about", type: "default" },
-    { name: "Join our Discord", link: "", type: "outline" },
+  const gameLogoImages = [
+    { url: "/godot.png", alt: "Godot Logo", position: "start" },
+    { url: "/unity-logo.png", alt: "Unity Logo", position: "end" },
   ];
 
-  type cardImage = {
-    url: string;
-    width: number;
-    height: number;
-    alt: string;
-  };
-
-  type cardType = {
-    id: number;
-    title: string;
-    description: string;
-    type: string;
-    image: cardImage | null;
-    row: number;
-  };
-  const eventCards = [
+  const eventCards: eventHighlightCardType[] = [
     {
       id: 1,
       title: "Game Jams",
@@ -68,66 +60,6 @@ export default function Landing() {
     },
   ];
 
-  const logoImages = [
-    { url: "/godot.png", alt: "Godot Logo", position: "start" },
-    { url: "/unity-logo.png", alt: "Unity Logo", position: "end" },
-  ];
-
-  const row1Cards = eventCards.filter((card) => card.row === 1);
-  const row2Cards = eventCards.filter((card) => card.row === 2);
-
-  const renderCardHeader = (card: cardType) => {
-    if (card.type === "special-border") {
-      return (
-        <div
-          style={{
-            clipPath:
-              "polygon(0% 0%, 71% 0%, 78% 7px, 100% 7px, 100% calc(100% - 8px), 0% calc(100% - 8px))",
-          }}
-          className="relative bg-accent"
-        >
-          <div
-            style={{
-              clipPath:
-                "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
-            }}
-            className="bg-dark_alt p-4 pt-3 font-jersey10 text-2xl font-semibold"
-          >
-            {card.title}
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="rounded-md border border-accent bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold">
-        {card.title}
-      </div>
-    );
-  };
-
-  const renderCard = (card: cardType) => (
-    <div key={card.id} className="flex flex-col">
-      {renderCardHeader(card)}
-
-      <div className="mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
-        <div className="flex gap-2">
-          <span>▶</span>
-          <p>{card.description}</p>
-          {card.image && (
-            <Image
-              src={card.image.url}
-              width={card.image.width}
-              height={card.image.height}
-              alt={card.image.alt}
-              className="m-3 size-20 [image-rendering:pixelated]"
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div>
       <section className="flex w-full justify-center bg-muted px-12 py-10">
@@ -138,20 +70,15 @@ export default function Landing() {
             </h1>
             <p className="text-base leading-relaxed text-white/80">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
             <div className="my-4 flex gap-4">
-              {btnList.map((item, i) => (
-                <Link href={item.link} key={i}>
-                  <Button
-                    variant={item.type == "default" ? "default" : "outline"}
-                  >
-                    {item.name}
-                  </Button>
-                </Link>
-              ))}
+              <Link href="/committee/about">
+                <Button>More about us</Button>
+              </Link>
+              <Link href="/committee/about">
+                <Button variant={"outline"}>Join our Discord</Button>
+              </Link>
             </div>
           </div>
 
@@ -177,24 +104,96 @@ export default function Landing() {
       <section className="-mt-8 bg-dark_3 py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-            {row1Cards.map(renderCard)}
+            {eventCards
+              .filter((card) => card.row === 1)
+              .map((card) => (
+                <EventHighlightCard key={card.id} {...card} />
+              ))}
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[23fr_27fr_11fr]">
-            {row2Cards.map(renderCard)}
+            {eventCards
+              .filter((card) => card.row === 2)
+              .map((card) => (
+                <EventHighlightCard key={card.id} {...card} />
+              ))}
 
             <div className="flex flex-row items-center justify-center gap-4 md:hidden lg:flex lg:flex-col lg:items-start">
-              {logoImages.map((logo, index) => (
+              {gameLogoImages.map((logo, index) => (
                 <Image
                   key={index}
                   src={logo.url}
                   width={135}
                   height={46}
                   alt={logo.alt}
-                  className={`${index < logoImages.length - 1 ? "lg:mb-5" : ""} ${logo.position === "end" ? "lg:self-end" : ""}`}
+                  className={`${index < gameLogoImages.length - 1 ? "lg:mb-5" : ""} ${
+                    logo.position === "end" ? "lg:self-end" : ""
+                  }`}
                 />
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-background px-10 py-20">
+        <EventCarousel items={placeholderEvents} />
+      </section>
+      {/* Leaving commented out until styling/design is confirmed. */}
+      {/* <section className="bg-background px-4 py-10 md:px-10">
+        <div className="flex w-full px-4">
+          <FeatureBox
+            title="So... How do I get involved?"
+            text="The easiest way to get involved is to come along to one of our events!"
+          />
+        </div>
+      </section> */}
+
+      <section className="relative w-full overflow-hidden bg-dark_3 px-6 py-20 lg:px-12">
+        <div className="relative z-10 mx-auto max-w-7xl">
+          <div className="mb-8 grid grid-cols-1 md:grid-cols-2">
+            <div className="flex flex-col items-start">
+              <h2 className="flex items-center gap-3 font-jersey10 text-4xl text-white">
+                Featured Member Creations
+                <Image src="/heart.png" alt="" width={60} height={50} />
+              </h2>
+            </div>
+
+            <div className="flex flex-col items-end gap-4">
+              <Link href="/">
+                <Button>See more games by our members</Button>
+              </Link>
+              <Link href="/">
+                <Button variant={"outline"}>
+                  See other cool stuff our members have created
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+            {placeholderGames.map((game) => (
+              <div
+                key={game.id}
+                className="rounded-xl p-6 text-background shadow-lg"
+              >
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+                  <Image
+                    src={game.thumbnail}
+                    alt={game.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
+                  {game.name}
+                </h3>
+
+                <p className="mb-4 text-sm text-primary">{game.description}</p>
+
+                <div className="h-px w-full bg-white/30" />
+              </div>
+            ))}
           </div>
         </div>
       </section>
