@@ -3,10 +3,6 @@ import Image from "next/image";
 import { ApiMember, useCommittee } from "@/hooks/useCommittee";
 
 export default function AboutPage() {
-  //const router = useRouter();
-  //const { id } = router.query;
-  // don't know if necessary
-
   const { data: committee, isPending, error, isError } = useCommittee();
 
   const topRow: ApiMember[] = [];

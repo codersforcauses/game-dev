@@ -84,15 +84,15 @@ class CommitteeAPIView(generics.ListAPIView):
     def get_queryset(self):
         outputList = []
         roleOrder = ("P", "VP", "SEC", "TRE", "MARK", "EVE", "PRO", "FRE")
+        placeholderMember = {"name": "Position not filled", "profile_picture": "url('/landing_placeholder.png')",
+                             "about": "", "pronouns": ""}
         for i in roleOrder:
             try:
                 cur = Committee.objects.get(role=i).id
                 if cur.active:
-                    outputList.append(Committee.objects.get(role=i).id)
+                    outputList.append(cur)
                 else:
-                    outputList.append({"name": "Position not filled", "profile_picture": "url('/landing_placeholder.png')",
-                                       "about": "", "pronouns": ""})
+                    outputList.append(placeholderMember)
             except Committee.DoesNotExist:
-                outputList.append({"name": "Position not filled", "profile_picture": "url('/landing_placeholder.png')",
-                                   "about": "", "pronouns": ""})
+                outputList.append(placeholderMember)
         return outputList
