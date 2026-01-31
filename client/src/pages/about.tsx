@@ -122,7 +122,7 @@ export default function AboutPage() {
                 key={`top-${idx}`}
                 className="flex flex-col items-start gap-0"
               >
-                <div className="relative flex h-[11.5625rem] w-[11.25rem] items-center justify-center bg-[url('/frame.png')] bg-contain bg-center bg-no-repeat">
+                <div className="relative flex h-[11.5625rem] w-[11.25rem] items-center justify-center bg-[url('/frame.svg')] bg-contain bg-center bg-no-repeat">
                   <Image
                     src={
                       member.profile_picture === null
@@ -154,7 +154,7 @@ export default function AboutPage() {
                 key={`bottom-${idx}`}
                 className="flex flex-col items-start gap-0"
               >
-                <div className="relative flex h-[11.5625rem] w-[11.25rem] items-center justify-center bg-[url('/frame.png')] bg-contain bg-center bg-no-repeat">
+                <div className="relative flex h-[11.5625rem] w-[11.25rem] items-center justify-center bg-[url('/frame.svg')] bg-contain bg-center bg-no-repeat">
                   <Image
                     src={
                       member.profile_picture === null

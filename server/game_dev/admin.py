@@ -3,7 +3,8 @@ from .models import Member, Game, Event, GameContributor, GameShowcase, Committe
 
 
 class MemberAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("id", "name", "active", "profile_picture", "about", "pronouns")
+    search_fields = ["name", "about"]
 
 
 # Sample EventsAdmin Class made
@@ -25,7 +26,7 @@ class GamesAdmin(admin.ModelAdmin):
 
 
 class CommitteeAdmin(admin.ModelAdmin):
-    pass
+    raw_id_fields = ["id"]
 
 
 admin.site.register(Member, MemberAdmin)
