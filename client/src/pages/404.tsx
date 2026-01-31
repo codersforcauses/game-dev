@@ -616,7 +616,7 @@ export default function Custom404() {
         </h2>
 
         <p className="mb-8 text-center text-foreground">
-          Test your game knowledge with quick rapid-fire instead!!!
+          Test your game knowledge with some rapid-fire trivia instead!!!
         </p>
 
         {!gameActive ? (
