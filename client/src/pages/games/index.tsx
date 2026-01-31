@@ -131,22 +131,17 @@ export default function HomePage() {
                             >
                               - {contributor.role}
                             </span>
-                            {/* Social icons placeholder */}
-                            {/* TODO: Add actual links */}
+                            {/* Social icons from API */}
                             <span className="flex gap-2 text-primary">
-                              {/* Social icons using react-social-icons */}
-                              <SocialIcon
-                                url="https://facebook.com/"
-                                style={{ height: 24, width: 24 }}
-                              />
-                              <SocialIcon
-                                url="https://instagram.com/"
-                                style={{ height: 24, width: 24 }}
-                              />
-                              <SocialIcon
-                                url="https://github.com/"
-                                style={{ height: 24, width: 24 }}
-                              />
+                              {Array.isArray(contributor.social_media) &&
+                                contributor.social_media.map((sm) => (
+                                  <SocialIcon
+                                    key={sm.link}
+                                    url={sm.link}
+                                    style={{ height: 24, width: 24 }}
+                                    title={sm.socialMediaUserName}
+                                  />
+                                ))}
                             </span>
                           </li>
                         ))}
