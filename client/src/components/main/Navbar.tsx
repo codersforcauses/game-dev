@@ -18,44 +18,41 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex h-24 w-full flex-wrap items-center justify-center rounded-md border-b border-border/20 bg-background px-20 font-jersey10">
-        <Link
-          href="/"
-          className="flex flex-none items-center gap-3 text-2xl md:mr-5"
-        >
-          <Image
-            src="/game_dev_club_logo.svg"
-            alt="logo"
-            width={32}
-            height={32}
-            className="h-8 w-8"
-          />
-          <span className="sr-only">Game Development UWA</span>
-          <span aria-hidden="true" className="whitespace-nowrap md:hidden">
-            GDUWA
-          </span>
-          <span
-            aria-hidden="true"
-            className="hidden whitespace-nowrap md:inline"
-          >
-            Game Development UWA _
-          </span>
-        </Link>
-
-        <nav className="ml-auto hidden flex-none gap-8 text-xl md:flex">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
+      <header className="sticky top-0 z-50 flex h-24 w-full items-center rounded-md border-b border-border/20 bg-background px-20 font-jersey10">
+        <div className="flex flex-1 items-center">
+          <Link href="/" className="flex items-center gap-3 text-2xl lg:mr-5">
+            <Image
+              src="/game_dev_club_logo.svg"
+              alt="logo"
+              width={32}
+              height={32}
+              className="h-8 w-8"
+            />
+            <span className="sr-only">Game Development UWA</span>
+            <span aria-hidden="true" className="whitespace-nowrap md:hidden">
+              GDUWA
+            </span>
+            <span
+              aria-hidden="true"
+              className="hidden whitespace-nowrap md:inline"
             >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="ml-auto flex items-center">
-          <div className="relative md:hidden">
+              Game Development UWA _
+            </span>
+          </Link>
+          <nav className="ml-auto hidden gap-8 text-xl lg:flex">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+        <div className="flex items-center lg:hidden">
+          <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center justify-center p-2"
