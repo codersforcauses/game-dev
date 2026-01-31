@@ -83,7 +83,17 @@ class ArtDetailAPIView(generics.RetrieveAPIView):
     GET /api/artworks/<id>/
     """
     serializer_class = ArtSerializer
-    lookup_field = "id"
+    lookup_url_kwarg = "id"
 
     def get_queryset(self):
-        return Art.objects.all()
+        return Art.objects.filter(id=self.kwargs["id"])
+
+
+class FeatureArtAPIView(generics.ListAPIView):
+    """
+    GET /api/arts/featured/
+    """
+    serializer_class = ArtSerializer
+
+    def get_queryset(self):
+        return Art.objects.filter(showcase__isnull=False)

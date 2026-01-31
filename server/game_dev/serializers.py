@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Game, Art, ArtContributor, Member, GameShowcase, GameContributor
+from .models import ArtShowcase, Event, Game, Art, ArtContributor, Member, GameShowcase, GameContributor
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -88,9 +88,12 @@ class ArtSerializer(serializers.ModelSerializer):
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = [
-            "name",
-            "profile_picture",
-            "about",
-            "pronouns",
-        ]
+        fields = ['name']
+
+
+class ArtShowcaseSerializer(serializers.ModelSerializer):
+    art_name = serializers.CharField(source='art.name', read_only=True)
+
+    class Meta:
+        model = ArtShowcase
+        fields = ['id', 'description', 'art', 'art_name']

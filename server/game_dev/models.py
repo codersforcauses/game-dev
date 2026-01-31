@@ -101,3 +101,19 @@ class ArtContributor(models.Model):
 
     def __str__(self):
         return f"{self.member.name} - {self.art.name} ({self.role})"
+
+
+class ArtShowcase(models.Model):
+    description = models.CharField(max_length=200)
+    art = models.ForeignKey(Art, on_delete=models.CASCADE, related_name='showcase')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['art'],
+                name='unique_artshowcase_per_art',
+                violation_error_message='Each art piece can only have one showcase.')
+        ]
+
+    def __str__(self):
+        return f"ArtShowcase[Art={str(self.art.name)}, Description={self.description}]"
