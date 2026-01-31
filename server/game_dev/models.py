@@ -74,3 +74,25 @@ class GameShowcase(models.Model):
 
     def __str__(self):
         return f"{self.game.name}"
+
+
+class SocialMedia(models.Model):
+    class PlatformChoices(models.TextChoices):
+        TWITTER = "TWITTER", "Twitter"
+        FACEBOOK = "FACEBOOK", "Facebook"
+        INSTAGRAM = "INSTAGRAM", "Instagram"
+        LINKEDIN = "LINKEDIN", "LinkedIn"
+        GITHUB = "GITHUB", "GitHub"
+        OTHER = "OTHER", "Other"
+
+    socialMediaName = models.CharField(
+        max_length=20,
+        choices=PlatformChoices.choices,
+        default=PlatformChoices.OTHER,
+    )
+    link = models.URLField(max_length=2083)
+    member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='social_media_links')
+    socialMediaUserName = models.CharField(max_length=200, blank=True)
+
+    def __str__(self):
+        return f"{self.socialMediaName} link for {self.member.name}"

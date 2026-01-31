@@ -1,9 +1,12 @@
 from django.contrib import admin
-from .models import Member, Game, Event, GameContributor, GameShowcase
+from .models import Member, Game, Event, GameContributor, GameShowcase, SocialMedia
+class SocialMediaInline(admin.TabularInline):
+    model = SocialMedia
+    extra = 1
 
 
 class MemberAdmin(admin.ModelAdmin):
-    pass
+    inlines = [SocialMediaInline]
 
 
 # Sample EventsAdmin Class made
