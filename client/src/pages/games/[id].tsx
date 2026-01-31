@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 
+import { GameEmbed } from "@/components/ui/GameEmbed";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
 import { useGame } from "@/hooks/useGames";
 
@@ -159,8 +160,16 @@ export default function IndividualGamePage() {
 
         <section className="mt-8 flex w-full flex-col items-center gap-6">
           {game.itchEmbedID && (
-            <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
+            <div>
+              <GameEmbed
+                embedID={game.itchEmbedID}
+                gameWidth={960}
+                gameHeight={620}
+              />
+              <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
+            </div>
           )}
+
           <h2 className="font-jersey10 text-5xl text-primary">ARTWORK</h2>
 
           <div className="mx-auto mb-6 flex h-auto w-full max-w-4xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-center sm:gap-6 sm:px-6 md:h-60">
