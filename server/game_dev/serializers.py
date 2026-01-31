@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Game, Member, GameShowcase, GameContributor
+from .models import Event, Game, Member, GameShowcase, GameContributor, SocialMedia
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -68,7 +68,18 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         return ShowcaseContributorSerializer(contributors, many=True).data
 
 
+class SocialMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialMedia
+        fields = [
+            "socialMediaName",
+            "link",
+            "socialMediaUserName",
+        ]
+
+
 class MemberSerializer(serializers.ModelSerializer):
+    social_media = SocialMediaSerializer(many=True, source="social_media_links", read_only=True)
     class Meta:
         model = Member
         fields = [
@@ -76,4 +87,5 @@ class MemberSerializer(serializers.ModelSerializer):
             "profile_picture",
             "about",
             "pronouns",
+            "social_media",
         ]
