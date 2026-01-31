@@ -24,10 +24,62 @@ class Event(models.Model):
         return self.name
 
 
+# GameContributor table: links Game, Member, and role (composite PK)
+class GameContributor(models.Model):
+    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_contributors')
+    member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='member_games')
+    role = models.CharField(max_length=100)
+
+    class Meta:
+        unique_together = (('game', 'member'),)
+
+    def __str__(self):
+        return f"{self.member.name} ({self.role}) for {self.game.name}"
+
+
+class Game(models.Model):
+    # Enum choices
+    class CompletionStatus(models.IntegerChoices):
+        WIP = 1, "Work in Progress (Unplayable)"
+        PLAYABLE_DEV = 2, "Playable - In Development"
+        BETA = 3, "Beta - Stable but not Final"
+        COMPLETED = 4, "Completed"
+
+    name = models.CharField(max_length=200, null=False)
+    description = models.TextField()
+    completion = models.IntegerField(
+        choices=CompletionStatus.choices,
+        default=CompletionStatus.WIP,
+        null=False,
+    )
+    active = models.BooleanField(default=True, null=False)
+    hostURL = models.URLField(max_length=2083)
+    itchEmbedID = models.PositiveIntegerField(
+        default=None,
+        null=True,
+        blank=True,
+        help_text="If game is stored on itch.io, please enter the itchEmbedID, i.e., 1000200"
+    )
+
+    thumbnail = models.ImageField(upload_to="games/", null=True)
+    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class GameShowcase(models.Model):
+    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_showcases')
+    description = models.TextField()
+
+    def __str__(self):
+        return f"{self.game.name}"
+
+
 class Art(models.Model):
     name = models.CharField(null=False, max_length=200)
     description = models.CharField(max_length=200,)
-    # source_game = models.ForeignKey(Games, on_delete=models.CASCADE, related_name='art_pieces') #Need implement Games model
+    source_game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='art_pieces')
     media = models.ImageField(upload_to='art/', null=False)
     active = models.BooleanField(default=True)
 
