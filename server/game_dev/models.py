@@ -74,3 +74,30 @@ class GameShowcase(models.Model):
 
     def __str__(self):
         return f"{self.game.name}"
+
+
+class Art(models.Model):
+    name = models.CharField(null=False, max_length=200)
+    description = models.CharField(max_length=200,)
+    source_game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='art_pieces')
+    media = models.ImageField(upload_to='art/', null=False)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class ArtContributor(models.Model):
+    art = models.ForeignKey('Art', on_delete=models.CASCADE, related_name='contributors')
+    member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='art_contributions')
+    role = models.CharField(max_length=100)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['art', 'member'], name='unique_art_member')
+        ]
+        verbose_name = 'Art Contributor'
+        verbose_name_plural = 'Art Contributors'
+
+    def __str__(self):
+        return f"{self.member.name} - {self.art.name} ({self.role})"

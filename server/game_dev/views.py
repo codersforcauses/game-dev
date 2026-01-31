@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .serializers import GamesSerializer, GameshowcaseSerializer, EventSerializer, MemberSerializer
-from .models import Game, GameShowcase, Event, Member
+from .models import Game, GameShowcase, Event, Member, Art
+from .serializers import GamesSerializer, GameshowcaseSerializer, ArtSerializer, EventSerializer, MemberSerializer
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -76,3 +76,14 @@ class MemberAPIView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         return Member.objects.filter(active=True)
+
+
+class ArtDetailAPIView(generics.RetrieveAPIView):
+    """
+    GET /api/artworks/<id>/
+    """
+    serializer_class = ArtSerializer
+    lookup_field = "id"
+
+    def get_queryset(self):
+        return Art.objects.all()

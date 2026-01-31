@@ -1,12 +1,6 @@
-// import os from "node:os";
-// import isInsideContainer from "is-inside-container";
-
-// const isWindowsDevContainer = () =>
-//   os.release().toLowerCase().includes("microsoft") && isInsideContainer();
-
 /** @type {import('next').NextConfig} */
 
-const config = {
+const nextConfig = {
   reactStrictMode: true,
   turbopack: {
     root: import.meta.dirname,
@@ -27,4 +21,4 @@ const config = {
   // : undefined,
 };
 
-export default config;
+export default nextConfig;
