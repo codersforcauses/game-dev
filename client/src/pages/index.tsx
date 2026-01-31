@@ -6,7 +6,8 @@ import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
-import { placeholderEvents, placeholderGames } from "@/placeholderData";
+import LandingGame from "@/components/ui/landingGames";
+import { placeholderEvents } from "@/placeholderData";
 
 import { Button } from "../components/ui/button";
 
@@ -170,31 +171,7 @@ export default function Landing() {
               </Link>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-            {placeholderGames.map((game) => (
-              <div
-                key={game.id}
-                className="rounded-xl p-6 text-background shadow-lg"
-              >
-                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-                  <Image
-                    src={game.thumbnail}
-                    alt={game.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
-                  {game.name}
-                </h3>
-
-                <p className="mb-4 text-sm text-primary">{game.description}</p>
-
-                <div className="h-px w-full bg-white/30" />
-              </div>
-            ))}
-          </div>
+          <LandingGame />
         </div>
       </section>
     </div>
