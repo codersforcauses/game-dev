@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -684,9 +684,8 @@ export default function Custom404() {
               <p className="text-sm text-foreground">
                 Score:{" "}
                 <span className="font-jersey10 font-bold text-primary">
-                  {score}
-                </span>{" "}
-                / 10
+                  {score} / 10
+                </span>
               </p>
             </div>
           </div>
