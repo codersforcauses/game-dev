@@ -20,7 +20,7 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 z-50 flex h-24 w-full items-center rounded-md border-b border-border/20 bg-background px-20 font-jersey10">
         <div className="flex flex-1 items-center">
-          <Link href="/" className="flex items-center gap-3 text-2xl md:mr-5">
+          <Link href="/" className="flex items-center gap-3 text-2xl lg:mr-5">
             <Image
               src="/game_dev_club_logo.svg"
               alt="logo"
@@ -39,7 +39,7 @@ export default function Navbar() {
               Game Development UWA _
             </span>
           </Link>
-          <nav className="ml-auto hidden gap-8 text-xl md:flex">
+          <nav className="ml-auto hidden gap-8 text-xl lg:flex">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -51,7 +51,7 @@ export default function Navbar() {
             ))}
           </nav>
         </div>
-        <div className="flex items-center md:hidden">
+        <div className="flex items-center lg:hidden">
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
