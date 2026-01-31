@@ -6,6 +6,6 @@ urlpatterns = [
     path("events/<int:id>/", EventDetailAPIView.as_view()),
     path("games/<int:id>/", GamesDetailAPIView.as_view()),
     path("gameshowcase/", GameshowcaseAPIView.as_view(), name="gameshowcase-api"),  # Updated line for GameShowcase endpoint
-    path('members/<int:id>/', MemberAPIView.as_view())
+    path('members/<int:id>/', MemberAPIView.as_view()),
     path("about/", CommitteeAPIView.as_view())
 ]
