@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 import api from "@/lib/api";
 
@@ -14,8 +15,8 @@ type ApiContributorGamesList = {
   game_data: ApiContributorGameData;
 };
 
-export const useContributor = (member: number) => {
-  return useQuery<ApiContributorGamesList>({
+export const useContributor = (member: string | string[] | undefined) => {
+  return useQuery<ApiContributorGamesList[], AxiosError>({
     queryKey: ["contributor", member],
     queryFn: async () => {
       const response = await api.get(`/games/contributor/${member}/`);
