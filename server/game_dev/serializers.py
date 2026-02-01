@@ -18,7 +18,8 @@ class EventSerializer(serializers.ModelSerializer):
 
 # This is child serializer of GameSerializer
 class GameContributorSerializer(serializers.ModelSerializer):
-    member_id = serializers.IntegerField(source="member.id")  # to link contributors to their member/[id] page
+    # to link contributors to their member/[id] page
+    member_id = serializers.IntegerField(source="member.id")
     name = serializers.CharField(source="member.name")
 
     class Meta:
@@ -35,7 +36,8 @@ class GamesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'name', 'description', 'completion', 'active', 'hostURL', 'itchEmbedID', 'thumbnail', 'event', "contributors")
+        fields = ('id', 'name', 'description', 'completion', 'active',
+                  'hostURL', 'itchEmbedID', 'thumbnail', 'event', "contributors")
 
 
 # Contributor serializer for name and role
@@ -54,18 +56,56 @@ class ShowcaseContributorSerializer(serializers.ModelSerializer):
 class GameshowcaseSerializer(serializers.ModelSerializer):
     game_id = serializers.IntegerField(source='game.id', read_only=True)
     game_name = serializers.CharField(source='game.name', read_only=True)
-    game_description = serializers.CharField(source='game.description', read_only=True)
-    game_cover_thumbnail = serializers.ImageField(source='game.thumbnail', read_only=True)
+    game_description = serializers.CharField(
+        source='game.description', read_only=True)
+    game_cover_thumbnail = serializers.ImageField(
+        source='game.thumbnail', read_only=True)
     contributors = serializers.SerializerMethodField()
 
     class Meta:
         model = GameShowcase
-        fields = ('game_id', 'game_name', 'game_description', 'description', 'contributors', 'game_cover_thumbnail')
+        fields = ('game_id', 'game_name', 'game_description',
+                  'description', 'contributors', 'game_cover_thumbnail')
 
     def get_contributors(self, obj):
         # Always fetch contributors from GameContributor for the related game
         contributors = GameContributor.objects.filter(game=obj.game)
         return ShowcaseContributorSerializer(contributors, many=True).data
+
+
+class ContributorGameInfoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Game
+        fields = ('name', 'thumbnail',
+                  'description')
+
+
+class ContributorGameSerializer(serializers.ModelSerializer):
+    game_id = serializers.IntegerField(source='game.id', read_only=True)
+    game_data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = GameContributor
+        fields = ['game_id', 'game_data']
+
+    def get_game_data(self, obj):
+        game_data = Game.objects.get(id=obj.game_id)
+        return ContributorGameInfoSerializer(game_data).data
+
+
+class ContributorGamesListSerializer(serializers.ModelSerializer):
+    member = serializers.IntegerField(
+        source='GameContributor.member', read_only=True)
+    games = serializers.SerializerMethodField()
+
+    class Meta:
+        model = GameContributor
+        fields = ('member', 'games')
+
+    def get_games(self, obj):
+        games = GameContributor.objects.filter(member=obj.member)
+        return ContributorGameSerializer(games, many=True).data
 
 
 class MemberSerializer(serializers.ModelSerializer):
