@@ -1,5 +1,5 @@
 from rest_framework import generics
-from .serializers import ContributorGamesListSerializer, GamesSerializer, GameshowcaseSerializer, EventSerializer, MemberSerializer
+from .serializers import ContributorGameSerializer, GamesSerializer, GameshowcaseSerializer, EventSerializer, MemberSerializer
 from .models import Game, GameContributor, GameShowcase, Event, Member
 from django.utils import timezone
 from rest_framework.views import APIView
@@ -70,13 +70,13 @@ class GameshowcaseAPIView(APIView):
         return Response(serializer.data)
 
 
-class MemberGameAPIView(APIView):
+class ContributorGamesListAPIView(APIView):
     lookup_url_kwarg = "member"
 
     def get(self, request, member):
         contributions = GameContributor.objects.filter(
             member=self.kwargs["member"])
-        serializer = ContributorGamesListSerializer(contributions, many=True)
+        serializer = ContributorGameSerializer(contributions, many=True)
         return Response(serializer.data)
 
 

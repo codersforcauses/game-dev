@@ -73,7 +73,7 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         return ShowcaseContributorSerializer(contributors, many=True).data
 
 
-class ContributorGameInfoSerializer(serializers.ModelSerializer):
+class ContributorGameDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
@@ -83,29 +83,16 @@ class ContributorGameInfoSerializer(serializers.ModelSerializer):
 
 class ContributorGameSerializer(serializers.ModelSerializer):
     game_id = serializers.IntegerField(source='game.id', read_only=True)
+    role = serializers.CharField(read_only=True)
     game_data = serializers.SerializerMethodField()
 
     class Meta:
         model = GameContributor
-        fields = ['game_id', 'game_data']
+        fields = ['game_id', 'role', 'game_data']
 
     def get_game_data(self, obj):
         game_data = Game.objects.get(id=obj.game_id)
-        return ContributorGameInfoSerializer(game_data).data
-
-
-class ContributorGamesListSerializer(serializers.ModelSerializer):
-    member = serializers.IntegerField(
-        source='GameContributor.member', read_only=True)
-    games = serializers.SerializerMethodField()
-
-    class Meta:
-        model = GameContributor
-        fields = ('member', 'games')
-
-    def get_games(self, obj):
-        games = GameContributor.objects.filter(member=obj.member)
-        return ContributorGameSerializer(games, many=True).data
+        return ContributorGameDataSerializer(game_data).data
 
 
 class MemberSerializer(serializers.ModelSerializer):
