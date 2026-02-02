@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 import { useContributor } from "@/hooks/useContributor";
@@ -56,13 +57,20 @@ export default function MemberProjectSection(props: MemberProjectSectionProps) {
           {games.map((game) => (
             <React.Fragment key={game.game_id}>
               <div className="w-fit rounded-md p-5">
-                <div className="mb-2 h-44 w-96 overflow-clip rounded-md">
+                <div className="group mb-2 grid h-44 w-96 grid-cols-1 grid-rows-1 overflow-clip rounded-md">
                   <Image
                     src={getGameCoverUrl(game.game_data.thumbnail)}
                     alt={`${game.game_data.name} cover image`}
                     width={384}
                     height={176}
+                    className="group-hover:brightness-75 group-hover:duration-200"
                   />
+                  <Link
+                    className="mt-[-165px] hidden place-self-center rounded-md bg-accent p-3 font-firaCode text-light_1 drop-shadow-md hover:underline group-hover:block group-hover:blur-0 group-hover:duration-200"
+                    href={`/games/${game.game_id}`}
+                  >
+                    Visit Game
+                  </Link>
                 </div>
                 <p className="max-w-96 font-firaCode text-xl font-semibold">
                   {game.game_data.name}
