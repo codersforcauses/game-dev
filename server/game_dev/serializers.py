@@ -15,7 +15,6 @@ class EventSerializer(serializers.ModelSerializer):
             "location",
         ]
 
-
 # This is child serializer of GameSerializer
 class GameContributorSerializer(serializers.ModelSerializer):
     member_id = serializers.IntegerField(source="member.id")  # to link contributors to their member/[id] page
@@ -69,20 +68,26 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
 
 
 class ArtContributorSerializer(serializers.ModelSerializer):
+    member_id = serializers.IntegerField(source='member.id', read_only=True)
     member_name = serializers.CharField(source='member.name', read_only=True)
-    art_id = serializers.IntegerField(source='art.id', read_only=True)
 
     class Meta:
         model = ArtContributor
-        fields = ['id', 'art_id', 'member', 'member_name', 'role']
+        fields = ['id', 'member_id', 'member_name', 'role']
 
 
 class ArtSerializer(serializers.ModelSerializer):
+    art_id = serializers.IntegerField(source='id', read_only=True)
     contributors = ArtContributorSerializer(many=True, read_only=True)
+    showcase_description = serializers.SerializerMethodField()
 
     class Meta:
         model = Art
-        fields = ['id', 'name', 'description', 'media', 'active', 'contributors']
+        fields = ['art_id', 'name', 'description', 'media', 'active', 'contributors', 'showcase_description']
+
+    def get_showcase_description(self, obj):
+        showcase = obj.showcase.first()
+        return showcase.description if showcase else None
 
 
 class MemberSerializer(serializers.ModelSerializer):
