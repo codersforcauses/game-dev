@@ -1,9 +1,10 @@
 from django.test import TestCase
-from .models import Member, Event
+from .models import Member, Event, Committee
 import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 from django.urls import reverse
+from django.db.utils import IntegrityError
 
 
 class MemberModelTest(TestCase):
@@ -71,6 +72,54 @@ class EventModelTest(TestCase):
     def test_event_datetime_matches(self):
         event = Event.objects.get(pk=self.event.pk)
         self.assertEqual(event.date, self.event_datetime)
+
+
+class CommitteeModelTest(TestCase):
+    def setUp(self):
+        self.member = Member.objects.create(
+            name="Linus Torvalds",
+            about="Linux creator",
+            pronouns="He/Him"
+        )
+        try:
+            Member.objects.get(name="Linus Torvalds")
+        except Member.DoesNotExist:
+            self.fail("Member was not properly created before testing Committee model; check Member model")
+        self.committee = Committee.objects.create(id=self.member, role="P")
+
+    def test_committee_creation(self):
+        try:
+            Committee.objects.get(id=self.member)
+        except Member.DoesNotExist:
+            self.fail("Committee Member was not properly created")
+
+    def test_role_is_unique(self):
+        Member.objects.create(
+            name="Jane Doe",
+            about="Placeholder",
+            pronouns="She/Her"
+        )
+        try:
+            Committee.objects.create(id=Member.objects.get(name="Jane Doe"), role="P")
+            self.fail("Committee Member with a duplicate role was created")
+        except IntegrityError:
+            return True
+
+    def test_cascade_from_committee(self):
+        self.committee.delete()
+        try:
+            Member.objects.get(name=self.member.name)
+        except Member.DoesNotExist:
+            self.fail("Deleting Committee object deleted it's corresponding Member object (undesired behaviour)")
+
+    def test_cascade_from_member(self):
+        tempRole = Committee.objects.get(id=self.member).role
+        self.member.delete()
+        try:
+            Committee.objects.get(role=tempRole)
+            self.fail("Deleting Member Object did not delete a possible corresponding Committee object (undesired behaviour)")
+        except Committee.DoesNotExist:
+            return True
 
 
 class EventListAPITest(TestCase):
