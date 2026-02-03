@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { Palette, Sparkles } from "lucide-react";
 import Image from "next/image";
 
 import MemberProjectSection from "../ui/MemberProjectSection";
@@ -74,12 +74,16 @@ export function MemberProfile({ member }: MemberProfileProps) {
           </div>
         </div>
       </div>
-      <div className="m-auto min-h-80 w-11/12">
+      <div className="m-auto mb-10 min-h-80 w-11/12">
         <h2 className="mt-7 flex justify-center text-center font-jersey10 text-5xl">
-          Projects{" "}
+          Games
           <Sparkles size={32} className="ml-2 self-center text-yellow-300" />
         </h2>
         <MemberProjectSection id={window.location.pathname.slice(9)} />
+        <h2 className="mt-7 flex justify-center text-center font-jersey10 text-5xl">
+          Artwork
+          <Palette size={32} className="ml-2 self-center text-yellow-300" />
+        </h2>
       </div>
     </>
   );
