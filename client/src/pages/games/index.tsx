@@ -125,12 +125,6 @@ export default function HomePage() {
                             <span className="font-semibold text-foreground">
                               {contributor.name}
                             </span>
-                            <span
-                              className="text-foreground"
-                              style={{ marginLeft: 20 }}
-                            >
-                              - {contributor.role}
-                            </span>
                             {/* Social icons from API */}
                             <span className="flex gap-2 text-primary">
                               {Array.isArray(contributor.social_media) &&
@@ -142,6 +136,9 @@ export default function HomePage() {
                                     title={sm.socialMediaUserName}
                                   />
                                 ))}
+                            </span>
+                            <span className="ml-auto text-foreground">
+                              - {contributor.role}
                             </span>
                           </li>
                         ))}
