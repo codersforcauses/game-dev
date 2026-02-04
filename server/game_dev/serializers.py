@@ -78,12 +78,14 @@ class ArtContributorSerializer(serializers.ModelSerializer):
 
 class ArtSerializer(serializers.ModelSerializer):
     art_id = serializers.IntegerField(source='id', read_only=True)
+    source_game_id = serializers.IntegerField(source='source_game.id', read_only=True)
+    source_game_name = serializers.CharField(source='source_game.name', read_only=True)
     contributors = ArtContributorSerializer(many=True, read_only=True)
     showcase_description = serializers.SerializerMethodField()
 
     class Meta:
         model = Art
-        fields = ['art_id', 'name', 'description', 'media', 'active', 'contributors', 'showcase_description']
+        fields = ['art_id', 'name', 'description', 'media', 'active', 'source_game_id', 'source_game_name', 'contributors', 'showcase_description']
 
     def get_showcase_description(self, obj):
         showcase = obj.showcase.first()
