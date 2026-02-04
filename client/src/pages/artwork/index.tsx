@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router"; // ✅ pages router (not next/navigation)
 
 import ImageCard from "@/components/ui/image-card";
 import ErrorModal from "@/components/ui/modal/error-modal";
@@ -18,6 +18,13 @@ export interface PageResult<T> {
 interface ArtworksPageProps {
   artworks?: PageResult<Art>;
   error?: string;
+}
+
+function hasResultsArray<T>(value: unknown): value is { results: T[] } {
+  if (typeof value !== "object" || value === null) return false;
+
+  const v = value as Record<string, unknown>;
+  return Array.isArray(v.results);
 }
 
 const PLACEHOLDER_ICON = (
@@ -97,6 +104,8 @@ export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
     return <ErrorModal message={error} onClose={() => router.back()} />;
   }
 
+  const featuredArtworks = artworks?.results?.slice(0, 3) ?? [];
+
   return (
     <div className="bg-gamedev-dark min-h-screen">
       <section className="px-6 py-10 md:px-24 md:py-14">
@@ -108,7 +117,7 @@ export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
         </h1>
 
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
-          {artworks?.results.slice(0, 3).map(renderArtworkCard)}
+          {featuredArtworks.map(renderArtworkCard)}
         </div>
       </section>
     </div>
@@ -119,15 +128,31 @@ export const getServerSideProps: GetServerSideProps<
   ArtworksPageProps
 > = async () => {
   try {
-    const res = await api.get<PageResult<Art>>("arts/featured");
-    return { props: { artworks: res.data } };
-    //} catch (err: unknown) {
-  } catch {
-    // return {
-    //   props: { error: (err as Error).message || "Failed to load artworks." },
-    // };
+    const res = await api.get("arts/featured");
+    const data = res.data as unknown;
 
-    // Fallback to mock data on error
+    // Accept either: PageResult<Art> OR Art[]
+    const results: Art[] | null = Array.isArray(data)
+      ? (data as Art[])
+      : hasResultsArray<Art>(data)
+        ? data.results
+        : null;
+
+    // If API didn't throw but returned an unexpected shape, trigger fallback
+    if (!results) throw new Error("Invalid arts/featured response shape");
+
+    return {
+      props: {
+        artworks: {
+          results,
+          count: results.length,
+          next: "",
+          previous: "",
+        },
+      },
+    };
+  } catch (err) {
+    // Fallback to mock data on any error (network, 500, invalid shape, etc.)
     const mockArtworks = generateMockArtworks(3);
     return {
       props: {
@@ -137,6 +162,7 @@ export const getServerSideProps: GetServerSideProps<
           next: "",
           previous: "",
         },
+        error: err instanceof Error ? err.message : undefined,
       },
     };
   }
