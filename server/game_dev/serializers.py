@@ -15,6 +15,7 @@ class EventSerializer(serializers.ModelSerializer):
             "location",
         ]
 
+
 # This is child serializer of GameSerializer
 class GameContributorSerializer(serializers.ModelSerializer):
     member_id = serializers.IntegerField(source="member.id")  # to link contributors to their member/[id] page
