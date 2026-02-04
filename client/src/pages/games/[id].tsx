@@ -51,6 +51,9 @@ export default function IndividualGamePage() {
   const gameTitle = game.name;
   const gameCover = game.gameCover;
   const gameDescription = game.description.split("\n");
+  const gameEmbedID = game.itchGameEmbedID;
+  const gameWidth = game.itchGameWidth;
+  const gameHeight = game.itchGameHeight;
 
   const completionLabels: Record<number, string> = {
     1: "WIP",
@@ -159,12 +162,12 @@ export default function IndividualGamePage() {
         </section>
 
         <section className="mt-8 flex w-full flex-col items-center gap-6">
-          {game.itchEmbedID && (
+          {gameEmbedID != "0" && (
             <div>
               <GameEmbed
-                embedID={game.itchEmbedID}
-                gameWidth={960}
-                gameHeight={620}
+                embedID={gameEmbedID}
+                gameWidth={gameWidth}
+                gameHeight={gameHeight}
               />
               <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
             </div>

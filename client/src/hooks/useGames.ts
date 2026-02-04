@@ -19,6 +19,9 @@ type ApiGame = {
   itchEmbedID: string;
   thumbnail: string | null;
   event: number | null;
+  itchGameEmbedID: string;
+  itchGameWidth: number;
+  itchGameHeight: number;
   contributors: Contributor[];
 };
 
