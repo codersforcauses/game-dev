@@ -115,7 +115,7 @@ export default function IndividualGamePage() {
                           className="flex items-center gap-x-2"
                         >
                           <a
-                            href={`/member/${c.member_id}`}
+                            href={`/members/${c.member_id}`}
                             className="text-primary hover:underline"
                           >
                             {c.name}
