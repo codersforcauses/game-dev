@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.utils import IntegrityError
+from requests import get
 
 
 class Member(models.Model):
@@ -95,3 +97,30 @@ class Committee(models.Model):
 
     def __str__(self):
         return self.id.name
+
+
+class Jam(models.Model):
+    id = models.PositiveBigIntegerField(primary_key=True, unique=True)
+    name = models.CharField(max_length=75, unique=True, blank=False)
+    games = models.JSONField(default=list, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, force_insert=False, force_update=False):
+        r = get(f"https://itch.io/jam/{self.id}/results.json")
+        try:
+            results = r.json()["results"]
+        except KeyError:
+            print("Error: No results for this Jam ID could be found")
+            return
+        games = []
+        for i in results:
+            try:
+                cur = Game.objects.get(hostURL=i["url"], name=i["title"])
+                games.append(cur.pk)
+            except IntegrityError:
+                Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail=i["cover_url"])
+                games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
+        self.games = games
+        return super().save(force_insert, force_update)
