@@ -117,3 +117,24 @@ class ArtShowcase(models.Model):
 
     def __str__(self):
         return f"ArtShowcase[Art={str(self.art.name)}, Description={self.description}]"
+
+
+class Committee(models.Model):
+    id = models.OneToOneField(Member, on_delete=models.CASCADE, primary_key=True)
+    roles = {
+        "P": "President",
+        "VP": "Vice-President",
+        "SEC": "Secretary",
+        "TRE": "Treasurer",
+        "MARK": "Marketing",
+        "EV": "Events OCM",
+        "PRO": "Projects OCM",
+        "FRE": "Fresher Rep"
+    }
+    role = models.CharField(max_length=9, choices=roles, default="FRE", unique=True)
+
+    def get_member(self):
+        return self.id
+
+    def __str__(self):
+        return self.id.name
