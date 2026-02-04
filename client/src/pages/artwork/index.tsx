@@ -40,10 +40,10 @@ const PLACEHOLDER_ICON = (
 function renderArtworkCard(artwork: Art) {
   return (
     <ImageCard
-      key={artwork.id}
+      key={artwork.art_id}
       imageSrc={artwork.media || undefined}
       imageAlt={artwork.name}
-      href={`/artwork/${artwork.id}`}
+      href={`/artwork/${artwork.art_id}`}
       backContent={
         <div className="flex h-full flex-col gap-4">
           <div>
@@ -77,7 +77,7 @@ function renderArtworkCard(artwork: Art) {
           )}
 
           <Link
-            href={`/artwork/${artwork.id}`}
+            href={`/artwork/${artwork.art_id}`}
             className="mt-4 rounded-md border border-accent bg-accent/10 px-4 py-2 text-center font-sans text-lg text-accent transition-colors hover:bg-accent hover:text-dark_3"
             onClick={(e) => e.stopPropagation()}
           >
@@ -119,7 +119,7 @@ export const getServerSideProps: GetServerSideProps<
   ArtworksPageProps
 > = async () => {
   try {
-    const res = await api.get<PageResult<Art>>("arts");
+    const res = await api.get<PageResult<Art>>("arts/featured");
     return { props: { artworks: res.data } };
     //} catch (err: unknown) {
   } catch {
