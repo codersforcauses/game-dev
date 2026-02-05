@@ -17,32 +17,30 @@ export function GameEmbed({ embedID, gameWidth, gameHeight }: GameEmbedProps) {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <div>
-      <section
-        className={
-          "flex items-center justify-center border-[26px] border-accent p-2 [clip-path:polygon(20px_20px,calc(100%-20px)_20px,100%_32px,100%_30%,calc(100%-20px)_45%,calc(100%-20px)_calc(100%-8px),80%_calc(100%-8px),75%_calc(100%-20px),20px_calc(100%-20px),0%_60%,0%_30%,20px_25%)]"
-        }
-        style={{ width: gameWidth, height: gameHeight }}
-      >
-        {!isPlaying ? (
-          <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            className="rounded-sm bg-accent px-7 py-3"
-            aria-label="Play"
-          >
-            <div>Play</div>
-          </button>
-        ) : (
-          <div>
-            <iframe
-              src={`https://itch.io/embed-upload/${embedID}?color=110e1a`}
-              width={gameWidth}
-              height={gameHeight}
-              className="min-w-80 border-[26px] border-accent [clip-path:polygon(20px_20px,calc(100%-20px)_20px,100%_32px,100%_30%,calc(100%-20px)_45%,calc(100%-20px)_calc(100%-8px),80%_calc(100%-8px),75%_calc(100%-20px),20px_calc(100%-20px),0%_60%,0%_30%,20px_25%)]"
-            ></iframe>
-          </div>
-        )}
-      </section>
+    <div
+      className={
+        "flex items-center justify-center border-[26px] border-accent bg-background p-2 [clip-path:polygon(20px_20px,calc(100%-20px)_20px,100%_32px,100%_30%,calc(100%-20px)_45%,calc(100%-20px)_calc(100%-8px),80%_calc(100%-8px),75%_calc(100%-20px),20px_calc(100%-20px),0%_60%,0%_30%,20px_25%)]"
+      }
+      style={{ width: gameWidth, height: gameHeight }}
+    >
+      {!isPlaying ? (
+        <button
+          onClick={() => setIsPlaying(!isPlaying)}
+          className="rounded-sm bg-accent px-7 py-3"
+          aria-label="Play"
+        >
+          <div>Play</div>
+        </button>
+      ) : (
+        <div>
+          <iframe
+            src={`https://itch.io/embed-upload/${embedID}?color=110e1a`}
+            width={gameWidth}
+            height={gameHeight}
+            className="min-w-80 border-[26px] border-accent [clip-path:polygon(20px_20px,calc(100%-20px)_20px,100%_32px,100%_30%,calc(100%-20px)_45%,calc(100%-20px)_calc(100%-8px),80%_calc(100%-8px),75%_calc(100%-20px),20px_calc(100%-20px),0%_60%,0%_30%,20px_25%)]"
+          ></iframe>
+        </div>
+      )}
     </div>
   );
 }
