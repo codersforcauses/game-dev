@@ -2,44 +2,48 @@ import React, { useMemo } from "react";
 
 interface CraterProps {
   size?: number;
-  intensity?: number; // 0-1, affects depth appearance
+  intensity?: number;
 }
 
 /**
- * Generates irregular polygon points for jagged crater edge
+ * Generates an irregular crater polygon
  */
-function generateJaggedPath(points: number, baseRadius: number): string {
+function generateCraterShape(baseRadius: number, points: number = 10): string {
   const coords: string[] = [];
   
   for (let i = 0; i < points; i++) {
     const angle = (i / points) * Math.PI * 2;
-    // Add randomness to radius (50-100% of base) for jaggedness
-    const randomRadius = baseRadius * (0.5 + Math.random() * 0.5);
-    // Add slight angle offset for more organic shape
-    const angleOffset = (Math.random() - 0.5) * 0.3;
-    const x = 50 + Math.cos(angle + angleOffset) * randomRadius;
-    const y = 50 + Math.sin(angle + angleOffset) * randomRadius;
-    coords.push(`${x},${y}`);
+    const radius = baseRadius * (0.75 + Math.random() * 0.3);
+    const x = 50 + Math.cos(angle) * radius;
+    const y = 50 + Math.sin(angle) * radius;
+    coords.push(`${x.toFixed(1)},${y.toFixed(1)}`);
   }
   
   return coords.join(" ");
 }
 
 /**
- * Generates a single crack fissure with jagged edges
- * Wide at crater, sharp point at end, with jagged edges that taper toward tip
+ * Generates a crack as a polygon shape (actual gap in ground)
+ * Returns points for a wedge-shaped fissure
  */
-function generateCrackFissure(angle: number, startRadius: number, length: number): string {
+function generateCrackFissure(
+  angle: number,
+  startRadius: number,
+  length: number
+): string {
   // Crack is a tapered wedge shape - wide at crater, sharp point at end
-  // Ensure all cracks are consistently chunkier
-  const widthAtStart = 8 + Math.random() * 4;   // Chunkier range (8-12)
+  const widthAtStart = 7 + Math.random() * 5;   // Bit skinnier (7-12)
   const widthAtEnd = 0.5 + Math.random() * 1;   // Sharp point at tip (0.5-1.5)
   
-  const segments = 12; // Number of points along the crack
+  // Calculate perpendicular angle for width
   const perpAngle = angle + Math.PI / 2;
   
-  const leftPoints: Array<{ x: number; y: number }> = [];
-  const rightPoints: Array<{ x: number; y: number }> = [];
+  // Points along the crack with some jaggedness
+  const segments = 3;
+  const points: Array<{ x: number; y: number }> = [];
+  const pointsBack: Array<{ x: number; y: number }> = [];
+  
+  let currentAngle = angle;
   
   for (let i = 0; i <= segments; i++) {
     const t = i / segments;
@@ -47,85 +51,79 @@ function generateCrackFissure(angle: number, startRadius: number, length: number
     const radius = startRadius + (length * t);
     const width = widthAtStart + (widthAtEnd - widthAtStart) * t;
     
+    // Add jaggedness to angle
+    if (i > 0 && i < segments) {
+      currentAngle += (Math.random() - 0.5) * 0.3;
+    }
+    
+    const centerX = 50 + Math.cos(currentAngle) * radius;
+    const centerY = 50 + Math.sin(currentAngle) * radius;
+    
+    // Offset perpendicular for width
+    const offsetX = Math.cos(perpAngle) * width / 2;
+    const offsetY = Math.sin(perpAngle) * width / 2;
+    
     // Add random jaggedness to edges - less at the tip for sharp point
     const jagAmount = 4 * (1 - t * 0.8); // More jagged at start, smooth at tip
     const jag1 = (Math.random() - 0.5) * jagAmount;
     const jag2 = (Math.random() - 0.5) * jagAmount;
     
-    const centerX = 50 + Math.cos(angle) * radius;
-    const centerY = 50 + Math.sin(angle) * radius;
-    
-    // Left and right edges with jaggedness
-    leftPoints.push({
-      x: centerX + Math.cos(perpAngle) * (width / 2 + jag1),
-      y: centerY + Math.sin(perpAngle) * (width / 2 + jag1),
+    points.push({
+      x: centerX + offsetX + jag1,
+      y: centerY + offsetY + jag1,
     });
-    
-    rightPoints.push({
-      x: centerX - Math.cos(perpAngle) * (width / 2 + jag2),
-      y: centerY - Math.sin(perpAngle) * (width / 2 + jag2),
+    pointsBack.unshift({
+      x: centerX - offsetX + jag2,
+      y: centerY - offsetY + jag2,
     });
   }
   
-  // Build path: left edge -> tip -> right edge (reversed) -> back to start
-  let path = `M${leftPoints[0].x},${leftPoints[0].y}`;
-  for (let i = 1; i < leftPoints.length; i++) {
-    path += ` L${leftPoints[i].x},${leftPoints[i].y}`;
-  }
-  for (let i = rightPoints.length - 1; i >= 0; i--) {
-    path += ` L${rightPoints[i].x},${rightPoints[i].y}`;
-  }
-  path += ' Z';
-  
-  return path;
+  // Combine into polygon
+  const allPoints = [...points, ...pointsBack];
+  return allPoints.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
 }
 
 /**
- * Generates tapered crack polygons radiating from crater edge
- * Wide at base, sharp at tip, properly attached to crater
- */
-function generateCracks(count: number, craterRadius: number): Array<{ path: string; angle: number; delay: number }> {
-  const cracks: Array<{ path: string; angle: number; delay: number }> = [];
-  
-  for (let i = 0; i < count; i++) {
-    // Random angle around the crater
-    const angle = (Math.random() * Math.PI * 2);
-    
-    // Start inside crater to ensure connection (crater edge is ~16-23)
-    const startRadius = 14;
-    const length = 15 + Math.random() * 20; // 15-35 units outward
-    
-    const path = generateCrackFissure(angle, startRadius, length);
-    
-    cracks.push({ path, angle, delay: i * 0.04 });
-  }
-  
-  return cracks;
-}
-
-/**
- * SVG crater with depth shading using radial gradients and jagged edges
+ * Crater with fissure-style cracks (actual gaps, not lines)
  */
 export const Crater = React.memo(function Crater({ 
   size = 100, 
-  intensity = 1 
+  intensity = 1,
 }: CraterProps) {
   const uniqueId = useMemo(() => Math.random().toString(36).substr(2, 9), []);
   
-  // Generate jagged paths for irregular crater shape
-  const outerJaggedPath = useMemo(() => generateJaggedPath(20, 48), []);
-  const innerJaggedPath = useMemo(() => generateJaggedPath(16, 25), []);
+  // Crater shapes
+  const outerCrater = useMemo(() => generateCraterShape(22, 12), []);
+  const innerCrater = useMemo(() => generateCraterShape(14, 10), []);
+  const deepCrater = useMemo(() => generateCraterShape(8, 8), []);
   
-  // Generate crack lines extending from crater
-  const cracks = useMemo(() => generateCracks(4 + Math.floor(Math.random() * 3), 48), []); // 4-6 cracks
-
-  // Colors for depth effect
+  // Generate 3-5 crack fissures
+  const fissures = useMemo(() => {
+    const count = 3 + Math.floor(Math.random() * 3);
+    const result: Array<{ points: string; delay: number }> = [];
+    
+    for (let i = 0; i < count; i++) {
+      // Spread cracks around but not perfectly even
+      const baseAngle = (i / count) * Math.PI * 2;
+      const angle = baseAngle + (Math.random() - 0.5) * 0.8;
+      const length = 25 + Math.random() * 20;
+      
+      // Start inside crater to ensure connection (crater edge is ~16-23)
+      result.push({
+        points: generateCrackFissure(angle, 14, length),
+        delay: i * 0.04,
+      });
+    }
+    
+    return result;
+  }, []);
+  
+  // Colors
   const voidColor = `rgba(0, 0, 0, ${intensity})`;
-  const deepCraterColor = `rgba(10, 8, 5, ${0.95 * intensity})`;
-  const midCraterColor = `rgba(30, 28, 25, ${0.85 * intensity})`;
-  const outerCraterColor = `rgba(60, 55, 50, ${0.7 * intensity})`;
-  const rimHighlightColor = `rgba(120, 110, 100, ${0.3 * intensity})`;
-
+  const deepColor = `rgba(8, 5, 2, ${0.95 * intensity})`;
+  const craterColor = `rgba(20, 15, 8, ${0.9 * intensity})`;
+  const rimColor = `rgba(45, 35, 25, ${0.7 * intensity})`;
+  
   return (
     <svg
       width={size}
@@ -134,69 +132,104 @@ export const Crater = React.memo(function Crater({
       style={{ overflow: "visible" }}
     >
       <defs>
-        {/* Main crater depth gradient - dark center to lighter edges */}
-        <radialGradient id={`crater-depth-${uniqueId}`} cx="50%" cy="50%" r="50%">
+        <radialGradient id={`crater-grad-${uniqueId}`} cx="40%" cy="40%" r="60%">
           <stop offset="0%" stopColor={voidColor} />
-          <stop offset="30%" stopColor={deepCraterColor} />
-          <stop offset="60%" stopColor={midCraterColor} />
-          <stop offset="85%" stopColor={outerCraterColor} />
-          <stop offset="100%" stopColor="rgba(40, 35, 30, 0)" />
+          <stop offset="50%" stopColor={deepColor} />
+          <stop offset="80%" stopColor={craterColor} />
+          <stop offset="100%" stopColor={rimColor} />
         </radialGradient>
         
-        {/* Rim highlight gradient for 3D effect */}
-        <radialGradient id={`crater-rim-highlight-${uniqueId}`} cx="35%" cy="30%" r="60%">
-          <stop offset="0%" stopColor={rimHighlightColor} />
-          <stop offset="40%" stopColor="rgba(70, 65, 60, 0.1)" />
-          <stop offset="100%" stopColor="rgba(0, 0, 0, 0)" />
-        </radialGradient>
-        
-        {/* Blur filter for soft edges */}
-        <filter id={`crater-blur-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" />
+        <filter id={`blur-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
         </filter>
-        
-        {/* Clip path for jagged crater edge */}
-        <clipPath id={`crater-clip-${uniqueId}`}>
-          <polygon points={outerJaggedPath} />
-        </clipPath>
       </defs>
       
-      {/* Main crater body with jagged clip */}
-      <g clipPath={`url(#crater-clip-${uniqueId})`}>
-        {/* Base depth layer with irregular shape */}
-        <polygon
-          points={outerJaggedPath}
-          fill={`url(#crater-depth-${uniqueId})`}
-          filter={`url(#crater-blur-${uniqueId})`}
-          transform="rotate(5, 50, 50)"
-        />
-        
-        {/* Inner pit for deeper void effect */}
-        <polygon
-          points={innerJaggedPath}
-          fill={voidColor}
-          transform="translate(-1, -1) rotate(-5, 50, 50)"
-        />
-        
-        {/* Rim highlight overlay for 3D depth */}
-        <polygon
-          points={outerJaggedPath}
-          fill={`url(#crater-rim-highlight-${uniqueId})`}
-          transform="rotate(5, 50, 50)"
-        />
-      </g>
-      
-      {/* Tapered crack polygons extending outward from crater */}
-      {cracks.map((crack, index) => (
-        <path
-          key={`crack-${index}`}
-          d={crack.path}
-          fill="rgba(0, 0, 0, 0.8)"
-          stroke="rgba(20, 15, 10, 0.6)"
-          strokeWidth="0.5"
-        />
+      {/* Crack fissures - these are actual gaps */}
+      {fissures.map((fissure, i) => (
+        <g key={i}>
+          {/* Fissure shadow/depth */}
+          <polygon
+            points={fissure.points}
+            fill={voidColor}
+            transform="translate(1, 1) scale(1.05)"
+            opacity={0.5}
+            style={{
+              transformOrigin: "50px 50px",
+              animation: `fissure-open 0.25s ease-out ${fissure.delay}s both`,
+            }}
+          />
+          {/* Fissure main shape */}
+          <polygon
+            points={fissure.points}
+            fill={voidColor}
+            style={{
+              transformOrigin: "50px 50px",
+              animation: `fissure-open 0.25s ease-out ${fissure.delay}s both`,
+            }}
+          />
+          {/* Fissure edge highlight */}
+          <polygon
+            points={fissure.points}
+            fill="none"
+            stroke={rimColor}
+            strokeWidth="0.8"
+            strokeLinejoin="miter"
+            style={{
+              transformOrigin: "50px 50px",
+              animation: `fissure-open 0.25s ease-out ${fissure.delay}s both`,
+            }}
+          />
+        </g>
       ))}
+      
+      {/* Outer crater rim */}
+      <polygon
+        points={outerCrater}
+        fill={rimColor}
+        style={{
+          transformOrigin: "50px 50px",
+          animation: "crater-punch 0.15s ease-out forwards",
+        }}
+      />
+      
+      {/* Main crater */}
+      <polygon
+        points={outerCrater}
+        fill={`url(#crater-grad-${uniqueId})`}
+        style={{
+          transformOrigin: "50px 50px",
+          animation: "crater-punch 0.15s ease-out forwards",
+        }}
+      />
+      
+      {/* Inner crater layer */}
+      <polygon
+        points={innerCrater}
+        fill={deepColor}
+        style={{
+          transformOrigin: "50px 50px",
+          animation: "crater-punch 0.12s ease-out forwards",
+        }}
+      />
+      
+      {/* Deepest void */}
+      <polygon
+        points={deepCrater}
+        fill={voidColor}
+        style={{
+          transformOrigin: "50px 50px",
+          animation: "crater-punch 0.1s ease-out forwards",
+        }}
+      />
+      
+      {/* Crater rim edge */}
+      <polygon
+        points={outerCrater}
+        fill="none"
+        stroke="rgba(60, 50, 40, 0.4)"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 });
-
