@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { ExplosionPosition } from "../../hooks/useExplosions";
 import { DebrisBurst } from "./DebrisBurst";
 import { Crater } from "./Crater";
@@ -12,7 +12,7 @@ interface ExplosionProps {
  * Renders a single explosion at a specific position.
  * Position is defined as a percentage of the parent container.
  */
-export function Explosion({ explosion }: ExplosionProps) {
+export const Explosion = React.memo(function Explosion({ explosion }: ExplosionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [debrisPosition, setDebrisPosition] = useState<{ x: number; y: number } | null>(null);
 
@@ -81,5 +81,5 @@ export function Explosion({ explosion }: ExplosionProps) {
       </div>
     </div>
   );
-}
+});
 
