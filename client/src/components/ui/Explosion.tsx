@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { ExplosionPosition } from "../../hooks/useExplosions";
 import { DebrisBurst } from "./DebrisBurst";
 import { Crater } from "./Crater";
+import { Smoke } from "./Smoke";
 
 interface ExplosionProps {
   explosion: ExplosionPosition;
@@ -43,11 +44,10 @@ export const Explosion = React.memo(function Explosion({ explosion }: ExplosionP
           left: `${explosion.x}%`,
           top: `${explosion.y}%`,
           transform: "translate(-50%, -50%)",
-          transformOrigin: "center",
-          animation: "crater-expand 0.4s ease-out forwards, crater-fade 3s ease-out forwards",
+          animation: "crater-fade 3s ease-out forwards",
         }}
       >
-        <Crater size={100} intensity={0.95} />
+        <Crater size={120} intensity={0.95} />
       </div>
       {/* Physics-based debris burst */}
       {debrisPosition && (
@@ -79,6 +79,13 @@ export const Explosion = React.memo(function Explosion({ explosion }: ExplosionP
           unoptimized // GIFs need unoptimized to animate
         />
       </div>
+      {/* Rising smoke effect */}
+      <Smoke
+        x={explosion.x}
+        y={explosion.y}
+        count={10}
+        duration={2800}
+      />
     </div>
   );
 });
