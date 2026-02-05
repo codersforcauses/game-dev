@@ -70,6 +70,20 @@
   }
 }
 
+@keyframes crater-expand {
+  0% {
+    transform: translate(-50%, -50%) scale(0.15);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
 .debris-chunk {
   position: absolute;
   left: 0;
