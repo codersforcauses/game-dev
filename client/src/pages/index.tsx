@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState, useCallback } from "react";
+import { motion } from "framer-motion";
 
 import { Button } from "../components/ui/button";
 import { useExplosions } from "../hooks/useExplosions";
@@ -15,6 +16,7 @@ export default function Landing() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [clickDebris, setClickDebris] = useState<Array<{ id: number; x: number; y: number }>>([]);
   const lastClickTime = useRef(0);
+  const [isShaking, setIsShaking] = useState(false);
 
   const handleExplosionClick = () => {
     triggerExplosions({
@@ -38,6 +40,10 @@ export default function Landing() {
       duration: 2000,
       playSound: true,
     }, rect);
+    
+    // Trigger screen shake
+    setIsShaking(true);
+    setTimeout(() => setIsShaking(false), 400); // Shake for 400ms
   };
 
   const handlePageClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -253,7 +259,16 @@ export default function Landing() {
   );
 
   return (
-    <div className="relative" ref={containerRef} onClick={handlePageClick}>
+    <motion.div
+      className="relative"
+      ref={containerRef}
+      onClick={handlePageClick}
+      animate={isShaking ? {
+        x: [0, -12, 12, -10, 10, -6, 6, -3, 3, 0],
+        y: [0, 4, -4, 3, -3, 2, -2, 0]
+      } : { x: 0, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
       {/* Render explosions */}
       {explosions.map((explosion) => (
         <Explosion key={explosion.id} explosion={explosion} />
@@ -340,6 +355,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 }
