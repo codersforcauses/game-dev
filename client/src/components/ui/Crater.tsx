@@ -26,25 +26,41 @@ function generateJaggedPath(points: number, baseRadius: number): string {
 }
 
 /**
- * Generates crack lines radiating from crater edge
+ * Generates tapered crack polygons radiating from crater edge
+ * Wide at base, sharp at tip
  */
-function generateCracks(count: number, craterRadius: number): Array<{ x1: number; y1: number; x2: number; y2: number }> {
-  const cracks: Array<{ x1: number; y1: number; x2: number; y2: number }> = [];
+function generateCracks(count: number, craterRadius: number): Array<{ path: string; angle: number }> {
+  const cracks: Array<{ path: string; angle: number }> = [];
   
   for (let i = 0; i < count; i++) {
     // Random angle around the crater
     const angle = (Math.random() * Math.PI * 2);
-    // Start point at crater edge
+    
+    // Start point at crater edge (base of crack)
     const startRadius = craterRadius;
-    const x1 = 50 + Math.cos(angle) * startRadius;
-    const y1 = 50 + Math.sin(angle) * startRadius;
+    const baseWidth = 3 + Math.random() * 2; // 3-5 units wide at base
     
-    // End point extending outward
+    // End point extending outward (tip of crack)
     const crackLength = 15 + Math.random() * 20; // 15-35 units outward
-    const x2 = 50 + Math.cos(angle) * (startRadius + crackLength);
-    const y2 = 50 + Math.sin(angle) * (startRadius + crackLength);
+    const tipWidth = 0.5; // Sharp tip
     
-    cracks.push({ x1, y1, x2, y2 });
+    // Calculate perpendicular offset for width
+    const perpAngle = angle + Math.PI / 2;
+    
+    // Base points (wide)
+    const baseX1 = 50 + Math.cos(angle) * startRadius + Math.cos(perpAngle) * baseWidth / 2;
+    const baseY1 = 50 + Math.sin(angle) * startRadius + Math.sin(perpAngle) * baseWidth / 2;
+    const baseX2 = 50 + Math.cos(angle) * startRadius - Math.cos(perpAngle) * baseWidth / 2;
+    const baseY2 = 50 + Math.sin(angle) * startRadius - Math.sin(perpAngle) * baseWidth / 2;
+    
+    // Tip point (sharp)
+    const tipX = 50 + Math.cos(angle) * (startRadius + crackLength);
+    const tipY = 50 + Math.sin(angle) * (startRadius + crackLength);
+    
+    // Create polygon path: base point 1 -> tip -> base point 2 -> back to base point 1
+    const path = `M${baseX1},${baseY1} L${tipX},${tipY} L${baseX2},${baseY2} Z`;
+    
+    cracks.push({ path, angle });
   }
   
   return cracks;
@@ -133,17 +149,14 @@ export const Crater = React.memo(function Crater({
         />
       </g>
       
-      {/* Crack lines extending outward from crater */}
+      {/* Tapered crack polygons extending outward from crater */}
       {cracks.map((crack, index) => (
-        <line
+        <path
           key={`crack-${index}`}
-          x1={crack.x1}
-          y1={crack.y1}
-          x2={crack.x2}
-          y2={crack.y2}
-          stroke="rgba(0, 0, 0, 0.8)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
+          d={crack.path}
+          fill="rgba(0, 0, 0, 0.8)"
+          stroke="rgba(20, 15, 10, 0.6)"
+          strokeWidth="0.5"
         />
       ))}
     </svg>
