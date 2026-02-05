@@ -69,6 +69,7 @@ export default function Landing() {
       maxDelay: 0,
       duration: 1500,
       playSound: true,
+      position: { x, y }, // Pass click position
     });
 
     // Add DebrisBurst for click (limit max concurrent)
@@ -83,55 +84,6 @@ export default function Landing() {
     setTimeout(() => {
       setClickDebris((prev) => prev.filter((d) => d.id !== debrisId));
     }, 1500);
-
-    // Manually create explosion with crater at click position
-    if (containerRef.current) {
-      // Generate irregular crater path
-      const points = 12;
-      const path: string[] = [];
-      for (let i = 0; i < points; i++) {
-        const angle = (i / points) * Math.PI * 2;
-        const randomRadius = 0.7 + Math.random() * 0.3;
-        const px = 50 + Math.cos(angle) * randomRadius * 50;
-        const py = 50 + Math.sin(angle) * randomRadius * 50;
-        path.push(`${px}% ${py}%`);
-      }
-      const craterPath = `polygon(${path.join(", ")})`;
-
-      // Create the crater
-      const crater = document.createElement("div");
-      crater.className = "pointer-events-none absolute z-40";
-      crater.style.left = `${x}%`;
-      crater.style.top = `${y}%`;
-      crater.style.transform = "translate(-50%, -50%)";
-      crater.style.width = "100px";
-      crater.style.height = "100px";
-      crater.style.clipPath = craterPath;
-      crater.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
-      crater.style.animation = "crater-fade 3s ease-out forwards";
-      
-      // Create the explosion GIF
-      const newExplosion = document.createElement("div");
-      newExplosion.className = "pointer-events-none absolute z-50";
-      newExplosion.style.left = `${x}%`;
-      newExplosion.style.top = `${y}%`;
-      newExplosion.style.transform = "translate(-50%, -50%)";
-      
-      const img = document.createElement("img");
-      img.src = "/explosions/samj_cartoon_explosion.gif";
-      img.alt = "Explosion";
-      img.width = 150;
-      img.height = 150;
-      
-      newExplosion.appendChild(img);
-      containerRef.current.appendChild(crater);
-      containerRef.current.appendChild(newExplosion);
-      
-      setTimeout(() => {
-        crater.remove();
-        newExplosion.remove();
-      }, 3000);
-    }
   }, [triggerExplosions]);
 
   const btnList = [

@@ -33,6 +33,7 @@ export type ExplosionConfig = {
   maxDelay?: number; // Maximum delay between explosions in ms (default: 100)
   duration?: number; // How long explosions stay visible in ms (default: 1000)
   playSound?: boolean; // Whether to play sound effects (default: true)
+  position?: { x: number; y: number }; // Optional fixed position (percentages 0-100)
 };
 
 /**
@@ -53,6 +54,7 @@ export function useExplosions() {
         maxDelay = 100,
         duration = 3000,
         playSound = true,
+        position, // Optional fixed position
       } = config;
 
       // Generate explosion positions
@@ -62,7 +64,11 @@ export function useExplosions() {
         let x: number;
         let y: number;
 
-        if (containerBounds) {
+        if (position) {
+          // Use provided position
+          x = position.x;
+          y = position.y;
+        } else if (containerBounds) {
           // Random position within container bounds (10% margin)
           const margin = 10;
           x = margin + Math.random() * (100 - margin * 2);

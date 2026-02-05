@@ -42,6 +42,7 @@ export function Explosion({ explosion }: ExplosionProps) {
         style={{
           left: `${explosion.x}%`,
           top: `${explosion.y}%`,
+          transform: "translate(-50%, -50%)",
           transformOrigin: "center",
           animation: "crater-expand 0.4s ease-out forwards, crater-fade 3s ease-out forwards",
         }}
