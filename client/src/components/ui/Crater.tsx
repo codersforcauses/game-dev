@@ -26,41 +26,78 @@ function generateJaggedPath(points: number, baseRadius: number): string {
 }
 
 /**
- * Generates tapered crack polygons radiating from crater edge
- * Wide at base, sharp at tip
+ * Generates a single crack fissure with jagged edges
+ * Wide at crater, sharp point at end, with jagged edges that taper toward tip
  */
-function generateCracks(count: number, craterRadius: number): Array<{ path: string; angle: number }> {
-  const cracks: Array<{ path: string; angle: number }> = [];
+function generateCrackFissure(angle: number, startRadius: number, length: number): string {
+  // Crack is a tapered wedge shape - wide at crater, sharp point at end
+  // Ensure all cracks are consistently chunkier
+  const widthAtStart = 8 + Math.random() * 4;   // Chunkier range (8-12)
+  const widthAtEnd = 0.5 + Math.random() * 1;   // Sharp point at tip (0.5-1.5)
+  
+  const segments = 12; // Number of points along the crack
+  const perpAngle = angle + Math.PI / 2;
+  
+  const leftPoints: Array<{ x: number; y: number }> = [];
+  const rightPoints: Array<{ x: number; y: number }> = [];
+  
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments;
+    // Start from inside crater and extend outward
+    const radius = startRadius + (length * t);
+    const width = widthAtStart + (widthAtEnd - widthAtStart) * t;
+    
+    // Add random jaggedness to edges - less at the tip for sharp point
+    const jagAmount = 4 * (1 - t * 0.8); // More jagged at start, smooth at tip
+    const jag1 = (Math.random() - 0.5) * jagAmount;
+    const jag2 = (Math.random() - 0.5) * jagAmount;
+    
+    const centerX = 50 + Math.cos(angle) * radius;
+    const centerY = 50 + Math.sin(angle) * radius;
+    
+    // Left and right edges with jaggedness
+    leftPoints.push({
+      x: centerX + Math.cos(perpAngle) * (width / 2 + jag1),
+      y: centerY + Math.sin(perpAngle) * (width / 2 + jag1),
+    });
+    
+    rightPoints.push({
+      x: centerX - Math.cos(perpAngle) * (width / 2 + jag2),
+      y: centerY - Math.sin(perpAngle) * (width / 2 + jag2),
+    });
+  }
+  
+  // Build path: left edge -> tip -> right edge (reversed) -> back to start
+  let path = `M${leftPoints[0].x},${leftPoints[0].y}`;
+  for (let i = 1; i < leftPoints.length; i++) {
+    path += ` L${leftPoints[i].x},${leftPoints[i].y}`;
+  }
+  for (let i = rightPoints.length - 1; i >= 0; i--) {
+    path += ` L${rightPoints[i].x},${rightPoints[i].y}`;
+  }
+  path += ' Z';
+  
+  return path;
+}
+
+/**
+ * Generates tapered crack polygons radiating from crater edge
+ * Wide at base, sharp at tip, properly attached to crater
+ */
+function generateCracks(count: number, craterRadius: number): Array<{ path: string; angle: number; delay: number }> {
+  const cracks: Array<{ path: string; angle: number; delay: number }> = [];
   
   for (let i = 0; i < count; i++) {
     // Random angle around the crater
     const angle = (Math.random() * Math.PI * 2);
     
-    // Start point at crater edge (base of crack)
-    const startRadius = craterRadius;
-    const baseWidth = 3 + Math.random() * 2; // 3-5 units wide at base
+    // Start inside crater to ensure connection (crater edge is ~16-23)
+    const startRadius = 14;
+    const length = 15 + Math.random() * 20; // 15-35 units outward
     
-    // End point extending outward (tip of crack)
-    const crackLength = 15 + Math.random() * 20; // 15-35 units outward
-    const tipWidth = 0.5; // Sharp tip
+    const path = generateCrackFissure(angle, startRadius, length);
     
-    // Calculate perpendicular offset for width
-    const perpAngle = angle + Math.PI / 2;
-    
-    // Base points (wide)
-    const baseX1 = 50 + Math.cos(angle) * startRadius + Math.cos(perpAngle) * baseWidth / 2;
-    const baseY1 = 50 + Math.sin(angle) * startRadius + Math.sin(perpAngle) * baseWidth / 2;
-    const baseX2 = 50 + Math.cos(angle) * startRadius - Math.cos(perpAngle) * baseWidth / 2;
-    const baseY2 = 50 + Math.sin(angle) * startRadius - Math.sin(perpAngle) * baseWidth / 2;
-    
-    // Tip point (sharp)
-    const tipX = 50 + Math.cos(angle) * (startRadius + crackLength);
-    const tipY = 50 + Math.sin(angle) * (startRadius + crackLength);
-    
-    // Create polygon path: base point 1 -> tip -> base point 2 -> back to base point 1
-    const path = `M${baseX1},${baseY1} L${tipX},${tipY} L${baseX2},${baseY2} Z`;
-    
-    cracks.push({ path, angle });
+    cracks.push({ path, angle, delay: i * 0.04 });
   }
   
   return cracks;
