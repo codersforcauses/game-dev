@@ -147,25 +147,10 @@ export const Crater = React.memo(function Crater({
       {/* Crack fissures - these are actual gaps */}
       {fissures.map((fissure, i) => (
         <g key={i}>
-          {/* Fissure shadow/depth */}
-          <polygon
-            points={fissure.points}
-            fill={voidColor}
-            transform="translate(1, 1) scale(1.05)"
-            opacity={0.5}
-            style={{
-              transformOrigin: "50px 50px",
-              animation: `fissure-open 0.25s ease-out ${fissure.delay}s both`,
-            }}
-          />
           {/* Fissure main shape */}
           <polygon
             points={fissure.points}
             fill={voidColor}
-            style={{
-              transformOrigin: "50px 50px",
-              animation: `fissure-open 0.25s ease-out ${fissure.delay}s both`,
-            }}
           />
           {/* Fissure edge highlight */}
           <polygon
@@ -174,10 +159,6 @@ export const Crater = React.memo(function Crater({
             stroke={rimColor}
             strokeWidth="0.8"
             strokeLinejoin="miter"
-            style={{
-              transformOrigin: "50px 50px",
-              animation: `fissure-open 0.25s ease-out ${fissure.delay}s both`,
-            }}
           />
         </g>
       ))}
@@ -186,40 +167,24 @@ export const Crater = React.memo(function Crater({
       <polygon
         points={outerCrater}
         fill={rimColor}
-        style={{
-          transformOrigin: "50px 50px",
-          animation: "crater-punch 0.15s ease-out forwards",
-        }}
       />
       
       {/* Main crater */}
       <polygon
         points={outerCrater}
         fill={`url(#crater-grad-${uniqueId})`}
-        style={{
-          transformOrigin: "50px 50px",
-          animation: "crater-punch 0.15s ease-out forwards",
-        }}
       />
       
       {/* Inner crater layer */}
       <polygon
         points={innerCrater}
         fill={deepColor}
-        style={{
-          transformOrigin: "50px 50px",
-          animation: "crater-punch 0.12s ease-out forwards",
-        }}
       />
       
       {/* Deepest void */}
       <polygon
         points={deepCrater}
         fill={voidColor}
-        style={{
-          transformOrigin: "50px 50px",
-          animation: "crater-punch 0.1s ease-out forwards",
-        }}
       />
       
       {/* Crater rim edge */}
