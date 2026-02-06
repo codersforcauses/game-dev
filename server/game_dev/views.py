@@ -1,12 +1,22 @@
-# from django.shortcuts import render
-
-# Create your views here.
 from rest_framework import generics
-from .models import Event
-from .serializers import EventSerializer
+from .serializers import GamesSerializer, GameshowcaseSerializer, EventSerializer, MemberSerializer
+from .models import Game, GameShowcase, Event, Member, Committee
 from django.utils import timezone
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
+
+
+class GamesDetailAPIView(generics.RetrieveAPIView):
+    """
+    GET /api/games/<id>/
+    """
+    serializer_class = GamesSerializer
+    lookup_url_kwarg = "id"
+
+    def get_queryset(self):
+        return Game.objects.filter(id=self.kwargs["id"])
 
 
 class EventPagination(PageNumberPagination):
@@ -51,3 +61,38 @@ class EventDetailAPIView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         return Event.objects.filter(id=self.kwargs["id"])
+
+
+class GameshowcaseAPIView(APIView):
+    def get(self, request):
+        showcases = GameShowcase.objects.all()
+        serializer = GameshowcaseSerializer(showcases, many=True)
+        return Response(serializer.data)
+
+
+class MemberAPIView(generics.RetrieveAPIView):
+    serializer_class = MemberSerializer
+    lookup_field = "id"
+
+    def get_queryset(self):
+        return Member.objects.filter(active=True)
+
+
+class CommitteeAPIView(generics.ListAPIView):
+    serializer_class = MemberSerializer
+
+    def get_queryset(self):
+        outputList = []
+        roleOrder = ("P", "VP", "SEC", "TRE", "MARK", "EVE", "PRO", "FRE")
+        placeholderMember = {"name": "Position not filled", "profile_picture": "url('/landing_placeholder.png')",
+                             "about": "", "pronouns": ""}
+        for i in roleOrder:
+            try:
+                cur = Committee.objects.get(role=i).id
+                if cur.active:
+                    outputList.append(cur)
+                else:
+                    outputList.append(placeholderMember)
+            except Committee.DoesNotExist:
+                outputList.append(placeholderMember)
+        return outputList
