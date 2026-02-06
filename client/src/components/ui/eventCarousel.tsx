@@ -11,6 +11,32 @@ type EventCarouselProps = {
 
 const GAP = 40;
 
+function formatEventDateDisplay(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+    const weekday = new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+    }).format(date);
+    const day = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(
+      date,
+    );
+    const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
+      date,
+    );
+    const time = new Intl.DateTimeFormat("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })
+      .format(date)
+      .replace("AM", "am")
+      .replace("PM", "pm");
+    return `${weekday} ${day} ${month} ${time}`;
+  } catch {
+    return "";
+  }
+}
+
 export default function EventCarousel({ items }: EventCarouselProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const firstItemRef = useRef<HTMLDivElement>(null);
@@ -111,7 +137,7 @@ export default function EventCarousel({ items }: EventCarouselProps) {
 
                 {/* Needs proper processing and laying out */}
                 <p className="text-sm tracking-wide text-white/70">
-                  {event.startTime}
+                  {formatEventDateDisplay(event.date)}
                 </p>
 
                 <div className="mt-3 w-full border-b border-white/20" />
