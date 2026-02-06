@@ -97,21 +97,18 @@ export const Crater = React.memo(function Crater({
   const innerCrater = useMemo(() => generateCraterShape(14, 10), []);
   const deepCrater = useMemo(() => generateCraterShape(8, 8), []);
   
-  // Generate 3-5 crack fissures
+  // Generate 2-4 crack fissures (reduced for performance)
   const fissures = useMemo(() => {
-    const count = 3 + Math.floor(Math.random() * 3);
-    const result: Array<{ points: string; delay: number }> = [];
+    const count = 2 + Math.floor(Math.random() * 3);
+    const result: Array<{ points: string }> = [];
     
     for (let i = 0; i < count; i++) {
-      // Spread cracks around but not perfectly even
       const baseAngle = (i / count) * Math.PI * 2;
       const angle = baseAngle + (Math.random() - 0.5) * 0.8;
-      const length = 25 + Math.random() * 20;
+      const length = 20 + Math.random() * 18;
       
-      // Start inside crater to ensure connection (crater edge is ~16-23)
       result.push({
         points: generateCrackFissure(angle, 14, length),
-        delay: i * 0.04,
       });
     }
     
@@ -129,7 +126,7 @@ export const Crater = React.memo(function Crater({
       width={size}
       height={size}
       viewBox="0 0 100 100"
-      style={{ overflow: "visible" }}
+      style={{ overflow: "visible", contain: "layout style" }}
     >
       <defs>
         <radialGradient id={`crater-grad-${uniqueId}`} cx="40%" cy="40%" r="60%">
@@ -138,29 +135,15 @@ export const Crater = React.memo(function Crater({
           <stop offset="80%" stopColor={craterColor} />
           <stop offset="100%" stopColor={rimColor} />
         </radialGradient>
-        
-        <filter id={`blur-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
-        </filter>
       </defs>
       
-      {/* Crack fissures - these are actual gaps */}
+      {/* Crack fissures - simplified to single polygon each */}
       {fissures.map((fissure, i) => (
-        <g key={i}>
-          {/* Fissure main shape */}
-          <polygon
-            points={fissure.points}
-            fill={voidColor}
-          />
-          {/* Fissure edge highlight */}
-          <polygon
-            points={fissure.points}
-            fill="none"
-            stroke={rimColor}
-            strokeWidth="0.8"
-            strokeLinejoin="miter"
-          />
-        </g>
+        <polygon
+          key={i}
+          points={fissure.points}
+          fill={voidColor}
+        />
       ))}
       
       {/* Outer crater rim */}

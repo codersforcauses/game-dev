@@ -4,40 +4,34 @@ import { motion } from "framer-motion";
 interface SmokeProps {
   x: number; // percentage position
   y: number; // percentage position
-  count?: number;
   duration?: number; // how long smoke lasts (ms)
 }
 
 /**
- * SVG-based smoke effect with turbulence filter
- * Creates realistic, organic smoke that expands from crater
+ * Optimized SVG smoke effect
+ * Uses shared filters and reduced complexity for better performance
  */
 export const Smoke = React.memo(function Smoke({
   x,
   y,
-  duration = 2500,
+  duration = 2000,
 }: SmokeProps) {
   const uniqueId = useMemo(() => Math.random().toString(36).substr(2, 9), []);
   
-  // Generate smoke puffs at different angles
+  // Generate fewer smoke puffs (5 instead of 8)
   const smokePuffs = useMemo(() => {
     const puffs = [];
-    const count = 8;
+    const count = 5;
     
     for (let i = 0; i < count; i++) {
-      const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
-      const distance = 50 + Math.random() * 40;
-      const size = 60 + Math.random() * 40;
-      const delay = Math.random() * 0.15;
+      const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
+      const distance = 45 + Math.random() * 35;
       
       puffs.push({
         id: i,
-        angle,
-        distance,
-        size,
-        delay,
         endX: Math.cos(angle) * distance,
-        endY: Math.sin(angle) * distance - (15 + Math.random() * 20),
+        endY: Math.sin(angle) * distance - 15,
+        delay: i * 0.03,
       });
     }
     return puffs;
@@ -53,172 +47,120 @@ export const Smoke = React.memo(function Smoke({
         zIndex: 35,
       }}
     >
-      {/* Central expanding smoke ring */}
+      {/* Shared SVG defs - filters defined once */}
+      <svg width="0" height="0" style={{ position: "absolute" }}>
+        <defs>
+          {/* Single optimized turbulence filter */}
+          <filter id={`smoke-filter-${uniqueId}`} x="-50%" y="-50%" width="200%" height="200%">
+            <feTurbulence 
+              type="fractalNoise" 
+              baseFrequency="0.02" 
+              numOctaves="2"
+              seed={42}
+              result="noise"
+            />
+            <feDisplacementMap 
+              in="SourceGraphic" 
+              in2="noise" 
+              scale="12" 
+              xChannelSelector="R" 
+              yChannelSelector="G"
+            />
+            <feGaussianBlur stdDeviation="3" />
+          </filter>
+          
+          {/* Shared gradient */}
+          <radialGradient id={`smoke-grad-${uniqueId}`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="rgba(70, 65, 60, 0.75)" />
+            <stop offset="50%" stopColor="rgba(90, 85, 80, 0.4)" />
+            <stop offset="100%" stopColor="rgba(110, 105, 100, 0)" />
+          </radialGradient>
+        </defs>
+      </svg>
+
+      {/* Central expanding smoke - uses CSS blur for performance */}
       <motion.div
-        initial={{ scale: 0.2, opacity: 0 }}
+        initial={{ scale: 0.3, opacity: 0 }}
         animate={{ 
-          scale: [0.2, 1.5, 2.5],
-          opacity: [0, 0.6, 0],
+          scale: [0.3, 1.5, 2.2],
+          opacity: [0, 0.65, 0],
         }}
-        transition={{ duration: duration / 1000, ease: "easeOut" }}
+        transition={{ duration: duration / 1000 * 0.9, ease: "easeOut" }}
         style={{
           position: "absolute",
-          width: 120,
-          height: 120,
-          left: -60,
-          top: -60,
+          width: 100,
+          height: 100,
+          left: -50,
+          top: -50,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(70, 65, 60, 0.7) 0%, rgba(90, 85, 80, 0.3) 50%, transparent 70%)",
+          filter: "blur(8px)",
+          willChange: "transform, opacity",
         }}
-      >
-        <svg width="120" height="120" viewBox="0 0 120 120">
-          <defs>
-            {/* Turbulence filter for smoke texture */}
-            <filter id={`smoke-turbulence-${uniqueId}`} x="-50%" y="-50%" width="200%" height="200%">
-              <feTurbulence 
-                type="fractalNoise" 
-                baseFrequency="0.015" 
-                numOctaves="3" 
-                seed={Math.random() * 100}
-                result="noise"
-              />
-              <feDisplacementMap 
-                in="SourceGraphic" 
-                in2="noise" 
-                scale="20" 
-                xChannelSelector="R" 
-                yChannelSelector="G"
-              />
-              <feGaussianBlur stdDeviation="3" />
-            </filter>
-            
-            {/* Radial gradient for smoke density */}
-            <radialGradient id={`smoke-grad-${uniqueId}`} cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgba(60, 55, 50, 0.8)" />
-              <stop offset="40%" stopColor="rgba(80, 75, 70, 0.5)" />
-              <stop offset="70%" stopColor="rgba(100, 95, 90, 0.2)" />
-              <stop offset="100%" stopColor="rgba(120, 115, 110, 0)" />
-            </radialGradient>
-          </defs>
-          
-          {/* Main smoke cloud */}
-          <circle
-            cx="60"
-            cy="60"
-            r="55"
-            fill={`url(#smoke-grad-${uniqueId})`}
-            filter={`url(#smoke-turbulence-${uniqueId})`}
-          />
-        </svg>
-      </motion.div>
+      />
 
-      {/* Individual smoke puffs expanding outward */}
+      {/* Smoke puffs - share single filter */}
       {smokePuffs.map((puff) => (
         <motion.div
           key={puff.id}
-          initial={{ x: 0, y: 0, scale: 0.3, opacity: 0 }}
+          initial={{ x: 0, y: 0, scale: 0.4, opacity: 0 }}
           animate={{
             x: puff.endX,
             y: puff.endY,
-            scale: [0.3, 1, 1.5],
-            opacity: [0, 0.7, 0],
+            scale: [0.4, 1.1, 1.4],
+            opacity: [0, 0.6, 0],
           }}
           transition={{
-            duration: (duration / 1000) * (0.8 + Math.random() * 0.4),
+            duration: duration / 1000 * 0.85,
             delay: puff.delay,
             ease: "easeOut",
           }}
           style={{
             position: "absolute",
-            width: puff.size,
-            height: puff.size,
-            left: -puff.size / 2,
-            top: -puff.size / 2,
+            width: 60,
+            height: 60,
+            left: -30,
+            top: -30,
+            willChange: "transform, opacity",
           }}
         >
-          <svg width={puff.size} height={puff.size} viewBox="0 0 100 100">
-            <defs>
-              <filter id={`puff-filter-${uniqueId}-${puff.id}`} x="-50%" y="-50%" width="200%" height="200%">
-                <feTurbulence 
-                  type="fractalNoise" 
-                  baseFrequency="0.02" 
-                  numOctaves="2" 
-                  seed={puff.id * 17}
-                  result="noise"
-                />
-                <feDisplacementMap 
-                  in="SourceGraphic" 
-                  in2="noise" 
-                  scale="15" 
-                  xChannelSelector="R" 
-                  yChannelSelector="G"
-                />
-                <feGaussianBlur stdDeviation="4" />
-              </filter>
-              
-              <radialGradient id={`puff-grad-${uniqueId}-${puff.id}`} cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="rgba(70, 65, 60, 0.7)" />
-                <stop offset="50%" stopColor="rgba(90, 85, 80, 0.4)" />
-                <stop offset="100%" stopColor="rgba(110, 105, 100, 0)" />
-              </radialGradient>
-            </defs>
-            
-            {/* Organic blob shape */}
-            <ellipse
+          <svg width="60" height="60" viewBox="0 0 100 100">
+            <circle
               cx="50"
               cy="50"
-              rx="45"
-              ry="40"
-              fill={`url(#puff-grad-${uniqueId}-${puff.id})`}
-              filter={`url(#puff-filter-${uniqueId}-${puff.id})`}
+              r="45"
+              fill={`url(#smoke-grad-${uniqueId})`}
+              filter={`url(#smoke-filter-${uniqueId})`}
             />
           </svg>
         </motion.div>
       ))}
 
-      {/* Rising wisps */}
-      {[0, 1, 2].map((i) => (
-        <motion.div
-          key={`wisp-${i}`}
-          initial={{ y: 0, opacity: 0, scale: 0.5 }}
-          animate={{
-            y: -80 - i * 30,
-            opacity: [0, 0.4, 0],
-            scale: [0.5, 1.2, 1.8],
-          }}
-          transition={{
-            duration: (duration / 1000) * 1.2,
-            delay: 0.2 + i * 0.15,
-            ease: "easeOut",
-          }}
-          style={{
-            position: "absolute",
-            width: 50 + i * 15,
-            height: 50 + i * 15,
-            left: -(25 + i * 7.5) + (i - 1) * 20,
-            top: -(25 + i * 7.5),
-          }}
-        >
-          <svg width="100%" height="100%" viewBox="0 0 100 100">
-            <defs>
-              <filter id={`wisp-filter-${uniqueId}-${i}`}>
-                <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed={i * 31} />
-                <feDisplacementMap in="SourceGraphic" scale="12" />
-                <feGaussianBlur stdDeviation="5" />
-              </filter>
-              <radialGradient id={`wisp-grad-${uniqueId}-${i}`}>
-                <stop offset="0%" stopColor="rgba(80, 75, 70, 0.5)" />
-                <stop offset="100%" stopColor="rgba(100, 95, 90, 0)" />
-              </radialGradient>
-            </defs>
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              fill={`url(#wisp-grad-${uniqueId}-${i})`}
-              filter={`url(#wisp-filter-${uniqueId}-${i})`}
-            />
-          </svg>
-        </motion.div>
-      ))}
+      {/* Single rising wisp - CSS blur only */}
+      <motion.div
+        initial={{ y: 0, opacity: 0, scale: 0.5 }}
+        animate={{
+          y: -70,
+          opacity: [0, 0.5, 0],
+          scale: [0.5, 1.3, 1.6],
+        }}
+        transition={{
+          duration: duration / 1000,
+          delay: 0.15,
+          ease: "easeOut",
+        }}
+        style={{
+          position: "absolute",
+          width: 50,
+          height: 50,
+          left: -25,
+          top: -25,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(80, 75, 70, 0.6) 0%, transparent 70%)",
+          filter: "blur(10px)",
+          willChange: "transform, opacity",
+        }}
+      />
     </div>
   );
 });

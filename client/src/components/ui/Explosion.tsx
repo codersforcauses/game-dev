@@ -44,21 +44,22 @@ export const Explosion = React.memo(function Explosion({ explosion }: ExplosionP
           left: `${explosion.x}%`,
           top: `${explosion.y}%`,
           transform: "translate(-50%, -50%)",
-          animation: "crater-fade 3s ease-out forwards",
+          animation: "crater-fade 2.5s ease-out forwards",
+          willChange: "opacity",
         }}
       >
-        <Crater size={120} intensity={0.95} />
+        <Crater size={110} intensity={0.95} />
       </div>
       {/* Physics-based debris burst */}
       {debrisPosition && (
         <DebrisBurst
           x={debrisPosition.x}
           y={debrisPosition.y}
-          count={8}
-          power={450}
+          count={6}
+          power={400}
           spreadDeg={360}
-          gravity={1200}
-          bounce={0.3}
+          gravity={1000}
+          bounce={0.25}
         />
       )}
       {/* The actual explosion GIF */}
@@ -83,8 +84,7 @@ export const Explosion = React.memo(function Explosion({ explosion }: ExplosionP
       <Smoke
         x={explosion.x}
         y={explosion.y}
-        count={10}
-        duration={2800}
+        duration={1800}
       />
     </div>
   );
