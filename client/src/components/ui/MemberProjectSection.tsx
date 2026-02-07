@@ -21,19 +21,11 @@ function getGameCoverUrl(
 }
 
 export default function MemberProjectSection(props: MemberProjectSectionProps) {
-  const { data: games, isPending, isError, error } = useContributor(props.id);
+  const { data: games, isError, error } = useContributor(props.id);
 
   {
     /* Error handling from Games Showcase page */
   }
-  if (isPending) {
-    return (
-      <div className="mx-auto min-h-screen max-w-7xl px-6 py-16">
-        <p>Loading games...</p>
-      </div>
-    );
-  }
-
   if (isError) {
     const errorMessage =
       error?.response?.status === 404
@@ -41,7 +33,10 @@ export default function MemberProjectSection(props: MemberProjectSectionProps) {
         : "Failed to Load Games";
     return (
       <div className="mx-auto min-h-screen max-w-7xl px-6 py-16">
-        <p className="text-red-500" role="alert">
+        <p
+          className="my-10 text-center font-firaCode text-lg text-red-500"
+          role="alert"
+        >
           {errorMessage}
         </p>
       </div>
@@ -51,7 +46,9 @@ export default function MemberProjectSection(props: MemberProjectSectionProps) {
   return (
     <div className="mb-12">
       {!games || games.length === 0 ? (
-        <p> No games available. </p>
+        <p className="my-10 text-center font-firaCode text-lg text-[--light-3]">
+          No games available.
+        </p>
       ) : (
         <div className="m-auto my-5 flex flex-wrap justify-center gap-8">
           {games.map((game) => (
