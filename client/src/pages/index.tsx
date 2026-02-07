@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback,useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import EventCarousel from "@/components/ui/eventCarousel";
 import {
