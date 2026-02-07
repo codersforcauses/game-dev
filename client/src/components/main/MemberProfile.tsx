@@ -5,14 +5,6 @@ import Image from "next/image";
 
 import MemberProjectSection from "../ui/MemberProjectSection";
 
-// unused atm, as the member isnt linked a project on the backend
-/* export type MemberProfileProject = {
-  id: string;
-  name: string;
-  description?: string;
-  href?: string;
-}; */
-
 export type MemberProfileData = {
   name: string;
   about: string;
@@ -22,7 +14,6 @@ export type MemberProfileData = {
 
 type MemberProfileProps = {
   member: MemberProfileData;
-  //projects?: MemberProfileProject[];
 };
 
 function initialsFromName(name: string) {
