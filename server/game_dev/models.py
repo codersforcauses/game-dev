@@ -76,6 +76,27 @@ class GameShowcase(models.Model):
         return f"{self.game.name}"
 
 
+class Committee(models.Model):
+    id = models.OneToOneField(Member, on_delete=models.CASCADE, primary_key=True)
+    roles = {
+        "P": "President",
+        "VP": "Vice-President",
+        "SEC": "Secretary",
+        "TRE": "Treasurer",
+        "MARK": "Marketing",
+        "EV": "Events OCM",
+        "PRO": "Projects OCM",
+        "FRE": "Fresher Rep"
+    }
+    role = models.CharField(max_length=9, choices=roles, default="FRE", unique=True)
+
+    def get_member(self):
+        return self.id
+
+    def __str__(self):
+        return self.id.name
+
+
 class Art(models.Model):
     name = models.CharField(null=False, max_length=200)
     description = models.CharField(max_length=200,)
