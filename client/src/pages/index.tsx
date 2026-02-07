@@ -12,7 +12,7 @@ import { placeholderGames } from "@/placeholderData";
 import { Button } from "../components/ui/button";
 
 export default function Landing() {
-  const { data, isPending, isError } = useEvents({
+  const { data, isPending, isError, isFetching } = useEvents({
     type: "upcoming",
     pageSize: 100,
   });
@@ -147,8 +147,20 @@ export default function Landing() {
       </section>
 
       <section className="bg-background px-10 py-20">
+        {isFetching && !isPending && (
+          <span className="text-sm text-gray-400">Loading...</span>
+        )}
+
+        {isPending && <p>Loading events...</p>}
+
+        {isError && (
+          <p className="text-red-500" role="alert">
+            Failed to load events.
+          </p>
+        )}
         {!isPending && !isError && <EventCarousel items={events ?? []} />}
       </section>
+
       {/* Leaving commented out until styling/design is confirmed. */}
       {/* <section className="bg-background px-4 py-10 md:px-10">
         <div className="flex w-full px-4">
