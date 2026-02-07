@@ -116,7 +116,7 @@ export default function Landing() {
               width={15}
               height={17}
               alt="placeholder"
-              className="absolute bottom-0 right-0 h-auto w-[10%] [image-rendering:pixelated]"
+              className="absolute bottom-0 right-0 h-auto w-[5%] [image-rendering:pixelated]"
             />
           </div>
 
@@ -133,7 +133,7 @@ export default function Landing() {
                 width={15}
                 height={17}
                 alt="placeholder"
-                className="absolute bottom-0 left-0 h-auto w-[10%] [image-rendering:pixelated]"
+                className="absolute bottom-0 left-0 h-auto w-[5%] [image-rendering:pixelated]"
               />
 
               <div className="flex flex-row items-center justify-center gap-4 md:hidden lg:flex lg:flex-col lg:items-start">
