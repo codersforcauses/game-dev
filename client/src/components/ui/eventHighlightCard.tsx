@@ -1,3 +1,4 @@
+import { Play } from "lucide-react";
 import Image from "next/image";
 
 export type eventHighlightCardImage = {
@@ -62,7 +63,13 @@ export function EventHighlightCard({
 
       <div className="mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
         <div className="flex gap-2">
-          <span>▶</span>
+          <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
+            <Play
+              className="h-6 w-6 fill-accent text-accent"
+              aria-hidden="true"
+              fill="currentColor"
+            />
+          </span>
           <p>{description}</p>
           {image && (
             <Image

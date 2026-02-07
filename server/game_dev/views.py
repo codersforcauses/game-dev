@@ -1,6 +1,6 @@
 from rest_framework import generics
 from .serializers import GamesSerializer, GameshowcaseSerializer, EventSerializer, MemberSerializer
-from .models import Game, GameShowcase, Event, Member
+from .models import Game, GameShowcase, Event, Member, Committee
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -76,3 +76,23 @@ class MemberAPIView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         return Member.objects.filter(active=True)
+
+
+class CommitteeAPIView(generics.ListAPIView):
+    serializer_class = MemberSerializer
+
+    def get_queryset(self):
+        outputList = []
+        roleOrder = ("P", "VP", "SEC", "TRE", "MARK", "EVE", "PRO", "FRE")
+        placeholderMember = {"name": "Position not filled", "profile_picture": "url('/landing_placeholder.png')",
+                             "about": "", "pronouns": ""}
+        for i in roleOrder:
+            try:
+                cur = Committee.objects.get(role=i).id
+                if cur.active:
+                    outputList.append(cur)
+                else:
+                    outputList.append(placeholderMember)
+            except Committee.DoesNotExist:
+                outputList.append(placeholderMember)
+        return outputList
