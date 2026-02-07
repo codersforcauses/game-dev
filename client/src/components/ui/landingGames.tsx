@@ -39,7 +39,7 @@ export default function LandingGames() {
       {showcases.slice(0, 3).map((game) => (
         <div
           key={game.game_id}
-          className="rounded-xl p-6 text-background shadow-lg duration-200 ease-in-out hover:scale-110"
+          className="rounded-xl p-6 text-background duration-200 ease-in-out hover:scale-110"
         >
           <Link key={game.game_id} href={`/games/${game.game_id}`}>
             <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
