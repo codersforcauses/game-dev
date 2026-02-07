@@ -47,6 +47,8 @@ export default function EventCarousel({ items }: EventCarouselProps) {
   const [visibleCount, setVisibleCount] = useState(3);
   const [itemWidth, setItemWidth] = useState(0);
 
+  const isEmpty = items.length === 0;
+
   const maxIndex = Math.max(items.length - visibleCount, 0);
   const slideLeft = () => {
     setCurrentIndex((prev) => Math.max(prev - 1, 0));
@@ -56,16 +58,21 @@ export default function EventCarousel({ items }: EventCarouselProps) {
   };
   const translateX = -(currentIndex * (itemWidth + GAP));
 
-  /* Observe item width */
+  /* Observe item width – re-run when items change so we measure after first item mounts */
   useEffect(() => {
-    if (!firstItemRef.current) return;
-    const observer = new ResizeObserver(() => {
-      const width = firstItemRef.current?.clientWidth ?? 0;
-      setItemWidth(width);
-    });
-    observer.observe(firstItemRef.current);
+    const el = firstItemRef.current;
+    if (!el || items.length === 0) return;
+    const readWidth = () => {
+      requestAnimationFrame(() => {
+        const w = firstItemRef.current?.clientWidth ?? 0;
+        setItemWidth(w);
+      });
+    };
+    readWidth();
+    const observer = new ResizeObserver(readWidth);
+    observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [items.length]);
 
   useEffect(() => {
     const updateVisibleCount = () => {
@@ -87,27 +94,34 @@ export default function EventCarousel({ items }: EventCarouselProps) {
           <h2 className="font-jersey10 text-4xl tracking-wide text-white">
             Upcoming Events
           </h2>
-
-          <div className="ml-5 flex gap-3 text-lg text-white/60">
-            <ChevronLeft
-              className={`hover:text-white ${
-                currentIndex === 0 ? "opacity-40" : "cursor-pointer"
-              }`}
-              onClick={slideLeft}
-            />
-            <ChevronRight
-              className={`hover:text-white ${
-                currentIndex === maxIndex ? "opacity-40" : "cursor-pointer"
-              }`}
-              onClick={slideRight}
-            />
-          </div>
+          {!isEmpty && (
+            <div className="ml-5 flex gap-3 text-lg text-white/60">
+              <ChevronLeft
+                className={`hover:text-white ${
+                  currentIndex === 0 ? "opacity-40" : "cursor-pointer"
+                }`}
+                onClick={slideLeft}
+              />
+              <ChevronRight
+                className={`hover:text-white ${
+                  currentIndex === maxIndex ? "opacity-40" : "cursor-pointer"
+                }`}
+                onClick={slideRight}
+              />
+            </div>
+          )}
         </div>
 
-        <Link href="/events" className="font-jersey10">
-          <Button>See More {`>`}</Button>
-        </Link>
+        {!isEmpty && (
+          <Link href="/events" className="font-jersey10">
+            <Button>See More {`>`}</Button>
+          </Link>
+        )}
       </div>
+
+      {isEmpty && (
+        <p className="mt-10 px-10 text-sm text-primary">No events available.</p>
+      )}
 
       <div className="mt-10 px-10">
         <div ref={viewportRef} className="overflow-hidden">
