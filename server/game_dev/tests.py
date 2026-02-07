@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Member, Event, Committee
+from .models import Member, Event, Committee, Game, Art, ArtContributor, ArtShowcase
 import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
@@ -193,3 +193,215 @@ class EventListAPITest(TestCase):
     def test_invalid_type(self):
         res = self.client.get(self.url, {"type": "invalid"})
         self.assertEqual(res.status_code, 400)
+
+
+class ArtModelTest(TestCase):
+    def setUp(self):
+        # Create a game for source_game foreign key
+        self.game = Game.objects.create(
+            name="Test Game",
+            description="A test game",
+            completion=Game.CompletionStatus.WIP,
+            hostURL="https://example.com",
+        )
+
+        # Create an art piece with media
+        image_file = SimpleUploadedFile(
+            "test_art.jpg",
+            b"dummy art image data",
+            content_type="image/jpeg",
+        )
+        self.art = Art.objects.create(
+            name="Test Artwork",
+            description="A beautiful test artwork",
+            source_game=self.game,
+            media=image_file,
+        )
+
+    def test_art_creation(self):
+        try:
+            Art.objects.get(name="Test Artwork")
+        except Art.DoesNotExist:
+            self.fail("Art was not properly created")
+
+    def test_art_is_active_by_default(self):
+        self.assertTrue(self.art.active)
+
+    def test_media_is_saved_in_correct_folder(self):
+        self.assertTrue(self.art.media.name.startswith("art/"))
+
+    def test_media_field_not_empty(self):
+        self.assertIsNotNone(self.art.media)
+
+    def test_source_game_relationship(self):
+        art = Art.objects.get(pk=self.art.pk)
+        self.assertEqual(art.source_game, self.game)
+
+    def test_art_without_source_game(self):
+        # Test that art can be created without a source game
+        image_file = SimpleUploadedFile(
+            "test_art_no_game.jpg",
+            b"dummy art image data",
+            content_type="image/jpeg",
+        )
+        art_no_game = Art.objects.create(
+            name="Independent Artwork",
+            description="Art with no game",
+            media=image_file,
+        )
+        self.assertIsNone(art_no_game.source_game)
+
+    def test_cascade_from_game(self):
+        # When game is deleted, art should remain (SET_NULL behavior would be ideal, but currently CASCADE)
+        art_id = self.art.id
+        self.game.delete()
+        # Since source_game has CASCADE, the art should be deleted
+        with self.assertRaises(Art.DoesNotExist):
+            Art.objects.get(id=art_id)
+
+
+class ArtContributorModelTest(TestCase):
+    def setUp(self):
+        # Create member
+        self.member1 = Member.objects.create(
+            name="John Artist",
+            about="A talented artist",
+            pronouns="He/Him"
+        )
+        self.member2 = Member.objects.create(
+            name="Jane Designer",
+            about="A creative designer",
+            pronouns="She/Her"
+        )
+
+        # Create art
+        image_file = SimpleUploadedFile(
+            "test_art.jpg",
+            b"dummy art image data",
+            content_type="image/jpeg",
+        )
+        self.art = Art.objects.create(
+            name="Collaborative Artwork",
+            description="Art with multiple contributors",
+            media=image_file,
+        )
+
+        # Create art contributor
+        self.art_contributor = ArtContributor.objects.create(
+            art=self.art,
+            member=self.member1,
+            role="Lead Artist"
+        )
+
+    def test_art_contributor_creation(self):
+        try:
+            ArtContributor.objects.get(art=self.art, member=self.member1)
+        except ArtContributor.DoesNotExist:
+            self.fail("ArtContributor was not properly created")
+
+    def test_art_contributor_unique_constraint(self):
+        # Try to create duplicate art-member pair
+        with self.assertRaises(IntegrityError):
+            ArtContributor.objects.create(
+                art=self.art,
+                member=self.member1,
+                role="Another Role"
+            )
+
+    def test_multiple_contributors_for_same_art(self):
+        # Should be able to add different members to same art
+        ArtContributor.objects.create(
+            art=self.art,
+            member=self.member2,
+            role="Character Designer"
+        )
+        contributors = ArtContributor.objects.filter(art=self.art)
+        self.assertEqual(contributors.count(), 2)
+
+    def test_cascade_from_art(self):
+        # When art is deleted, art contributors should be deleted
+        contributor_id = self.art_contributor.id
+        self.art.delete()
+        with self.assertRaises(ArtContributor.DoesNotExist):
+            ArtContributor.objects.get(id=contributor_id)
+
+    def test_cascade_from_member(self):
+        # When member is deleted, art contributors should be deleted
+        contributor_id = self.art_contributor.id
+        self.member1.delete()
+        with self.assertRaises(ArtContributor.DoesNotExist):
+            ArtContributor.objects.get(id=contributor_id)
+
+    def test_art_contributor_role(self):
+        contributor = ArtContributor.objects.get(pk=self.art_contributor.pk)
+        self.assertEqual(contributor.role, "Lead Artist")
+
+
+class ArtShowcaseModelTest(TestCase):
+    def setUp(self):
+        # Create art pieces
+        image_file1 = SimpleUploadedFile(
+            "test_art1.jpg",
+            b"dummy art image data",
+            content_type="image/jpeg",
+        )
+        self.art1 = Art.objects.create(
+            name="Showcased Artwork",
+            description="This art is showcased",
+            media=image_file1,
+        )
+
+        image_file2 = SimpleUploadedFile(
+            "test_art2.jpg",
+            b"dummy art image data 2",
+            content_type="image/jpeg",
+        )
+        self.art2 = Art.objects.create(
+            name="Another Artwork",
+            description="This art is also showcased",
+            media=image_file2,
+        )
+
+        # Create showcase
+        self.showcase = ArtShowcase.objects.create(
+            art=self.art1,
+            description="Featured artwork of the month"
+        )
+
+    def test_art_showcase_creation(self):
+        try:
+            ArtShowcase.objects.get(art=self.art1)
+        except ArtShowcase.DoesNotExist:
+            self.fail("ArtShowcase was not properly created")
+
+    def test_art_showcase_unique_constraint(self):
+        # Try to create another showcase for the same art
+        with self.assertRaises(IntegrityError):
+            ArtShowcase.objects.create(
+                art=self.art1,
+                description="Another showcase for same art"
+            )
+
+    def test_multiple_showcases_for_different_arts(self):
+        # Should be able to create showcases for different art pieces
+        ArtShowcase.objects.create(
+            art=self.art2,
+            description="Another featured artwork"
+        )
+        showcases = ArtShowcase.objects.all()
+        self.assertEqual(showcases.count(), 2)
+
+    def test_cascade_from_art(self):
+        # When art is deleted, its showcase should be deleted
+        showcase_id = self.showcase.id
+        self.art1.delete()
+        with self.assertRaises(ArtShowcase.DoesNotExist):
+            ArtShowcase.objects.get(id=showcase_id)
+
+    def test_showcase_description(self):
+        showcase = ArtShowcase.objects.get(pk=self.showcase.pk)
+        self.assertEqual(showcase.description, "Featured artwork of the month")
+
+    def test_art_showcase_relationship(self):
+        showcase = ArtShowcase.objects.get(pk=self.showcase.pk)
+        self.assertEqual(showcase.art, self.art1)
