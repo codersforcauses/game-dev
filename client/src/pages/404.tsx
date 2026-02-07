@@ -139,7 +139,7 @@ export default function Custom404() {
                   Game Over!
                 </p>
                 <p className="mb-4 text-center text-foreground">
-                  Final Score:{" "}
+                  Final Score:
                   <span className="text-xl font-bold text-primary">
                     {score}
                   </span>{" "}
