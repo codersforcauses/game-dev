@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { useGameshowcase } from "@/hooks/useGameshowcase";
 
-export default function LandingGame() {
+export default function LandingGames() {
   const { data: showcases, isPending, isError, error } = useGameshowcase();
   if (isPending) {
     return (
@@ -13,17 +13,25 @@ export default function LandingGame() {
     );
   }
 
+  if (!showcases || showcases.length === 0) {
+    return (
+      <div>
+        <p> No Games Showcased Yet</p>
+      </div>
+    );
+  }
+
   if (isError) {
     const errorMessage =
       error?.response?.status === 404
         ? "Games not found."
         : "Failed to Load Games";
     return (
-      <main className="mx-auto min-h-screen max-w-7xl px-6 py-16">
+      <div>
         <p className="text-red-500" role="alert">
           {errorMessage}
         </p>
-      </main>
+      </div>
     );
   }
   return (

@@ -6,7 +6,7 @@ import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
-import LandingGame from "@/components/ui/landingGames";
+import LandingGames from "@/components/ui/landingGames";
 import { placeholderEvents } from "@/placeholderData";
 
 import { Button } from "../components/ui/button";
@@ -171,7 +171,7 @@ export default function Landing() {
               </Link>
             </div>
           </div>
-          <LandingGame />
+          <LandingGames />
         </div>
       </section>
     </div>
