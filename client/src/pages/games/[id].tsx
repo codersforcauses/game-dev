@@ -94,6 +94,7 @@ export default function IndividualGamePage() {
                   embedID={gameEmbedID}
                   gameWidth={gameWidth}
                   gameHeight={gameHeight}
+                  gameImage={gameCover}
                 />
               </div>
             ) : (
