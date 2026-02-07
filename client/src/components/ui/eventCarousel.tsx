@@ -123,14 +123,14 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                 href={`/events/${event.id}`}
                 key={event.id}
                 ref={index === 0 ? firstItemRef : undefined}
-                className="w-full flex-shrink-0 md:w-[calc((100%-80px)/3)]"
+                className="group block w-full flex-shrink-0 overflow-hidden rounded-xl md:w-[calc((100%-80px)/3)]"
               >
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
                   <Image
                     src={event.coverImage}
                     alt={event.name}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
 
@@ -138,7 +138,6 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                   {event.name}
                 </h3>
 
-                {/* Needs proper processing and laying out */}
                 <p className="mb-4 text-sm text-primary">
                   {formatEventDateDisplay(event.date)}
                 </p>
