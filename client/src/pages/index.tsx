@@ -97,47 +97,59 @@ export default function Landing() {
               alt="placeholder"
               className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 [image-rendering:pixelated]"
             />
-            <Image
-              src={"/sparkles.png"}
-              width={96}
-              height={156}
-              alt="placeholder"
-              className="absolute bottom-0 right-0 h-auto w-[20%] -translate-y-4 translate-x-1/4 [image-rendering:pixelated]"
-            ></Image>
           </div>
         </div>
       </section>
 
       <section className="-mt-8 bg-dark_3 py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-            {eventCards
-              .filter((card) => card.row === 1)
-              .map((card) => (
-                <EventHighlightCard key={card.id} {...card} />
-              ))}
+          <div className="relative">
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+              {eventCards
+                .filter((card) => card.row === 1)
+                .map((card) => (
+                  <EventHighlightCard key={card.id} {...card} />
+                ))}
+            </div>
+            <Image
+              src="/sparkles.png"
+              width={15}
+              height={17}
+              alt="placeholder"
+              className="absolute bottom-0 right-0 h-auto w-[10%] [image-rendering:pixelated]"
+            />
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[23fr_27fr_11fr]">
-            {eventCards
-              .filter((card) => card.row === 2)
-              .map((card) => (
-                <EventHighlightCard key={card.id} {...card} />
-              ))}
+          <div className="relative">
+            <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[23fr_27fr_11fr]">
+              {eventCards
+                .filter((card) => card.row === 2)
+                .map((card) => (
+                  <EventHighlightCard key={card.id} {...card} />
+                ))}
 
-            <div className="flex flex-row items-center justify-center gap-4 md:hidden lg:flex lg:flex-col lg:items-start">
-              {gameLogoImages.map((logo, index) => (
-                <Image
-                  key={index}
-                  src={logo.url}
-                  width={135}
-                  height={46}
-                  alt={logo.alt}
-                  className={`${index < gameLogoImages.length - 1 ? "lg:mb-5" : ""} ${
-                    logo.position === "end" ? "lg:self-end" : ""
-                  }`}
-                />
-              ))}
+              <Image
+                src="/sparkles.png"
+                width={15}
+                height={17}
+                alt="placeholder"
+                className="absolute bottom-0 left-0 h-auto w-[10%] [image-rendering:pixelated]"
+              />
+
+              <div className="flex flex-row items-center justify-center gap-4 md:hidden lg:flex lg:flex-col lg:items-start">
+                {gameLogoImages.map((logo, index) => (
+                  <Image
+                    key={index}
+                    src={logo.url}
+                    width={135}
+                    height={46}
+                    alt={logo.alt}
+                    className={`${index < gameLogoImages.length - 1 ? "lg:mb-5" : ""} ${
+                      logo.position === "end" ? "lg:self-end" : ""
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
