@@ -14,48 +14,53 @@ export default function AboutPage() {
   const { data: committee, isPending, error, isError } = useCommittee();
   const { explosions, triggerExplosions } = useExplosions();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [clickDebris, setClickDebris] = useState<Array<{ id: number; x: number; y: number }>>([]);
+  const [clickDebris, setClickDebris] = useState<
+    Array<{ id: number; x: number; y: number }>
+  >([]);
   const lastClickTime = useRef(0);
 
-  const handlePageClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+  const handlePageClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!containerRef.current) return;
 
-    // Throttle clicks - 100ms minimum between clicks
-    const now = Date.now();
-    if (now - lastClickTime.current < 100) return;
-    lastClickTime.current = now;
+      // Throttle clicks - 100ms minimum between clicks
+      const now = Date.now();
+      if (now - lastClickTime.current < 100) return;
+      lastClickTime.current = now;
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-    // Get absolute pixel position for DebrisBurst
-    const absoluteX = e.clientX;
-    const absoluteY = e.clientY;
+      // Get absolute pixel position for DebrisBurst
+      const absoluteX = e.clientX;
+      const absoluteY = e.clientY;
 
-    // Create explosion at click position
-    triggerExplosions({
-      count: 1,
-      minDelay: 0,
-      maxDelay: 0,
-      duration: 1500,
-      playSound: true,
-      position: { x, y }, // Pass click position
-    });
+      // Create explosion at click position
+      triggerExplosions({
+        count: 1,
+        minDelay: 0,
+        maxDelay: 0,
+        duration: 1500,
+        playSound: true,
+        position: { x, y }, // Pass click position
+      });
 
-    // Add DebrisBurst for click (limit max concurrent)
-    const debrisId = now;
-    setClickDebris((prev) => {
-      const updated = [...prev, { id: debrisId, x: absoluteX, y: absoluteY }];
-      // Keep only the most recent MAX_DEBRIS
-      return updated.slice(-MAX_DEBRIS);
-    });
-    
-    // Remove after animation completes
-    setTimeout(() => {
-      setClickDebris((prev) => prev.filter((d) => d.id !== debrisId));
-    }, 1500);
-  }, [triggerExplosions]);
+      // Add DebrisBurst for click (limit max concurrent)
+      const debrisId = now;
+      setClickDebris((prev) => {
+        const updated = [...prev, { id: debrisId, x: absoluteX, y: absoluteY }];
+        // Keep only the most recent MAX_DEBRIS
+        return updated.slice(-MAX_DEBRIS);
+      });
+
+      // Remove after animation completes
+      setTimeout(() => {
+        setClickDebris((prev) => prev.filter((d) => d.id !== debrisId));
+      }, 1500);
+    },
+    [triggerExplosions],
+  );
 
   const topRow: ApiMember[] = [];
   const bottomRow: ApiMember[] = [];

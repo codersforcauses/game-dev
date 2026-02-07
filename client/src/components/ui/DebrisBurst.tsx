@@ -48,13 +48,15 @@ export const DebrisBurst = React.memo(function DebrisBurst({
     const spread = (spreadDeg * Math.PI) / 180;
 
     for (let i = 0; i < count; i++) {
-      const angle = (spreadDeg === 360)
-        ? Math.random() * Math.PI * 2
-        : (Math.random() - 0.5) * spread;
+      const angle =
+        spreadDeg === 360
+          ? Math.random() * Math.PI * 2
+          : (Math.random() - 0.5) * spread;
 
       const speed = power * (0.5 + Math.random() * 0.5);
       const vx = Math.cos(angle) * speed;
-      const vy = -Math.abs(Math.sin(angle) * speed) * (0.7 + Math.random() * 0.3);
+      const vy =
+        -Math.abs(Math.sin(angle) * speed) * (0.7 + Math.random() * 0.3);
       const size = 6 + Math.random() * 10;
       const maxLife = 500 + Math.random() * 400; // Shorter lifetime
 
@@ -75,59 +77,62 @@ export const DebrisBurst = React.memo(function DebrisBurst({
   }, [count, power, spreadDeg]);
 
   // Animation step - using refs to avoid re-renders
-  const step = useCallback((t: number) => {
-    const dt = Math.min(0.04, (t - lastT.current) / 1000);
-    lastT.current = t;
+  const step = useCallback(
+    (t: number) => {
+      const dt = Math.min(0.04, (t - lastT.current) / 1000);
+      lastT.current = t;
 
-    const container = containerRef.current;
-    if (!container) return;
+      const container = containerRef.current;
+      if (!container) return;
 
-    const children = container.children;
-    let anyAlive = false;
+      const children = container.children;
+      let anyAlive = false;
 
-    for (let i = 0; i < debrisRef.current.length; i++) {
-      const d = debrisRef.current[i];
-      if (d.life <= 0) continue;
+      for (let i = 0; i < debrisRef.current.length; i++) {
+        const d = debrisRef.current[i];
+        if (d.life <= 0) continue;
 
-      d.life -= dt * 1000;
-      if (d.life <= 0) {
-        (children[i] as HTMLElement).style.display = 'none';
-        continue;
+        d.life -= dt * 1000;
+        if (d.life <= 0) {
+          (children[i] as HTMLElement).style.display = "none";
+          continue;
+        }
+
+        anyAlive = true;
+
+        // Physics
+        d.vx *= 1 - 0.2 * dt;
+        d.vy += gravity * dt;
+        d.x += d.vx * dt;
+        d.y += d.vy * dt;
+        d.rot += d.vr * dt;
+
+        // Ground bounce
+        if (groundY !== undefined && y + d.y > groundY) {
+          d.y = groundY - y;
+          d.vy = -d.vy * bounce;
+          d.vx *= 0.7;
+        }
+
+        // Update DOM directly (no React re-render)
+        const el = children[i] as HTMLElement;
+        const alpha = Math.max(0, d.life / d.maxLife);
+        el.style.transform = `translate3d(${d.x}px, ${d.y}px, 0) rotate(${d.rot}deg)`;
+        el.style.opacity = String(alpha);
       }
 
-      anyAlive = true;
-
-      // Physics
-      d.vx *= (1 - 0.2 * dt);
-      d.vy += gravity * dt;
-      d.x += d.vx * dt;
-      d.y += d.vy * dt;
-      d.rot += d.vr * dt;
-
-      // Ground bounce
-      if (groundY !== undefined && y + d.y > groundY) {
-        d.y = groundY - y;
-        d.vy = -d.vy * bounce;
-        d.vx *= 0.7;
+      if (anyAlive) {
+        rafRef.current = requestAnimationFrame(step);
+      } else {
+        onDone?.();
       }
-
-      // Update DOM directly (no React re-render)
-      const el = children[i] as HTMLElement;
-      const alpha = Math.max(0, d.life / d.maxLife);
-      el.style.transform = `translate3d(${d.x}px, ${d.y}px, 0) rotate(${d.rot}deg)`;
-      el.style.opacity = String(alpha);
-    }
-
-    if (anyAlive) {
-      rafRef.current = requestAnimationFrame(step);
-    } else {
-      onDone?.();
-    }
-  }, [gravity, groundY, bounce, y, onDone]);
+    },
+    [gravity, groundY, bounce, y, onDone],
+  );
 
   // Set up animation
   useEffect(() => {
-    debrisRef.current = initial.map(d => ({ ...d }));
+    debrisRef.current = initial.map((d) => ({ ...d }));
     lastT.current = performance.now();
     rafRef.current = requestAnimationFrame(step);
 

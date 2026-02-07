@@ -17,16 +17,16 @@ export const Smoke = React.memo(function Smoke({
   duration = 2000,
 }: SmokeProps) {
   const uniqueId = useMemo(() => Math.random().toString(36).substr(2, 9), []);
-  
+
   // Generate fewer smoke puffs (5 instead of 8)
   const smokePuffs = useMemo(() => {
     const puffs = [];
     const count = 5;
-    
+
     for (let i = 0; i < count; i++) {
       const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
       const distance = 45 + Math.random() * 35;
-      
+
       puffs.push({
         id: i,
         endX: Math.cos(angle) * distance,
@@ -51,26 +51,37 @@ export const Smoke = React.memo(function Smoke({
       <svg width="0" height="0" style={{ position: "absolute" }}>
         <defs>
           {/* Single optimized turbulence filter */}
-          <filter id={`smoke-filter-${uniqueId}`} x="-50%" y="-50%" width="200%" height="200%">
-            <feTurbulence 
-              type="fractalNoise" 
-              baseFrequency="0.02" 
+          <filter
+            id={`smoke-filter-${uniqueId}`}
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+          >
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.02"
               numOctaves="2"
               seed={42}
               result="noise"
             />
-            <feDisplacementMap 
-              in="SourceGraphic" 
-              in2="noise" 
-              scale="12" 
-              xChannelSelector="R" 
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="12"
+              xChannelSelector="R"
               yChannelSelector="G"
             />
             <feGaussianBlur stdDeviation="3" />
           </filter>
-          
+
           {/* Shared gradient */}
-          <radialGradient id={`smoke-grad-${uniqueId}`} cx="50%" cy="50%" r="50%">
+          <radialGradient
+            id={`smoke-grad-${uniqueId}`}
+            cx="50%"
+            cy="50%"
+            r="50%"
+          >
             <stop offset="0%" stopColor="rgba(70, 65, 60, 0.75)" />
             <stop offset="50%" stopColor="rgba(90, 85, 80, 0.4)" />
             <stop offset="100%" stopColor="rgba(110, 105, 100, 0)" />
@@ -81,11 +92,11 @@ export const Smoke = React.memo(function Smoke({
       {/* Central expanding smoke - uses CSS blur for performance */}
       <motion.div
         initial={{ scale: 0.3, opacity: 0 }}
-        animate={{ 
+        animate={{
           scale: [0.3, 1.5, 2.2],
           opacity: [0, 0.65, 0],
         }}
-        transition={{ duration: duration / 1000 * 0.9, ease: "easeOut" }}
+        transition={{ duration: (duration / 1000) * 0.9, ease: "easeOut" }}
         style={{
           position: "absolute",
           width: 100,
@@ -93,7 +104,8 @@ export const Smoke = React.memo(function Smoke({
           left: -50,
           top: -50,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(70, 65, 60, 0.7) 0%, rgba(90, 85, 80, 0.3) 50%, transparent 70%)",
+          background:
+            "radial-gradient(circle, rgba(70, 65, 60, 0.7) 0%, rgba(90, 85, 80, 0.3) 50%, transparent 70%)",
           filter: "blur(8px)",
           willChange: "transform, opacity",
         }}
@@ -111,7 +123,7 @@ export const Smoke = React.memo(function Smoke({
             opacity: [0, 0.6, 0],
           }}
           transition={{
-            duration: duration / 1000 * 0.85,
+            duration: (duration / 1000) * 0.85,
             delay: puff.delay,
             ease: "easeOut",
           }}
@@ -156,7 +168,8 @@ export const Smoke = React.memo(function Smoke({
           left: -25,
           top: -25,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(80, 75, 70, 0.6) 0%, transparent 70%)",
+          background:
+            "radial-gradient(circle, rgba(80, 75, 70, 0.6) 0%, transparent 70%)",
           filter: "blur(10px)",
           willChange: "transform, opacity",
         }}

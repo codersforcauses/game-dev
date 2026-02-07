@@ -21,7 +21,9 @@ const MAX_DEBRIS = 5;
 export default function Landing() {
   const { explosions, triggerExplosions } = useExplosions();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [clickDebris, setClickDebris] = useState<Array<{ id: number; x: number; y: number }>>([]);
+  const [clickDebris, setClickDebris] = useState<
+    Array<{ id: number; x: number; y: number }>
+  >([]);
   const lastClickTime = useRef(0);
   const [isShaking, setIsShaking] = useState(false);
 
@@ -38,60 +40,66 @@ export default function Landing() {
   const handleBombClick = () => {
     // Trigger a massive explosion across the whole page
     if (!containerRef.current) return;
-    
+
     const rect = containerRef.current.getBoundingClientRect();
-    triggerExplosions({
-      count: 10, // Lots of explosions!
-      minDelay: 0,
-      maxDelay: 500, // Stagger them over half a second
-      duration: 2000,
-      playSound: true,
-    }, rect);
-    
+    triggerExplosions(
+      {
+        count: 10, // Lots of explosions!
+        minDelay: 0,
+        maxDelay: 500, // Stagger them over half a second
+        duration: 2000,
+        playSound: true,
+      },
+      rect,
+    );
+
     // Trigger screen shake
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 400); // Shake for 400ms
   };
 
-  const handlePageClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+  const handlePageClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!containerRef.current) return;
 
-    // Throttle clicks - 100ms minimum between clicks
-    const now = Date.now();
-    if (now - lastClickTime.current < 100) return;
-    lastClickTime.current = now;
+      // Throttle clicks - 100ms minimum between clicks
+      const now = Date.now();
+      if (now - lastClickTime.current < 100) return;
+      lastClickTime.current = now;
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-    // Get absolute pixel position for DebrisBurst
-    const absoluteX = e.clientX;
-    const absoluteY = e.clientY;
+      // Get absolute pixel position for DebrisBurst
+      const absoluteX = e.clientX;
+      const absoluteY = e.clientY;
 
-    // Create explosion at click position
-    triggerExplosions({
-      count: 1,
-      minDelay: 0,
-      maxDelay: 0,
-      duration: 1500,
-      playSound: true,
-      position: { x, y }, // Pass click position
-    });
+      // Create explosion at click position
+      triggerExplosions({
+        count: 1,
+        minDelay: 0,
+        maxDelay: 0,
+        duration: 1500,
+        playSound: true,
+        position: { x, y }, // Pass click position
+      });
 
-    // Add DebrisBurst for click (limit max concurrent)
-    const debrisId = now;
-    setClickDebris((prev) => {
-      const updated = [...prev, { id: debrisId, x: absoluteX, y: absoluteY }];
-      // Keep only the most recent MAX_DEBRIS
-      return updated.slice(-MAX_DEBRIS);
-    });
-    
-    // Remove after animation completes
-    setTimeout(() => {
-      setClickDebris((prev) => prev.filter((d) => d.id !== debrisId));
-    }, 1500);
-  }, [triggerExplosions]);
+      // Add DebrisBurst for click (limit max concurrent)
+      const debrisId = now;
+      setClickDebris((prev) => {
+        const updated = [...prev, { id: debrisId, x: absoluteX, y: absoluteY }];
+        // Keep only the most recent MAX_DEBRIS
+        return updated.slice(-MAX_DEBRIS);
+      });
+
+      // Remove after animation completes
+      setTimeout(() => {
+        setClickDebris((prev) => prev.filter((d) => d.id !== debrisId));
+      }, 1500);
+    },
+    [triggerExplosions],
+  );
 
   const gameLogoImages = [
     { url: "/godot.png", alt: "Godot Logo", position: "start" },
@@ -147,10 +155,14 @@ export default function Landing() {
       className="relative"
       ref={containerRef}
       onClick={handlePageClick}
-      animate={isShaking ? {
-        x: [0, -12, 12, -10, 10, -6, 6, -3, 3, 0],
-        y: [0, 4, -4, 3, -3, 2, -2, 0]
-      } : { x: 0, y: 0 }}
+      animate={
+        isShaking
+          ? {
+              x: [0, -12, 12, -10, 10, -6, 6, -3, 3, 0],
+              y: [0, 4, -4, 3, -3, 2, -2, 0],
+            }
+          : { x: 0, y: 0 }
+      }
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       {/* Render explosions */}
@@ -203,7 +215,7 @@ export default function Landing() {
               width={96}
               height={156}
               alt="Bomb - click to explode!"
-              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 cursor-pointer transition-transform hover:scale-110 [image-rendering:pixelated]"
+              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 cursor-pointer transition-transform [image-rendering:pixelated] hover:scale-110"
               onClick={handleBombClick}
             />
           </div>

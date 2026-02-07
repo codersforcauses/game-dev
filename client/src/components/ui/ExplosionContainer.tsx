@@ -22,4 +22,3 @@ export function ExplosionContainer() {
  * Use this with ExplosionContainer to trigger explosions from anywhere.
  */
 export { useExplosions };
-

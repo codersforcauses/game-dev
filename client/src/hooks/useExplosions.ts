@@ -44,10 +44,7 @@ export function useExplosions() {
   const [explosions, setExplosions] = useState<ExplosionPosition[]>([]);
 
   const triggerExplosions = useCallback(
-    (
-      config: ExplosionConfig = {},
-      containerBounds?: DOMRect | null
-    ) => {
+    (config: ExplosionConfig = {}, containerBounds?: DOMRect | null) => {
       const {
         count = 1,
         minDelay = 0,
@@ -100,13 +97,13 @@ export function useExplosions() {
           // Clean up after duration
           setTimeout(() => {
             setExplosions((prev) =>
-              prev.filter((exp) => exp.id !== explosionId)
+              prev.filter((exp) => exp.id !== explosionId),
             );
           }, duration);
         }, delay);
       }
     },
-    []
+    [],
   );
 
   return {
@@ -114,4 +111,3 @@ export function useExplosions() {
     triggerExplosions,
   };
 }
-

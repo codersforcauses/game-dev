@@ -13,14 +13,21 @@ interface ExplosionProps {
  * Renders a single explosion at a specific position.
  * Position is defined as a percentage of the parent container.
  */
-export const Explosion = React.memo(function Explosion({ explosion }: ExplosionProps) {
+export const Explosion = React.memo(function Explosion({
+  explosion,
+}: ExplosionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [debrisPosition, setDebrisPosition] = useState<{ x: number; y: number } | null>(null);
+  const [debrisPosition, setDebrisPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
 
   // Convert percentage position to pixel coordinates for DebrisBurst
   useEffect(() => {
     if (!containerRef.current) return;
-    const container = containerRef.current.closest('[class*="relative"]') as HTMLElement;
+    const container = containerRef.current.closest(
+      '[class*="relative"]',
+    ) as HTMLElement;
     if (!container) {
       // Fallback: use window if no relative container found
       const x = (explosion.x / 100) * window.innerWidth;
@@ -81,12 +88,7 @@ export const Explosion = React.memo(function Explosion({ explosion }: ExplosionP
         />
       </div>
       {/* Rising smoke effect */}
-      <Smoke
-        x={explosion.x}
-        y={explosion.y}
-        duration={1800}
-      />
+      <Smoke x={explosion.x} y={explosion.y} duration={1800} />
     </div>
   );
 });
-
