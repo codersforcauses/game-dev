@@ -22,9 +22,8 @@ class Migration(migrations.Migration):
                 to="game_dev.game",
             ),
         ),
-        migrations.AlterConstraint(
+        migrations.AddConstraint(
             model_name="artshowcase",
-            name="unique_artshowcase_per_art",
             constraint=models.UniqueConstraint(
                 fields=("art",),
                 name="unique_artshowcase_per_art",
