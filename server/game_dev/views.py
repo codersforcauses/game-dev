@@ -71,6 +71,10 @@ class GameshowcaseAPIView(APIView):
 
 
 class ContributorGamesListAPIView(APIView):
+    """
+    GET /api/games/contributor/<member>/
+    Returns the games a particular member has contributed to.
+    """
     lookup_url_kwarg = "member"
 
     def get(self, request, member):

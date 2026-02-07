@@ -74,6 +74,7 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
 
 
 class ContributorGameDataSerializer(serializers.ModelSerializer):
+    # Serializes data in Game model to display on a contributor's profile.
 
     class Meta:
         model = Game
@@ -82,6 +83,7 @@ class ContributorGameDataSerializer(serializers.ModelSerializer):
 
 
 class ContributorGameSerializer(serializers.ModelSerializer):
+    # Matches games in the GameContributor model to the information about them in the Game model.
     game_id = serializers.IntegerField(source='game.id', read_only=True)
     role = serializers.CharField(read_only=True)
     game_data = serializers.SerializerMethodField()
