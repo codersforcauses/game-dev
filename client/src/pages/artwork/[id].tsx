@@ -35,13 +35,28 @@ function displayContributors(artwork: Art) {
           data-layer="Contributors List"
           className="ContributorsList relative flex flex-col gap-3 p-3"
         >
-          {artwork.contributors?.map((contributor) => (
-            <div className="flex flex-row" key={contributor.id}>
-              <div className="justify-center font-sans text-xl font-normal leading-8 tracking-wide text-light_1 [text-shadow:_0px_4px_4px_rgb(0_0_0_/_0.25)]">
-                {contributor.member_name}
+          {artwork.contributors.length > 0 && (
+            <div className="mt-auto">
+              <div className="space-y-2.5">
+                {artwork.contributors.map((contributor) => (
+                  <div
+                    key={contributor.id}
+                    className="font-sans text-[15px] text-light_1"
+                  >
+                    <a
+                      href={`/members/${contributor.member_id}`}
+                      className="text-accent hover:underline"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {contributor.member_name}
+                    </a>
+                    {" - "}
+                    <span>{contributor.role}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

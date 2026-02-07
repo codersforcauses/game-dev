@@ -53,7 +53,20 @@ function renderArtworkCard(artwork: Art) {
               {artwork.name}
             </h3>
             <p className="mb-3 text-center font-sans text-xs text-light_1">
-              from GAME NAME
+              {artwork.source_game_name ? (
+                <>
+                  from{" "}
+                  <a
+                    href={`/games/${artwork.source_game_id}`}
+                    className="text-accent hover:underline"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {artwork.source_game_name}
+                  </a>
+                </>
+              ) : (
+                "No associated game"
+              )}
             </p>
             <p className="font-sans text-sm leading-relaxed text-light_1">
               {artwork.description || "No description available."}
@@ -71,7 +84,13 @@ function renderArtworkCard(artwork: Art) {
                     key={contributor.id}
                     className="font-sans text-[15px] text-light_1"
                   >
-                    <span className="pl-1">{contributor.member_name}</span>
+                    <Link
+                      href={`/members/${contributor.member_id}`}
+                      className="pl-1 text-accent hover:underline"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {contributor.member_name}
+                    </Link>
                   </div>
                 ))}
               </div>
