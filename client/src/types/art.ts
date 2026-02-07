@@ -10,4 +10,5 @@ export interface Art {
   source_game_name: string | null;
   contributors: ArtContributor[];
   showcase_description: string;
+  isMock?: boolean;
 }

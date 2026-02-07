@@ -46,6 +46,8 @@ function renderArtworkCard(artwork: Art) {
       imageSrc={artwork.media || undefined}
       imageAlt={artwork.name}
       href={`/artwork/${artwork.art_id}`}
+      disableFlip={artwork.isMock === true}
+      placeholder={PLACEHOLDER_ICON}
       backContent={
         <div className="flex h-full flex-col gap-4">
           <div>
@@ -106,15 +108,13 @@ function renderArtworkCard(artwork: Art) {
           </Link>
         </div>
       }
-    >
-      {!artwork.media && PLACEHOLDER_ICON}
-    </ImageCard>
+    />
   );
 }
 
 export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
   const router = useRouter();
-  if (error) {
+  if (error && !artworks?.results?.length) {
     return <ErrorModal message={error} onClose={() => router.back()} />;
   }
 

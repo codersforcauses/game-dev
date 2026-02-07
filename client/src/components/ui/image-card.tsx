@@ -5,12 +5,11 @@ import React from "react";
 interface ImageCardProps {
   imageSrc?: string;
   imageAlt?: string;
-  /** Optional content rendered on the front (over the image or placeholder). */
   children?: React.ReactNode;
-  /** Optional content rendered on the back when hovering/focused. */
   backContent?: React.ReactNode;
-  /** Optional href for navigation when clicking the front face */
   href?: string;
+  disableFlip?: boolean;
+  placeholder?: React.ReactNode;
 }
 
 const ImageCard = ({
@@ -19,10 +18,13 @@ const ImageCard = ({
   children,
   backContent,
   href,
+  disableFlip = false,
+  placeholder,
 }: ImageCardProps) => {
   const router = useRouter();
   const [isFlipped, setIsFlipped] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
+  const [hasImageError, setHasImageError] = React.useState(false);
 
   React.useEffect(() => {
     const checkMobile = () => {
@@ -38,7 +40,7 @@ const ImageCard = ({
     // On mobile, navigate directly if href is provided
     if (isMobile && href) {
       router.push(href);
-    } else if (backContent) {
+    } else if (backContent && !disableFlip && !hasImageError) {
       // On desktop, toggle flip state
       setIsFlipped(!isFlipped);
     }
@@ -47,7 +49,11 @@ const ImageCard = ({
   return (
     <div className="p-4" style={{ perspective: "1200px" }}>
       <div
-        className="relative h-[30rem] w-full max-w-[20rem] cursor-pointer select-none rounded-[10px] shadow-[12px_17px_51px_rgba(0,0,0,0.22)] transition-transform duration-500"
+        className={`relative h-[30rem] w-full max-w-[20rem] select-none rounded-[10px] shadow-[12px_17px_51px_rgba(0,0,0,0.22)] transition-transform duration-500 ${
+          (isMobile && href) || (backContent && !disableFlip && !hasImageError)
+            ? "cursor-pointer"
+            : "cursor-default"
+        }`}
         style={{
           transformStyle: "preserve-3d",
           transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
@@ -58,7 +64,7 @@ const ImageCard = ({
           className="absolute inset-0 overflow-hidden rounded-[10px] border border-white bg-dark_alt backdrop-blur-md"
           style={{ backfaceVisibility: "hidden" }}
         >
-          {imageSrc ? (
+          {imageSrc && !hasImageError ? (
             <>
               <Image
                 src={imageSrc}
@@ -66,6 +72,10 @@ const ImageCard = ({
                 width={400}
                 height={600}
                 className="h-full w-full object-cover"
+                onError={() => {
+                  setHasImageError(true);
+                  setIsFlipped(false);
+                }}
               />
               {children && (
                 <div className="bg-dark_1/40 absolute inset-0 flex items-center justify-center text-light_1">
@@ -75,7 +85,9 @@ const ImageCard = ({
             </>
           ) : (
             <div className="bg-dark_alt/60 flex h-full w-full items-center justify-center text-light_1">
-              {children || <span className="font-bold">No Image</span>}
+              {placeholder || children || (
+                <span className="font-bold">No Image</span>
+              )}
             </div>
           )}
         </div>

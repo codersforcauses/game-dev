@@ -9,6 +9,8 @@ export const generateMockArtworks = (count: number): Art[] => {
       description: "Mock artwork description",
       media: `http://localhost:8000/media/art/mock_artwork_${i}.png`,
       active: true,
+      source_game_id: null,
+      source_game_name: null,
       contributors: [
         {
           id: i * 10 + 1,
@@ -24,6 +26,7 @@ export const generateMockArtworks = (count: number): Art[] => {
         },
       ],
       showcase_description: `Showcase description for artwork ${i}`,
+      isMock: true,
     });
   }
   return artworks;
@@ -37,6 +40,8 @@ export const generateMockArtwork = (id: string): Art => {
       "Lorem ipsum dolor sit amet. Non numquam dicta nam autem dicta 33 error molestias et repellat consequatur eum iste expedita est dolorem libero et quas provident!",
     media: `http://localhost:8000/media/art/mock_artwork_${id}.png`,
     active: true,
+    source_game_id: null,
+    source_game_name: null,
     contributors: [
       {
         id: 1,
@@ -52,5 +57,6 @@ export const generateMockArtwork = (id: string): Art => {
       },
     ],
     showcase_description: "Featured artwork showcase description",
+    isMock: true,
   };
 };
