@@ -7,6 +7,8 @@
 
 import React, { useState } from "react";
 
+import { Button } from "./button";
+
 type GameEmbedProps = {
   embedID: string;
   gameWidth: number;
@@ -24,13 +26,13 @@ export function GameEmbed({ embedID, gameWidth, gameHeight }: GameEmbedProps) {
       style={{ width: gameWidth, height: gameHeight }}
     >
       {!isPlaying ? (
-        <button
+        <Button
           onClick={() => setIsPlaying(!isPlaying)}
-          className="rounded-sm bg-accent px-7 py-3"
-          aria-label="Play"
+          size={"lg"}
+          className="text-3xl"
         >
-          <div>Play</div>
-        </button>
+          Play
+        </Button>
       ) : (
         <div>
           <iframe
