@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * Plays a random explosion sound effect.
@@ -42,6 +42,16 @@ export type ExplosionConfig = {
  */
 export function useExplosions() {
   const [explosions, setExplosions] = useState<ExplosionPosition[]>([]);
+  const timeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+
+  // Cleanup all timeouts on unmount to prevent memory leaks
+  useEffect(() => {
+    const timeouts = timeoutsRef.current;
+    return () => {
+      timeouts.forEach((t) => clearTimeout(t));
+      timeouts.clear();
+    };
+  }, []);
 
   const triggerExplosions = useCallback(
     (config: ExplosionConfig = {}, containerBounds?: DOMRect | null) => {
@@ -78,7 +88,7 @@ export function useExplosions() {
 
         const delay = minDelay + Math.random() * (maxDelay - minDelay);
 
-        setTimeout(() => {
+        const spawnTimeout = setTimeout(() => {
           const explosionId = `${now}-${i}-${Math.random()}`;
           const explosion: ExplosionPosition = {
             id: explosionId,
@@ -95,12 +105,17 @@ export function useExplosions() {
           }
 
           // Clean up after duration
-          setTimeout(() => {
+          const cleanupTimeout = setTimeout(() => {
             setExplosions((prev) =>
               prev.filter((exp) => exp.id !== explosionId),
             );
+            timeoutsRef.current.delete(cleanupTimeout);
           }, duration);
+          timeoutsRef.current.add(cleanupTimeout);
+
+          timeoutsRef.current.delete(spawnTimeout);
         }, delay);
+        timeoutsRef.current.add(spawnTimeout);
       }
     },
     [],
