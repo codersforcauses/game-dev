@@ -76,7 +76,7 @@ export default function Landing() {
               <Link href="/committee/about">
                 <Button>More about us</Button>
               </Link>
-              <Link href="/committee/about">
+              <Link href="https://discord.com/invite/JvnuVyMUff">
                 <Button variant={"outline"}>Join our Discord</Button>
               </Link>
             </div>
