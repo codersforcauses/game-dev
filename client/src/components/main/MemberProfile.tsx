@@ -52,7 +52,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center font-jersey10 text-5xl text-muted-foreground">
-                  {initials}
+                  <p className="mb-2"> {initials} </p>
                 </div>
               )}
             </div>
