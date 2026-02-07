@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Member, Game, Event, GameContributor, GameShowcase, Committee, Jam
+from .models import Member, Game, Event, GameContributor, GameShowcase, Committee
 
 
 class MemberAdmin(admin.ModelAdmin):
@@ -29,15 +29,9 @@ class CommitteeAdmin(admin.ModelAdmin):
     raw_id_fields = ["id"]
 
 
-class JamAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
-    search_fields = ["name"]
-
-
 admin.site.register(Member, MemberAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Game, GamesAdmin)
 admin.site.register(GameContributor, GameContributorAdmin)
 admin.site.register(GameShowcase, GameShowcaseAdmin)
 admin.site.register(Committee, CommitteeAdmin)
-admin.site.register(Jam, JamAdmin)

@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.utils import IntegrityError
 from requests import get
 
 
@@ -21,9 +20,34 @@ class Event(models.Model):
     publicationDate = models.DateField()
     cover_image = models.ImageField(upload_to="events/", null=True)
     location = models.CharField(max_length=256)
+    jamID = models.PositiveBigIntegerField(unique=True, blank=True, null=True)
+    games = models.JSONField(default=list, blank=True, help_text="Only filled if event is a Game Jam")
 
     def __str__(self):
         return self.name
+
+    def save(self, force_insert=False, force_update=False):
+        if self.jamID is not None:
+            r = get(f"https://itch.io/jam/{self.jamID}/results.json")
+            try:
+                results = r.json()["results"]
+            except KeyError:
+                print("Error: No results for this Jam ID could be found")
+                self.jamID = None
+                self.games = []
+                return super().save(force_insert, force_update)
+            games = []
+            for i in results:
+                try:
+                    cur = Game.objects.get(hostURL=i["url"], name=i["title"])
+                    games.append(cur.pk)
+                except Game.DoesNotExist:
+                    Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail=i["cover_url"])
+                    games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
+            self.games = games
+        else:
+            self.games = []
+        return super().save(force_insert, force_update)
 
 
 # GameContributor table: links Game, Member, and role (composite PK)
@@ -99,6 +123,7 @@ class Committee(models.Model):
         return self.id.name
 
 
+"""
 class Jam(models.Model):
     id = models.PositiveBigIntegerField(primary_key=True, unique=True)
     name = models.CharField(max_length=75, unique=True, blank=False)
@@ -119,8 +144,8 @@ class Jam(models.Model):
             try:
                 cur = Game.objects.get(hostURL=i["url"], name=i["title"])
                 games.append(cur.pk)
-            except IntegrityError:
+            except Game.DoesNotExist:
                 Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail=i["cover_url"])
                 games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
         self.games = games
-        return super().save(force_insert, force_update)
+        return super().save(force_insert, force_update)"""
