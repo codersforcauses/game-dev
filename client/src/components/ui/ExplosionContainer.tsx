@@ -6,7 +6,7 @@ import { Explosion } from "./Explosion";
  * Handles the explosion state management via the useExplosions hook.
  */
 export function ExplosionContainer() {
-  const { explosions, triggerExplosions } = useExplosions();
+  const { explosions } = useExplosions();
 
   return (
     <>

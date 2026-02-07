@@ -1,7 +1,7 @@
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useCallback,useRef, useState } from "react";
 
 import EventCarousel from "@/components/ui/eventCarousel";
 import {
@@ -11,9 +11,9 @@ import {
 import { placeholderEvents, placeholderGames } from "@/placeholderData";
 
 import { Button } from "../components/ui/button";
-import { useExplosions } from "../hooks/useExplosions";
-import { Explosion } from "../components/ui/Explosion";
 import { DebrisBurst } from "../components/ui/DebrisBurst";
+import { Explosion } from "../components/ui/Explosion";
+import { useExplosions } from "../hooks/useExplosions";
 
 // Max concurrent debris bursts to prevent lag
 const MAX_DEBRIS = 5;
@@ -26,16 +26,6 @@ export default function Landing() {
   >([]);
   const lastClickTime = useRef(0);
   const [isShaking, setIsShaking] = useState(false);
-
-  const handleExplosionClick = () => {
-    triggerExplosions({
-      count: 5,
-      minDelay: 0,
-      maxDelay: 300,
-      duration: 1500,
-      playSound: true,
-    });
-  };
 
   const handleBombClick = () => {
     // Trigger a massive explosion across the whole page

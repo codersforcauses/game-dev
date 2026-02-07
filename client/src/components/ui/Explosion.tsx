@@ -1,8 +1,9 @@
 import Image from "next/image";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
 import { ExplosionPosition } from "../../hooks/useExplosions";
-import { DebrisBurst } from "./DebrisBurst";
 import { Crater } from "./Crater";
+import { DebrisBurst } from "./DebrisBurst";
 import { Smoke } from "./Smoke";
 
 interface ExplosionProps {
