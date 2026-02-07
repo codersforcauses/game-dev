@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -63,10 +64,11 @@ export default function MemberProjectSection(props: MemberProjectSectionProps) {
                     className="group-hover:brightness-75 group-hover:duration-200"
                   />
                   <Link
-                    className="mt-[-165px] hidden place-self-center rounded-md bg-accent p-3 font-firaCode text-light_1 drop-shadow-md hover:underline group-hover:block group-hover:blur-0 group-hover:duration-200"
-                    href={`/games/${game.game_id}`}
+                    className="mt-[-165px] hidden place-self-center rounded-md bg-accent p-3 font-firaCode text-light_1 drop-shadow-md hover:underline group-hover:flex group-hover:blur-0 group-hover:duration-200"
+                    href="#"
+                    onClick={() => window.open(`/games/${game.game_id}`)}
                   >
-                    Visit Game
+                    Visit Game <ArrowUpRight className="ml-1" />
                   </Link>
                 </div>
                 <p className="max-w-96 font-firaCode text-xl font-semibold">
