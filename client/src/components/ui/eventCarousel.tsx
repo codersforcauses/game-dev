@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { UiEvent as EventType } from "@/hooks/useEvents";
 
+import { Button } from "./button";
+
 type EventCarouselProps = {
   items: EventType[];
 };
@@ -39,7 +41,7 @@ function formatEventDateDisplay(dateString: string): string {
 
 export default function EventCarousel({ items }: EventCarouselProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
-  const firstItemRef = useRef<HTMLDivElement>(null);
+  const firstItemRef = useRef<HTMLAnchorElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
@@ -103,7 +105,7 @@ export default function EventCarousel({ items }: EventCarouselProps) {
         </div>
 
         <Link href="/events" className="font-jersey10">
-          See More
+          <Button>See More {`>`}</Button>
         </Link>
       </div>
 
@@ -117,7 +119,8 @@ export default function EventCarousel({ items }: EventCarouselProps) {
             }}
           >
             {items.map((event, index) => (
-              <div
+              <Link
+                href={`/events/${event.id}`}
                 key={event.id}
                 ref={index === 0 ? firstItemRef : undefined}
                 className="w-full flex-shrink-0 md:w-[calc((100%-80px)/3)]"
@@ -131,17 +134,17 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                   />
                 </div>
 
-                <h3 className="mt-6 font-firaCode text-lg font-semibold tracking-wide text-white">
+                <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
                   {event.name}
                 </h3>
 
                 {/* Needs proper processing and laying out */}
-                <p className="text-sm tracking-wide text-white/70">
+                <p className="mb-4 text-sm text-primary">
                   {formatEventDateDisplay(event.date)}
                 </p>
 
                 <div className="mt-3 w-full border-b border-white/20" />
-              </div>
+              </Link>
             ))}
           </div>
         </div>
