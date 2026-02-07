@@ -86,7 +86,6 @@ class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
         fields = [
-            "socialMediaName",
             "link",
             "socialMediaUserName",
         ]
