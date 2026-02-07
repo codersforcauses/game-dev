@@ -16,8 +16,6 @@ export default function Landing() {
     type: "upcoming",
     pageSize: 100,
   });
-  // TODO: remove this after testing
-  console.log("data =", data);
 
   const events: UiEvent[] | undefined = data?.items;
 
