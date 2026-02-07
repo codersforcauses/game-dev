@@ -18,11 +18,10 @@ export type UiEvent = Omit<ApiEvent, "cover_image"> & {
   coverImage: string;
 };
 
-// TODO: replace "/game_event_poster.png" with "/game_dev_club_logo.svg" after tests
 function transformApiEventToUiEvent(data: ApiEvent): UiEvent {
   return {
     ...data,
-    coverImage: data.cover_image ?? "/game_event_poster.png",
+    coverImage: data.cover_image ?? "/game_dev_club_logo.svg",
   };
 }
 

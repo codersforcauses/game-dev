@@ -137,14 +137,14 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                 href={`/events/${event.id}`}
                 key={event.id}
                 ref={index === 0 ? firstItemRef : undefined}
-                className="group block w-full flex-shrink-0 overflow-hidden rounded-xl md:w-[calc((100%-80px)/3)]"
+                className={`block w-full flex-shrink-0 rounded-xl transition-transform duration-200 ease-in-out hover:scale-110 md:w-[calc((100%-80px)/3)] ${index === 0 ? "origin-left" : ""}`}
               >
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
                   <Image
                     src={event.coverImage}
                     alt={event.name}
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="object-cover"
                   />
                 </div>
 
