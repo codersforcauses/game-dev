@@ -6,11 +6,19 @@ import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
-import { placeholderEvents, placeholderGames } from "@/placeholderData";
+import { UiEvent, useEvents } from "@/hooks/useEvents";
+import { placeholderGames } from "@/placeholderData";
 
 import { Button } from "../components/ui/button";
 
 export default function Landing() {
+  const { data, isPending, isError, isFetching } = useEvents({
+    type: "upcoming",
+    pageSize: 100,
+  });
+
+  const events: UiEvent[] | undefined = data?.items;
+
   const gameLogoImages = [
     { url: "/godot.png", alt: "Godot Logo", position: "start" },
     { url: "/unity-logo.png", alt: "Unity Logo", position: "end" },
@@ -137,8 +145,20 @@ export default function Landing() {
       </section>
 
       <section className="bg-background px-10 py-20">
-        <EventCarousel items={placeholderEvents} />
+        {isFetching && !isPending && (
+          <span className="text-sm text-gray-400">Loading...</span>
+        )}
+
+        {isPending && <p>Loading events...</p>}
+
+        {isError && (
+          <p className="text-red-500" role="alert">
+            Failed to load events.
+          </p>
+        )}
+        {!isPending && !isError && <EventCarousel items={events ?? []} />}
       </section>
+
       {/* Leaving commented out until styling/design is confirmed. */}
       {/* <section className="bg-background px-4 py-10 md:px-10">
         <div className="flex w-full px-4">
@@ -146,7 +166,7 @@ export default function Landing() {
             title="So... How do I get involved?"
             text="The easiest way to get involved is to come along to one of our events!"
           />
-        </div>
+        </div>1
       </section> */}
 
       <section className="relative w-full overflow-hidden bg-dark_3 px-6 py-20 lg:px-12">
