@@ -97,6 +97,13 @@ export default function Landing() {
               alt="placeholder"
               className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 [image-rendering:pixelated]"
             />
+            <Image
+              src={"/sparkles.png"}
+              width={96}
+              height={156}
+              alt="placeholder"
+              className="absolute bottom-0 right-0 h-auto w-[20%] -translate-y-4 translate-x-1/4 [image-rendering:pixelated]"
+            ></Image>
           </div>
         </div>
       </section>
