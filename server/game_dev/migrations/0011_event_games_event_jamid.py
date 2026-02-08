@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='event',
             name='jamID',
-            field=models.PositiveBigIntegerField(blank=True, null=True, unique=True),
+            field=models.PositiveBigIntegerField(blank=True, null=True, unique=True, help_text="See documentation on how to find"),
         ),
     ]

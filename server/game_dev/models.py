@@ -1,6 +1,6 @@
 from django.db import models
 from requests import get
-
+from django.core.files.base import ContentFile
 
 class Member(models.Model):
     name = models.CharField(max_length=200)
@@ -20,21 +20,28 @@ class Event(models.Model):
     publicationDate = models.DateField()
     cover_image = models.ImageField(upload_to="events/", null=True)
     location = models.CharField(max_length=256)
-    jamID = models.PositiveBigIntegerField(unique=True, blank=True, null=True)
+    jamID = models.PositiveBigIntegerField(unique=True, blank=True, null=True, help_text="See documentation on how to find")
     games = models.JSONField(default=list, blank=True, help_text="Only filled if event is a Game Jam")
 
     def __str__(self):
         return self.name
 
     def save(self, force_insert=False, force_update=False):
+        def jamFail():
+            self.jamID = None
+            self.games = []
         if self.jamID is not None:
-            r = get(f"https://itch.io/jam/{self.jamID}/results.json")
+            try:
+                r = get(f"https://itch.io/jam/{self.jamID}/results.json")
+            except Exception as e:
+                print(e)
+                jamFail()
+                return super().save(force_insert, force_update)
             try:
                 results = r.json()["results"]
             except KeyError:
                 print("Error: No results for this Jam ID could be found")
-                self.jamID = None
-                self.games = []
+                jamFail()
                 return super().save(force_insert, force_update)
             games = []
             for i in results:
@@ -42,7 +49,14 @@ class Event(models.Model):
                     cur = Game.objects.get(hostURL=i["url"], name=i["title"])
                     games.append(cur.pk)
                 except Game.DoesNotExist:
-                    Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail=i["cover_url"])
+                    #Uploads each image to the backend from their urls
+                    imageURL = i["cover_url"]
+                    image = get(imageURL)
+                    imageName = imageURL.split("/")[-1]
+                    imageContent = ContentFile(image.content)
+                    
+                    Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail="")
+                    Game.objects.get(name=i["title"], hostURL=i["url"]).thumbnail.save(imageName, imageContent, save=True)
                     games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
             self.games = games
         else:
