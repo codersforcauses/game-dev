@@ -111,7 +111,7 @@ export default function IndividualGamePage() {
                       {game.contributors.map((c) => (
                         <React.Fragment key={c.member_id}>
                           <a
-                            href={`/member/${c.member_id}`}
+                            href={`/members/${c.member_id}`}
                             className="text-primary hover:underline"
                           >
                             {c.name}
