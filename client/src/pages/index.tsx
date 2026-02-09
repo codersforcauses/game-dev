@@ -166,7 +166,7 @@ export default function Landing() {
             title="So... How do I get involved?"
             text="The easiest way to get involved is to come along to one of our events!"
           />
-        </div>1
+        </div>
       </section> */}
 
       <section className="relative w-full overflow-hidden bg-dark_3 px-6 py-20 lg:px-12">

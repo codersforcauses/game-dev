@@ -114,7 +114,7 @@ export default function EventCarousel({ items }: EventCarouselProps) {
 
         {!isEmpty && (
           <Link href="/events" className="font-jersey10">
-            <Button>See More {`>`}</Button>
+            <Button>See More</Button>
           </Link>
         )}
       </div>
