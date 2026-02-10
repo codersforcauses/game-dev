@@ -41,13 +41,39 @@ const renderCardHeader = (card: eventHighlightCardType) => {
       </div>
     );
   }
-
   return (
     <div className="rounded-md border border-accent bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold">
       {card.title}
     </div>
   );
 };
+
+export function renderSparkleOverlay(card: eventHighlightCardType) {
+  switch (card.id) {
+    case 2:
+      return (
+        <Image
+          src="/sparkles.png"
+          width={15}
+          height={17}
+          alt="sparkle"
+          className="absolute bottom-0 right-0 h-auto w-[10%] [image-rendering:pixelated]"
+        />
+      );
+    case 3:
+      return (
+        <Image
+          src="/sparkles.png"
+          width={15}
+          height={17}
+          alt="sparkle"
+          className="absolute bottom-0 left-0 h-auto w-[15%] [image-rendering:pixelated]"
+        />
+      );
+    default:
+      return null;
+  }
+}
 
 export function EventHighlightCard({
   id,
@@ -61,7 +87,7 @@ export function EventHighlightCard({
     <div key={id} className="flex flex-col">
       {renderCardHeader({ id, title, description, type, image, row })}
 
-      <div className="mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
+      <div className="relative mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
         <div className="flex gap-2">
           <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
             <Play
@@ -71,6 +97,7 @@ export function EventHighlightCard({
             />
           </span>
           <p>{description}</p>
+          {renderSparkleOverlay({ id, title, description, type, image, row })}
           {image && (
             <Image
               src={image.url}

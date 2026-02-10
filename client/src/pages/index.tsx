@@ -111,13 +111,6 @@ export default function Landing() {
                   <EventHighlightCard key={card.id} {...card} />
                 ))}
             </div>
-            <Image
-              src="/sparkles.png"
-              width={15}
-              height={17}
-              alt="placeholder"
-              className="absolute bottom-0 right-0 h-auto w-[5%] [image-rendering:pixelated]"
-            />
           </div>
 
           <div className="relative">
@@ -127,15 +120,6 @@ export default function Landing() {
                 .map((card) => (
                   <EventHighlightCard key={card.id} {...card} />
                 ))}
-
-              <Image
-                src="/sparkles.png"
-                width={15}
-                height={17}
-                alt="placeholder"
-                className="absolute bottom-0 left-0 h-auto w-[5%] [image-rendering:pixelated]"
-              />
-
               <div className="flex flex-row items-center justify-center gap-4 md:hidden lg:flex lg:flex-col lg:items-start">
                 {gameLogoImages.map((logo, index) => (
                   <Image
