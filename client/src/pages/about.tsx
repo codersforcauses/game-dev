@@ -118,7 +118,7 @@ export default function AboutPage() {
                 key={`top-${idx}`}
                 className="flex flex-col items-start gap-0"
               >
-                <div className="relative flex h-[11.25rem] w-[11.25rem] items-center justify-center bg-[url('/frame.svg')] bg-contain bg-center bg-no-repeat">
+                <div className="relative flex h-[11.25rem] w-[11.25rem] items-center justify-center bg-[url('/pixel-art-frame.svg')] bg-contain bg-center bg-no-repeat">
                   <Image
                     src={
                       member.profile_picture === null
@@ -128,7 +128,7 @@ export default function AboutPage() {
                     alt="/landing_placeholder.png"
                     width={108}
                     height={108}
-                    className="mb-2 h-[6.75rem] w-[6.75rem]"
+                    className="h-[7.25rem] w-[6.75rem]"
                   />
                 </div>
                 <div className="w-[11.25rem] pl-3 text-left font-firaCode text-[0.5rem] leading-tight">
@@ -150,7 +150,7 @@ export default function AboutPage() {
                 key={`bottom-${idx}`}
                 className="flex flex-col items-start gap-0"
               >
-                <div className="relative flex h-[11.25rem] w-[11.25rem] items-center justify-center bg-[url('/frame.svg')] bg-contain bg-center bg-no-repeat">
+                <div className="relative flex h-[11.25rem] w-[11.25rem] items-center justify-center bg-[url('/pixel-art-frame.svg')] bg-contain bg-center bg-no-repeat">
                   <Image
                     src={
                       member.profile_picture === null
@@ -160,7 +160,7 @@ export default function AboutPage() {
                     alt="/landing_placeholder.png"
                     width={108}
                     height={108}
-                    className="mb-2 h-[6.75rem] w-[6.75rem]"
+                    className="h-[7.25rem] w-[6.75rem]"
                   />
                 </div>
                 <div className="w-[11.25rem] pl-3 text-left font-firaCode text-[0.5rem] leading-tight">
