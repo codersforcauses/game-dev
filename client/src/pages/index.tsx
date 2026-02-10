@@ -6,10 +6,8 @@ import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
-import { UiEvent, useEvents } from "@/hooks/useEvents";
-import { placeholderGames } from "@/placeholderData";
 import LandingGames from "@/components/ui/landingGames";
-import { placeholderEvents } from "@/placeholderData";
+import { UiEvent, useEvents } from "@/hooks/useEvents";
 
 import { Button } from "../components/ui/button";
 
