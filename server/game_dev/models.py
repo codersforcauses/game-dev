@@ -69,8 +69,29 @@ class Game(models.Model):
 
 
 class GameShowcase(models.Model):
-    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_showcases')
+    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_showcases', unique=True)
     description = models.TextField()
 
     def __str__(self):
         return f"{self.game.name}"
+
+
+class Committee(models.Model):
+    id = models.OneToOneField(Member, on_delete=models.CASCADE, primary_key=True)
+    roles = {
+        "P": "President",
+        "VP": "Vice-President",
+        "SEC": "Secretary",
+        "TRE": "Treasurer",
+        "MARK": "Marketing",
+        "EV": "Events OCM",
+        "PRO": "Projects OCM",
+        "FRE": "Fresher Rep"
+    }
+    role = models.CharField(max_length=9, choices=roles, default="FRE", unique=True)
+
+    def get_member(self):
+        return self.id
+
+    def __str__(self):
+        return self.id.name
