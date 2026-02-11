@@ -55,7 +55,7 @@ class Event(models.Model):
                     imageName = imageURL.split("/")[-1]
                     imageContent = ContentFile(image.content)
                     
-                    Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail="")
+                    Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail="" ,event=self)
                     Game.objects.get(name=i["title"], hostURL=i["url"]).thumbnail.save(imageName, imageContent, save=True)
                     games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
             self.games = games
