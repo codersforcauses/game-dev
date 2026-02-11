@@ -2,7 +2,8 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import GoBackButton from "@/components/ui/go-back-button";
+import ContributorsList from "@/components/ui/ContributorsList";
+import GoBackButton from "@/components/ui/GoBackButton";
 import ImagePlaceholder from "@/components/ui/image-placeholder";
 import ErrorModal from "@/components/ui/modal/error-modal";
 import api from "@/lib/api";
@@ -11,56 +12,6 @@ import { Art } from "@/types/art";
 interface ArtworkPageProps {
   artwork?: Art;
   error?: string;
-}
-
-function displayContributors(artwork: Art) {
-  return (
-    <div>
-      <div
-        data-layer="Artwork Details"
-        className="ArtworkDetails flex flex-col justify-start gap-2.5 py-5"
-      >
-        <div
-          data-layer="Contributors Section"
-          className="ContributorsSection relative"
-        >
-          <div
-            data-layer="Contributors"
-            className="Contributors justify-start font-sans text-4xl font-normal tracking-wide text-light_3"
-          >
-            Contributors
-          </div>
-        </div>
-        <div
-          data-layer="Contributors List"
-          className="ContributorsList relative flex flex-col gap-3 p-3"
-        >
-          {artwork.contributors.length > 0 && (
-            <div className="mt-auto">
-              <div className="space-y-2.5">
-                {artwork.contributors.map((contributor) => (
-                  <div
-                    key={contributor.id}
-                    className="font-sans text-[15px] text-light_1"
-                  >
-                    <a
-                      href={`/members/${contributor.member_id}`}
-                      className="text-accent hover:underline"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {contributor.member_name}
-                    </a>
-                    {" - "}
-                    <span>{contributor.role}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
 }
 
 export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
@@ -110,7 +61,9 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
               alt="Artwork image"
               width={500}
               height={500}
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="relative block sm:h-auto sm:max-w-full md:max-h-full"
+              priority={false}
             />
           ) : (
             <ImagePlaceholder />
@@ -143,7 +96,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
               </div>
             </div>
 
-            {displayContributors(artwork)}
+            <ContributorsList contributors={artwork.contributors} />
           </div>
         </div>
       </div>
@@ -167,7 +120,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
           </div>
         </div>
 
-        {displayContributors(artwork)}
+        <ContributorsList contributors={artwork.contributors} />
       </div>
 
       <div data-layer="Frame 1101" className="Frame1101 bg-slate-950 py-10">

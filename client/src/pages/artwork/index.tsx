@@ -1,9 +1,9 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router"; // ✅ pages router (not next/navigation)
+import { useRouter } from "next/router";
 
-import ImageCard from "@/components/ui/image-card";
+import ImageCard from "@/components/ui/ImageCard";
 import ErrorModal from "@/components/ui/modal/error-modal";
 import { generateMockArtworks } from "@/hooks/use-artwork-data";
 import api from "@/lib/api";
@@ -58,13 +58,13 @@ function renderArtworkCard(artwork: Art) {
               {artwork.source_game_name ? (
                 <>
                   from{" "}
-                  <a
+                  <Link
                     href={`/games/${artwork.source_game_id}`}
                     className="text-accent hover:underline"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {artwork.source_game_name}
-                  </a>
+                  </Link>
                 </>
               ) : (
                 "No associated game"
