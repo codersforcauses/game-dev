@@ -107,4 +107,18 @@ export const mockGameArtworks: MockArtwork[] = [
     sourceGameId: 2,
     gameName: "Crownbreakers",
   },
+  {
+    id: 16,
+    name: "Mad Lad",
+    image: "/landing_placeholder.png",
+    sourceGameId: 3,
+    gameName: "Celeste",
+  },
+  {
+    id: 17,
+    name: "Mad Lad2",
+    image: "/landing_placeholder.png",
+    sourceGameId: 3,
+    gameName: "Celeste",
+  },
 ];
