@@ -2,6 +2,7 @@
 
 import { Palette, Sparkles } from "lucide-react";
 import Image from "next/image";
+import { SocialIcon } from "react-social-icons";
 
 import MemberProjectSection from "../ui/MemberProjectSection";
 
@@ -10,6 +11,10 @@ export type MemberProfileData = {
   about: string;
   pronouns?: string;
   profile_picture?: string;
+  social_media?: {
+    link: string;
+    socialMediaUserName: string;
+  }[];
 };
 
 type MemberProfileProps = {
@@ -60,7 +65,37 @@ export function MemberProfile({ member }: MemberProfileProps) {
               <p className="min-w-fit font-jersey10 text-4xl">{member.name}</p>
               <hr className="ml-5 hidden w-full self-center border-light_2 lg:flex" />
             </div>
-            <p className="text-lg">{member.pronouns}</p>
+            <div className="flex items-center gap-2">
+              {member.social_media && member.social_media.length > 0 && (
+                <div className="w-full">
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    {member.social_media.map((sm) => (
+                      <span
+                        key={sm.link}
+                        className="ml-2 flex items-center gap-1"
+                      >
+                        <SocialIcon
+                          url={sm.link}
+                          style={{ height: 24, width: 24 }}
+                        />
+                        <a
+                          href={sm.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-firaCode text-base underline hover:text-primary"
+                        >
+                          {sm.socialMediaUserName}
+                        </a>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <p className="text-lg">{member.pronouns}</p>
+            </div>
+
             <p>{member.about}</p>
           </div>
         </div>
