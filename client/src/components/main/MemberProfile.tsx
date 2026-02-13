@@ -1,14 +1,9 @@
 "use client";
 
+import { Palette, Sparkles } from "lucide-react";
 import Image from "next/image";
 
-// unused atm, as the member isnt linked a project on the backend
-/* export type MemberProfileProject = {
-  id: string;
-  name: string;
-  description?: string;
-  href?: string;
-}; */
+import MemberProjectSection from "../ui/MemberProjectSection";
 
 export type MemberProfileData = {
   name: string;
@@ -19,7 +14,6 @@ export type MemberProfileData = {
 
 type MemberProfileProps = {
   member: MemberProfileData;
-  //projects?: MemberProfileProject[];
 };
 
 function initialsFromName(name: string) {
@@ -49,7 +43,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center font-jersey10 text-5xl text-muted-foreground">
-                  {initials}
+                  <p className="mb-2"> {initials} </p>
                 </div>
               )}
             </div>
@@ -71,23 +65,16 @@ export function MemberProfile({ member }: MemberProfileProps) {
           </div>
         </div>
       </div>
-      {/* Template for Projects section */}
-      <div className="m-auto min-h-80 w-11/12">
-        <h2 className="mt-7 text-center font-jersey10 text-5xl">Projects</h2>
-        <div className="m-auto my-5 flex flex-wrap justify-center gap-8">
-          {/* Div below is a single project card */}
-          <div className="w-fit rounded-md p-5">
-            <div className="mb-2 h-44 w-96 overflow-clip rounded-md p-5 text-neutral_1">
-              {/* Image and/or Link to Project */}
-            </div>
-            <p className="max-w-96 font-firaCode text-xl font-semibold">
-              {/* Project Title */}
-            </p>
-            <p className="line-clamp-1 max-w-96 font-firaCode text-[--light-3]">
-              {/* Project description */}
-            </p>
-          </div>
-        </div>
+      <div className="m-auto mb-10 min-h-80 w-11/12">
+        <h2 className="mt-7 flex justify-center text-center font-jersey10 text-5xl">
+          Games
+          <Sparkles size={32} className="ml-2 self-center text-yellow-300" />
+        </h2>
+        <MemberProjectSection id={window.location.pathname.slice(9)} />
+        <h2 className="mt-7 flex justify-center text-center font-jersey10 text-5xl">
+          Artwork
+          <Palette size={32} className="ml-2 self-center text-yellow-300" />
+        </h2>
       </div>
     </>
   );
