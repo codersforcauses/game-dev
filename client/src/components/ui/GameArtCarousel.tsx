@@ -2,7 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-//import Link from "next/link";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import type { UiArtwork } from "@/hooks/useGames";
@@ -93,14 +93,16 @@ export default function GameArtCarousel({ items }: GameArtCarouselProps) {
                   width: `calc((100% - ${(visibleCount - 1) * GAP}px) / ${visibleCount})`,
                 }}
               >
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
-                  <Image
-                    src={art.image}
-                    alt={art.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                <Link href={`/artwork/${art.id}`}>
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
+                    <Image
+                      src={art.image}
+                      alt={art.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </Link>
 
                 <h3 className="mt-4 text-lg text-white">{art.name}</h3>
               </div>
