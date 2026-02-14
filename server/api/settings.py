@@ -30,6 +30,7 @@ FRONTEND_URL = os.environ.get("FRONTEND_URL")
 SECRET_KEY = os.environ.get("API_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# export APP_ENV=DEVELOPMENT
 DEBUG = os.environ.get("APP_ENV") == "DEVELOPMENT"
 
 ALLOWED_HOSTS = (
@@ -65,6 +66,8 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 
+
+# export FRONTEND_URL=http://localhost:3000
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
