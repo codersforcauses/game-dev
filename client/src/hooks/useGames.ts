@@ -9,6 +9,21 @@ type Contributor = {
   role: string;
 };
 
+export type UiArtwork = {
+  id: number;
+  name: string;
+  image: string;
+  sourceGameId: number;
+};
+
+type ApiArtworks = {
+  art_id: number;
+  name: string;
+  media: string;
+  active: boolean;
+  source_game_id: number;
+};
+
 type ApiGame = {
   name: string;
   description: string;
@@ -20,10 +35,12 @@ type ApiGame = {
   thumbnail: string | null;
   event: number | null;
   contributors: Contributor[];
+  artworks: ApiArtworks[];
 };
 
-type UiGame = Omit<ApiGame, "thumbnail"> & {
+type UiGame = Omit<ApiGame, "thumbnail" | "artworks"> & {
   gameCover: string;
+  artworks: UiArtwork[];
 };
 
 /**
@@ -41,6 +58,12 @@ function transformApiGameToUiGame(data: ApiGame): UiGame {
   return {
     ...data,
     gameCover: data.thumbnail ?? "/game_dev_club_logo.svg",
+    artworks: data.artworks.map((a) => ({
+      id: a.art_id,
+      name: a.name,
+      image: a.media,
+      sourceGameId: a.source_game_id,
+    })),
   };
 }
 
