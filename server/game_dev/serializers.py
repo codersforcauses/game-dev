@@ -82,6 +82,30 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         return ShowcaseContributorSerializer(contributors, many=True).data
 
 
+class ContributorGameDataSerializer(serializers.ModelSerializer):
+    # Serializes data in Game model to display on a contributor's profile.
+
+    class Meta:
+        model = Game
+        fields = ('name', 'thumbnail',
+                  'description')
+
+
+class ContributorGameSerializer(serializers.ModelSerializer):
+    # Matches games in the GameContributor model to the information about them in the Game model.
+    game_id = serializers.IntegerField(source='game.id', read_only=True)
+    role = serializers.CharField(read_only=True)
+    game_data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = GameContributor
+        fields = ['game_id', 'role', 'game_data']
+
+    def get_game_data(self, obj):
+        game_data = Game.objects.get(id=obj.game_id)
+        return ContributorGameDataSerializer(game_data).data
+
+
 class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
