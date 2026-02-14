@@ -5,19 +5,12 @@ import Image from "next/image";
 //import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
+import type { UiArtwork } from "@/hooks/useGames";
+
 // import { UiEvent as EventType } from "@/hooks/useEvents";
 
-// Artwork teams code once done replaces this
-export type MockArtwork = {
-  id: number;
-  name: string;
-  image: string;
-  sourceGameId: number;
-  gameName?: string;
-};
-
 type GameArtCarouselProps = {
-  items: MockArtwork[];
+  items: UiArtwork[];
 };
 
 const GAP = 20;
@@ -110,10 +103,6 @@ export default function GameArtCarousel({ items }: GameArtCarouselProps) {
                 </div>
 
                 <h3 className="mt-4 text-lg text-white">{art.name}</h3>
-
-                {art.gameName && (
-                  <p className="text-sm text-white/70">from {art.gameName}</p>
-                )}
               </div>
             ))}
           </div>
