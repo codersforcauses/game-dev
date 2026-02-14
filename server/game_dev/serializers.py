@@ -104,7 +104,8 @@ class ContributorGameSerializer(serializers.ModelSerializer):
     def get_game_data(self, obj):
         game_data = Game.objects.get(id=obj.game_id)
         return ContributorGameDataSerializer(game_data).data
-      
+
+
 class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
