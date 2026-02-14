@@ -58,6 +58,15 @@ class Event(models.Model):
                     Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail="" ,event=self)
                     Game.objects.get(name=i["title"], hostURL=i["url"]).thumbnail.save(imageName, imageContent, save=True)
                     games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
+                    
+                    contributors = i["contributors"]
+                    for x in contributors:
+                        try:
+                            socialMedia = SocialMedia.objects.get(socialMediaUsername=x["name"])
+                        except Exception as e:
+                            continue
+                        GameContributor.objects.create(Game=Game.objects.get(name=i["title"], hostURL=i["url"]), Member=socialMedia.member, role="Please add role manually")
+                    
             self.games = games
         else:
             self.games = []
