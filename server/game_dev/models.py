@@ -62,10 +62,10 @@ class Event(models.Model):
                     contributors = i["contributors"]
                     for x in contributors:
                         try:
-                            socialMedia = SocialMedia.objects.get(socialMediaUsername=x["name"])
+                            socialMedia = SocialMedia.objects.get(socialMediaUserName=x["name"])
                         except Exception as e:
                             continue
-                        GameContributor.objects.create(Game=Game.objects.get(name=i["title"], hostURL=i["url"]), Member=socialMedia.member, role="Please add role manually")
+                        GameContributor.objects.create(game=Game.objects.get(name=i["title"], hostURL=i["url"]), member=socialMedia.member, role="Please add role manually")
                     
             self.games = games
         else:
