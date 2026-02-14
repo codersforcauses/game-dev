@@ -59,11 +59,11 @@ export function MemberProfile({ member }: MemberProfileProps) {
               )}
             </div>
             <Image
-              src="/frame.svg"
+              src="/pixel-art-frame.svg"
               alt="golden pixel art frame around profile picture"
-              width={176}
-              height={192}
-              className="z-0 h-48 w-44"
+              width={200}
+              height={200}
+              className="z-10"
             />
           </div>
           <div className="flex w-4/5 flex-col gap-2 rounded-md p-2.5 font-firaCode">
