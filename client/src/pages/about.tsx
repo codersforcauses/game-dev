@@ -62,6 +62,18 @@ export default function AboutPage() {
     </>
   );
 
+  function committeeImage(profilePic: string) {
+    return (
+      <Image
+        src={profilePic === null ? "/landing_placeholder.png" : profilePic}
+        alt="/landing_placeholder.png"
+        width={134}
+        height={144}
+        className="h-[9rem] w-[8.4rem]"
+      />
+    );
+  }
+
   if (isPending) {
     for (let i = 0; i < 8; i++) {
       if (i < 4) {
@@ -123,30 +135,10 @@ export default function AboutPage() {
               >
                 <div className="relative flex h-56 w-56 items-center justify-center bg-[url('/pixel-art-frame.svg')] bg-contain bg-center bg-no-repeat">
                   {member.pk === 0 ? (
-                    <Image
-                      src={
-                        member.profile_picture === null
-                          ? "/landing_placeholder.png"
-                          : member.profile_picture
-                      }
-                      alt="/landing_placeholder.png"
-                      width={134}
-                      height={144}
-                      className="h-[9rem] w-[8.4rem]"
-                    />
+                    committeeImage(member.profile_picture)
                   ) : (
                     <Link href={`/members/${member.pk}`}>
-                      <Image
-                        src={
-                          member.profile_picture === null
-                            ? "/landing_placeholder.png"
-                            : member.profile_picture
-                        }
-                        alt="/landing_placeholder.png"
-                        width={134}
-                        height={144}
-                        className="h-[9rem] w-[8.4rem]"
-                      />
+                      {committeeImage(member.profile_picture)}
                     </Link>
                   )}
                 </div>
@@ -176,30 +168,10 @@ export default function AboutPage() {
               >
                 <div className="relative flex h-56 w-56 items-center justify-center bg-[url('/pixel-art-frame.svg')] bg-contain bg-center bg-no-repeat">
                   {member.pk === 0 ? (
-                    <Image
-                      src={
-                        member.profile_picture === null
-                          ? "/landing_placeholder.png"
-                          : member.profile_picture
-                      }
-                      alt="/landing_placeholder.png"
-                      width={134}
-                      height={144}
-                      className="h-[9rem] w-[8.4rem]"
-                    />
+                    committeeImage(member.profile_picture)
                   ) : (
                     <Link href={`/members/${member.pk}`}>
-                      <Image
-                        src={
-                          member.profile_picture === null
-                            ? "/landing_placeholder.png"
-                            : member.profile_picture
-                        }
-                        alt="/landing_placeholder.png"
-                        width={134}
-                        height={144}
-                        className="h-[9rem] w-[8.4rem]"
-                      />
+                      {committeeImage(member.profile_picture)}
                     </Link>
                   )}
                 </div>
