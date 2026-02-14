@@ -8,6 +8,11 @@ export type ApiMember = {
   profile_picture: string;
   pronouns: string;
   about: string;
+  social_media?: {
+    link: string;
+    socialMediaUserName: string;
+  }[];
+  pk: number;
 };
 
 export function useCommittee() {
