@@ -79,7 +79,7 @@ class GameShowcase(models.Model):
 class Art(models.Model):
     name = models.CharField(null=False, max_length=200)
     description = models.CharField(max_length=200,)
-    source_game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='art_pieces', null=True, blank=True)
+    source_game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_artwork')
     media = models.ImageField(upload_to='art/', null=False)
     active = models.BooleanField(default=True)
 
