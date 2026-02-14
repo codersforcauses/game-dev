@@ -103,4 +103,5 @@ class MemberSerializer(serializers.ModelSerializer):
             "about",
             "pronouns",
             "social_media",
+            "pk"
         ]

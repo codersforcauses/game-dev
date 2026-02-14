@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { ApiMember, useCommittee } from "@/hooks/useCommittee";
 
@@ -61,6 +62,18 @@ export default function AboutPage() {
     </>
   );
 
+  function committeeImage(profilePic: string) {
+    return (
+      <Image
+        src={profilePic === null ? "/landing_placeholder.png" : profilePic}
+        alt="/landing_placeholder.png"
+        width={134}
+        height={144}
+        className="h-[9rem] w-[8.4rem]"
+      />
+    );
+  }
+
   if (isPending) {
     for (let i = 0; i < 8; i++) {
       if (i < 4) {
@@ -69,6 +82,7 @@ export default function AboutPage() {
           pronouns: "",
           profile_picture: "/landing_placeholder.png",
           about: "",
+          pk: 0,
         });
       } else {
         bottomRow.push({
@@ -76,6 +90,7 @@ export default function AboutPage() {
           pronouns: "",
           profile_picture: "/landing_placeholder.png",
           about: "",
+          pk: 0,
         });
       }
     }
@@ -109,7 +124,7 @@ export default function AboutPage() {
     <main className="min-h-screen bg-background">
       {about}
       {/* Portraits Section - DARK - Full Width */}
-      <section className="w-full bg-background px-6 py-10 pt-16 md:px-10">
+      <section className="w-full bg-background px-6 py-10 pb-20 pt-16 md:px-10">
         <div className="mx-auto max-w-6xl">
           {/* Top row - 4 Presidents */}
           <div className="flex flex-wrap justify-center gap-6 md:gap-10">
@@ -118,22 +133,23 @@ export default function AboutPage() {
                 key={`top-${idx}`}
                 className="flex flex-col items-start gap-0"
               >
-                <div className="relative flex h-[11.25rem] w-[11.25rem] items-center justify-center bg-[url('/pixel-art-frame.svg')] bg-contain bg-center bg-no-repeat">
-                  <Image
-                    src={
-                      member.profile_picture === null
-                        ? "/landing_placeholder.png"
-                        : member.profile_picture
-                    }
-                    alt="/landing_placeholder.png"
-                    width={108}
-                    height={108}
-                    className="h-[7.25rem] w-[6.75rem]"
-                  />
+                <div className="relative flex h-56 w-56 items-center justify-center bg-[url('/pixel-art-frame.svg')] bg-contain bg-center bg-no-repeat">
+                  {member.pk === 0 ? (
+                    committeeImage(member.profile_picture)
+                  ) : (
+                    <Link href={`/members/${member.pk}`}>
+                      {committeeImage(member.profile_picture)}
+                    </Link>
+                  )}
                 </div>
-                <div className="w-[11.25rem] pl-3 text-left font-firaCode text-[0.5rem] leading-tight">
+                <div className="w-56 pl-3 text-left font-firaCode text-sm leading-tight">
                   <p className="inline-block bg-card px-2 py-1 text-white">
-                    {member.name} {member.pronouns}
+                    {member.pk === 0 ? (
+                      <>{member.name}</>
+                    ) : (
+                      <Link href={`/members/${member.pk}`}>{member.name}</Link>
+                    )}
+                    {member.pronouns}
                   </p>
                   <p className="inline-block bg-card px-2 py-1 text-primary">
                     {roleOrder[idx]}
@@ -150,22 +166,23 @@ export default function AboutPage() {
                 key={`bottom-${idx}`}
                 className="flex flex-col items-start gap-0"
               >
-                <div className="relative flex h-[11.25rem] w-[11.25rem] items-center justify-center bg-[url('/pixel-art-frame.svg')] bg-contain bg-center bg-no-repeat">
-                  <Image
-                    src={
-                      member.profile_picture === null
-                        ? "/landing_placeholder.png"
-                        : member.profile_picture
-                    }
-                    alt="/landing_placeholder.png"
-                    width={108}
-                    height={108}
-                    className="h-[7.25rem] w-[6.75rem]"
-                  />
+                <div className="relative flex h-56 w-56 items-center justify-center bg-[url('/pixel-art-frame.svg')] bg-contain bg-center bg-no-repeat">
+                  {member.pk === 0 ? (
+                    committeeImage(member.profile_picture)
+                  ) : (
+                    <Link href={`/members/${member.pk}`}>
+                      {committeeImage(member.profile_picture)}
+                    </Link>
+                  )}
                 </div>
-                <div className="w-[11.25rem] pl-3 text-left font-firaCode text-[0.5rem] leading-tight">
+                <div className="w-56 pl-3 text-left font-firaCode text-sm leading-tight">
                   <p className="inline-block bg-card px-2 py-1 text-white">
-                    {member.name} {member.pronouns}
+                    {member.pk === 0 ? (
+                      <>{member.name}</>
+                    ) : (
+                      <Link href={`/members/${member.pk}`}>{member.name}</Link>
+                    )}
+                    {member.pronouns}
                   </p>
                   <p className="inline-block bg-card px-2 py-1 text-primary">
                     {roleOrder[4 + idx]}

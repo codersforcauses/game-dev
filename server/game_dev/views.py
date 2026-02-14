@@ -85,7 +85,7 @@ class CommitteeAPIView(generics.ListAPIView):
         outputList = []
         roleOrder = ("P", "VP", "SEC", "TRE", "MARK", "EVE", "PRO", "FRE")
         placeholderMember = {"name": "Position not filled", "profile_picture": "url('/landing_placeholder.png')",
-                             "about": "", "pronouns": ""}
+                             "about": "", "pronouns": "", "pk": 0}
         for i in roleOrder:
             try:
                 cur = Committee.objects.get(role=i).id
