@@ -5,19 +5,49 @@ import { useEffect, useRef, useState } from "react";
 
 import { UiEvent as EventType } from "@/hooks/useEvents";
 
+import { Button } from "./button";
+
 type EventCarouselProps = {
   items: EventType[];
 };
 
 const GAP = 40;
 
+function formatEventDateDisplay(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+    const weekday = new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+    }).format(date);
+    const day = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(
+      date,
+    );
+    const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
+      date,
+    );
+    const time = new Intl.DateTimeFormat("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })
+      .format(date)
+      .replace("AM", "am")
+      .replace("PM", "pm");
+    return `${weekday} ${day} ${month} ${time}`;
+  } catch {
+    return "";
+  }
+}
+
 export default function EventCarousel({ items }: EventCarouselProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
-  const firstItemRef = useRef<HTMLDivElement>(null);
+  const firstItemRef = useRef<HTMLAnchorElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
   const [itemWidth, setItemWidth] = useState(0);
+
+  const isEmpty = items.length === 0;
 
   const maxIndex = Math.max(items.length - visibleCount, 0);
   const slideLeft = () => {
@@ -28,16 +58,21 @@ export default function EventCarousel({ items }: EventCarouselProps) {
   };
   const translateX = -(currentIndex * (itemWidth + GAP));
 
-  /* Observe item width */
+  /* Observe item width – re-run when items change so we measure after first item mounts */
   useEffect(() => {
-    if (!firstItemRef.current) return;
-    const observer = new ResizeObserver(() => {
-      const width = firstItemRef.current?.clientWidth ?? 0;
-      setItemWidth(width);
-    });
-    observer.observe(firstItemRef.current);
+    const el = firstItemRef.current;
+    if (!el || items.length === 0) return;
+    const readWidth = () => {
+      requestAnimationFrame(() => {
+        const w = firstItemRef.current?.clientWidth ?? 0;
+        setItemWidth(w);
+      });
+    };
+    readWidth();
+    const observer = new ResizeObserver(readWidth);
+    observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [items.length]);
 
   useEffect(() => {
     const updateVisibleCount = () => {
@@ -59,27 +94,34 @@ export default function EventCarousel({ items }: EventCarouselProps) {
           <h2 className="font-jersey10 text-4xl tracking-wide text-white">
             Upcoming Events
           </h2>
-
-          <div className="ml-5 flex gap-3 text-lg text-white/60">
-            <ChevronLeft
-              className={`hover:text-white ${
-                currentIndex === 0 ? "opacity-40" : "cursor-pointer"
-              }`}
-              onClick={slideLeft}
-            />
-            <ChevronRight
-              className={`hover:text-white ${
-                currentIndex === maxIndex ? "opacity-40" : "cursor-pointer"
-              }`}
-              onClick={slideRight}
-            />
-          </div>
+          {!isEmpty && (
+            <div className="ml-5 flex gap-3 text-lg text-white/60">
+              <ChevronLeft
+                className={`hover:text-white ${
+                  currentIndex === 0 ? "opacity-40" : "cursor-pointer"
+                }`}
+                onClick={slideLeft}
+              />
+              <ChevronRight
+                className={`hover:text-white ${
+                  currentIndex === maxIndex ? "opacity-40" : "cursor-pointer"
+                }`}
+                onClick={slideRight}
+              />
+            </div>
+          )}
         </div>
 
-        <Link href="/events" className="font-jersey10">
-          See More
-        </Link>
+        {!isEmpty && (
+          <Link href="/events" className="font-jersey10">
+            <Button>See More</Button>
+          </Link>
+        )}
       </div>
+
+      {isEmpty && (
+        <p className="mt-10 px-10 text-sm text-primary">No events available.</p>
+      )}
 
       <div className="mt-10 px-10">
         <div ref={viewportRef} className="overflow-hidden">
@@ -91,10 +133,11 @@ export default function EventCarousel({ items }: EventCarouselProps) {
             }}
           >
             {items.map((event, index) => (
-              <div
+              <Link
+                href={`/events/${event.id}`}
                 key={event.id}
                 ref={index === 0 ? firstItemRef : undefined}
-                className="w-full flex-shrink-0 md:w-[calc((100%-80px)/3)]"
+                className={`block w-full flex-shrink-0 rounded-xl transition-transform duration-200 ease-in-out hover:scale-110 md:w-[calc((100%-80px)/3)] ${index === 0 ? "origin-left" : ""}`}
               >
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
                   <Image
@@ -105,17 +148,16 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                   />
                 </div>
 
-                <h3 className="mt-6 font-firaCode text-lg font-semibold tracking-wide text-white">
+                <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
                   {event.name}
                 </h3>
 
-                {/* Needs proper processing and laying out */}
-                <p className="text-sm tracking-wide text-white/70">
-                  {event.startTime}
+                <p className="mb-4 text-sm text-primary">
+                  {formatEventDateDisplay(event.date)}
                 </p>
 
                 <div className="mt-3 w-full border-b border-white/20" />
-              </div>
+              </Link>
             ))}
           </div>
         </div>
