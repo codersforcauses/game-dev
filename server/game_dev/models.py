@@ -83,7 +83,7 @@ class Game(models.Model):
 
 
 class GameShowcase(models.Model):
-    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_showcases')
+    game = models.OneToOneField('Game', on_delete=models.CASCADE, related_name='game_showcases')
     description = models.TextField()
 
     def __str__(self):
