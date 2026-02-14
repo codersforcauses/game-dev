@@ -5,7 +5,6 @@ import React from "react";
 import GameArtCarousel from "@/components/ui/GameArtCarousel";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
 import { useGame } from "@/hooks/useGames";
-import { mockGameArtworks } from "@/placeholderDataArtGame"; // Mock data
 
 export default function IndividualGamePage() {
   const router = useRouter();
@@ -64,11 +63,6 @@ export default function IndividualGamePage() {
 
   // TODO ADD EVENT
   const event = "Game Jam November 2025";
-
-  const gameId = Number(id);
-  const artworksForGame = mockGameArtworks.filter(
-    (art) => art.sourceGameId === gameId,
-  );
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
@@ -155,7 +149,7 @@ export default function IndividualGamePage() {
           <h2 className="font-jersey10 text-5xl text-primary">ARTWORK</h2>
 
           <div className="mx-auto mb-6 flex h-auto w-full max-w-4xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-center sm:gap-6 sm:px-6 md:h-60">
-            <GameArtCarousel items={artworksForGame || []} />
+            <GameArtCarousel items={game.artworks || []} />
           </div>
         </section>
       </main>
