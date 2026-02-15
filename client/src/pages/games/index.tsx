@@ -5,7 +5,6 @@ import { SocialIcon } from "react-social-icons";
 
 import GameArtCarousel from "@/components/ui/GameArtCarousel";
 import { useGameshowcase } from "@/hooks/useGameshowcase";
-import { mockGameArtworks } from "@/placeholderDataArtGame"; // Mock data
 
 export default function HomePage() {
   const { data: showcases, isPending, isError, error } = useGameshowcase();
@@ -31,18 +30,6 @@ export default function HomePage() {
       </main>
     );
   }
-
-  // Create a lookup table: { gameId: artwork[] }
-  // O( Art + Game ) complexity
-  const artworksByGame = mockGameArtworks.reduce<
-    Record<number, typeof mockGameArtworks>
-  >((acc, art) => {
-    if (!acc[art.sourceGameId]) {
-      acc[art.sourceGameId] = [];
-    }
-    acc[art.sourceGameId].push(art);
-    return acc;
-  }, {});
 
   return (
     <>
@@ -172,11 +159,7 @@ export default function HomePage() {
                   </div>
 
                   {/* Game Art Carousel */}
-                  {(artworksByGame[showcase.game_id] || []).length > 0 && (
-                    <GameArtCarousel
-                      items={artworksByGame[showcase.game_id] || []}
-                    />
-                  )}
+                  <GameArtCarousel items={showcase.artworks || []} />
 
                   {/* Description */}
                   <div className="mx-auto w-full max-w-6xl px-8 text-base text-light_2">
