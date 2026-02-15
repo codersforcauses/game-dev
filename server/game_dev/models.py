@@ -103,7 +103,7 @@ class Art(models.Model):
     description = models.CharField(max_length=200,)
 
     # Talk to the artwork team to change their model to meet the follow, remove the null and blank
-    source_game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_artwork', null=True, blank=True)
+    source_game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_artwork')
     media = models.ImageField(upload_to='art/', null=False)
     active = models.BooleanField(default=True)
 
