@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/eventHighlightCard";
 import { useExplosionContext } from "@/contexts/ExplosionContext";
 import { placeholderEvents, placeholderGames } from "@/placeholderData";
+import LandingGames from "@/components/ui/landingGames";
+import { UiEvent, useEvents } from "@/hooks/useEvents";
 
 export default function Landing() {
   const [isShaking, setIsShaking] = useState(false);
@@ -34,6 +36,12 @@ export default function Landing() {
     // Prevent event bubbling
     e.stopPropagation();
   };
+  const { data, isPending, isError, isFetching } = useEvents({
+    type: "upcoming",
+    pageSize: 100,
+  });
+
+  const events: UiEvent[] | undefined = data?.items;
 
   const gameLogoImages = [
     { url: "/godot.png", alt: "Godot Logo", position: "start" },
@@ -111,7 +119,7 @@ export default function Landing() {
               <Link href="/committee/about">
                 <Button>More about us</Button>
               </Link>
-              <Link href="/committee/about">
+              <Link href="https://discord.com/invite/JvnuVyMUff">
                 <Button variant={"outline"}>Join our Discord</Button>
               </Link>
             </div>
@@ -173,8 +181,20 @@ export default function Landing() {
       </section>
 
       <section className="bg-background px-10 py-20">
-        <EventCarousel items={placeholderEvents} />
+        {isFetching && !isPending && (
+          <span className="text-sm text-gray-400">Loading...</span>
+        )}
+
+        {isPending && <p>Loading events...</p>}
+
+        {isError && (
+          <p className="text-red-500" role="alert">
+            Failed to load events.
+          </p>
+        )}
+        {!isPending && !isError && <EventCarousel items={events ?? []} />}
       </section>
+
       {/* Leaving commented out until styling/design is confirmed. */}
       {/* <section className="bg-background px-4 py-10 md:px-10">
         <div className="flex w-full px-4">
@@ -206,31 +226,7 @@ export default function Landing() {
               </Link>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-            {placeholderGames.map((game) => (
-              <div
-                key={game.id}
-                className="rounded-xl p-6 text-background shadow-lg"
-              >
-                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-                  <Image
-                    src={game.thumbnail}
-                    alt={game.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
-                  {game.name}
-                </h3>
-
-                <p className="mb-4 text-sm text-primary">{game.description}</p>
-
-                <div className="h-px w-full bg-white/30" />
-              </div>
-            ))}
-          </div>
+          <LandingGames />
         </div>
       </section>
     </motion.div>

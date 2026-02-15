@@ -69,11 +69,20 @@ class Game(models.Model):
 
 
 class GameShowcase(models.Model):
-    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_showcases')
+    game = models.OneToOneField('Game', on_delete=models.CASCADE, related_name='game_showcases')
     description = models.TextField()
 
     def __str__(self):
         return f"{self.game.name}"
+
+
+class SocialMedia(models.Model):
+    link = models.URLField(max_length=2083)
+    member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='social_media_links')
+    socialMediaUserName = models.CharField(max_length=200, blank=True)
+
+    def __str__(self):
+        return f"{self.socialMediaName} link for {self.member.name}"
 
 
 class Committee(models.Model):
