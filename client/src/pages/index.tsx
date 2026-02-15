@@ -9,9 +9,8 @@ import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
-import { useExplosionContext } from "@/contexts/ExplosionContext";
-import { placeholderEvents, placeholderGames } from "@/placeholderData";
 import LandingGames from "@/components/ui/landingGames";
+import { useExplosionContext } from "@/contexts/ExplosionContext";
 import { UiEvent, useEvents } from "@/hooks/useEvents";
 
 export default function Landing() {

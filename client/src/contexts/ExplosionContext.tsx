@@ -1,10 +1,16 @@
 "use client";
 
-import React, { createContext, useContext, useCallback, useState, useRef } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 
 import { DebrisBurst } from "@/components/ui/DebrisBurst";
 import { Explosion } from "@/components/ui/Explosion";
-import { useExplosions, ExplosionPosition } from "@/hooks/useExplosions";
+import { ExplosionPosition,useExplosions } from "@/hooks/useExplosions";
 
 // Max concurrent debris bursts to prevent lag
 const MAX_DEBRIS = 5;
@@ -24,7 +30,9 @@ const ExplosionContext = createContext<ExplosionContextType | null>(null);
 export function useExplosionContext() {
   const context = useContext(ExplosionContext);
   if (!context) {
-    throw new Error("useExplosionContext must be used within ExplosionProvider");
+    throw new Error(
+      "useExplosionContext must be used within ExplosionProvider",
+    );
   }
   return context;
 }
@@ -70,7 +78,7 @@ export function ExplosionProvider({ children }: { children: React.ReactNode }) {
       }, 1500);
       debrisTimeouts.current.add(timeout);
     },
-    [triggerExplosions]
+    [triggerExplosions],
   );
 
   return (
@@ -104,4 +112,3 @@ export function ExplosionProvider({ children }: { children: React.ReactNode }) {
     </ExplosionContext.Provider>
   );
 }
-

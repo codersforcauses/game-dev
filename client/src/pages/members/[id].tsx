@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 
-import { useMember } from "@/hooks/useMember";
-
 import { MemberProfile } from "@/components/main/MemberProfile";
+import { useMember } from "@/hooks/useMember";
 
 // hook assumes correct input, page sanitises to correct type
 function normaliseId(id: string | string[] | number | undefined) {
