@@ -16,7 +16,7 @@ export type UiArtwork = {
   sourceGameId: number;
 };
 
-type ApiArtworks = {
+export type ApiArtworks = {
   art_id: number;
   name: string;
   media: string;
