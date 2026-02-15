@@ -7,6 +7,11 @@ import api from "@/lib/api";
 type Contributor = {
   name: string;
   role: string;
+  social_media?: {
+    socialMediaName: string;
+    link: string;
+    socialMediaUserName: string;
+  }[];
 };
 
 type ApiShowcaseGame = {

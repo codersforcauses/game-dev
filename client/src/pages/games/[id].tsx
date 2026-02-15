@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
+import { SocialIcon } from "react-social-icons";
 
 import GameArtCarousel from "@/components/ui/GameArtCarousel";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
@@ -92,17 +93,29 @@ export default function IndividualGamePage() {
                     Contributors
                   </td>
                   <td className="py-1 text-right sm:py-2">
-                    <div className="grid grid-cols-[auto_auto] gap-x-1 gap-y-1">
+                    <div className="flex flex-col gap-y-1">
                       {game.contributors.map((c) => (
-                        <React.Fragment key={c.member_id}>
+                        <div
+                          key={c.member_id}
+                          className="flex items-center gap-x-2"
+                        >
                           <a
-                            href={`/member/${c.member_id}`}
+                            href={`/members/${c.member_id}`}
                             className="text-primary hover:underline"
                           >
                             {c.name}
                           </a>
-                          <span>{c.role}</span>
-                        </React.Fragment>
+                          {Array.isArray(c.social_media) &&
+                            c.social_media.map((sm) => (
+                              <SocialIcon
+                                key={sm.link}
+                                url={sm.link}
+                                style={{ height: 24, width: 24 }}
+                                title={sm.socialMediaUserName}
+                              />
+                            ))}
+                          <span className="ml-auto">{c.role}</span>
+                        </div>
                       ))}
                     </div>
                   </td>

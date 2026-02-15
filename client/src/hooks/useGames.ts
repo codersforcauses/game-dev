@@ -7,6 +7,11 @@ type Contributor = {
   member_id: number;
   name: string;
   role: string;
+  social_media?: Array<{
+    socialMediaName: string;
+    link: string;
+    socialMediaUserName: string;
+  }>;
 };
 
 export type UiArtwork = {

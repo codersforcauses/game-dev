@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import Member, Game, Event, GameContributor, GameShowcase, Committee
+from .models import Member, Game, Event, GameContributor, GameShowcase, Committee, SocialMedia
+
+
+class SocialMediaInline(admin.TabularInline):
+    model = SocialMedia
+    extra = 1
 
 # from issue-8-merge-40 temp need changes
 from .models import Art, ArtContributor, ArtShowcase
@@ -8,6 +13,7 @@ from .models import Art, ArtContributor, ArtShowcase
 class MemberAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "active", "profile_picture", "about", "pronouns")
     search_fields = ["name", "about"]
+    inlines = [SocialMediaInline]
 
 
 # Sample EventsAdmin Class made
