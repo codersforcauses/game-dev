@@ -111,15 +111,19 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
     game_description = serializers.CharField(source='game.description', read_only=True)
     game_cover_thumbnail = serializers.ImageField(source='game.thumbnail', read_only=True)
     contributors = serializers.SerializerMethodField()
+    artworks = serializers.SerializerMethodField()
 
     class Meta:
         model = GameShowcase
-        fields = ('game_id', 'game_name', 'game_description', 'description', 'contributors', 'game_cover_thumbnail')
+        fields = ('game_id', 'game_name', 'game_description', 'description', 'contributors', 'game_cover_thumbnail', 'artworks')
 
     def get_contributors(self, obj):
         # Always fetch contributors from GameContributor for the related game
         contributors = GameContributor.objects.filter(game=obj.game)
         return ShowcaseContributorSerializer(contributors, many=True).data
+
+    def get_artworks(self, obj):
+        return GameArtSerializer(obj.game.game_artwork.all(), many=True).data
 
 
 class MemberSerializer(serializers.ModelSerializer):
