@@ -4,9 +4,9 @@ import { useCallback, useRef, useState } from "react";
 
 import { ApiMember, useCommittee } from "@/hooks/useCommittee";
 
-import { DebrisBurst } from "../components/ui/DebrisBurst";
-import { Explosion } from "../components/ui/Explosion";
-import { useExplosions } from "../hooks/useExplosions";
+import { DebrisBurst } from "@/components/ui/DebrisBurst";
+import { Explosion } from "@/components/ui/Explosion";
+import { useExplosions } from "@/hooks/useExplosions";
 
 // Max concurrent debris bursts to prevent lag
 const MAX_DEBRIS = 5;

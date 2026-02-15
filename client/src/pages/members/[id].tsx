@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 
 import { useMember } from "@/hooks/useMember";
 
-import { MemberProfile } from "../../components/main/MemberProfile";
+import { MemberProfile } from "@/components/main/MemberProfile";
 
 // hook assumes correct input, page sanitises to correct type
 function normaliseId(id: string | string[] | number | undefined) {

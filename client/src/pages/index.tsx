@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/eventHighlightCard";
 import { placeholderEvents, placeholderGames } from "@/placeholderData";
 
-import { Button } from "../components/ui/button";
-import { DebrisBurst } from "../components/ui/DebrisBurst";
-import { Explosion } from "../components/ui/Explosion";
-import { useExplosions } from "../hooks/useExplosions";
+import { Button } from "@/components/ui/button";
+import { DebrisBurst } from "@/components/ui/DebrisBurst";
+import { Explosion } from "@/components/ui/Explosion";
+import { useExplosions } from "@/hooks/useExplosions";
 
 // Max concurrent debris bursts to prevent lag
 const MAX_DEBRIS = 5;
