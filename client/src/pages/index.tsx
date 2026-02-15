@@ -31,7 +31,6 @@ export default function Landing() {
     // Trigger a massive explosion across the whole page
     if (!containerRef.current) return;
 
-    const rect = containerRef.current.getBoundingClientRect();
     triggerExplosions(
       {
         count: 10, // Lots of explosions!
@@ -40,7 +39,7 @@ export default function Landing() {
         duration: 2000,
         playSound: true,
       },
-      rect,
+      true, // Use margin to keep explosions away from edges
     );
 
     // Trigger screen shake

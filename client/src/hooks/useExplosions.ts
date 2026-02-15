@@ -21,7 +21,6 @@ export type ExplosionPosition = {
   id: string;
   x: number; // Percentage (0-100)
   y: number; // Percentage (0-100)
-  createdAt: number; // Timestamp for cleanup
 };
 
 /**
@@ -54,7 +53,7 @@ export function useExplosions() {
   }, []);
 
   const triggerExplosions = useCallback(
-    (config: ExplosionConfig = {}, containerBounds?: DOMRect | null) => {
+    (config: ExplosionConfig = {}, withMargin?: boolean) => {
       const {
         count = 1,
         minDelay = 0,
@@ -75,8 +74,8 @@ export function useExplosions() {
           // Use specific position provided
           x = position.x;
           y = position.y;
-        } else if (containerBounds) {
-          // Random position within container bounds (10% margin)
+        } else if (withMargin) {
+          // Random position with 10% margin from edges
           const margin = 10;
           x = margin + Math.random() * (100 - margin * 2);
           y = margin + Math.random() * (100 - margin * 2);
@@ -94,7 +93,6 @@ export function useExplosions() {
             id: explosionId,
             x,
             y,
-            createdAt: Date.now(),
           };
 
           setExplosions((prev) => [...prev, explosion]);
