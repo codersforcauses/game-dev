@@ -1,94 +1,39 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import EventCarousel from "@/components/ui/eventCarousel";
 import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
+import { useExplosionContext } from "@/contexts/ExplosionContext";
 import { placeholderEvents, placeholderGames } from "@/placeholderData";
 
-import { Button } from "@/components/ui/button";
-import { DebrisBurst } from "@/components/ui/DebrisBurst";
-import { Explosion } from "@/components/ui/Explosion";
-import { useExplosions } from "@/hooks/useExplosions";
-
-// Max concurrent debris bursts to prevent lag
-const MAX_DEBRIS = 5;
-
 export default function Landing() {
-  const { explosions, triggerExplosions } = useExplosions();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [clickDebris, setClickDebris] = useState<
-    Array<{ id: number; x: number; y: number }>
-  >([]);
-  const lastClickTime = useRef(0);
   const [isShaking, setIsShaking] = useState(false);
+  const { triggerExplosionAt } = useExplosionContext();
 
-  const handleBombClick = () => {
-    // Trigger a massive explosion across the whole page
-    if (!containerRef.current) return;
-
-    triggerExplosions(
-      {
-        count: 10, // Lots of explosions!
-        minDelay: 0,
-        maxDelay: 500, // Stagger them over half a second
-        duration: 2000,
-        playSound: true,
-      },
-      true, // Use margin to keep explosions away from edges
-    );
+  const handleBombClick = (e: React.MouseEvent) => {
+    // Trigger multiple explosions across the page
+    for (let i = 0; i < 10; i++) {
+      setTimeout(() => {
+        // Random position with 10% margin from edges
+        const x = window.innerWidth * (0.1 + Math.random() * 0.8);
+        const y = window.innerHeight * (0.1 + Math.random() * 0.8);
+        triggerExplosionAt(x, y);
+      }, i * 50); // Stagger by 50ms
+    }
 
     // Trigger screen shake
     setIsShaking(true);
-    setTimeout(() => setIsShaking(false), 400); // Shake for 400ms
+    setTimeout(() => setIsShaking(false), 400);
+
+    // Prevent event bubbling
+    e.stopPropagation();
   };
-
-  const handlePageClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!containerRef.current) return;
-
-      // Throttle clicks - 100ms minimum between clicks
-      const now = Date.now();
-      if (now - lastClickTime.current < 100) return;
-      lastClickTime.current = now;
-
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-      // Get absolute pixel position for DebrisBurst
-      const absoluteX = e.clientX;
-      const absoluteY = e.clientY;
-
-      // Create explosion at click position
-      triggerExplosions({
-        count: 1,
-        minDelay: 0,
-        maxDelay: 0,
-        duration: 1500,
-        playSound: true,
-        position: { x, y }, // Pass click position
-      });
-
-      // Add DebrisBurst for click (limit max concurrent)
-      const debrisId = now;
-      setClickDebris((prev) => {
-        const updated = [...prev, { id: debrisId, x: absoluteX, y: absoluteY }];
-        // Keep only the most recent MAX_DEBRIS
-        return updated.slice(-MAX_DEBRIS);
-      });
-
-      // Remove after animation completes
-      setTimeout(() => {
-        setClickDebris((prev) => prev.filter((d) => d.id !== debrisId));
-      }, 1500);
-    },
-    [triggerExplosions],
-  );
 
   const gameLogoImages = [
     { url: "/godot.png", alt: "Godot Logo", position: "start" },
@@ -142,8 +87,6 @@ export default function Landing() {
   return (
     <motion.div
       className="relative"
-      ref={containerRef}
-      onClick={handlePageClick}
       animate={
         isShaking
           ? {
@@ -154,23 +97,6 @@ export default function Landing() {
       }
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      {/* Render explosions */}
-      {explosions.map((explosion) => (
-        <Explosion key={explosion.id} explosion={explosion} />
-      ))}
-      {/* Render DebrisBurst for clicks */}
-      {clickDebris.map((debris) => (
-        <DebrisBurst
-          key={debris.id}
-          x={debris.x}
-          y={debris.y}
-          count={8}
-          power={450}
-          spreadDeg={360}
-          gravity={1200}
-          bounce={0.3}
-        />
-      ))}
       <section className="flex w-full justify-center bg-muted px-12 py-10">
         <div className="flex w-full max-w-[1440px] flex-col items-center justify-between gap-12 md:flex-row">
           <div className="flex max-w-lg flex-col gap-6">
