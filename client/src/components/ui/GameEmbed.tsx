@@ -36,13 +36,13 @@ export function GameEmbed({
             alt="Game Cover"
             width={gameWidth}
             height={gameHeight}
-            className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[calc(-50%-26px)] blur-sm"
-            style={{ width: "auto", height: gameHeight - 26 }}
+            className="absolute translate-x-[-50%] translate-y-[calc(-50%)] blur-sm"
+            style={{ width: "auto", height: gameHeight - 52 }}
           />
           <Button
             onClick={() => setIsPlaying(!isPlaying)}
             size={"lg"}
-            className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[calc(-50%-52px)] text-3xl"
+            className="absolute translate-x-[-50%] translate-y-[calc(-50%)] text-3xl"
           >
             Play
           </Button>

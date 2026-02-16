@@ -90,7 +90,7 @@ export default function IndividualGamePage() {
         <section className="w-full items-center justify-center bg-popover">
           <div className="mx-auto max-w-7xl p-0 sm:p-8">
             {gameEmbedID != "0" ? (
-              <div className="flex justify-center">
+              <div className="m-auto] flex overflow-auto">
                 <GameEmbed
                   embedID={gameEmbedID}
                   gameWidth={gameWidth}
