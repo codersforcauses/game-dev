@@ -1,7 +1,7 @@
 import "leaflet/dist/leaflet.css";
 
 import L from "leaflet";
-import { MapContainer, Marker, Popup,TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 const iconProto = L.Icon.Default.prototype as unknown as {
   _getIconUrl?: unknown;
