@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Game, Member, GameShowcase, GameContributor
+from .models import Event, Game, Member, GameShowcase, GameContributor, SocialMedia
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -22,10 +22,15 @@ class GameContributorSerializer(serializers.ModelSerializer):
     # to link contributors to their member/[id] page
     member_id = serializers.IntegerField(source="member.id")
     name = serializers.CharField(source="member.name")
+    social_media = serializers.SerializerMethodField()
 
     class Meta:
         model = GameContributor
-        fields = ("member_id", "name", "role")
+        fields = ("member_id", "name", "role", "social_media")
+
+    def get_social_media(self, obj):
+        social_links = obj.member.social_media_links.all()
+        return SocialMediaSerializer(social_links, many=True).data
 
 
 class GamesSerializer(serializers.ModelSerializer):
@@ -42,15 +47,19 @@ class GamesSerializer(serializers.ModelSerializer):
 
 
 # Contributor serializer for name and role
+
 class ShowcaseContributorSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='member.name', read_only=True)
     role = serializers.CharField(read_only=True)
-    # social_links = serializers.CharField(source='member.social_links', read_only=True)
-    # socialmedia_name = serializers.CharField(source='member.socialmedia_name', read_only=True)
+    social_media = serializers.SerializerMethodField()
 
     class Meta:
         model = GameContributor
-        fields = ("name", "role")
+        fields = ("name", "role", "social_media")
+
+    def get_social_media(self, obj):
+        social_links = obj.member.social_media_links.all()
+        return SocialMediaSerializer(social_links, many=True).data
 
 
 # Serializer for GameShowcase
@@ -74,7 +83,19 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         return ShowcaseContributorSerializer(contributors, many=True).data
 
 
+class SocialMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialMedia
+        fields = [
+            "link",
+            "socialMediaUserName",
+        ]
+
+
 class MemberSerializer(serializers.ModelSerializer):
+    social_media = SocialMediaSerializer(
+        many=True, source="social_media_links", read_only=True)
+
     class Meta:
         model = Member
         fields = [
@@ -82,4 +103,5 @@ class MemberSerializer(serializers.ModelSerializer):
             "profile_picture",
             "about",
             "pronouns",
+            "social_media",
         ]
