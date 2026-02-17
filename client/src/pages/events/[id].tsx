@@ -1,7 +1,13 @@
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
+import { parseOpenStreetMapUrl } from "@/components/map/osm";
 import { useEvent } from "@/hooks/useEvent";
+
+const EventMap = dynamic(() => import("@/components/map/EventMap"), {
+  ssr: false,
+});
 
 function formatDateTime(dateString: string): string {
   try {
@@ -59,6 +65,9 @@ export default function EventPage() {
       </main>
     );
   }
+  const coords = event.openstreetmap_url
+    ? parseOpenStreetMapUrl(event.openstreetmap_url)
+    : null;
 
   return (
     <main className="mx-auto min-h-dvh max-w-6xl px-6 py-16 md:px-20">
@@ -89,6 +98,14 @@ export default function EventPage() {
           />
         </div>
       </div>
+      {coords && (
+        <div className="mt-6 flex flex-col gap-12 md:flex-row md:gap-20">
+          <div className="flex-1">
+            <EventMap lat={coords.lat} lon={coords.lon} name={event.name} />
+          </div>
+          <div className="lg:w-128 md:w-96" aria-hidden="true" />
+        </div>
+      )}
     </main>
   );
 }

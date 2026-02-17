@@ -12,6 +12,7 @@ type ApiEvent = {
   startTime: string | null;
   location: string;
   cover_image: string | null;
+  openstreetmap_url: string | null;
 };
 
 type UiEvent = Omit<ApiEvent, "cover_image"> & {

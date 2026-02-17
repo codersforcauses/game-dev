@@ -13,12 +13,14 @@ class EventSerializer(serializers.ModelSerializer):
             "publicationDate",
             "cover_image",
             "location",
+            "openstreetmap_url",
         ]
 
 
 # This is child serializer of GameSerializer
 class GameContributorSerializer(serializers.ModelSerializer):
-    member_id = serializers.IntegerField(source="member.id")  # to link contributors to their member/[id] page
+    # to link contributors to their member/[id] page
+    member_id = serializers.IntegerField(source="member.id")
     name = serializers.CharField(source="member.name")
 
     class Meta:
@@ -35,7 +37,8 @@ class GamesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'name', 'description', 'completion', 'active', 'hostURL', 'itchEmbedID', 'thumbnail', 'event', "contributors")
+        fields = ('id', 'name', 'description', 'completion', 'active',
+                  'hostURL', 'itchEmbedID', 'thumbnail', 'event', "contributors")
 
 
 # Contributor serializer for name and role
@@ -54,13 +57,16 @@ class ShowcaseContributorSerializer(serializers.ModelSerializer):
 class GameshowcaseSerializer(serializers.ModelSerializer):
     game_id = serializers.IntegerField(source='game.id', read_only=True)
     game_name = serializers.CharField(source='game.name', read_only=True)
-    game_description = serializers.CharField(source='game.description', read_only=True)
-    game_cover_thumbnail = serializers.ImageField(source='game.thumbnail', read_only=True)
+    game_description = serializers.CharField(
+        source='game.description', read_only=True)
+    game_cover_thumbnail = serializers.ImageField(
+        source='game.thumbnail', read_only=True)
     contributors = serializers.SerializerMethodField()
 
     class Meta:
         model = GameShowcase
-        fields = ('game_id', 'game_name', 'game_description', 'description', 'contributors', 'game_cover_thumbnail')
+        fields = ('game_id', 'game_name', 'game_description',
+                  'description', 'contributors', 'game_cover_thumbnail')
 
     def get_contributors(self, obj):
         # Always fetch contributors from GameContributor for the related game
