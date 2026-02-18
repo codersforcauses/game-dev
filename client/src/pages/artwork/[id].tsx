@@ -122,22 +122,6 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
 
         <ContributorsList contributors={artwork.contributors} />
       </div>
-
-      <div data-layer="Frame 1101" className="Frame1101 bg-slate-950 py-10">
-        <div
-          data-layer="Game Page"
-          className="GamePage flex items-center justify-center bg-dark_2"
-        >
-          <Image
-            alt="Game Image"
-            data-layer="image 15"
-            src="/placeholder1293x405.svg"
-            width="1293"
-            height="405"
-            className="relative block p-5 sm:h-auto sm:max-w-full md:max-h-full md:w-auto"
-          />
-        </div>
-      </div>
     </div>
   );
 }

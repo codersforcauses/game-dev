@@ -7,6 +7,11 @@ type ApiMember = {
   about: string;
   pronouns?: string;
   profile_picture?: string;
+  social_media?: {
+    link: string;
+    socialMediaUserName: string;
+  }[];
+  pk: number;
 };
 
 // return api member, import id number from router, is not enabled if not a number type
