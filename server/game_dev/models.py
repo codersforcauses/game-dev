@@ -82,7 +82,7 @@ class SocialMedia(models.Model):
     socialMediaUserName = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
-        return f"{self.socialMediaName} link for {self.member.name}"
+        return f"{self.socialMediaUserName} link for {self.member.name}"
 
 
 class Committee(models.Model):
