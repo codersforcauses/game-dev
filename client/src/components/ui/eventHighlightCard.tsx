@@ -71,7 +71,7 @@ export function renderSparkleOverlay(card: eventHighlightCardType) {
           width={15}
           height={17}
           alt="sparkle"
-          className="absolute bottom-0 right-0 h-10 w-10 opacity-75 [image-rendering:pixelated]"
+          className="absolute bottom-0 right-0 h-10 w-10 [image-rendering:pixelated]"
         />
       );
     case 3:
@@ -81,7 +81,7 @@ export function renderSparkleOverlay(card: eventHighlightCardType) {
           width={15}
           height={17}
           alt="sparkle"
-          className="absolute bottom-0 left-0 h-10 w-10 opacity-75 [image-rendering:pixelated]"
+          className="absolute bottom-0 left-0 h-10 w-10 [image-rendering:pixelated]"
         />
       );
     default:
