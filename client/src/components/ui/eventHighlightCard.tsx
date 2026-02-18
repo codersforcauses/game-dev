@@ -17,6 +17,8 @@ export type eventHighlightCardType = {
   row: number;
 };
 
+const sparkleImages = ["/sparkle_1.png", "/sparkle_2.png", "/sparkle_3.png"];
+
 // Purple card header section.
 const renderCardHeader = (card: eventHighlightCardType) => {
   // Renders differently if we want the techno border.
@@ -48,12 +50,18 @@ const renderCardHeader = (card: eventHighlightCardType) => {
   );
 };
 
+function getRandomSparkleArray() {
+  const shuffled = [...sparkleImages].sort(() => Math.random() - 0.5);
+  return shuffled;
+}
+
 export function renderSparkleOverlay(card: eventHighlightCardType) {
+  const randomSparkles = getRandomSparkleArray();
   switch (card.id) {
     case 2:
       return (
         <Image
-          src="/sparkles.png"
+          src={randomSparkles[0]}
           width={15}
           height={17}
           alt="sparkle"
@@ -63,7 +71,7 @@ export function renderSparkleOverlay(card: eventHighlightCardType) {
     case 3:
       return (
         <Image
-          src="/sparkles.png"
+          src={randomSparkles[2]}
           width={15}
           height={17}
           alt="sparkle"
