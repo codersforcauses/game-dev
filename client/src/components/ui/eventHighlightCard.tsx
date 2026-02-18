@@ -120,8 +120,8 @@ export function EventHighlightCard({
               className="m-3 size-20 [image-rendering:pixelated]"
             />
           )}
-          {renderSparkleOverlay({ id, title, description, type, image, row })}
         </div>
+        {renderSparkleOverlay({ id, title, description, type, image, row })}
       </div>
     </div>
   );
