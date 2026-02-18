@@ -64,7 +64,7 @@ export default function MemberProjectSection(props: MemberProjectSectionProps) {
                     className="group-hover:brightness-75 group-hover:duration-200"
                   />
                   <Link
-                    className="mt-[-165px] hidden place-self-center rounded-md bg-accent p-3 font-firaCode text-light_1 drop-shadow-md hover:underline group-hover:flex group-hover:blur-0 group-hover:duration-200"
+                    className="mb-16 hidden justify-self-center rounded-md bg-accent p-3 font-firaCode text-light_1 drop-shadow-md hover:underline group-hover:flex group-hover:blur-0 group-hover:duration-200"
                     href="#"
                     onClick={() => window.open(`/games/${game.game_id}`)}
                   >
