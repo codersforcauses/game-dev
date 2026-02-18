@@ -1,13 +1,13 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { ApiMember, useCommittee } from "@/hooks/useCommittee";
 
 export default function AboutPage() {
   const { data: committee, isPending, error, isError } = useCommittee();
 
-  const topRow: ApiMember[] = [];
-  const bottomRow: ApiMember[] = [];
-  //lists that will be populated with member objects in the committee
+  const committeeList: ApiMember[] = [];
+  //List that will be populated with member objects in the committee
   const roleOrder = [
     "President",
     "Vice President",
@@ -44,9 +44,7 @@ export default function AboutPage() {
               <Image
                 src="/landing_placeholder.png"
                 alt="/landing_placeholder.png"
-                width={128}
-                height={128}
-                className="h-[90%] w-[90%]"
+                fill={true}
               />
             </div>
           </div>
@@ -61,23 +59,61 @@ export default function AboutPage() {
     </>
   );
 
+  function committeeImage(profilePic: string) {
+    return (
+      <div className="relative h-[8.75rem] w-[8.25rem] overflow-hidden">
+        <Image
+          src={profilePic === null ? "/landing_placeholder.png" : profilePic}
+          alt="/landing_placeholder.png"
+          fill
+          className="object-cover object-center"
+        />
+      </div>
+    );
+  }
+
+  function committeePortrait(committeeMember: ApiMember, id: number) {
+    return (
+      <>
+        <div className="relative flex h-56 w-56 items-center justify-center bg-[url('/pixel-art-frame.svg')] bg-contain bg-center bg-no-repeat">
+          {committeeMember.pk === 0 ? (
+            committeeImage(committeeMember.profile_picture)
+          ) : (
+            <Link href={`/members/${committeeMember.pk}`}>
+              {committeeImage(committeeMember.profile_picture)}
+            </Link>
+          )}
+        </div>
+        <div className="text-md pl-3 text-left font-firaCode leading-tight">
+          <p className="inline-block max-w-56 bg-card px-2 py-1 text-white">
+            <text className="pr-2">
+              {committeeMember.pk === 0 ? (
+                <>{committeeMember.name}</>
+              ) : (
+                <Link href={`/members/${committeeMember.pk}`}>
+                  {committeeMember.name}
+                </Link>
+              )}
+            </text>
+            <text className="text-left">{committeeMember.pronouns}</text>
+          </p>
+          <p className="w-full bg-card px-2 py-1 text-primary">
+            {roleOrder[id]}
+          </p>
+        </div>
+      </>
+    );
+  }
+
   if (isPending) {
     for (let i = 0; i < 8; i++) {
-      if (i < 4) {
-        topRow.push({
-          name: "Loading...",
-          pronouns: "",
-          profile_picture: "/landing_placeholder.png",
-          about: "",
-        });
-      } else {
-        bottomRow.push({
-          name: "Loading...",
-          pronouns: "",
-          profile_picture: "/landing_placeholder.png",
-          about: "",
-        });
-      }
+      committeeList.push({
+        name: "Loading...",
+        pronouns: "",
+        profile_picture: "/landing_placeholder.png",
+        about: "",
+        pk: 0,
+      });
     }
   } else if (isError) {
     const errorMessage =
@@ -97,11 +133,7 @@ export default function AboutPage() {
     );
   } else {
     for (let i = 0; i < 8; i++) {
-      if (i < 4) {
-        topRow.push(committee[i]);
-      } else {
-        bottomRow.push(committee[i]);
-      }
+      committeeList.push(committee[i]);
     }
   }
 
@@ -109,68 +141,15 @@ export default function AboutPage() {
     <main className="min-h-screen bg-background">
       {about}
       {/* Portraits Section - DARK - Full Width */}
-      <section className="w-full bg-background px-6 py-10 pt-16 md:px-10">
+      <section className="w-full bg-background px-6 py-10 pb-20 pt-16 md:px-10">
         <div className="mx-auto max-w-6xl">
-          {/* Top row - 4 Presidents */}
           <div className="flex flex-wrap justify-center gap-6 md:gap-10">
-            {topRow.map((member, idx) => (
+            {committeeList.map((member, idx) => (
               <div
                 key={`top-${idx}`}
                 className="flex flex-col items-start gap-0"
               >
-                <div className="relative flex h-[11.25rem] w-[11.25rem] items-center justify-center bg-[url('/frame.svg')] bg-contain bg-center bg-no-repeat">
-                  <Image
-                    src={
-                      member.profile_picture === null
-                        ? "/landing_placeholder.png"
-                        : member.profile_picture
-                    }
-                    alt="/landing_placeholder.png"
-                    width={108}
-                    height={108}
-                    className="mb-2 h-[6.75rem] w-[6.75rem]"
-                  />
-                </div>
-                <div className="w-[11.25rem] pl-3 text-left font-firaCode text-[0.5rem] leading-tight">
-                  <p className="inline-block bg-card px-2 py-1 text-white">
-                    {member.name} {member.pronouns}
-                  </p>
-                  <p className="inline-block bg-card px-2 py-1 text-primary">
-                    {roleOrder[idx]}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom row - 4 other roles */}
-          <div className="mt-10 flex flex-wrap justify-center gap-6 md:gap-10">
-            {bottomRow.map((member, idx) => (
-              <div
-                key={`bottom-${idx}`}
-                className="flex flex-col items-start gap-0"
-              >
-                <div className="relative flex h-[11.25rem] w-[11.25rem] items-center justify-center bg-[url('/frame.svg')] bg-contain bg-center bg-no-repeat">
-                  <Image
-                    src={
-                      member.profile_picture === null
-                        ? "/landing_placeholder.png"
-                        : member.profile_picture
-                    }
-                    alt="/landing_placeholder.png"
-                    width={108}
-                    height={108}
-                    className="mb-2 h-[6.75rem] w-[6.75rem]"
-                  />
-                </div>
-                <div className="w-[11.25rem] pl-3 text-left font-firaCode text-[0.5rem] leading-tight">
-                  <p className="inline-block bg-card px-2 py-1 text-white">
-                    {member.name} {member.pronouns}
-                  </p>
-                  <p className="inline-block bg-card px-2 py-1 text-primary">
-                    {roleOrder[4 + idx]}
-                  </p>
-                </div>
+                {committeePortrait(member, idx)}
               </div>
             ))}
           </div>

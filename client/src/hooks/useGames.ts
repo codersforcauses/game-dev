@@ -7,6 +7,11 @@ type Contributor = {
   member_id: number;
   name: string;
   role: string;
+  social_media?: Array<{
+    socialMediaName: string;
+    link: string;
+    socialMediaUserName: string;
+  }>;
 };
 
 type ApiGame = {
@@ -19,6 +24,9 @@ type ApiGame = {
   itchEmbedID: string;
   thumbnail: string | null;
   event: number | null;
+  itchGameEmbedID: string;
+  itchGameWidth: number;
+  itchGameHeight: number;
   contributors: Contributor[];
 };
 

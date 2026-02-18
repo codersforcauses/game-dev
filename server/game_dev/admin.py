@@ -1,10 +1,16 @@
 from django.contrib import admin
-from .models import Art, ArtContributor, Member, Game, Event, GameContributor, GameShowcase, Committee
+from .models import Art, ArtContributor, Member, Game, Event, GameContributor, GameShowcase, Committee, SocialMedia
+
+
+class SocialMediaInline(admin.TabularInline):
+    model = SocialMedia
+    extra = 1
 
 
 class MemberAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "active", "profile_picture", "about", "pronouns")
     search_fields = ["name", "about"]
+    inlines = [SocialMediaInline]
 
 
 # Sample EventsAdmin Class made
@@ -21,7 +27,8 @@ class GameShowcaseAdmin(admin.ModelAdmin):
 
 
 class GamesAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "description", "completion", "active", "hostURL", "itchEmbedID", "thumbnail", "event")
+    list_display = ("id", "name", "description", "completion", "active", "hostURL", "itchEmbedID", "thumbnail", "itchGameEmbedID", "itchGameWidth",
+                    "itchGameHeight", "event")
     search_fields = ["name", "description"]
 
 
