@@ -50,11 +50,14 @@ const renderCardHeader = (card: eventHighlightCardType) => {
   );
 };
 
-function getTwoUniqueIndexes() {
+function getTwoUniqueIndexes(): [number, number] {
   const first = Math.floor(Math.random() * 3);
-  const offset = 1 + Math.floor(Math.random() * 2);
-  const second = (first + offset) % 3;
+  let second = Math.floor(Math.random() * 3);
 
+  // if number already chosen, change it
+  if (second === first) {
+    second = (first + 1) % 3;
+  }
   return [first, second];
 }
 
@@ -68,7 +71,7 @@ export function renderSparkleOverlay(card: eventHighlightCardType) {
           width={15}
           height={17}
           alt="sparkle"
-          className="absolute bottom-0 right-0 h-auto w-[10%] opacity-70 [image-rendering:pixelated]"
+          className="absolute bottom-0 right-0 h-10 w-10 opacity-75 [image-rendering:pixelated]"
         />
       );
     case 3:
@@ -78,7 +81,7 @@ export function renderSparkleOverlay(card: eventHighlightCardType) {
           width={15}
           height={17}
           alt="sparkle"
-          className="absolute bottom-0 left-0 h-auto w-[10%] opacity-70 [image-rendering:pixelated]"
+          className="absolute bottom-0 left-0 h-10 w-10 opacity-75 [image-rendering:pixelated]"
         />
       );
     default:
