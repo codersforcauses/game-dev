@@ -61,13 +61,14 @@ export default function AboutPage() {
 
   function committeeImage(profilePic: string) {
     return (
-      <Image
-        src={profilePic === null ? "/landing_placeholder.png" : profilePic}
-        alt="/landing_placeholder.png"
-        width={132}
-        height={140}
-        className="h-[8.75rem] w-[8.25rem]"
-      />
+      <div className="relative h-[8.75rem] w-[8.25rem] overflow-hidden">
+        <Image
+          src={profilePic === null ? "/landing_placeholder.png" : profilePic}
+          alt="/landing_placeholder.png"
+          fill
+          className="object-cover object-center"
+        />
+      </div>
     );
   }
 
