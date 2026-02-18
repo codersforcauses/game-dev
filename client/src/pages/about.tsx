@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import LandingPlaceholder from "../../public/landing_placeholder.png";
+import LandingPlaceholder from "@/../public/landing_placeholder.png";
 
 import { ApiMember, useCommittee } from "@/hooks/useCommittee";
 
