@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import LandingPlaceholder from "@/../public/landing_placeholder.png";
 
 import { ApiMember, useCommittee } from "@/hooks/useCommittee";
 
@@ -43,7 +42,7 @@ export default function AboutPage() {
           <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-light_2 md:w-96 lg:w-[32rem]">
             <div className="flex h-full w-full items-center justify-center">
               <Image
-                src={LandingPlaceholder}
+                src="/landing_placeholder.png"
                 alt="/landing_placeholder.png"
                 fill={true}
               />
@@ -63,7 +62,7 @@ export default function AboutPage() {
   function committeeImage(profilePic: string) {
     return (
       <Image
-        src={profilePic === null ? LandingPlaceholder : profilePic}
+        src={profilePic === null ? "/landing_placeholder.png" : profilePic}
         alt="/landing_placeholder.png"
         width={132}
         height={140}
