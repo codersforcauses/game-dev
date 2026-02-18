@@ -50,32 +50,35 @@ const renderCardHeader = (card: eventHighlightCardType) => {
   );
 };
 
-function getRandomSparkleArray() {
-  const shuffled = [...sparkleImages].sort(() => Math.random() - 0.5);
-  return shuffled;
+function getTwoUniqueIndexes() {
+  const first = Math.floor(Math.random() * 3);
+  const offset = 1 + Math.floor(Math.random() * 2);
+  const second = (first + offset) % 3;
+
+  return [first, second];
 }
 
 export function renderSparkleOverlay(card: eventHighlightCardType) {
-  const randomSparkles = getRandomSparkleArray();
+  const [i1, i2] = getTwoUniqueIndexes();
   switch (card.id) {
     case 2:
       return (
         <Image
-          src={randomSparkles[0]}
+          src={sparkleImages[i1]}
           width={15}
           height={17}
           alt="sparkle"
-          className="absolute bottom-0 right-0 h-auto w-[10%] [image-rendering:pixelated]"
+          className="absolute bottom-0 right-0 h-auto w-[10%] opacity-70 [image-rendering:pixelated]"
         />
       );
     case 3:
       return (
         <Image
-          src={randomSparkles[2]}
+          src={sparkleImages[i2]}
           width={15}
           height={17}
           alt="sparkle"
-          className="absolute bottom-0 left-0 h-auto w-[15%] [image-rendering:pixelated]"
+          className="absolute bottom-0 left-0 h-auto w-[10%] opacity-70 [image-rendering:pixelated]"
         />
       );
     default:
