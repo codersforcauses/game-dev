@@ -84,9 +84,9 @@ export default function AboutPage() {
             </Link>
           )}
         </div>
-        <div className="text-md pl-3 text-left font-firaCode leading-tight">
-          <p className="inline-block max-w-56 bg-card px-2 py-1 text-white">
-            <text className="pr-2">
+        <div className="text-md max-w-56 pl-3 text-left font-firaCode leading-tight">
+          <p className="inline-block text-white">
+            <text className="inline-block bg-card px-2 py-1">
               {committeeMember.pk === 0 ? (
                 <>{committeeMember.name}</>
               ) : (
@@ -95,9 +95,11 @@ export default function AboutPage() {
                 </Link>
               )}
             </text>
-            <text className="text-left">{committeeMember.pronouns}</text>
+            <text className="inline-block bg-card px-2 py-1 empty:hidden">
+              {committeeMember.pronouns}
+            </text>
           </p>
-          <p className="w-full bg-card px-2 py-1 text-primary">
+          <p className="inline-block bg-card px-2 py-1 text-primary">
             {roleOrder[id]}
           </p>
         </div>
