@@ -95,10 +95,8 @@ export default function AboutPage() {
                 </Link>
               )}
             </text>
-            <text className="inline-block bg-card px-2 py-1">
-              {committeeMember.pronouns === ""
-                ? "No Pronouns"
-                : committeeMember.pronouns}
+            <text className="inline-block bg-card px-2 py-1 empty:hidden">
+              {committeeMember.pronouns}
             </text>
           </p>
           <p className="inline-block bg-card px-2 py-1 text-primary">
