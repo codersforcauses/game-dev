@@ -35,7 +35,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <ReactQueryDevtools initialIsOpen={false} />
       <ExplosionProvider>
         <main
-          className={`font-sans ` + fonts.map((font) => font.variable).join(" ")}
+          className={
+            `font-sans ` + fonts.map((font) => font.variable).join(" ")
+          }
         >
           <Navbar />
           <Component {...pageProps} />
