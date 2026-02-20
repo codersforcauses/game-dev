@@ -180,10 +180,10 @@ export default function Landing() {
             </div>
 
             <div className="flex flex-col items-end gap-4">
-              <Link href="/">
+              <Link href="/games">
                 <Button>See more games by our members</Button>
               </Link>
-              <Link href="/">
+              <Link href="/artwork">
                 <Button variant={"outline"}>
                   See other cool stuff our members have created
                 </Button>
