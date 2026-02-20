@@ -13,3 +13,5 @@ Profiles of club members can be added and edited at the row 'Member' of the GAME
 **About:** Optional field for a bio. A character field of maximum length 256 characters.
 
 **Pronouns:** Optional field for the member's pronouns. A character field of maximum length 20 characters.
+
+**Social media links:** Optional section to display links to the member's social media profiles. Requires a link to the profile (character field of maximum length 2083) and, optionally, the profile username (character field of maximum length 200). If a username is not supplied then only a social media icon will be displayed with the link attached, otherwise the username will be placed next to the relevant icon. The type of icon to be displayed (e.g. instagram, linkedin, generic link) is inferred from the social media link provided.
