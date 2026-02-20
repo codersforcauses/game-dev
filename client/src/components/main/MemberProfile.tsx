@@ -15,6 +15,7 @@ export type MemberProfileData = {
     link: string;
     socialMediaUserName: string;
   }[];
+  pk: number;
 };
 
 type MemberProfileProps = {
