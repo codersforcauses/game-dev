@@ -2,6 +2,7 @@ from django.db import models
 from requests import get
 from django.core.files.base import ContentFile
 
+
 class Member(models.Model):
     name = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
@@ -30,6 +31,7 @@ class Event(models.Model):
         def jamFail():
             self.jamID = None
             self.games = []
+
         if self.jamID is not None:
             try:
                 r = get(f"https://itch.io/jam/{self.jamID}/results.json")
@@ -49,24 +51,26 @@ class Event(models.Model):
                     cur = Game.objects.get(hostURL=i["url"], name=i["title"])
                     games.append(cur.pk)
                 except Game.DoesNotExist:
-                    #Uploads each image to the backend from their urls
+                    # Uploads each image to the backend from their url
                     imageURL = i["cover_url"]
                     image = get(imageURL)
                     imageName = imageURL.split("/")[-1]
                     imageContent = ContentFile(image.content)
-                    
-                    Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail="" ,event=self)
+
+                    Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail="", event=self)
                     Game.objects.get(name=i["title"], hostURL=i["url"]).thumbnail.save(imageName, imageContent, save=True)
                     games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
-                    
+
                     contributors = i["contributors"]
                     for x in contributors:
                         try:
                             socialMedia = SocialMedia.objects.get(socialMediaUserName=x["name"])
                         except Exception as e:
+                            print(e)
                             continue
-                        GameContributor.objects.create(game=Game.objects.get(name=i["title"], hostURL=i["url"]), member=socialMedia.member, role="Please add role manually")
-                    
+                        GameContributor.objects.create(game=Game.objects.get(name=i["title"], hostURL=i["url"]),
+                                                       member=socialMedia.member, role="Please add role manually")
+
             self.games = games
         else:
             self.games = []
@@ -167,31 +171,3 @@ class Committee(models.Model):
 
     def __str__(self):
         return self.id.name
-
-
-"""
-class Jam(models.Model):
-    id = models.PositiveBigIntegerField(primary_key=True, unique=True)
-    name = models.CharField(max_length=75, unique=True, blank=False)
-    games = models.JSONField(default=list, blank=True)
-
-    def __str__(self):
-        return self.name
-
-    def save(self, force_insert=False, force_update=False):
-        r = get(f"https://itch.io/jam/{self.id}/results.json")
-        try:
-            results = r.json()["results"]
-        except KeyError:
-            print("Error: No results for this Jam ID could be found")
-            return
-        games = []
-        for i in results:
-            try:
-                cur = Game.objects.get(hostURL=i["url"], name=i["title"])
-                games.append(cur.pk)
-            except Game.DoesNotExist:
-                Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail=i["cover_url"])
-                games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
-        self.games = games
-        return super().save(force_insert, force_update)"""
