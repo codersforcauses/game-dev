@@ -6,6 +6,7 @@ import type { AppProps } from "next/app";
 import { Fira_Code, Inter as FontSans, Jersey_10 } from "next/font/google";
 
 import Navbar from "@/components/main/Navbar";
+import Footer from "@/components/main/Footer";
 import { ExplosionProvider } from "@/contexts/ExplosionContext";
 
 const fontSans = FontSans({
