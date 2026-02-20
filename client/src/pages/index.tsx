@@ -130,7 +130,7 @@ export default function Landing() {
               width={600}
               height={430}
               alt="placeholder"
-              className="min-w-80 border-[26px] border-accent [clip-path:polygon(20px_20px,calc(100%-20px)_20px,100%_32px,100%_30%,calc(100%-20px)_45%,calc(100%-20px)_calc(100%-8px),80%_calc(100%-8px),75%_calc(100%-20px),20px_calc(100%-20px),0%_60%,0%_30%,20px_25%)]"
+              className="retroBorder min-w-80"
             />
             <Image
               src="/bomb.png"

@@ -5,7 +5,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 import { Fira_Code, Inter as FontSans, Jersey_10 } from "next/font/google";
 
-import Footer from "@/components/main/Footer";
 import Navbar from "@/components/main/Navbar";
 import { ExplosionProvider } from "@/contexts/ExplosionContext";
 
@@ -35,9 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ReactQueryDevtools initialIsOpen={false} />
       <ExplosionProvider>
         <main
-          className={
-            `font-sans ` + fonts.map((font) => font.variable).join(" ")
-          }
+          className={`font-sans ` + fonts.map((font) => font.variable).join(" ")}
         >
           <Navbar />
           <Component {...pageProps} />

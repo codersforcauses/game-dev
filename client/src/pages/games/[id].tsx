@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { SocialIcon } from "react-social-icons";
 
+import { GameEmbed } from "@/components/ui/GameEmbed";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
 import { useGame } from "@/hooks/useGames";
 
@@ -51,6 +52,9 @@ export default function IndividualGamePage() {
   const gameTitle = game.name;
   const gameCover = game.gameCover;
   const gameDescription = game.description.split("\n");
+  const gameEmbedID = game.itchGameEmbedID;
+  const gameWidth = game.itchGameWidth;
+  const gameHeight = game.itchGameHeight;
 
   const completionLabels: Record<number, string> = {
     1: "WIP",
@@ -83,16 +87,27 @@ export default function IndividualGamePage() {
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       <main>
-        <section className="w-full bg-popover">
-          <div className="mx-auto max-w-7xl p-0 sm:p-8">
-            <Image
-              src={gameCover}
-              alt="Game Cover"
-              width={800}
-              height={800}
-              className="max-h-[60vh] w-full object-cover sm:mx-auto sm:h-auto sm:max-h-[60vh] sm:rounded-2xl sm:object-contain"
-              priority
-            />
+        <section className="w-full items-center justify-center bg-popover">
+          <div className="mx-auto flex max-w-7xl justify-center p-0 sm:p-8">
+            {gameEmbedID != "0" ? (
+              <div className="m-auto flex overflow-auto">
+                <GameEmbed
+                  embedID={gameEmbedID}
+                  gameWidth={gameWidth}
+                  gameHeight={gameHeight}
+                  gameImage={gameCover}
+                />
+              </div>
+            ) : (
+              <Image
+                src={gameCover}
+                alt="Game Cover"
+                width={800}
+                height={800}
+                className="max-h-[60vh] w-full object-cover sm:mx-auto sm:h-auto sm:max-h-[60vh] sm:rounded-2xl sm:object-contain"
+                priority
+              />
+            )}
           </div>
         </section>
 
@@ -171,9 +186,8 @@ export default function IndividualGamePage() {
         </section>
 
         <section className="mt-8 flex w-full flex-col items-center gap-6">
-          {game.itchEmbedID && (
-            <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
-          )}
+          <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
+
           <h2 className="font-jersey10 text-5xl text-primary">ARTWORK</h2>
 
           <div className="mx-auto mb-6 flex h-auto w-full max-w-4xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-center sm:gap-6 sm:px-6 md:h-60">
