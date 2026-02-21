@@ -124,14 +124,14 @@ export default function AboutPage() {
         : "Failed to load Committee Members.";
 
     return (
-      <>
+      <main className="relative min-h-screen bg-background">
         {about}
-        <main className="mx-auto min-h-screen max-w-6xl px-6 py-16 md:px-20">
+        <div className="mx-auto min-h-screen max-w-6xl px-6 py-16 md:px-20">
           <p className="text-red-500" role="alert">
             {errorMessage}
           </p>
-        </main>
-      </>
+        </div>
+      </main>
     );
   } else {
     for (let i = 0; i < 8; i++) {
@@ -140,7 +140,7 @@ export default function AboutPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="relative min-h-screen bg-background">
       {about}
       {/* Portraits Section - DARK - Full Width */}
       <section className="w-full bg-background px-6 py-10 pb-20 pt-16 md:px-10">

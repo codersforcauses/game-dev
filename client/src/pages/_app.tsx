@@ -6,6 +6,8 @@ import type { AppProps } from "next/app";
 import { Fira_Code, Inter as FontSans, Jersey_10 } from "next/font/google";
 
 import Navbar from "@/components/main/Navbar";
+import Footer from "@/components/main/Footer";
+import { ExplosionProvider } from "@/contexts/ExplosionContext";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -31,12 +33,17 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <main
-        className={`font-sans ` + fonts.map((font) => font.variable).join(" ")}
-      >
-        <Navbar />
-        <Component {...pageProps} />
-      </main>
+      <ExplosionProvider>
+        <main
+          className={
+            `font-sans ` + fonts.map((font) => font.variable).join(" ")
+          }
+        >
+          <Navbar />
+          <Component {...pageProps} />
+          <Footer />
+        </main>
+      </ExplosionProvider>
     </QueryClientProvider>
   );
 }
