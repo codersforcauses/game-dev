@@ -4,7 +4,8 @@ from django.db import models
 class Member(models.Model):
     name = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
-    profile_picture = models.ImageField(upload_to="profiles/", null=True, blank=True)
+    profile_picture = models.ImageField(
+        upload_to="profiles/", null=True, blank=True)
     about = models.CharField(max_length=256, blank=True)
     pronouns = models.CharField(max_length=20, blank=True)
 
@@ -19,6 +20,7 @@ class Event(models.Model):
     publicationDate = models.DateField()
     cover_image = models.ImageField(upload_to="events/", null=True)
     location = models.CharField(max_length=256)
+    openstreetmap_url = models.URLField(max_length=500, blank=True)
 
     def __str__(self):
         return self.name
@@ -26,8 +28,10 @@ class Event(models.Model):
 
 # GameContributor table: links Game, Member, and role (composite PK)
 class GameContributor(models.Model):
-    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_contributors')
-    member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='member_games')
+    game = models.ForeignKey(
+        'Game', on_delete=models.CASCADE, related_name='game_contributors')
+    member = models.ForeignKey(
+        'Member', on_delete=models.CASCADE, related_name='member_games')
     role = models.CharField(max_length=100)
 
     class Meta:
@@ -62,7 +66,8 @@ class Game(models.Model):
     )
 
     thumbnail = models.ImageField(upload_to="games/", null=True)
-    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
+    event = models.ForeignKey(
+        Event, on_delete=models.SET_NULL, null=True, blank=True)
 
     itchGameEmbedID = models.PositiveBigIntegerField(
         default=None,
