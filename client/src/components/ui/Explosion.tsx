@@ -10,13 +10,13 @@ type ExplosionProps = {
   xOffset?: number;
 };
 
-const Explosion = ({
+export function Explosion({
   colour1,
   colour2,
   count,
   yOffset = 0,
   xOffset = 0,
-}: ExplosionProps) => {
+}: ExplosionProps) {
   const particles = Array.from({ length: count });
 
   return (
@@ -52,6 +52,6 @@ const Explosion = ({
       })}
     </div>
   );
-};
+}
 
 export default Explosion;
