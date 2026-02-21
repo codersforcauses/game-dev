@@ -136,6 +136,9 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         contributors = GameContributor.objects.filter(game=obj.game)
         return ShowcaseContributorSerializer(contributors, many=True).data
 
+    def get_artworks(self, obj):
+        return GameArtSerializer(obj.game.game_artwork.all(), many=True).data
+
 
 class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -144,9 +147,6 @@ class SocialMediaSerializer(serializers.ModelSerializer):
             "link",
             "socialMediaUserName",
         ]
-
-    def get_artworks(self, obj):
-        return GameArtSerializer(obj.game.game_artwork.all(), many=True).data
 
 
 class MemberSerializer(serializers.ModelSerializer):
