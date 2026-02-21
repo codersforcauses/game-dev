@@ -1,16 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 import EventCarousel from "@/components/ui/eventCarousel";
 import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
+import Explosion from "@/components/ui/Explosion";
 import { placeholderEvents, placeholderGames } from "@/placeholderData";
 
 import { Button } from "../components/ui/button";
 
 export default function Landing() {
+  const [showExplosion, setShowExplosion] = useState(false);
+
+  const handleExplode = () => {
+    setShowExplosion(true);
+    setTimeout(() => setShowExplosion(false), 1000);
+  };
+
   const gameLogoImages = [
     { url: "/godot.png", alt: "Godot Logo", position: "start" },
     { url: "/unity-logo.png", alt: "Unity Logo", position: "end" },
@@ -90,13 +99,21 @@ export default function Landing() {
               alt="placeholder"
               className="min-w-80 border-[26px] border-accent [clip-path:polygon(20px_20px,calc(100%-20px)_20px,100%_32px,100%_30%,calc(100%-20px)_45%,calc(100%-20px)_calc(100%-8px),80%_calc(100%-8px),75%_calc(100%-20px),20px_calc(100%-20px),0%_60%,0%_30%,20px_25%)]"
             />
-            <Image
-              src="/bomb.png"
-              width={96}
-              height={156}
-              alt="placeholder"
-              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 [image-rendering:pixelated]"
-            />
+            <div
+              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 cursor-pointer"
+              onClick={handleExplode}
+            >
+              {showExplosion && (
+                <Explosion colour1="#ef4444" colour2="#f59e0b" count={100} />
+              )}
+              <Image
+                src="/bomb.png"
+                width={96}
+                height={156}
+                alt="bomb"
+                className="h-auto w-full transition-transform [image-rendering:pixelated] active:scale-90"
+              />
+            </div>
           </div>
         </div>
       </section>
