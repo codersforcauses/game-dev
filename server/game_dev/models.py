@@ -64,16 +64,39 @@ class Game(models.Model):
     thumbnail = models.ImageField(upload_to="games/", null=True)
     event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
 
+    itchGameEmbedID = models.PositiveBigIntegerField(
+        default=None,
+        null=True,
+        blank=True,
+        help_text="If a game has a web demo stored on itch.io, please enter the embed ID"
+    )
+
+    itchGameWidth = models.PositiveBigIntegerField(
+        default=0
+    )
+    itchGameHeight = models.PositiveBigIntegerField(
+        default=0
+    )
+
     def __str__(self):
         return str(self.name)
 
 
 class GameShowcase(models.Model):
-    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_showcases')
+    game = models.OneToOneField('Game', on_delete=models.CASCADE, related_name='game_showcases')
     description = models.TextField()
 
     def __str__(self):
         return f"{self.game.name}"
+
+
+class SocialMedia(models.Model):
+    link = models.URLField(max_length=2083)
+    member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='social_media_links')
+    socialMediaUserName = models.CharField(max_length=200, blank=True)
+
+    def __str__(self):
+        return f"{self.socialMediaUserName} link for {self.member.name}"
 
 
 class Committee(models.Model):

@@ -8,11 +8,19 @@ import {
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
 import Explosion from "@/components/ui/Explosion";
-import { placeholderEvents, placeholderGames } from "@/placeholderData";
+import LandingGames from "@/components/ui/landingGames";
+import { UiEvent, useEvents } from "@/hooks/useEvents";
 
 import { Button } from "../components/ui/button";
 
 export default function Landing() {
+  const { data, isPending, isError, isFetching } = useEvents({
+    type: "upcoming",
+    pageSize: 100,
+  });
+
+  const events: UiEvent[] | undefined = data?.items;
+
   const [showExplosion, setShowExplosion] = useState(false);
 
   const handleExplode = () => {
@@ -87,7 +95,7 @@ export default function Landing() {
               <Link href="/committee/about">
                 <Button>More about us</Button>
               </Link>
-              <Link href="/committee/about">
+              <Link href="https://discord.com/invite/JvnuVyMUff">
                 <Button variant={"outline"}>Join our Discord</Button>
               </Link>
             </div>
@@ -99,7 +107,7 @@ export default function Landing() {
               width={600}
               height={430}
               alt="placeholder"
-              className="min-w-80 border-[26px] border-accent [clip-path:polygon(20px_20px,calc(100%-20px)_20px,100%_32px,100%_30%,calc(100%-20px)_45%,calc(100%-20px)_calc(100%-8px),80%_calc(100%-8px),75%_calc(100%-20px),20px_calc(100%-20px),0%_60%,0%_30%,20px_25%)]"
+              className="retroBorder min-w-80"
             />
             <div
               className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 cursor-pointer"
@@ -164,8 +172,20 @@ export default function Landing() {
       </section>
 
       <section className="bg-background px-10 py-20">
-        <EventCarousel items={placeholderEvents} />
+        {isFetching && !isPending && (
+          <span className="text-sm text-gray-400">Loading...</span>
+        )}
+
+        {isPending && <p>Loading events...</p>}
+
+        {isError && (
+          <p className="text-red-500" role="alert">
+            Failed to load events.
+          </p>
+        )}
+        {!isPending && !isError && <EventCarousel items={events ?? []} />}
       </section>
+
       {/* Leaving commented out until styling/design is confirmed. */}
       {/* <section className="bg-background px-4 py-10 md:px-10">
         <div className="flex w-full px-4">
@@ -187,41 +207,17 @@ export default function Landing() {
             </div>
 
             <div className="flex flex-col items-end gap-4">
-              <Link href="/">
+              <Link href="/games">
                 <Button>See more games by our members</Button>
               </Link>
-              <Link href="/">
+              <Link href="/artwork">
                 <Button variant={"outline"}>
                   See other cool stuff our members have created
                 </Button>
               </Link>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-            {placeholderGames.map((game) => (
-              <div
-                key={game.id}
-                className="rounded-xl p-6 text-background shadow-lg"
-              >
-                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-                  <Image
-                    src={game.thumbnail}
-                    alt={game.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
-                  {game.name}
-                </h3>
-
-                <p className="mb-4 text-sm text-primary">{game.description}</p>
-
-                <div className="h-px w-full bg-white/30" />
-              </div>
-            ))}
-          </div>
+          <LandingGames />
         </div>
       </section>
     </div>

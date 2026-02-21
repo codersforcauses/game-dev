@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
+import { SocialIcon } from "react-social-icons";
 
+import { GameEmbed } from "@/components/ui/GameEmbed";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
 import { useGame } from "@/hooks/useGames";
 
@@ -50,6 +52,9 @@ export default function IndividualGamePage() {
   const gameTitle = game.name;
   const gameCover = game.gameCover;
   const gameDescription = game.description.split("\n");
+  const gameEmbedID = game.itchGameEmbedID;
+  const gameWidth = game.itchGameWidth;
+  const gameHeight = game.itchGameHeight;
 
   const completionLabels: Record<number, string> = {
     1: "WIP",
@@ -82,16 +87,27 @@ export default function IndividualGamePage() {
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       <main>
-        <section className="w-full bg-popover">
-          <div className="mx-auto max-w-7xl p-0 sm:p-8">
-            <Image
-              src={gameCover}
-              alt="Game Cover"
-              width={800}
-              height={800}
-              className="max-h-[60vh] w-full object-cover sm:mx-auto sm:h-auto sm:max-h-[60vh] sm:rounded-2xl sm:object-contain"
-              priority
-            />
+        <section className="w-full items-center justify-center bg-popover">
+          <div className="mx-auto flex max-w-7xl justify-center p-0 sm:p-8">
+            {gameEmbedID != "0" ? (
+              <div className="m-auto flex overflow-auto">
+                <GameEmbed
+                  embedID={gameEmbedID}
+                  gameWidth={gameWidth}
+                  gameHeight={gameHeight}
+                  gameImage={gameCover}
+                />
+              </div>
+            ) : (
+              <Image
+                src={gameCover}
+                alt="Game Cover"
+                width={800}
+                height={800}
+                className="max-h-[60vh] w-full object-cover sm:mx-auto sm:h-auto sm:max-h-[60vh] sm:rounded-2xl sm:object-contain"
+                priority
+              />
+            )}
           </div>
         </section>
 
@@ -107,17 +123,29 @@ export default function IndividualGamePage() {
                     Contributors
                   </td>
                   <td className="py-1 text-right sm:py-2">
-                    <div className="grid grid-cols-[auto_auto] gap-x-1 gap-y-1">
+                    <div className="flex flex-col gap-y-1">
                       {game.contributors.map((c) => (
-                        <React.Fragment key={c.member_id}>
+                        <div
+                          key={c.member_id}
+                          className="flex items-center gap-x-2"
+                        >
                           <a
-                            href={`/member/${c.member_id}`}
+                            href={`/members/${c.member_id}`}
                             className="text-primary hover:underline"
                           >
                             {c.name}
                           </a>
-                          <span>{c.role}</span>
-                        </React.Fragment>
+                          {Array.isArray(c.social_media) &&
+                            c.social_media.map((sm) => (
+                              <SocialIcon
+                                key={sm.link}
+                                url={sm.link}
+                                style={{ height: 24, width: 24 }}
+                                title={sm.socialMediaUserName}
+                              />
+                            ))}
+                          <span className="ml-auto">{c.role}</span>
+                        </div>
                       ))}
                     </div>
                   </td>
@@ -158,9 +186,8 @@ export default function IndividualGamePage() {
         </section>
 
         <section className="mt-8 flex w-full flex-col items-center gap-6">
-          {game.itchEmbedID && (
-            <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
-          )}
+          <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
+
           <h2 className="font-jersey10 text-5xl text-primary">ARTWORK</h2>
 
           <div className="mx-auto mb-6 flex h-auto w-full max-w-4xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-center sm:gap-6 sm:px-6 md:h-60">
