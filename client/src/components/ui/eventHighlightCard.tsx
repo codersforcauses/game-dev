@@ -50,17 +50,18 @@ const renderCardHeader = (card: eventHighlightCardType) => {
   );
 };
 
+// helper to ensure sparkles are different
 function getTwoUniqueIndexes(): [number, number] {
   const first = Math.floor(Math.random() * 3);
   let second = Math.floor(Math.random() * 3);
 
-  // if number already chosen, change it
   if (second === first) {
     second = (first + 1) % 3;
   }
   return [first, second];
 }
 
+// only render sparkles on specific cards
 export function renderSparkleOverlay(card: eventHighlightCardType) {
   const [i1, i2] = getTwoUniqueIndexes();
   switch (card.id) {
