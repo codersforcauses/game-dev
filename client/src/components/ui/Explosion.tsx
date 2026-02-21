@@ -8,6 +8,7 @@ type ExplosionProps = {
 
 const Explosion = ({ colour1, colour2, count }: ExplosionProps) => {
   const particles = Array.from({ length: count });
+  const randomOffset = Math.random() * 10;
 
   return (
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
@@ -16,9 +17,8 @@ const Explosion = ({ colour1, colour2, count }: ExplosionProps) => {
           key={i}
           initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
           animate={{
-            // Randomly scatter particles in 360 degrees
-            x: Math.cos(i) * 150,
-            y: Math.sin(i) * 150,
+            x: Math.cos(i + randomOffset) * 150,
+            y: Math.sin(i + randomOffset) * 150,
             opacity: 0,
             scale: 0,
           }}
