@@ -1,27 +1,13 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 
+import { EventDateDisplay } from "@/components/ui/EventDateDisplay";
 import { useEvent } from "@/hooks/useEvent";
-
-function formatDateTime(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat("en-AU", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(date);
-  } catch {
-    return dateString; // Fallback to original string if parsing fails
-  }
-}
 
 export default function EventPage() {
   const router = useRouter();
   const { id } = router.query;
-  // Wait for router to be ready before fetching (router.query is empty on initial SSR)
+
   const {
     data: event,
     isPending,
@@ -70,8 +56,9 @@ export default function EventPage() {
             aria-hidden="true"
           />
           <p className="mt-6 text-lg">
-            {formatDateTime(event.date)} · {event.location}
+            <EventDateDisplay date={event.date} />
           </p>
+          <div className="text-primary">{event.location} </div>
           <p className="mt-4 max-w-lg text-base leading-relaxed">
             {event.description}
           </p>
