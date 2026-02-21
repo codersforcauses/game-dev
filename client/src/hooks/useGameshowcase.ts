@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
+import type { ApiArtworks, UiArtwork } from "@/hooks/useGames";
 import api from "@/lib/api";
 
 type Contributor = {
@@ -20,15 +21,18 @@ type ApiShowcaseGame = {
   game_description: string;
   contributors: Contributor[];
   game_cover_thumbnail?: string | null;
+  artworks: ApiArtworks[];
 };
 
-type UiShowcaseGame = Omit<ApiShowcaseGame, "game_cover_thumbnail"> & {
+type UiShowcaseGame = Omit<
+  ApiShowcaseGame,
+  "game_cover_thumbnail" | "artworks"
+> & {
   gameCover: string;
+  artworks: UiArtwork[];
 };
 
-function getGameCoverUrl(
-  game_cover_thumbnail: string | null | undefined,
-): string {
+function getMediaUrl(game_cover_thumbnail: string | null | undefined): string {
   if (!game_cover_thumbnail) return "/game_dev_club_logo.svg";
   if (game_cover_thumbnail.startsWith("http")) return game_cover_thumbnail;
   // Use environment variable for Django backend base URL
@@ -40,7 +44,13 @@ function getGameCoverUrl(
 function transformApiShowcaseGameToUi(data: ApiShowcaseGame): UiShowcaseGame {
   return {
     ...data,
-    gameCover: getGameCoverUrl(data.game_cover_thumbnail),
+    gameCover: getMediaUrl(data.game_cover_thumbnail),
+    artworks: data.artworks.map((a) => ({
+      id: a.art_id,
+      name: a.name,
+      image: getMediaUrl(a.media),
+      sourceGameId: a.source_game_id,
+    })),
   };
 }
 
