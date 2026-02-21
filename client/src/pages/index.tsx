@@ -106,7 +106,12 @@ export default function Landing() {
               onClick={handleExplode}
             >
               {showExplosion && (
-                <Explosion colour1="#ef4444" colour2="#f59e0b" count={25} />
+                <Explosion
+                  colour1="#ef4444"
+                  colour2="#f59e0b"
+                  count={25}
+                  yOffset={40}
+                />
               )}
               <Image
                 src="/bomb.png"
