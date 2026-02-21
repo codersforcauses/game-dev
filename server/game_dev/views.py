@@ -37,6 +37,9 @@ class EventListAPIView(generics.ListAPIView):
         qs = Event.objects.all()
         type_param = self.request.query_params.get("type")
         now = timezone.now()
+        nowdate = now.date()
+        # Only show published events
+        qs = qs.filter(publicationDate__lte=nowdate)
 
         # Default to upcoming when type is missing/empty
         if not type_param:
