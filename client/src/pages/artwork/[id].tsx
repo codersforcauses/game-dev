@@ -77,7 +77,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
           <div className="flex flex-1 flex-col gap-10">
             <div
               data-layer="Art Name"
-              className="ArtName justify-start font-sans text-8xl font-normal leading-[76px] tracking-wide text-light_3"
+              className="ArtName text-light_3 justify-start font-jersey10 text-8xl font-normal leading-[76px] tracking-wide text-accent"
             >
               {artwork.name}
             </div>
@@ -90,7 +90,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
                 data-layer="Artwork Description"
                 className="justify-start self-stretch"
               >
-                <span className="font-sans text-xl font-normal leading-8 tracking-wide text-light_1">
+                <span className="mb-2 font-sans text-xl font-normal leading-8 tracking-wide text-light_1">
                   {artwork.description}
                 </span>
               </div>
@@ -104,7 +104,7 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
       <div className="p-10 md:hidden">
         <div
           data-layer="Art Name"
-          className="ArtName flex justify-center font-sans text-8xl font-normal leading-[76px] tracking-wide text-light_3"
+          className="ArtName text-light_3 flex justify-center font-sans text-8xl font-normal leading-[76px] tracking-wide"
         >
           {artwork.name}
         </div>
@@ -122,6 +122,11 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
 
         <ContributorsList contributors={artwork.contributors} />
       </div>
+
+      <div
+        data-layer="Frame 1101"
+        className="Frame1101 bg-slate-950 py-10"
+      ></div>
     </div>
   );
 }

@@ -82,6 +82,31 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         return ShowcaseContributorSerializer(contributors, many=True).data
 
 
+class SocialMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialMedia
+        fields = [
+            "link",
+            "socialMediaUserName",
+        ]
+
+
+class MemberSerializer(serializers.ModelSerializer):
+    social_media = SocialMediaSerializer(
+        many=True, source="social_media_links", read_only=True)
+
+    class Meta:
+        model = Member
+        fields = [
+            "name",
+            "profile_picture",
+            "about",
+            "pronouns",
+            "social_media",
+            "pk"
+        ]
+
+
 class ArtContributorSerializer(serializers.ModelSerializer):
     member_id = serializers.IntegerField(source='member.id', read_only=True)
     member_name = serializers.CharField(source='member.name', read_only=True)
@@ -113,28 +138,3 @@ class ArtShowcaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArtShowcase
         fields = ['id', 'description', 'art', 'art_name']
-
-
-class SocialMediaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SocialMedia
-        fields = [
-            "link",
-            "socialMediaUserName",
-        ]
-
-
-class MemberSerializer(serializers.ModelSerializer):
-    social_media = SocialMediaSerializer(
-        many=True, source="social_media_links", read_only=True)
-
-    class Meta:
-        model = Member
-        fields = [
-            "name",
-            "profile_picture",
-            "about",
-            "pronouns",
-            "social_media",
-            "pk"
-        ]

@@ -24,7 +24,7 @@ export default function ContributorsList({
       >
         <div
           data-layer="Contributors"
-          className="Contributors justify-start font-sans text-4xl font-normal tracking-wide text-light_3"
+          className="ArtName text-light_3 justify-start font-jersey10 text-6xl font-normal leading-[76px] tracking-wide text-accent"
         >
           Contributors
         </div>
@@ -38,7 +38,7 @@ export default function ContributorsList({
             {contributors.map((contributor) => (
               <div
                 key={contributor.id}
-                className="font-sans text-[15px] text-light_1"
+                className="mb-2 font-sans text-xl font-normal leading-8 tracking-wide text-light_1"
               >
                 <Link
                   href={`/members/${contributor.member_id}`}

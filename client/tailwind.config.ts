@@ -21,7 +21,7 @@ const config = {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
-        jersey10: ["Jersey 10", ...fontFamily.sans],
+        jersey10: ["var(--font-jersey10)", ...fontFamily.sans],
         firaCode: ["var(--font-firaCode)", ...fontFamily.sans],
       },
 
@@ -70,12 +70,6 @@ const config = {
         neutral_4: "var(--neutral-4)",
         light_1: "var(--light-1)",
         light_2: "var(--light-2)",
-        light_3: "var(--light-3)",
-        light_alt: "var(--light-alt)",
-        light_alt_2: "var(--light-alt-2)",
-        logo_blue_2: "var(--logo-blue-2)",
-        logo_blue_1: "var(--logo-blue-1)",
-        error: "var(--error)",
       },
       borderRadius: {
         lg: "var(--radius)",

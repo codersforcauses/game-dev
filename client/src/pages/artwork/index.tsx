@@ -51,10 +51,10 @@ function renderArtworkCard(artwork: Art) {
       backContent={
         <div className="flex h-full flex-col gap-4">
           <div>
-            <h3 className="mb-2 text-center font-sans text-4xl leading-tight text-accent">
+            <h3 className="mb-2 text-center font-jersey10 text-6xl leading-tight text-accent">
               {artwork.name}
             </h3>
-            <p className="mb-3 text-center font-sans text-xs text-light_1">
+            <p className="mb-3 text-center font-sans text-base leading-relaxed text-light_1">
               {artwork.source_game_name ? (
                 <>
                   from{" "}
@@ -70,21 +70,21 @@ function renderArtworkCard(artwork: Art) {
                 "No associated game"
               )}
             </p>
-            <p className="font-sans text-sm leading-relaxed text-light_1">
+            <p className="mb-3 text-base leading-relaxed text-light_1">
               {artwork.description || "No description available."}
             </p>
           </div>
 
           {artwork.contributors.length > 0 && (
             <div className="mt-auto">
-              <h4 className="mb-3 font-sans text-[28px] leading-tight text-accent">
+              <h4 className="mb-2 font-jersey10 text-4xl leading-tight text-accent">
                 Contributors
               </h4>
               <div className="space-y-2.5">
                 {artwork.contributors.map((contributor) => (
                   <div
                     key={contributor.id}
-                    className="font-sans text-[15px] text-light_1"
+                    className="mb-2 text-base leading-relaxed text-light_1"
                   >
                     <Link
                       href={`/members/${contributor.member_id}`}
@@ -101,7 +101,7 @@ function renderArtworkCard(artwork: Art) {
 
           <Link
             href={`/artwork/${artwork.art_id}`}
-            className="mt-4 rounded-md border border-accent bg-accent/10 px-4 py-2 text-center font-sans text-lg text-accent transition-colors hover:bg-accent hover:text-dark_3"
+            className="mt-4 rounded-md border border-accent bg-accent/10 px-4 py-2 text-center font-sans text-lg leading-relaxed text-accent transition-colors hover:bg-accent hover:text-dark_3"
             onClick={(e) => e.stopPropagation()}
           >
             VIEW FULL DETAILS
@@ -125,7 +125,7 @@ export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
       <section className="px-6 py-10 md:px-24 md:py-14">
         <h1
           data-layer="ALL CATEGORIES"
-          className="AllCategories justify-start text-center font-sans text-6xl font-bold leading-[76px] tracking-wide text-light_3"
+          className="AllCategories text-light_3 justify-start text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-primary"
         >
           FEATURED
         </h1>
