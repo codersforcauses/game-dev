@@ -28,6 +28,7 @@ class Event(models.Model):
         return self.name
 
     def save(self, force_insert=False, force_update=False):
+        super().save(force_insert, force_update)
         def jamFail():
             self.jamID = None
             self.games = []
@@ -38,17 +39,17 @@ class Event(models.Model):
             except Exception as e:
                 print(e)
                 jamFail()
-                return super().save(force_insert, force_update)
+                return
             try:
                 results = r.json()["results"]
             except KeyError:
                 print("Error: No results for this Jam ID could be found")
                 jamFail()
-                return super().save(force_insert, force_update)
+                return
             if len(results) == 0:
                 print("Error: No results for this Jam ID could be found")
                 jamFail()
-                return super().save(force_insert, force_update)
+                return
             games = []
             for i in results:
                 try:
@@ -78,11 +79,10 @@ class Event(models.Model):
                             print(e)
                             continue
                         
-
             self.games = games
         else:
             self.games = []
-        return super().save(force_insert, force_update)
+        return
 
 
 # GameContributor table: links Game, Member, and role (composite PK)
