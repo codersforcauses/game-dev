@@ -61,7 +61,7 @@ export default function HomePage() {
                     className={`flex flex-col gap-8 rounded-xl p-8 ${idx % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"}`}
                   >
                     {/* Left: Cover Image */}
-                    <div className="bg-logo-blue-1 flex min-h-[200] min-w-[200] max-w-[600] flex-1 items-center justify-center overflow-hidden rounded-xl">
+                    <div className="bg-logo-blue-1 flex min-h-48 w-full items-center justify-center overflow-hidden rounded-xl lg:w-auto lg:grow-[4] lg:basis-0">
                       {showcase.gameCover ? (
                         <Image
                           src={showcase.gameCover}
@@ -83,7 +83,7 @@ export default function HomePage() {
                       )}
                     </div>
                     {/* Right: Details */}
-                    <div className="flex flex-1 flex-col justify-between rounded-lg border-2 border-solid border-neutral_3 p-8 shadow-lg">
+                    <div className="flex flex-col rounded-lg border-2 border-solid border-neutral_3 p-8 shadow-lg lg:grow-[3] lg:basis-0">
                       <div>
                         {/* Title of the game */}
                         <h2 className="mb-4 font-jersey10 text-3xl font-bold tracking-wide text-primary">
@@ -116,6 +116,9 @@ export default function HomePage() {
                             ”
                           </span>
                         </p>
+                      </div>
+                      <div className="max-h-40 flex-grow" />
+                      <div>
                         <h3 className="mb-2 text-xl font-bold text-primary">
                           Contributors
                         </h3>
@@ -128,15 +131,12 @@ export default function HomePage() {
                               <span className="font-semibold text-foreground">
                                 {contributor.name}
                               </span>
-                              <span
-                                className="text-foreground"
-                                style={{ marginLeft: 20 }}
-                              >
-                                - {contributor.role}
+                              <span className="text-muted-foreground">
+                                {contributor.role}
                               </span>
                               {/* Social icons placeholder */}
                               {/* TODO: Add actual links */}
-                              <span className="flex gap-2 text-primary">
+                              <span className="ml-auto flex gap-2 text-primary">
                                 {/* Social icons using react-social-icons */}
                                 <SocialIcon
                                   url="https://facebook.com/"
