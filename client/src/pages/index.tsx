@@ -109,7 +109,7 @@ export default function Landing() {
                 <Explosion
                   colour1="#ef4444"
                   colour2="#f59e0b"
-                  count={25}
+                  count={11}
                   yOffset={40}
                 />
               )}
