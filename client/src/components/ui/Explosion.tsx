@@ -25,7 +25,7 @@ export function Explosion({
         const individualSize = Math.random() * 0.1 + 4;
         const randomDisplacement = Math.random() * 10;
 
-        // for every item in map, return a particle with a different size
+        // for every particle return a particle with a different size
         return (
           <motion.div
             key={i}
