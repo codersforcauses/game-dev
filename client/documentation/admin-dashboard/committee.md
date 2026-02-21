@@ -11,5 +11,3 @@ Profiles of the Committee Members of the club that are displayed on the about pa
 ## Other Notes
 
 Before making a Committee object in the Committee table, you must make a Member object for the person that's on the committee and then link it through the id (just to clarify)
-
-The Committee Members are always displayed in the same order on the about page, which is the order previously mentioned. If a certain Committee object can't be retreived, a placeholder Committee Member portrait will be displayed to maintain the same order.
