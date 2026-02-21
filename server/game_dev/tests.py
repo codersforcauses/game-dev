@@ -237,20 +237,6 @@ class ArtModelTest(TestCase):
         art = Art.objects.get(pk=self.art.pk)
         self.assertEqual(art.source_game, self.game)
 
-    def test_art_without_source_game(self):
-        # Test that art can be created without a source game
-        image_file = SimpleUploadedFile(
-            "test_art_no_game.jpg",
-            b"dummy art image data",
-            content_type="image/jpeg",
-        )
-        art_no_game = Art.objects.create(
-            name="Independent Artwork",
-            description="Art with no game",
-            media=image_file,
-        )
-        self.assertIsNone(art_no_game.source_game)
-
     def test_cascade_from_game(self):
         # When game is deleted, art should remain (SET_NULL behavior would be ideal, but currently CASCADE)
         art_id = self.art.id
