@@ -1,5 +1,6 @@
 import { Play } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 export type eventHighlightCardImage = {
   url: string;
@@ -15,6 +16,11 @@ export type eventHighlightCardType = {
   type: string;
   image: eventHighlightCardImage | null;
   row: number;
+};
+
+export type sparkleIndexOverlay = {
+  card: eventHighlightCardType;
+  indexes: number[];
 };
 
 const sparkleImages = ["/sparkle_1.png", "/sparkle_2.png", "/sparkle_3.png"];
@@ -50,25 +56,13 @@ const renderCardHeader = (card: eventHighlightCardType) => {
   );
 };
 
-// helper to ensure sparkles are different
-function getTwoUniqueIndexes(sparkleImages: string[]): [number, number] {
-  const first = Math.floor(Math.random() * sparkleImages.length);
-  let second = Math.floor(Math.random() * sparkleImages.length);
-
-  if (second === first) {
-    second = (first + 1) % 3;
-  }
-  return [first, second];
-}
-
 // only render sparkles on specific cards
-export function renderSparkleOverlay(card: eventHighlightCardType) {
-  const [i1, i2] = getTwoUniqueIndexes(sparkleImages);
-  switch (card.id) {
+const renderSparkleOverlay = (sparkle: sparkleIndexOverlay) => {
+  switch (sparkle.card.id) {
     case 2:
       return (
         <Image
-          src={sparkleImages[i1]}
+          src={sparkleImages[sparkle.indexes[0]]}
           width={15}
           height={17}
           alt="sparkle"
@@ -78,7 +72,7 @@ export function renderSparkleOverlay(card: eventHighlightCardType) {
     case 3:
       return (
         <Image
-          src={sparkleImages[i2]}
+          src={sparkleImages[sparkle.indexes[0]]}
           width={15}
           height={17}
           alt="sparkle"
@@ -88,7 +82,7 @@ export function renderSparkleOverlay(card: eventHighlightCardType) {
     default:
       return null;
   }
-}
+};
 
 export function EventHighlightCard({
   id,
@@ -98,6 +92,16 @@ export function EventHighlightCard({
   image,
   row,
 }: eventHighlightCardType) {
+  const [indexes] = useState(() => {
+    const first = Math.floor(Math.random() * sparkleImages.length);
+    let second = Math.floor(Math.random() * sparkleImages.length);
+
+    if (second === first) {
+      second = (first + 1) % sparkleImages.length;
+    }
+    return [first, second];
+  });
+
   return (
     <div key={id} className="flex flex-col">
       {renderCardHeader({ id, title, description, type, image, row })}
@@ -122,8 +126,13 @@ export function EventHighlightCard({
             />
           )}
         </div>
-        {renderSparkleOverlay({ id, title, description, type, image, row })}
+        {renderSparkleOverlay({
+          card: { id, title, description, type, image, row },
+          indexes,
+        })}
       </div>
     </div>
   );
 }
+
+// render sparkle overlay function takes a card and index to then return a sparkle on the specified indexes
