@@ -75,6 +75,19 @@ export default function EventPage() {
           <p className="mt-4 max-w-lg text-base leading-relaxed">
             {event.description}
           </p>
+          {event.workshopLink && (
+            <p className="mt-4 text-base">
+              Workshop link:
+              <a
+                href={event.workshopLink}
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                {event.workshopLink}
+              </a>
+            </p>
+          )}
         </div>
         <div className="lg:w-128 relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-lg bg-gray-700 md:w-96">
           <Image

@@ -46,6 +46,7 @@ class EventModelTest(TestCase):
             publicationDate=self.pub_date,
             cover_image=image_file,
             location="Ezone",
+            workshop_link="https://example.com/workshop",
         )
 
     def test_publication_date_is_date(self):
@@ -72,6 +73,10 @@ class EventModelTest(TestCase):
     def test_event_datetime_matches(self):
         event = Event.objects.get(pk=self.event.pk)
         self.assertEqual(event.date, self.event_datetime)
+
+    def test_workshop_link_matches(self):
+        event = Event.objects.get(pk=self.event.pk)
+        self.assertEqual(event.workshop_link, "https://example.com/workshop")
 
 
 class CommitteeModelTest(TestCase):

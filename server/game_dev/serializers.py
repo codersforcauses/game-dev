@@ -13,6 +13,7 @@ class EventSerializer(serializers.ModelSerializer):
             "publicationDate",
             "cover_image",
             "location",
+            "workshop_link",
         ]
 
 
