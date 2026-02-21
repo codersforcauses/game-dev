@@ -91,7 +91,7 @@ export default function Custom404() {
 
   const getButtonClass = (option: string) => {
     const baseClass =
-      "w-full p-3 text-left rounded border transition-all cursor-pointer";
+      "w-full rounded border p-2.5 text-left text-sm transition-all cursor-pointer md:p-3 md:text-base";
 
     if (!answered) {
       return `${baseClass} bg-card border-border text-foreground hover:border-accent`;
@@ -109,24 +109,24 @@ export default function Custom404() {
   };
 
   return (
-    <main className="mx-auto min-h-dvh max-w-6xl px-6 py-16 md:px-20">
+    <main className="mx-auto flex h-dvh max-w-6xl items-center overflow-hidden px-4 py-4 sm:px-6 sm:py-6 md:px-16 md:py-8 lg:px-20 lg:py-10">
       <div className="mx-auto w-full max-w-2xl">
-        <h1 className="mb-8 text-center font-jersey10 text-6xl text-primary">
+        <h1 className="mb-4 text-center font-jersey10 text-5xl text-primary md:mb-5 md:text-[3.25rem]">
           404
         </h1>
-        <h2 className="mb-4 text-center font-jersey10 text-2xl text-foreground">
+        <h2 className="mb-2 text-center font-jersey10 text-xl text-foreground md:mb-3 md:text-[1.4rem]">
           Page Not Found
         </h2>
 
-        <p className="mb-8 text-center text-foreground">
+        <p className="mb-4 text-center text-sm text-foreground md:mb-5 md:text-base">
           Test your game knowledge with some rapid-fire trivia instead!!!
         </p>
 
         {!gameActive ? (
-          <div className="mb-8 space-y-4">
+          <div className="mb-4 space-y-3 md:mb-5 md:space-y-3.5">
             {gameQuestions.length === 0 ? (
               <>
-                <p className="mb-4 text-muted-foreground">
+                <p className="mb-3 text-sm text-muted-foreground md:mb-3 md:text-base">
                   Answer 10 random gaming trivia questions in 30 seconds!
                 </p>
                 <Button onClick={startGame} className="w-full">
@@ -135,10 +135,10 @@ export default function Custom404() {
               </>
             ) : (
               <>
-                <p className="mb-4 text-center font-jersey10 text-2xl font-bold text-primary">
+                <p className="mb-3 text-center font-jersey10 text-2xl font-bold text-primary md:mb-3">
                   Game Over!
                 </p>
-                <p className="mb-4 text-center text-foreground">
+                <p className="mb-3 text-center text-sm text-foreground md:mb-3 md:text-base">
                   Final Score:
                   <span className="text-xl font-bold text-primary">
                     {score}
@@ -152,13 +152,13 @@ export default function Custom404() {
             )}
           </div>
         ) : (
-          <div className="mb-8 space-y-6">
-            <div className="mb-4 flex items-center justify-between">
-              <p className="text-sm text-muted-foreground">
+          <div className="md:space-y-4.5 mb-4 space-y-4 md:mb-5">
+            <div className="mb-2 flex items-center justify-between md:mb-3">
+              <p className="text-xs text-muted-foreground md:text-sm">
                 Question {currentQuestionIndex + 1} / 10
               </p>
               <div
-                className={`font-jersey10 text-3xl font-bold ${
+                className={`font-jersey10 text-2xl font-bold md:text-[1.9rem] ${
                   timeLeft <= 10 ? "text-destructive" : "text-primary"
                 }`}
               >
@@ -166,12 +166,12 @@ export default function Custom404() {
               </div>
             </div>
 
-            <div className="space-y-6 rounded border border-border bg-card p-6">
-              <p className="text-lg text-foreground">
+            <div className="md:space-y-4.5 space-y-4 rounded border border-border bg-card p-4 md:p-5">
+              <p className="text-base leading-snug text-foreground md:text-[1.05rem]">
                 {currentTrivia.question}
               </p>
 
-              <div className="space-y-3">
+              <div className="space-y-2.5 md:space-y-3">
                 {options.map((option, idx) => (
                   <button
                     key={idx}
@@ -184,7 +184,7 @@ export default function Custom404() {
                 ))}
               </div>
 
-              <p className="text-sm text-foreground">
+              <p className="text-xs text-foreground md:text-sm">
                 Score:{" "}
                 <span className="font-jersey10 font-bold text-primary">
                   {score} / 10
