@@ -11,6 +11,7 @@ type ApiMember = {
     link: string;
     socialMediaUserName: string;
   }[];
+  pk: number;
 };
 
 // return api member, import id number from router, is not enabled if not a number type
