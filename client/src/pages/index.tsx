@@ -16,8 +16,10 @@ export default function Landing() {
   const [showExplosion, setShowExplosion] = useState(false);
 
   const handleExplode = () => {
+    if (showExplosion) return;
+
     setShowExplosion(true);
-    setTimeout(() => setShowExplosion(false), 1000);
+    setTimeout(() => setShowExplosion(false), 700);
   };
 
   const gameLogoImages = [
@@ -104,7 +106,7 @@ export default function Landing() {
               onClick={handleExplode}
             >
               {showExplosion && (
-                <Explosion colour1="#ef4444" colour2="#f59e0b" count={100} />
+                <Explosion colour1="#ef4444" colour2="#f59e0b" count={25} />
               )}
               <Image
                 src="/bomb.png"
