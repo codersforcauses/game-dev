@@ -4,21 +4,30 @@ type ExplosionProps = {
   colour1: string;
   colour2: string;
   count: number;
+  // can optionally take offsets to adjust exact position
+  yOffset?: number;
+  xOffset?: number;
 };
 
-const Explosion = ({ colour1, colour2, count }: ExplosionProps) => {
+const Explosion = ({
+  colour1,
+  colour2,
+  count,
+  yOffset = 0,
+  xOffset = 0,
+}: ExplosionProps) => {
   const particles = Array.from({ length: count });
-  const randomOffset = Math.random() * 10;
+  const randomDisplacement = Math.random() * 10;
 
   return (
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
       {particles.map((_, i) => (
         <motion.div
           key={i}
-          initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+          initial={{ x: xOffset, y: yOffset, opacity: 1, scale: 1 }}
           animate={{
-            x: Math.cos(i + randomOffset) * 150,
-            y: Math.sin(i + randomOffset) * 150,
+            x: Math.cos(i + randomDisplacement) * 150 + xOffset,
+            y: Math.sin(i + randomDisplacement) * 150 + yOffset,
             opacity: 0,
             scale: 0,
           }}
