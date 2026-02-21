@@ -31,7 +31,7 @@ const ErrorModal = ({ message, onClose = () => {} }: ErrorModalProps) => {
         <p className="leading-normal">{message}</p>
         <div className="mt-8 inline-flex justify-end">
           <button
-            className="text-grey-darkest flex-1 rounded bg-error px-4 py-2 text-white md:flex-none"
+            className="text-grey-darkest bg-error flex-1 rounded px-4 py-2 text-white md:flex-none"
             onClick={onModalClose}
           >
             Close
