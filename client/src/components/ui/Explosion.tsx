@@ -32,7 +32,7 @@ const Explosion = ({
             scale: 0,
           }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="rounded-small absolute h-3 w-3"
+          className="absolute h-10 w-10 rounded-none"
           style={{
             backgroundColor: i % 2 === 0 ? colour1 : colour2,
             boxShadow: `0 0 10px ${colour1}`,
