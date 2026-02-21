@@ -51,16 +51,15 @@ export default function EventCarousel({ items }: EventCarouselProps) {
 
   useEffect(() => {
     const updateVisibleCount = () => {
-      if (window.innerWidth < 768) {
-        setVisibleCount(1);
-      } else {
-        setVisibleCount(3);
-      }
+      const newVisibleCount = window.innerWidth < 768 ? 1 : 3;
+      const newMaxIndex = Math.max(0, items.length - newVisibleCount);
+      setVisibleCount(newVisibleCount);
+      setCurrentIndex((prev) => Math.min(prev, newMaxIndex));
     };
     updateVisibleCount();
     window.addEventListener("resize", updateVisibleCount);
     return () => window.removeEventListener("resize", updateVisibleCount);
-  }, []);
+  }, [items.length]);
 
   return (
     <div className="container mx-auto rounded-lg bg-primary-foreground px-4 py-8 lg:px-12">
@@ -99,7 +98,7 @@ export default function EventCarousel({ items }: EventCarouselProps) {
       )}
 
       <div className="mt-10 px-10">
-        <div ref={viewportRef} className="overflow-hidden">
+        <div ref={viewportRef} className="overflow-hidden px-2 md:px-4">
           <div
             className="flex transition-transform duration-300 ease-out"
             style={{
@@ -112,7 +111,7 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                 href={`/events/${event.id}`}
                 key={event.id}
                 ref={index === 0 ? firstItemRef : undefined}
-                className={`block w-full flex-shrink-0 rounded-xl transition-transform duration-200 ease-in-out hover:scale-110 md:w-[calc((100%-80px)/3)] ${index === 0 ? "origin-left" : ""}`}
+                className={`block w-full flex-shrink-0 rounded-xl transition-transform duration-200 ease-in-out hover:scale-110 md:w-[calc((100%-80px)/3)] ${index === currentIndex ? "origin-left" : ""}`}
               >
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
                   <Image
