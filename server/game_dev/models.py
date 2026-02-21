@@ -45,31 +45,39 @@ class Event(models.Model):
                 print("Error: No results for this Jam ID could be found")
                 jamFail()
                 return super().save(force_insert, force_update)
+            if len(results) == 0:
+                print("Error: No results for this Jam ID could be found")
+                jamFail()
+                return super().save(force_insert, force_update)
             games = []
             for i in results:
                 try:
                     cur = Game.objects.get(hostURL=i["url"], name=i["title"])
                     games.append(cur.pk)
                 except Game.DoesNotExist:
-                    # Uploads each image to the backend from their url
-                    imageURL = i["cover_url"]
-                    image = get(imageURL)
-                    imageName = imageURL.split("/")[-1]
-                    imageContent = ContentFile(image.content)
-
                     Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail="", event=self)
-                    Game.objects.get(name=i["title"], hostURL=i["url"]).thumbnail.save(imageName, imageContent, save=True)
-                    games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
 
+                    imageURL = i["cover_url"]
+                    try:
+                        # Uploads each image to the backend from their url
+                        image = get(imageURL)
+                        imageName = imageURL.split("/")[-1]
+                        imageContent = ContentFile(image.content)
+                        Game.objects.get(name=i["title"], hostURL=i["url"]).thumbnail.save(imageName, imageContent, save=True)
+                    except Exception as e:
+                        print(f"Error: {e}, most likely an invalid url for a game's cover image")
+
+                    games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
                     contributors = i["contributors"]
                     for x in contributors:
                         try:
                             socialMedia = SocialMedia.objects.get(socialMediaUserName=x["name"])
+                            GameContributor.objects.create(game=Game.objects.get(name=i["title"], hostURL=i["url"]),
+                                                            member=socialMedia.member, role="Please add role manually")
                         except Exception as e:
                             print(e)
                             continue
-                        GameContributor.objects.create(game=Game.objects.get(name=i["title"], hostURL=i["url"]),
-                                                       member=socialMedia.member, role="Please add role manually")
+                        
 
             self.games = games
         else:
