@@ -29,6 +29,7 @@ class Event(models.Model):
 
     def save(self, force_insert=False, force_update=False):
         super().save(force_insert, force_update)
+
         def jamFail():
             self.jamID = None
             self.games = []
@@ -73,12 +74,12 @@ class Event(models.Model):
                     for x in contributors:
                         try:
                             socialMedia = SocialMedia.objects.get(socialMediaUserName=x["name"])
-                            GameContributor.objects.create(game=Game.objects.get(name=i["title"], hostURL=i["url"]),
-                                                            member=socialMedia.member, role="Please add role manually")
+                            GameContributor.objects.create(game=Game.objects.get(name=i["title"], hostURL=i["url"],
+                                                                                 member=socialMedia.member, role="Please add role manually"))
                         except Exception as e:
                             print(e)
                             continue
-                        
+
             self.games = games
         else:
             self.games = []
