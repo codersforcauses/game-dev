@@ -5,7 +5,7 @@ import { SocialIcon } from "react-social-icons";
 
 import { GameEmbed } from "@/components/ui/GameEmbed";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
-import { useEvents } from "@/hooks/useEvents";
+import { useEvent } from "@/hooks/useEvent";
 import { useGame } from "@/hooks/useGames";
 
 export default function IndividualGamePage() {
@@ -18,7 +18,9 @@ export default function IndividualGamePage() {
     error,
     isError,
   } = useGame(router.isReady ? id : undefined);
-  const { data: eventsData } = useEvents({});
+  const { data: eventData } = useEvent(
+    game?.event ? String(game.event) : undefined,
+  );
 
   if (isPending) {
     return (
@@ -58,14 +60,7 @@ export default function IndividualGamePage() {
   const gameWidth = game.itchGameWidth;
   const gameHeight = game.itchGameHeight;
   const eventID = game.event;
-  let eventName = "";
-  if (eventID && eventsData && Array.isArray(eventsData.items)) {
-    const eventObj = eventsData.items.find((e) => e.id === eventID);
-    eventName = eventObj ? eventObj.name : "";
-  }
-
-  console.log("eventID:", eventID);
-  console.log("eventsData:", eventsData);
+  const eventName = eventData?.name || "";
 
   const completionLabels: Record<number, string> = {
     1: "WIP",
@@ -192,7 +187,7 @@ export default function IndividualGamePage() {
                       </a>
                     ) : (
                       <span className="text-muted-foreground">
-                        No upcoming event
+                        No past/upcoming event
                       </span>
                     )}
                   </td>
