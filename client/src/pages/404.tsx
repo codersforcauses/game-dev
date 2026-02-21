@@ -98,11 +98,11 @@ export default function Custom404() {
     }
 
     if (option === currentTrivia.answer) {
-      return `${baseClass} bg-accent border-accent text-accent-foreground font-semibold`;
+      return `${baseClass} bg-primary border-accent text-accent-foreground font-semibold`;
     }
 
     if (option === selectedAnswer && option !== currentTrivia.answer) {
-      return `${baseClass} bg-secondary border-secondary text-secondary-foreground`;
+      return `${baseClass} bg-accent border-secondary text-secondary-foreground`;
     }
 
     return `${baseClass} bg-muted border-border text-muted-foreground`;
