@@ -27,8 +27,8 @@ class GameShowcaseAdmin(admin.ModelAdmin):
 
 
 class GamesAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "description", "completion", "active", "hostURL", "itchEmbedID", "thumbnail", "itchGameEmbedID", "itchGameWidth",
-                    "itchGameHeight")
+    list_display = ("id", "name", "description", "completion", "active", "hostURL", "itchEmbedID", "itchGamePlayableID", "itchGameWidth",
+                    "itchGameHeight", "thumbnail")
     search_fields = ["name", "description"]
     raw_id_fields = ["event"]
 
