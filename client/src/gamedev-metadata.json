@@ -1,9 +1,9 @@
 {
   "social_media": {
-    "x": { "url": "twitter.com", "alt_text": "X (Twitter)" },
+    "facebook": { "url": "https://www.facebook.com/people/Game-Development-UWA/61576948012356/", "alt_text": "Facebook" },
     "discord": { "url": "discord.com" },
     "github": { "url": "github.com", "alt_text": "GitHub" },
-    "youtube": { "url": "youtube.com", "alt_text": "YouTube" }
+    "instagram": { "url": "https://www.instagram.com/gamedevelopmentuwa", "alt_text": "Instagram" }
   },
   "art_showcase_description": "Here are some of our favourite artworks from this years gamejams!",
   "game_showcase_description": "Here are some winning games of our recent game jams"
