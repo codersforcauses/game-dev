@@ -9,18 +9,6 @@ type MemberProjectSectionProps = {
   id: string;
 };
 
-// From useGamesShowcase
-function getGameCoverUrl(
-  game_cover_thumbnail: string | null | undefined,
-): string {
-  if (!game_cover_thumbnail) return "/game_dev_club_logo.svg";
-  if (game_cover_thumbnail.startsWith("http")) return game_cover_thumbnail;
-  // Use environment variable for Django backend base URL
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-  return `${apiBaseUrl}${game_cover_thumbnail}`;
-}
-
 export default function MemberProjectSection(props: MemberProjectSectionProps) {
   const { data: games, isError, error } = useContributor(props.id);
 
@@ -57,7 +45,7 @@ export default function MemberProjectSection(props: MemberProjectSectionProps) {
               <div className="w-fit rounded-md p-5">
                 <div className="group mb-2 grid h-44 w-96 grid-cols-1 grid-rows-1 overflow-clip rounded-md">
                   <Image
-                    src={getGameCoverUrl(game.game_data.thumbnail)}
+                    src={game.game_data.thumbnail}
                     alt={`${game.game_data.name} cover image`}
                     width={384}
                     height={176}
