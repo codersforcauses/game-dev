@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("game_dev", "0006_remove_game_isitch_alter_game_itchembedid"),
+        ("game_dev", "0009_remove_game_isitch_alter_game_itchembedid"),
     ]
 
     operations = [

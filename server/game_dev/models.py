@@ -60,6 +60,19 @@ class Game(models.Model):
         blank=True,
         help_text="If game is stored on itch.io, please enter the itchEmbedID, i.e., 1000200"
     )
+    itchGamePlayableID = models.PositiveBigIntegerField(
+        default=None,
+        null=True,
+        blank=True,
+        help_text="If a game is playable and has a web demo stored on itch.io, please enter the embed developer ID"
+    )
+
+    itchGameWidth = models.PositiveBigIntegerField(
+        default=0
+    )
+    itchGameHeight = models.PositiveBigIntegerField(
+        default=0
+    )
 
     thumbnail = models.ImageField(upload_to="games/", null=True)
     event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)

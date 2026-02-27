@@ -1,17 +1,40 @@
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import EventCarousel from "@/components/ui/eventCarousel";
 import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
 import LandingGames from "@/components/ui/landingGames";
+import { useExplosionContext } from "@/contexts/ExplosionContext";
 import { UiEvent, useEvents } from "@/hooks/useEvents";
 
-import { Button } from "../components/ui/button";
-
 export default function Landing() {
+  const [isShaking, setIsShaking] = useState(false);
+  const { triggerExplosionAt } = useExplosionContext();
+
+  const handleBombClick = (e: React.MouseEvent) => {
+    // Trigger multiple explosions across the page
+    for (let i = 0; i < 10; i++) {
+      setTimeout(() => {
+        // Random position with 10% margin from edges
+        const x = window.innerWidth * (0.1 + Math.random() * 0.8);
+        const y = window.innerHeight * (0.1 + Math.random() * 0.8);
+        triggerExplosionAt(x, y);
+      }, i * 50); // Stagger by 50ms
+    }
+
+    // Trigger screen shake
+    setIsShaking(true);
+    setTimeout(() => setIsShaking(false), 400);
+
+    // Prevent event bubbling
+    e.stopPropagation();
+  };
   const { data, isPending, isError, isFetching } = useEvents({
     type: "upcoming",
     pageSize: 100,
@@ -69,7 +92,18 @@ export default function Landing() {
   ];
 
   return (
-    <div>
+    <motion.div
+      className="relative"
+      animate={
+        isShaking
+          ? {
+              x: [0, -12, 12, -10, 10, -6, 6, -3, 3, 0],
+              y: [0, 4, -4, 3, -3, 2, -2, 0],
+            }
+          : { x: 0, y: 0 }
+      }
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
       <section className="flex w-full justify-center bg-muted px-12 py-10">
         <div className="flex w-full max-w-[1440px] flex-col items-center justify-between gap-12 md:flex-row">
           <div className="flex max-w-lg flex-col gap-6">
@@ -102,8 +136,9 @@ export default function Landing() {
               src="/bomb.png"
               width={96}
               height={156}
-              alt="placeholder"
-              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 [image-rendering:pixelated]"
+              alt="Bomb - click to explode!"
+              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 cursor-pointer transition-transform [image-rendering:pixelated] hover:scale-110"
+              onClick={handleBombClick}
             />
           </div>
         </div>
@@ -180,10 +215,10 @@ export default function Landing() {
             </div>
 
             <div className="flex flex-col items-end gap-4">
-              <Link href="/">
+              <Link href="/games">
                 <Button>See more games by our members</Button>
               </Link>
-              <Link href="/">
+              <Link href="/artwork">
                 <Button variant={"outline"}>
                   See other cool stuff our members have created
                 </Button>
@@ -193,6 +228,6 @@ export default function Landing() {
           <LandingGames />
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 }
