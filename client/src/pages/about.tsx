@@ -31,14 +31,12 @@ export default function AboutPage() {
             <div className="space-y-4 font-sans text-base leading-relaxed text-white md:text-lg">
               <p>
                 {/*>>Hardcoded description of the club to be altered<<*/}
-                Description of the clubs aims, why it exists, its mission, etc
-                etc. Second paragraph here, a second paragraph would be pretty
-                cool. The more info the better yippee!!
-                {/*>>Hardcoded description of the club to be altered<<*/}
-              </p>
-              <p>
-                {/*>>Hardcoded description of the club to be altered<<*/}
-                Lorem ipsum dolor such and such I can&apos;t remember the rest.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur.
                 {/*>>Hardcoded description of the club to be altered<<*/}
               </p>
             </div>
@@ -46,10 +44,10 @@ export default function AboutPage() {
           <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-light_2 md:w-96 lg:w-[32rem]">
             <div className="flex h-full w-full items-center justify-center">
               <Image
-                /*>>Hardcoded feature image to be altered. Only alter 'src', 'alt' is supposed to be a placeholder<<*/
+                /*>>Hardcoded feature image to be altered.<<*/
                 src="/landing_placeholder.png"
-                /*>>Hardcoded feature image to be altered. Only alter 'src', 'alt' is supposed to be a placeholder<<*/
-                alt="/landing_placeholder.png"
+                /*>>Description of feature image - alter this alongside the feature image.<<*/
+                alt="Placeholder Picture"
                 fill={true}
               />
             </div>
@@ -70,7 +68,7 @@ export default function AboutPage() {
       <div className="relative h-[8.75rem] w-[8.25rem] overflow-hidden">
         <Image
           src={profilePic === null ? "/landing_placeholder.png" : profilePic}
-          alt="/landing_placeholder.png"
+          alt="Placeholder Picture"
           fill
           className="object-cover object-center"
         />
@@ -140,9 +138,7 @@ export default function AboutPage() {
       </main>
     );
   } else {
-    for (let i = 0; i < 8; i++) {
-      committeeList.push(committee[i]);
-    }
+    committeeList.push(...committee.slice(0, 8));
   }
 
   return (
