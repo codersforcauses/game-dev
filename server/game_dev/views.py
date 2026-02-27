@@ -66,7 +66,7 @@ class EventDetailAPIView(generics.RetrieveAPIView):
 class GameshowcaseAPIView(APIView):
     def get(self, request):
         showcases = GameShowcase.objects.all()
-        serializer = GameshowcaseSerializer(showcases, many=True)
+        serializer = GameshowcaseSerializer(showcases, many=True, context={'request': request})
         return Response(serializer.data)
 
 
