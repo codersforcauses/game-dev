@@ -149,10 +149,7 @@ STATICFILES_DIRS = (BASE_DIR/"static",)
 MEDIA_ROOT = BASE_DIR/"media"
 
 # The url to serve images and other media
-if DEBUG:
-    MEDIA_URL = "http://localhost:8000/media/"
-else:
-    MEDIA_URL = f"https://{ALLOWED_HOSTS[0]}/media/"
+MEDIA_URL = "http://localhost:8000/media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
