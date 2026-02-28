@@ -100,6 +100,25 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         return ShowcaseContributorSerializer(contributors, many=True).data
 
 
+class ContributorGameSerializer(serializers.ModelSerializer):
+    game_id = serializers.IntegerField(source='game.id', read_only=True)
+    role = serializers.CharField(read_only=True)
+    game_data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = GameContributor
+        fields = ['game_id', 'role', 'game_data']
+
+    def get_game_data(self, obj):
+        game = obj.game
+        request = self.context.get('request')
+        return {
+            'name': game.name,
+            'description': game.description,
+            'thumbnail': request.build_absolute_uri(game.thumbnail.url) if game.thumbnail and request else None
+        }
+
+
 class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
