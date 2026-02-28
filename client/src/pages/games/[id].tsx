@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { SocialIcon } from "react-social-icons";
@@ -133,12 +134,12 @@ export default function IndividualGamePage() {
                           key={c.member_id}
                           className="flex items-center gap-x-2"
                         >
-                          <a
+                          <Link
                             href={`/members/${c.member_id}`}
                             className="text-primary hover:underline"
                           >
                             {c.name}
-                          </a>
+                          </Link>
                           {Array.isArray(c.social_media) &&
                             c.social_media.map((sm) => (
                               <SocialIcon
@@ -181,12 +182,12 @@ export default function IndividualGamePage() {
                   </td>
                   <td className="py-1 text-right sm:py-2">
                     {eventID && eventName ? (
-                      <a
+                      <Link
                         href={`/events/${eventID}`}
                         className="text-primary hover:underline"
                       >
                         {eventName}
-                      </a>
+                      </Link>
                     ) : (
                       <span className="text-muted-foreground">
                         No past/upcoming event
