@@ -1,10 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { SocialIcon } from "react-social-icons";
 
 import { GameEmbed } from "@/components/ui/GameEmbed";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
+import { useEvent } from "@/hooks/useEvent";
 import { useGame } from "@/hooks/useGames";
 
 export default function IndividualGamePage() {
@@ -17,6 +19,9 @@ export default function IndividualGamePage() {
     error,
     isError,
   } = useGame(router.isReady ? id : undefined);
+  const { data: eventData } = useEvent(
+    game?.event ? String(game.event) : undefined,
+  );
 
   if (isPending) {
     return (
@@ -55,6 +60,8 @@ export default function IndividualGamePage() {
   const gameEmbedID = game.itchGameEmbedID;
   const gameWidth = game.itchGameWidth;
   const gameHeight = game.itchGameHeight;
+  const eventID = game.event;
+  const eventName = eventData?.name || "";
 
   const completionLabels: Record<number, string> = {
     1: "WIP",
@@ -65,8 +72,6 @@ export default function IndividualGamePage() {
 
   const devStage = completionLabels[game.completion] ?? "Stage Unknown";
 
-  // TODO ADD EVENT
-  const event = "Game Jam November 2025";
   // TODO ADD ARTIMAGES
   const artImages: { src: string; alt: string }[] = [];
   // const artImages = [
@@ -129,12 +134,12 @@ export default function IndividualGamePage() {
                           key={c.member_id}
                           className="flex items-center gap-x-2"
                         >
-                          <a
+                          <Link
                             href={`/members/${c.member_id}`}
                             className="text-primary hover:underline"
                           >
                             {c.name}
-                          </a>
+                          </Link>
                           {Array.isArray(c.social_media) &&
                             c.social_media.map((sm) => (
                               <SocialIcon
@@ -175,7 +180,20 @@ export default function IndividualGamePage() {
                   <td className="py-1 pr-2 text-muted-foreground sm:py-2">
                     Event
                   </td>
-                  <td className="py-1 text-right sm:py-2">{event}</td>
+                  <td className="py-1 text-right sm:py-2">
+                    {eventID && eventName ? (
+                      <Link
+                        href={`/events/${eventID}`}
+                        className="text-primary hover:underline"
+                      >
+                        {eventName}
+                      </Link>
+                    ) : (
+                      <span className="text-muted-foreground">
+                        No past/upcoming event
+                      </span>
+                    )}
+                  </td>
                 </tr>
               </tbody>
             </table>
