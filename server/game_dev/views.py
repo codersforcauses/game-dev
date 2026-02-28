@@ -70,18 +70,12 @@ class GameshowcaseAPIView(APIView):
         return Response(serializer.data)
 
 
-class ContributorGamesListAPIView(APIView):
-    """
-    GET /api/games/contributor/<member>/
-    Returns the games a particular member has contributed to.
-    """
-    lookup_url_kwarg = "member"
+class ContributorGamesListAPIView(generics.ListAPIView):
+    serializer_class = ContributorGameSerializer
 
-    def get(self, request, member):
-        contributions = GameContributor.objects.filter(
-            member=self.kwargs["member"])
-        serializer = ContributorGameSerializer(contributions, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        member_id = self.kwargs.get("member")
+        return GameContributor.objects.filter(member=member_id)
 
 
 class MemberAPIView(generics.RetrieveAPIView):
