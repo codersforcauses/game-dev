@@ -26,21 +26,10 @@ type UiShowcaseGame = Omit<ApiShowcaseGame, "game_cover_thumbnail"> & {
   gameCover: string;
 };
 
-function getGameCoverUrl(
-  game_cover_thumbnail: string | null | undefined,
-): string {
-  if (!game_cover_thumbnail) return "/game_dev_club_logo.svg";
-  if (game_cover_thumbnail.startsWith("http")) return game_cover_thumbnail;
-  // Use environment variable for Django backend base URL
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-  return `${apiBaseUrl}${game_cover_thumbnail}`;
-}
-
 function transformApiShowcaseGameToUi(data: ApiShowcaseGame): UiShowcaseGame {
   return {
     ...data,
-    gameCover: getGameCoverUrl(data.game_cover_thumbnail),
+    gameCover: data.game_cover_thumbnail ?? "/game_dev_club_logo.svg",
   };
 }
 
