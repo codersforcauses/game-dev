@@ -93,7 +93,7 @@ export default function IndividualGamePage() {
       <main>
         <section className="w-full items-center justify-center bg-popover">
           <div className="mx-auto flex max-w-7xl justify-center p-0 sm:p-8">
-            {gameEmbedID != "0" ? (
+            {gameEmbedID ? (
               <div className="m-auto flex overflow-auto">
                 <GameEmbed
                   embedID={gameEmbedID}
@@ -160,19 +160,21 @@ export default function IndividualGamePage() {
                   </td>
                   <td className="py-1 text-right sm:py-2">{devStage}</td>
                 </tr>
-                <tr className="border-b-2 border-gray-300">
-                  <td className="py-1 pr-2 text-muted-foreground sm:py-2">
-                    Host Site
-                  </td>
-                  <td className="py-1 text-right sm:py-2">
-                    <a
-                      href={game.hostURL}
-                      className="text-primary underline hover:underline"
-                    >
-                      {game.hostURL}
-                    </a>
-                  </td>
-                </tr>
+                {game.hostURL && (
+                  <tr className="border-b-2 border-gray-300">
+                    <td className="py-1 pr-2 text-muted-foreground sm:py-2">
+                      Host Site
+                    </td>
+                    <td className="py-1 text-right sm:py-2">
+                      <a
+                        href={game.hostURL}
+                        className="text-primary underline hover:underline"
+                      >
+                        {game.hostURL}
+                      </a>
+                    </td>
+                  </tr>
+                )}
                 <tr>
                   <td className="py-1 pr-2 text-muted-foreground sm:py-2">
                     Event
