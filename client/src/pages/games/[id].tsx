@@ -156,19 +156,21 @@ export default function IndividualGamePage() {
                   </td>
                   <td className="py-1 text-right sm:py-2">{devStage}</td>
                 </tr>
-                <tr className="border-b-2 border-gray-300">
-                  <td className="py-1 pr-2 text-muted-foreground sm:py-2">
-                    Host Site
-                  </td>
-                  <td className="py-1 text-right sm:py-2">
-                    <a
-                      href={game.hostURL}
-                      className="text-primary underline hover:underline"
-                    >
-                      {game.hostURL}
-                    </a>
-                  </td>
-                </tr>
+                {game.hostURL && (
+                  <tr className="border-b-2 border-gray-300">
+                    <td className="py-1 pr-2 text-muted-foreground sm:py-2">
+                      Host Site
+                    </td>
+                    <td className="py-1 text-right sm:py-2">
+                      <a
+                        href={game.hostURL}
+                        className="text-primary underline hover:underline"
+                      >
+                        {game.hostURL}
+                      </a>
+                    </td>
+                  </tr>
+                )}
                 <tr>
                   <td className="py-1 pr-2 text-muted-foreground sm:py-2">
                     Event
