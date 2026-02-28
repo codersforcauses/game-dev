@@ -89,6 +89,7 @@ export default function IndividualGamePage() {
       <main>
         <section className="w-full items-center justify-center bg-popover">
           <div className="mx-auto flex max-w-7xl justify-center p-0 sm:p-8">
+            {/* only render game embed if ID, width, and height are all provided (...and are non-zero).  */}
             {gamePlayableID && gameWidth && gameHeight ? (
               <div className="m-auto flex overflow-auto">
                 <GameEmbed
