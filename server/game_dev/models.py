@@ -17,8 +17,9 @@ class Event(models.Model):
     date = models.DateTimeField()
     description = models.CharField(max_length=256, blank=True)
     publicationDate = models.DateField()
-    cover_image = models.ImageField(upload_to="events/", null=True)
+    coverImage = models.ImageField(upload_to="events/", null=True)
     location = models.CharField(max_length=256)
+    workshopLink = models.URLField(max_length=2083, blank=True)
 
     def __str__(self):
         return self.name
