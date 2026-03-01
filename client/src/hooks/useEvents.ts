@@ -9,7 +9,6 @@ type ApiEvent = {
   description: string;
   publicationDate: string;
   date: string;
-  startTime: string | null;
   location: string;
   cover_image: string | null;
   workshop_link: string;

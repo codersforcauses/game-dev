@@ -35,21 +35,33 @@ class GameContributorSerializer(serializers.ModelSerializer):
 
 class GamesSerializer(serializers.ModelSerializer):
     contributors = GameContributorSerializer(
-        many=True,
-        source="game_contributors",
-        read_only=True
+        many=True, source="game_contributors", read_only=True
     )
 
     class Meta:
         model = Game
-        fields = ('id', 'name', 'description', 'completion', 'active', 'hostURL', 'itchEmbedID', 'thumbnail', 'event', 'itchGameEmbedID',
-                  'itchGameWidth', 'itchGameHeight', "contributors")
+        fields = (
+            "id",
+            "name",
+            "description",
+            "completion",
+            "active",
+            "hostURL",
+            "itchEmbedID",
+            "thumbnail",
+            "event",
+            "itchGamePlayableID",
+            "itchGameWidth",
+            "itchGameHeight",
+            "contributors",
+        )
 
 
 # Contributor serializer for name and role
 
+
 class ShowcaseContributorSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source='member.name', read_only=True)
+    name = serializers.CharField(source="member.name", read_only=True)
     role = serializers.CharField(read_only=True)
     social_media = serializers.SerializerMethodField()
 
@@ -64,23 +76,48 @@ class ShowcaseContributorSerializer(serializers.ModelSerializer):
 
 # Serializer for GameShowcase
 class GameshowcaseSerializer(serializers.ModelSerializer):
-    game_id = serializers.IntegerField(source='game.id', read_only=True)
-    game_name = serializers.CharField(source='game.name', read_only=True)
-    game_description = serializers.CharField(
-        source='game.description', read_only=True)
+    game_id = serializers.IntegerField(source="game.id", read_only=True)
+    game_name = serializers.CharField(source="game.name", read_only=True)
+    game_description = serializers.CharField(source="game.description", read_only=True)
     game_cover_thumbnail = serializers.ImageField(
-        source='game.thumbnail', read_only=True)
+        source="game.thumbnail", read_only=True
+    )
     contributors = serializers.SerializerMethodField()
 
     class Meta:
         model = GameShowcase
-        fields = ('game_id', 'game_name', 'game_description',
-                  'description', 'contributors', 'game_cover_thumbnail')
+        fields = (
+            "game_id",
+            "game_name",
+            "game_description",
+            "description",
+            "contributors",
+            "game_cover_thumbnail",
+        )
 
     def get_contributors(self, obj):
         # Always fetch contributors from GameContributor for the related game
         contributors = GameContributor.objects.filter(game=obj.game)
         return ShowcaseContributorSerializer(contributors, many=True).data
+
+
+class ContributorGameSerializer(serializers.ModelSerializer):
+    game_id = serializers.IntegerField(source='game.id', read_only=True)
+    role = serializers.CharField(read_only=True)
+    game_data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = GameContributor
+        fields = ['game_id', 'role', 'game_data']
+
+    def get_game_data(self, obj):
+        game = obj.game
+        request = self.context.get('request')
+        return {
+            'name': game.name,
+            'description': game.description,
+            'thumbnail': request.build_absolute_uri(game.thumbnail.url) if game.thumbnail and request else None
+        }
 
 
 class SocialMediaSerializer(serializers.ModelSerializer):
@@ -94,15 +131,9 @@ class SocialMediaSerializer(serializers.ModelSerializer):
 
 class MemberSerializer(serializers.ModelSerializer):
     social_media = SocialMediaSerializer(
-        many=True, source="social_media_links", read_only=True)
+        many=True, source="social_media_links", read_only=True
+    )
 
     class Meta:
         model = Member
-        fields = [
-            "name",
-            "profile_picture",
-            "about",
-            "pronouns",
-            "social_media",
-            "pk"
-        ]
+        fields = ["name", "profile_picture", "about", "pronouns", "social_media", "pk"]
