@@ -6,38 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import { UiEvent as EventType } from "@/hooks/useEvents";
 
 import { Button } from "./button";
+import { EventDateDisplay } from "./EventDateDisplay";
 
 type EventCarouselProps = {
   items: EventType[];
 };
 
 const GAP = 40;
-
-function formatEventDateDisplay(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    const weekday = new Intl.DateTimeFormat("en-US", {
-      weekday: "long",
-    }).format(date);
-    const day = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(
-      date,
-    );
-    const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
-      date,
-    );
-    const time = new Intl.DateTimeFormat("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    })
-      .format(date)
-      .replace("AM", "am")
-      .replace("PM", "pm");
-    return `${weekday} ${day} ${month} ${time}`;
-  } catch {
-    return "";
-  }
-}
 
 export default function EventCarousel({ items }: EventCarouselProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -76,16 +51,15 @@ export default function EventCarousel({ items }: EventCarouselProps) {
 
   useEffect(() => {
     const updateVisibleCount = () => {
-      if (window.innerWidth < 768) {
-        setVisibleCount(1);
-      } else {
-        setVisibleCount(3);
-      }
+      const newVisibleCount = window.innerWidth < 768 ? 1 : 3;
+      const newMaxIndex = Math.max(0, items.length - newVisibleCount);
+      setVisibleCount(newVisibleCount);
+      setCurrentIndex((prev) => Math.min(prev, newMaxIndex));
     };
     updateVisibleCount();
     window.addEventListener("resize", updateVisibleCount);
     return () => window.removeEventListener("resize", updateVisibleCount);
-  }, []);
+  }, [items.length]);
 
   return (
     <div className="container mx-auto rounded-lg bg-primary-foreground px-4 py-8 lg:px-12">
@@ -124,7 +98,7 @@ export default function EventCarousel({ items }: EventCarouselProps) {
       )}
 
       <div className="mt-10 px-10">
-        <div ref={viewportRef} className="overflow-hidden">
+        <div ref={viewportRef} className="overflow-hidden px-2 md:px-4">
           <div
             className="flex transition-transform duration-300 ease-out"
             style={{
@@ -137,7 +111,7 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                 href={`/events/${event.id}`}
                 key={event.id}
                 ref={index === 0 ? firstItemRef : undefined}
-                className={`block w-full flex-shrink-0 rounded-xl transition-transform duration-200 ease-in-out hover:scale-110 md:w-[calc((100%-80px)/3)] ${index === 0 ? "origin-left" : ""}`}
+                className={`block w-full flex-shrink-0 rounded-xl transition-transform duration-200 ease-in-out hover:scale-110 md:w-[calc((100%-80px)/3)] ${index === currentIndex ? "origin-left" : ""}`}
               >
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
                   <Image
@@ -152,8 +126,8 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                   {event.name}
                 </h3>
 
-                <p className="mb-4 text-sm text-primary">
-                  {formatEventDateDisplay(event.date)}
+                <p className="mb-4 text-base text-primary">
+                  <EventDateDisplay date={event.date} />
                 </p>
 
                 <div className="mt-3 w-full border-b border-white/20" />
