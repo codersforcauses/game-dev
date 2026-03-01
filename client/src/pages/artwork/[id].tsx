@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 
 import ContributorsList from "@/components/ui/ContributorsList";
 import GoBackButton from "@/components/ui/GoBackButton";
-import ImagePlaceholder from "@/components/ui/image-placeholder";
 import ErrorModal from "@/components/ui/modal/error-modal";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
@@ -55,19 +54,15 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
           data-layer="Artwork Image Panel"
           className="ArtworkImagePanel relative flex content-center justify-center"
         >
-          {artwork.media ? (
-            <Image
-              src={artwork.media}
-              alt="Artwork image"
-              width={500}
-              height={500}
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="relative block sm:h-auto sm:max-w-full md:max-h-full"
-              priority={false}
-            />
-          ) : (
-            <ImagePlaceholder />
-          )}
+          <Image
+            src={artwork.media ?? "/game_dev_club_logo.svg"}
+            alt="Artwork image"
+            width={500}
+            height={500}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="relative block sm:h-auto sm:max-w-full md:max-h-full"
+            priority={false}
+          />
         </div>
 
         <div

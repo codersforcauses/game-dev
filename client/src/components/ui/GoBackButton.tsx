@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 interface GoBackButtonProps {
@@ -13,13 +13,7 @@ const GoBackButton = ({ url, label }: GoBackButtonProps) => {
         type="button"
       >
         <div className="absolute left-1 top-[4px] z-10 flex h-12 w-1/4 items-center justify-center rounded-xl bg-light_2 duration-500 group-hover:w-[184px]">
-          <Image
-            src="/go-back-icon.svg"
-            alt=""
-            width={25}
-            height={25}
-            aria-hidden="true"
-          />
+          <ArrowLeft />
         </div>
         <p className="translate-x-2">{label}</p>
       </button>
