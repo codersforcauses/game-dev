@@ -101,10 +101,10 @@ function renderArtworkCard(artwork: Art) {
 
           <Link
             href={`/artwork/${artwork.art_id}`}
-            className="mt-4 rounded-md border border-accent bg-accent/10 px-4 py-2 text-center font-sans text-lg leading-relaxed text-accent transition-colors hover:bg-accent hover:text-dark_3"
+            className="mt-4 rounded-md border border-accent bg-accent/10 px-4 py-2 text-center font-jersey10 text-2xl leading-relaxed text-accent transition-colors hover:bg-accent hover:text-dark_3"
             onClick={(e) => e.stopPropagation()}
           >
-            VIEW FULL DETAILS
+            View full details
           </Link>
         </div>
       }
@@ -123,11 +123,8 @@ export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
   return (
     <div className="bg-gamedev-dark min-h-screen">
       <section className="px-6 py-10 md:px-24 md:py-14">
-        <h1
-          data-layer="ALL CATEGORIES"
-          className="AllCategories text-light_3 justify-start text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-primary"
-        >
-          FEATURED
+        <h1 className="text-light_3 justify-start text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-primary">
+          Featured Artwork
         </h1>
 
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
