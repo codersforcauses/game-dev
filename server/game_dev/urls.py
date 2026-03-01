@@ -1,10 +1,8 @@
 from django.urls import path
-from .views import ContributorGamesListAPIView, (
-    EventListAPIView, EventDetailAPIView
-from .views import GamesDetailAPIView,
+from .views import (ContributorGamesListAPIView, EventListAPIView, EventDetailAPIView, GamesDetailAPIView,
     GameshowcaseAPIView, MemberAPIView, CommitteeAPIView,
-    FeatureArtAPIView, ArtDetailAPIView
-)
+    FeatureArtAPIView, ArtDetailAPIView)
+
 
 urlpatterns = [
     path("events/", EventListAPIView.as_view(), name="events-list"),
