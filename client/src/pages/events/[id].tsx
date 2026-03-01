@@ -58,13 +58,15 @@ export default function EventPage() {
           <p className="mt-6 text-lg">
             <EventDateDisplay date={event.date} />
           </p>
-          <div className="text-primary">{event.location} </div>
+          <div className="font-firaCode text-sm text-primary">
+            {event.location}{" "}
+          </div>
           <p className="mt-4 max-w-lg text-base leading-relaxed">
             {event.description}
           </p>
           {event.workshopLink && (
-            <p className="mt-4 text-base">
-              Workshop link:
+            <p className="mt-4 font-firaCode">
+              <span className="font-medium text-primary">Workshop link:</span>{" "}
               <a
                 href={event.workshopLink}
                 target="_blank"

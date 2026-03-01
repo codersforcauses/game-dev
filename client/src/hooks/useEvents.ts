@@ -10,11 +10,11 @@ type ApiEvent = {
   publicationDate: string;
   date: string;
   location: string;
-  cover_image: string | null;
-  workshop_link: string;
+  coverImage: string | null;
+  workshopLink: string;
 };
 
-export type UiEvent = Omit<ApiEvent, "cover_image" | "workshop_link"> & {
+export type UiEvent = Omit<ApiEvent, "coverImage"> & {
   coverImage: string;
   workshopLink: string;
 };
@@ -22,8 +22,7 @@ export type UiEvent = Omit<ApiEvent, "cover_image" | "workshop_link"> & {
 function transformApiEventToUiEvent(data: ApiEvent): UiEvent {
   return {
     ...data,
-    coverImage: data.cover_image ?? "/game_dev_club_logo.svg",
-    workshopLink: data.workshop_link,
+    coverImage: data.coverImage ?? "/game_dev_club_logo.svg",
   };
 }
 

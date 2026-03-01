@@ -44,9 +44,9 @@ class EventModelTest(TestCase):
             date=self.event_datetime,
             description="Yayayyayayay!",
             publicationDate=self.pub_date,
-            cover_image=image_file,
+            coverImage=image_file,
             location="Ezone",
-            workshop_link="https://example.com/workshop",
+            workshopLink="https://example.com/workshop",
         )
 
     def test_publication_date_is_date(self):
@@ -58,10 +58,10 @@ class EventModelTest(TestCase):
         self.assertEqual(event.publicationDate, self.pub_date)
 
     def test_cover_image_not_empty(self):
-        self.assertIsNotNone(self.event.cover_image)
+        self.assertIsNotNone(self.event.coverImage)
 
     def test_cover_image_is_saved_in_correct_folder(self):
-        self.assertTrue(self.event.cover_image.name.startswith("events/"))
+        self.assertTrue(self.event.coverImage.name.startswith("events/"))
 
     def test_publication_date_not_empty(self):
         self.assertTrue(bool(self.event.publicationDate))
@@ -76,7 +76,7 @@ class EventModelTest(TestCase):
 
     def test_workshop_link_matches(self):
         event = Event.objects.get(pk=self.event.pk)
-        self.assertEqual(event.workshop_link, "https://example.com/workshop")
+        self.assertEqual(event.workshopLink, "https://example.com/workshop")
 
 
 class CommitteeModelTest(TestCase):
