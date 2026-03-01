@@ -38,16 +38,17 @@ export default function ArtworkPage({ artwork, error }: ArtworkPageProps) {
           <ArrowLeft /> Back to Showcase
         </Button>
       </Link>
-      <div className="flex gap-12">
-        <Image
-          src={artwork.media ?? "/game_dev_club_logo.svg"}
-          alt="Artwork image"
-          width={500}
-          height={500}
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="relative block sm:h-auto sm:max-w-full md:max-h-full"
-          priority={false}
-        />
+      <div className="flex flex-col gap-12 lg:flex-row">
+        <div className="flex-shrink-0">
+          <Image
+            src={artwork.media ?? "/game_dev_club_logo.svg"}
+            alt="Artwork image"
+            width={500}
+            height={500}
+            className="h-auto w-auto object-contain"
+            priority={false}
+          />
+        </div>
 
         <div className="flex flex-col justify-start rounded-sm bg-neutral_1 px-10 py-6">
           <p className="justify-start font-jersey10 text-5xl text-accent">

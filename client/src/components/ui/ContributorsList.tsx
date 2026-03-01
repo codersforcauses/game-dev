@@ -16,9 +16,9 @@ export default function ContributorsList({
   return (
     <>
       <div className="font-jersey10 text-2xl text-accent">Contributors</div>
-      <div className="relative flex flex-col gap-3">
+      <div className="relative flex flex-col gap-1">
         {contributors.map((contributor) => (
-          <div key={contributor.id} className="mb-2">
+          <div key={contributor.id}>
             <Link
               href={`/members/${contributor.member_id}`}
               className="text-accent hover:underline"
