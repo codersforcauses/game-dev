@@ -3,32 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
+import { EventDateDisplay } from "@/components/ui/EventDateDisplay";
 import { EventTypeFilter, UiEvent, useEvents } from "@/hooks/useEvents";
-
-function formatDateTimeLine(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-
-    const d = new Intl.DateTimeFormat("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    }).format(date);
-
-    const t = new Intl.DateTimeFormat("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    })
-      .format(date)
-      .replace("AM", "am")
-      .replace("PM", "pm");
-
-    return `${d} ・ ${t}`;
-  } catch {
-    return "";
-  }
-}
 
 type EventsByYear<T> = Record<number, T[]>;
 
@@ -216,9 +192,9 @@ export default function EventsPage() {
                           </h3>
 
                           <div className="space-y-1 text-sm md:text-base">
-                            <div className="text-primary">
-                              {formatDateTimeLine(event.date)}
-                            </div>
+                            <p className="text-base text-primary">
+                              <EventDateDisplay date={event.date} />
+                            </p>
                             <div className="text-primary">{event.location}</div>
                           </div>
 

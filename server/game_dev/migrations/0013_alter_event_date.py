@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("game_dev", "0007_rename_pathtothumbnail_game_thumbnail_and_more"),
+        ("game_dev", "0011_rename_pathtothumbnail_game_thumbnail_and_more"),
     ]
 
     operations = [
