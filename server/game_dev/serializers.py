@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Game, Member, GameShowcase, GameContributor, SocialMedia
+from .models import ArtShowcase, Event, Game, Art, ArtContributor, Member, GameShowcase, GameContributor, SocialMedia
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -136,4 +136,44 @@ class MemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Member
-        fields = ["name", "profile_picture", "about", "pronouns", "social_media", "pk"]
+        fields = [
+            "name",
+            "profile_picture",
+            "about",
+            "pronouns",
+            "social_media",
+            "pk"
+        ]
+
+
+class ArtContributorSerializer(serializers.ModelSerializer):
+    member_id = serializers.IntegerField(source='member.id', read_only=True)
+    member_name = serializers.CharField(source='member.name', read_only=True)
+
+    class Meta:
+        model = ArtContributor
+        fields = ['id', 'member_id', 'member_name', 'role']
+
+
+class ArtSerializer(serializers.ModelSerializer):
+    art_id = serializers.IntegerField(source='id', read_only=True)
+    source_game_id = serializers.IntegerField(source='source_game.id', read_only=True)
+    source_game_name = serializers.CharField(source='source_game.name', read_only=True)
+    contributors = ArtContributorSerializer(many=True, read_only=True)
+    showcase_description = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Art
+        fields = ['art_id', 'name', 'description', 'media', 'active', 'source_game_id', 'source_game_name', 'contributors', 'showcase_description']
+
+    def get_showcase_description(self, obj):
+        showcase = obj.showcase.first()
+        return showcase.description if showcase else None
+
+
+class ArtShowcaseSerializer(serializers.ModelSerializer):
+    art_name = serializers.CharField(source='art.name', read_only=True)
+
+    class Meta:
+        model = ArtShowcase
+        fields = ['id', 'description', 'art', 'art_name']
