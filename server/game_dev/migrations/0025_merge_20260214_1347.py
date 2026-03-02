@@ -6,8 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game_dev', '0011_alter_gameshowcase_game'),
-        ('game_dev', '0012_remove_socialmedia_socialmedianame'),
+        ('game_dev', '0019_alter_gameshowcase_game'),
+        ('game_dev', '0023_remove_socialmedia_socialmedianame'),
     ]
 
     operations = [
