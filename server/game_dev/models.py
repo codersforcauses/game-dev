@@ -1,4 +1,6 @@
 from django.db import models
+from requests import get
+from django.core.files.base import ContentFile
 
 
 class Member(models.Model):
@@ -20,9 +22,69 @@ class Event(models.Model):
     coverImage = models.ImageField(upload_to="events/", null=True)
     location = models.CharField(max_length=256)
     workshopLink = models.URLField(max_length=2083, blank=True)
+    jamID = models.PositiveBigIntegerField(unique=True, blank=True, null=True, help_text="See documentation on how to find")
+    games = models.JSONField(default=list, blank=True, help_text="Only filled if event is a Game Jam")
 
     def __str__(self):
         return self.name
+
+    def asave(self, force_insert=False, force_update=False, using="default", update_fields=None):
+        super().save(force_insert, force_update, using, update_fields)
+
+        def jamFail():
+            self.jamID = None
+            self.games = []
+
+        if self.jamID is not None:
+            try:
+                r = get(f"https://itch.io/jam/{self.jamID}/results.json")
+            except Exception as e:
+                print(e)
+                jamFail()
+                return super().asave(force_insert, force_update, using, update_fields)
+            try:
+                results = r.json()["results"]
+            except KeyError:
+                print("Error: No results for this Jam ID could be found")
+                jamFail()
+                return super().asave(force_insert, force_update, using, update_fields)
+            if len(results) == 0:
+                print("Error: No results for this Jam ID could be found")
+                jamFail()
+                return super().asave(force_insert, force_update, using, update_fields)
+            games = []
+            for i in results:
+                try:
+                    cur = Game.objects.get(hostURL=i["url"], name=i["title"])
+                    games.append(cur.pk)
+                except Game.DoesNotExist:
+                    Game.objects.create(name=i["title"], completion=4, hostURL=i["url"], thumbnail="", event=self)
+
+                    imageURL = i["cover_url"]
+                    try:
+                        # Uploads each image to the backend from their url
+                        image = get(imageURL)
+                        imageName = imageURL.split("/")[-1]
+                        imageContent = ContentFile(image.content)
+                        Game.objects.get(name=i["title"], hostURL=i["url"]).thumbnail.save(imageName, imageContent, save=True)
+                    except Exception as e:
+                        print(f"Error: {e}, most likely an invalid url for a game's cover image")
+
+                    games.append(Game.objects.get(name=i["title"], hostURL=i["url"]).pk)
+                    contributors = i["contributors"]
+                    for x in contributors:
+                        try:
+                            socialMedia = SocialMedia.objects.get(socialMediaUserName=x["name"])
+                            GameContributor.objects.create(game=Game.objects.get(name=i["title"], hostURL=i["url"],
+                                                                                 member=socialMedia.member, role="Please add role manually"))
+                        except Exception as e:
+                            print(e)
+                            continue
+
+            self.games = games
+        else:
+            self.games = []
+        return super().asave(force_insert, force_update, using, update_fields)
 
 
 # GameContributor table: links Game, Member, and role (composite PK)
