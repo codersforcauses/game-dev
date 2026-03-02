@@ -19,8 +19,9 @@ class Event(models.Model):
     date = models.DateTimeField()
     description = models.CharField(max_length=256, blank=True)
     publicationDate = models.DateField()
-    cover_image = models.ImageField(upload_to="events/", null=True)
+    coverImage = models.ImageField(upload_to="events/", null=True)
     location = models.CharField(max_length=256)
+    workshopLink = models.URLField(max_length=2083, blank=True)
     jamID = models.PositiveBigIntegerField(unique=True, blank=True, null=True, help_text="See documentation on how to find")
     games = models.JSONField(default=list, blank=True, help_text="Only filled if event is a Game Jam")
 
@@ -115,22 +116,18 @@ class Game(models.Model):
         null=False,
     )
     active = models.BooleanField(default=True, null=False)
-    hostURL = models.URLField(max_length=2083)
+    hostURL = models.URLField(max_length=2083, blank=True)
     itchEmbedID = models.PositiveIntegerField(
         default=None,
         null=True,
         blank=True,
         help_text="If game is stored on itch.io, please enter the itchEmbedID, i.e., 1000200"
     )
-
-    thumbnail = models.ImageField(upload_to="games/", null=True)
-    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
-
-    itchGameEmbedID = models.PositiveBigIntegerField(
+    itchGamePlayableID = models.PositiveBigIntegerField(
         default=None,
         null=True,
         blank=True,
-        help_text="If a game has a web demo stored on itch.io, please enter the embed ID"
+        help_text="If a game is playable and has a web demo stored on itch.io, please enter the embed developer ID"
     )
 
     itchGameWidth = models.PositiveBigIntegerField(
@@ -139,6 +136,9 @@ class Game(models.Model):
     itchGameHeight = models.PositiveBigIntegerField(
         default=0
     )
+
+    thumbnail = models.ImageField(upload_to="games/", null=True)
+    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.name)

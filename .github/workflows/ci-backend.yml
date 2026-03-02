@@ -58,6 +58,7 @@ jobs:
         env:
           EMAIL_PORT: 1025
           FRONTEND_URL: http://localhost:3000
+          API_ALLOWED_HOSTS: localhost
         run: poetry run python manage.py migrate
 
       - name: Run tests 🧪
@@ -66,6 +67,7 @@ jobs:
           JWT_SIGNING_KEY: NjMgNmYgNmQgNmQgNzUgNmUgNjkgNzQgNzkgNzMgNzAgNjkgNzIgNjkgNzQgNjYgNmYgNzUgNmUgNjQgNjEgNzQgNjkgNmYgNmU=
           EMAIL_PORT: 1025
           FRONTEND_URL: http://localhost:3000
+          API_ALLOWED_HOSTS: localhost
         run: |
           poetry run python3 -m pip install coverage
           poetry run coverage run manage.py test

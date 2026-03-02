@@ -1,27 +1,13 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 
+import { EventDateDisplay } from "@/components/ui/EventDateDisplay";
 import { useEvent } from "@/hooks/useEvent";
-
-function formatDateTime(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat("en-AU", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(date);
-  } catch {
-    return dateString; // Fallback to original string if parsing fails
-  }
-}
 
 export default function EventPage() {
   const router = useRouter();
   const { id } = router.query;
-  // Wait for router to be ready before fetching (router.query is empty on initial SSR)
+
   const {
     data: event,
     isPending,
@@ -70,11 +56,27 @@ export default function EventPage() {
             aria-hidden="true"
           />
           <p className="mt-6 text-lg">
-            {formatDateTime(event.date)} · {event.location}
+            <EventDateDisplay date={event.date} />
           </p>
+          <div className="font-firaCode text-sm text-primary">
+            {event.location}{" "}
+          </div>
           <p className="mt-4 max-w-lg text-base leading-relaxed">
             {event.description}
           </p>
+          {event.workshopLink && (
+            <p className="mt-4 font-firaCode">
+              <span className="font-medium text-primary">Workshop link:</span>{" "}
+              <a
+                href={event.workshopLink}
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                {event.workshopLink}
+              </a>
+            </p>
+          )}
         </div>
         <div className="lg:w-128 relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-lg bg-gray-700 md:w-96">
           <Image
