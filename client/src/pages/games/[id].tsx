@@ -57,7 +57,7 @@ export default function IndividualGamePage() {
   const gameTitle = game.name;
   const gameCover = game.gameCover;
   const gameDescription = game.description.split("\n");
-  const gameEmbedID = game.itchGameEmbedID;
+  const gamePlayableID = game.itchGamePlayableID;
   const gameWidth = game.itchGameWidth;
   const gameHeight = game.itchGameHeight;
   const eventID = game.event;
@@ -94,10 +94,11 @@ export default function IndividualGamePage() {
       <main>
         <section className="w-full items-center justify-center bg-popover">
           <div className="mx-auto flex max-w-7xl justify-center p-0 sm:p-8">
-            {gameEmbedID ? (
+            {/* only render game embed if ID, width, and height are all provided (...and are non-zero).  */}
+            {gamePlayableID && gameWidth && gameHeight ? (
               <div className="m-auto flex overflow-auto">
                 <GameEmbed
-                  embedID={gameEmbedID}
+                  embedID={gamePlayableID}
                   gameWidth={gameWidth}
                   gameHeight={gameHeight}
                   gameImage={gameCover}
