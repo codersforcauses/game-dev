@@ -32,6 +32,20 @@ export function getEventDateParts(dateString: string): EventDateParts | null {
   }
 }
 
+const getOrdinal = (d: number) => {
+  if (d > 3 && d < 21) return `${d}th`;
+  switch (d % 10) {
+    case 1:
+      return `${d}st`;
+    case 2:
+      return `${d}nd`;
+    case 3:
+      return `${d}rd`;
+    default:
+      return `${d}th`;
+  }
+};
+
 type EventDateDisplayProps = { date: string };
 
 /** Renders event date as: weekday・ day month・ time.  */
@@ -39,13 +53,10 @@ export function EventDateDisplay({ date }: EventDateDisplayProps) {
   const parts = getEventDateParts(date);
   if (!parts) return null;
   return (
-    <div className="flex flex-wrap items-baseline gap-x-1">
-      <span className="whitespace-nowrap text-primary">
-        {parts.weekday}
-        {"・"}
-      </span>
-      <span className="whitespace-nowrap text-primary">
-        {parts.day} {parts.month}
+    <div className="flex flex-wrap items-baseline gap-x-1 font-firaCode">
+      <span className="whitespace-nowrap text-primary">{parts.weekday},</span>
+      <span className="whitespace-nowrap font-medium text-primary">
+        {getOrdinal(parseInt(parts.day))} {parts.month}
         {"・"}
       </span>
       <span className="text-secondary">{parts.time}</span>
