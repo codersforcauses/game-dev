@@ -130,7 +130,6 @@ export default function Footer() {
                       <SocialIconButton
                         key={index}
                         url={data.url}
-                        socialMediaName={platform}
                       />
                     ),
                   )}

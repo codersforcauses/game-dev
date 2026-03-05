@@ -4,16 +4,9 @@ import { SocialIcon } from "react-social-icons";
 
 import { cssVarAsHSL } from "@/lib/utils";
 
-// this way, we can use the fields from the social media
-// table directly, in several other places throughout the site
 export type SocialMedia = {
   url: string;
-  socialMediaName: string;
   altText?: string;
-  // modify this type to support optional modification to the
-  // social media icons, like a one-size-fits-all styling property
-  // specifically for react-icons
-  // for now, lets keep it simple
 };
 
 /**
@@ -22,13 +15,11 @@ export type SocialMedia = {
  */
 export default function SocialIconButton({
   url,
-  socialMediaName,
   altText,
 }: SocialMedia) {
   return (
     <motion.div
       className="group rounded-xl border border-white/10 bg-white/5 p-2.5"
-      aria-label={socialMediaName}
       whileHover={{
         scale: 1.1,
         y: -4,
@@ -51,7 +42,6 @@ export default function SocialIconButton({
         }}
       >
         <SocialIcon
-          network={socialMediaName}
           url={url}
           label={altText}
           className="h-5 w-5"
