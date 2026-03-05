@@ -13,10 +13,7 @@ export type SocialMedia = {
  * Reusable social media icon button component
  * Handles hover animations and styling with Motion values for colors
  */
-export default function SocialIconButton({
-  url,
-  altText,
-}: SocialMedia) {
+export default function SocialIconButton({ url, altText }: SocialMedia) {
   return (
     <motion.div
       className="group rounded-xl border border-white/10 bg-white/5 p-2.5"
@@ -41,11 +38,7 @@ export default function SocialIconButton({
           damping: 17,
         }}
       >
-        <SocialIcon
-          url={url}
-          label={altText}
-          className="h-5 w-5"
-        />
+        <SocialIcon url={url} label={altText} className="h-5 w-5" />
       </motion.span>
     </motion.div>
   );
