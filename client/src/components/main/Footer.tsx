@@ -125,15 +125,13 @@ export default function Footer() {
                   development club
                 </p>
                 <div className="flex gap-3 pt-2">
-                  {Object.entries(social_media).map(
-                    ([platform, data], index) => (
-                      <SocialIconButton
-                        key={index}
-                        url={data.url}
-                        socialMediaName={platform}
-                      />
-                    ),
-                  )}
+                  {social_media.map((data) => (
+                    <SocialIconButton
+                      key={data.alt_text}
+                      url={data.url}
+                      altText={data.alt_text}
+                    />
+                  ))}
                 </div>
               </div>
               <LinksList
