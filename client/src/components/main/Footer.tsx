@@ -23,12 +23,16 @@ import { useRef } from "react";
 import LinksList from "@/components/ui/LinksList";
 import NetworkCanvas from "@/components/ui/NetworkCanvas";
 import SocialIconButton from "@/components/ui/SocialIconButton";
-import { social_media } from "@/gamedev-metadata.json";
 
 export interface ListLink {
   label: string;
   href: string;
   icon: ReactNode;
+}
+
+type socialMedia = {
+  url: string;
+  alt_text: string;
 }
 
 const quickLinks: ListLink[] = [
@@ -67,6 +71,25 @@ export const mainLinks: ListLink[] = [
   },
 ];
 
+const socialMedia: socialMedia[] = [
+    {
+      url: "https://www.facebook.com/people/Game-Development-UWA/61576948012356/",
+      alt_text: "Facebook"
+    },
+    {
+      url: "https://discord.com/invite/JvnuVyMUff",
+      alt_text: "Discord"
+    },
+    {
+      url: "https://www.instagram.com/gamedevelopmentuwa",
+      alt_text: "Instagram"
+    },
+    {
+      url:"https://game-development-uwa.itch.io/",
+      alt_text: "Itch.io"
+    }
+  ]
+
 export default function Footer() {
   const footerRef = useRef<HTMLElement | null>(null);
   return (
@@ -77,7 +100,7 @@ export default function Footer() {
       >
         <div className="relative z-10 border-t border-purple-500/20">
           <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
-            <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
               <div className="space-y-4 lg:col-span-1">
                 <div className="group flex items-center gap-4">
                   <motion.div
@@ -110,22 +133,20 @@ export default function Footer() {
                       Game Development
                     </h3>
                     <p className="font-jersey10 text-lg text-gray-400">
-                      Create • Play • Inspire
+                      Design • Create • Play
                     </p>
                   </div>
                 </div>
                 <a
-                  href="mailto:UWAgamedev@gmail.com"
                   className="block font-jersey10 text-xl text-gray-300 transition-colors hover:text-purple-400"
                 >
-                  UWAgamedev@gmail.com
+                  Email coming soon!
                 </a>
                 <p className="font-jersey10 text-xl leading-relaxed text-gray-300/80">
-                  Building the next generation of game developers at UWA game
-                  development club
+                  Building the next generation of game developers!
                 </p>
                 <div className="flex gap-3 pt-2">
-                  {social_media.map((data) => (
+                  {socialMedia.map((data) => (
                     <SocialIconButton
                       key={data.alt_text}
                       url={data.url}
@@ -134,16 +155,13 @@ export default function Footer() {
                   ))}
                 </div>
               </div>
-              <LinksList
-                title="Quick Links"
-                titleIcon={<LucideLink className="h-4 w-4 text-accent" />}
-                links={quickLinks}
-              />
+              <div className="lg:flex justify-center">
               <LinksList
                 title="Explore"
                 titleIcon={<Map className="h-4 w-4 text-purple-400" />}
                 links={mainLinks}
               />
+              </div>
             </div>
             <div className="relative my-8">
               <div className="absolute inset-0 flex items-center">
@@ -157,7 +175,7 @@ export default function Footer() {
             </div>
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
               <div className="flex items-center gap-2 font-jersey10 text-xl text-gray-400">
-                <span>© {new Date().getFullYear()} CFC Game Dev</span>
+                <span>© {new Date().getFullYear()} CFC ~ GDUWA</span>
                 <span className="text-purple-500">•</span>
                 <span>All rights reserved</span>
               </div>
