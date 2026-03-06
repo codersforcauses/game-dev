@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from requests import get
 from django.core.files.base import ContentFile
 
 
