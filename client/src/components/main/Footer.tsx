@@ -33,7 +33,7 @@ export interface ListLink {
 type socialMedia = {
   url: string;
   alt_text: string;
-}
+};
 
 const quickLinks: ListLink[] = [
   {
@@ -72,23 +72,23 @@ export const mainLinks: ListLink[] = [
 ];
 
 const socialMedia: socialMedia[] = [
-    {
-      url: "https://www.facebook.com/people/Game-Development-UWA/61576948012356/",
-      alt_text: "Facebook"
-    },
-    {
-      url: "https://discord.com/invite/JvnuVyMUff",
-      alt_text: "Discord"
-    },
-    {
-      url: "https://www.instagram.com/gamedevelopmentuwa",
-      alt_text: "Instagram"
-    },
-    {
-      url:"https://game-development-uwa.itch.io/",
-      alt_text: "Itch.io"
-    }
-  ]
+  {
+    url: "https://www.facebook.com/people/Game-Development-UWA/61576948012356/",
+    alt_text: "Facebook",
+  },
+  {
+    url: "https://discord.com/invite/JvnuVyMUff",
+    alt_text: "Discord",
+  },
+  {
+    url: "https://www.instagram.com/gamedevelopmentuwa",
+    alt_text: "Instagram",
+  },
+  {
+    url: "https://game-development-uwa.itch.io/",
+    alt_text: "Itch.io",
+  },
+];
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement | null>(null);
@@ -137,9 +137,7 @@ export default function Footer() {
                     </p>
                   </div>
                 </div>
-                <a
-                  className="block font-jersey10 text-xl text-gray-300 transition-colors hover:text-purple-400"
-                >
+                <a className="block font-jersey10 text-xl text-gray-300 transition-colors hover:text-purple-400">
                   Email coming soon!
                 </a>
                 <p className="font-jersey10 text-xl leading-relaxed text-gray-300/80">
@@ -155,12 +153,12 @@ export default function Footer() {
                   ))}
                 </div>
               </div>
-              <div className="lg:flex justify-center">
-              <LinksList
-                title="Explore"
-                titleIcon={<Map className="h-4 w-4 text-purple-400" />}
-                links={mainLinks}
-              />
+              <div className="justify-center lg:flex">
+                <LinksList
+                  title="Explore"
+                  titleIcon={<Map className="h-4 w-4 text-purple-400" />}
+                  links={mainLinks}
+                />
               </div>
             </div>
             <div className="relative my-8">
@@ -174,30 +172,36 @@ export default function Footer() {
               </div>
             </div>
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <div className="flex items-center gap-2 font-jersey10 text-xl text-gray-400">
-                <span>© {new Date().getFullYear()} CFC ~ GDUWA</span>
-                <span className="text-purple-500">•</span>
-                <span>All rights reserved</span>
+              <div className="flex items-center gap-2 font-jersey10 text-xl text-gray-400 sm:w-48 lg:w-80">
+                <div>
+                  © {new Date().getFullYear()} CFC ~ GDUWA
+                  <span className="mx-2 text-purple-500">•</span>
+                  All rights reserved
+                </div>
               </div>
-              <Link
-                href=""
-                className="group flex -translate-x-[52px] items-center gap-2.5 rounded-full border border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-pink-500/10 px-4 py-2 transition-all duration-300 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/20"
-                onClick={() => window.open("/Constitution-V1.pdf")}
-              >
-                <span className="font-jersey10 text-xl text-gray-300 transition-colors group-hover:text-white">
-                  Constitution
-                </span>
-              </Link>
-              <div className="flex items-center gap-2 font-jersey10 text-xl text-gray-400">
-                Made with
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+              <div className="flex justify-center sm:w-48 lg:w-80">
+                <Link
+                  href=""
+                  className="group flex w-fit items-center gap-2.5 rounded-full border border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-pink-500/10 px-4 py-2 transition-all duration-300 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/20"
+                  onClick={() => window.open("/Constitution-V1.pdf")}
                 >
-                  <Heart className="h-4 w-4 fill-current text-red-500" />
-                </motion.div>
-                in Perth, UWA
+                  <div className="font-jersey10 text-xl text-gray-300 transition-colors group-hover:text-white">
+                    Constitution
+                  </div>
+                </Link>
               </div>
+              <span className="flex items-center justify-end gap-2 font-jersey10 text-xl text-gray-400 sm:w-48 lg:w-80">
+                <pre className="gap-2 font-jersey10 text-xl">
+                  Made with
+                  <motion.span
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <Heart className="mx-2 inline h-4 w-4 fill-current text-red-500" />
+                  </motion.span>
+                  in UWA, Perth
+                </pre>
+              </span>
             </div>
           </div>
         </div>
