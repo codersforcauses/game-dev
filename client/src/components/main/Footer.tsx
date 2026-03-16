@@ -2,17 +2,12 @@
 import { motion } from "framer-motion";
 import {
   Calendar,
-  Clock,
   Gamepad2,
-  Handshake,
   Heart,
   Home,
-  Link as LucideLink,
   Map,
   Palette,
-  Pencil,
   Sparkles,
-  Upload,
   Users,
 } from "lucide-react";
 import Image from "next/image";
@@ -35,7 +30,7 @@ type socialMedia = {
   alt_text: string;
 };
 
-const quickLinks: ListLink[] = [
+/*const quickLinks: ListLink[] = [
   {
     label: "Join the Club",
     href: "#",
@@ -48,7 +43,7 @@ const quickLinks: ListLink[] = [
   },
   { label: "Upcoming Jams", href: "#", icon: <Clock className="h-4 w-4" /> },
   { label: "Resources", href: "#", icon: <Pencil className="h-4 w-4" /> },
-];
+];*/
 
 // Main navigation links (ideally should be shared with Navbar)
 export const mainLinks: ListLink[] = [
