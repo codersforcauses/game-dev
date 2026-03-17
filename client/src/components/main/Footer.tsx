@@ -2,17 +2,12 @@
 import { motion } from "framer-motion";
 import {
   Calendar,
-  Clock,
   Gamepad2,
-  Handshake,
   Heart,
   Home,
-  Link as LucideLink,
   Map,
   Palette,
-  Pencil,
   Sparkles,
-  Upload,
   Users,
 } from "lucide-react";
 import Image from "next/image";
@@ -23,7 +18,6 @@ import { useRef } from "react";
 import LinksList from "@/components/ui/LinksList";
 import NetworkCanvas from "@/components/ui/NetworkCanvas";
 import SocialIconButton from "@/components/ui/SocialIconButton";
-import { social_media } from "@/gamedev-metadata.json";
 
 export interface ListLink {
   label: string;
@@ -31,7 +25,12 @@ export interface ListLink {
   icon: ReactNode;
 }
 
-const quickLinks: ListLink[] = [
+type socialMedia = {
+  url: string;
+  alt_text: string;
+};
+
+/*const quickLinks: ListLink[] = [
   {
     label: "Join the Club",
     href: "#",
@@ -44,7 +43,7 @@ const quickLinks: ListLink[] = [
   },
   { label: "Upcoming Jams", href: "#", icon: <Clock className="h-4 w-4" /> },
   { label: "Resources", href: "#", icon: <Pencil className="h-4 w-4" /> },
-];
+];*/
 
 // Main navigation links (ideally should be shared with Navbar)
 export const mainLinks: ListLink[] = [
@@ -67,6 +66,25 @@ export const mainLinks: ListLink[] = [
   },
 ];
 
+const socialMedia: socialMedia[] = [
+  {
+    url: "https://www.facebook.com/people/Game-Development-UWA/61576948012356/",
+    alt_text: "Facebook",
+  },
+  {
+    url: "https://discord.com/invite/JvnuVyMUff",
+    alt_text: "Discord",
+  },
+  {
+    url: "https://www.instagram.com/gamedevelopmentuwa",
+    alt_text: "Instagram",
+  },
+  {
+    url: "https://game-development-uwa.itch.io/",
+    alt_text: "Itch.io",
+  },
+];
+
 export default function Footer() {
   const footerRef = useRef<HTMLElement | null>(null);
   return (
@@ -77,7 +95,7 @@ export default function Footer() {
       >
         <div className="relative z-10 border-t border-purple-500/20">
           <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
-            <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
               <div className="space-y-4 lg:col-span-1">
                 <div className="group flex items-center gap-4">
                   <motion.div
@@ -110,22 +128,18 @@ export default function Footer() {
                       Game Development
                     </h3>
                     <p className="font-jersey10 text-lg text-gray-400">
-                      Create • Play • Inspire
+                      Design • Create • Play
                     </p>
                   </div>
                 </div>
-                <a
-                  href="mailto:UWAgamedev@gmail.com"
-                  className="block font-jersey10 text-xl text-gray-300 transition-colors hover:text-purple-400"
-                >
-                  UWAgamedev@gmail.com
+                <a className="block font-jersey10 text-xl text-gray-300 transition-colors hover:text-purple-400">
+                  Email coming soon!
                 </a>
                 <p className="font-jersey10 text-xl leading-relaxed text-gray-300/80">
-                  Building the next generation of game developers at UWA game
-                  development club
+                  Building the next generation of game developers!
                 </p>
                 <div className="flex gap-3 pt-2">
-                  {social_media.map((data) => (
+                  {socialMedia.map((data) => (
                     <SocialIconButton
                       key={data.alt_text}
                       url={data.url}
@@ -134,16 +148,13 @@ export default function Footer() {
                   ))}
                 </div>
               </div>
-              <LinksList
-                title="Quick Links"
-                titleIcon={<LucideLink className="h-4 w-4 text-accent" />}
-                links={quickLinks}
-              />
-              <LinksList
-                title="Explore"
-                titleIcon={<Map className="h-4 w-4 text-purple-400" />}
-                links={mainLinks}
-              />
+              <div className="justify-center lg:flex">
+                <LinksList
+                  title="Explore"
+                  titleIcon={<Map className="h-4 w-4 text-purple-400" />}
+                  links={mainLinks}
+                />
+              </div>
             </div>
             <div className="relative my-8">
               <div className="absolute inset-0 flex items-center">
@@ -156,30 +167,36 @@ export default function Footer() {
               </div>
             </div>
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <div className="flex items-center gap-2 font-jersey10 text-xl text-gray-400">
-                <span>© {new Date().getFullYear()} CFC Game Dev</span>
-                <span className="text-purple-500">•</span>
-                <span>All rights reserved</span>
+              <div className="flex items-center gap-2 font-jersey10 text-xl text-gray-400 sm:w-48 lg:w-80">
+                <div>
+                  © {new Date().getFullYear()} CFC ~ GDUWA
+                  <span className="mx-2 text-purple-500">•</span>
+                  All rights reserved
+                </div>
               </div>
-              <Link
-                href=""
-                className="group flex -translate-x-[52px] items-center gap-2.5 rounded-full border border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-pink-500/10 px-4 py-2 transition-all duration-300 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/20"
-                onClick={() => window.open("/Constitution-V1.pdf")}
-              >
-                <span className="font-jersey10 text-xl text-gray-300 transition-colors group-hover:text-white">
-                  Constitution
-                </span>
-              </Link>
-              <div className="flex items-center gap-2 font-jersey10 text-xl text-gray-400">
-                Made with
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+              <div className="flex justify-center sm:w-48 lg:w-80">
+                <Link
+                  href=""
+                  className="group flex w-fit items-center gap-2.5 rounded-full border border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-pink-500/10 px-4 py-2 transition-all duration-300 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/20"
+                  onClick={() => window.open("/Constitution-V1.pdf")}
                 >
-                  <Heart className="h-4 w-4 fill-current text-red-500" />
-                </motion.div>
-                in Perth, UWA
+                  <div className="font-jersey10 text-xl text-gray-300 transition-colors group-hover:text-white">
+                    Constitution
+                  </div>
+                </Link>
               </div>
+              <span className="flex items-center justify-end gap-2 font-jersey10 text-xl text-gray-400 sm:w-48 lg:w-80">
+                <pre className="gap-2 font-jersey10 text-xl">
+                  Made with
+                  <motion.span
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <Heart className="mx-2 inline h-4 w-4 fill-current text-red-500" />
+                  </motion.span>
+                  in UWA, Perth
+                </pre>
+              </span>
             </div>
           </div>
         </div>
