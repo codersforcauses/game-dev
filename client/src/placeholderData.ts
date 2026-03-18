@@ -56,9 +56,6 @@ export const placeholderGames = [
     hostURL: "/",
     itchEmbedID: "1",
     thumbnail: "/landing_placeholder.png",
-    itchGameEmbedID: 0,
-    itchGameWidth: 0,
-    itchGameHeight: 0,
     event: 1,
   },
   {
@@ -70,9 +67,6 @@ export const placeholderGames = [
     hostURL: "/",
     itchEmbedID: "1",
     thumbnail: "/landing_placeholder.png",
-    itchGameEmbedID: 0,
-    itchGameWidth: 0,
-    itchGameHeight: 0,
     event: 1,
   },
   {
@@ -84,9 +78,6 @@ export const placeholderGames = [
     hostURL: "/",
     itchEmbedID: "1",
     thumbnail: "/landing_placeholder.png",
-    itchGameEmbedID: 0,
-    itchGameWidth: 0,
-    itchGameHeight: 0,
     event: 1,
   },
 ];
