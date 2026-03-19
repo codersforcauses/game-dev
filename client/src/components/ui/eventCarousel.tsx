@@ -5,6 +5,9 @@ import { useEffect, useRef, useState } from "react";
 
 import { UiEvent as EventType } from "@/hooks/useEvents";
 
+import { Button } from "./button";
+import { EventDateDisplay } from "./EventDateDisplay";
+
 type EventCarouselProps = {
   items: EventType[];
 };
@@ -13,11 +16,13 @@ const GAP = 40;
 
 export default function EventCarousel({ items }: EventCarouselProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
-  const firstItemRef = useRef<HTMLDivElement>(null);
+  const firstItemRef = useRef<HTMLAnchorElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
   const [itemWidth, setItemWidth] = useState(0);
+
+  const isEmpty = items.length === 0;
 
   const maxIndex = Math.max(items.length - visibleCount, 0);
   const slideLeft = () => {
@@ -28,29 +33,33 @@ export default function EventCarousel({ items }: EventCarouselProps) {
   };
   const translateX = -(currentIndex * (itemWidth + GAP));
 
-  /* Observe item width */
+  /* Observe item width – re-run when items change so we measure after first item mounts */
   useEffect(() => {
-    if (!firstItemRef.current) return;
-    const observer = new ResizeObserver(() => {
-      const width = firstItemRef.current?.clientWidth ?? 0;
-      setItemWidth(width);
-    });
-    observer.observe(firstItemRef.current);
+    const el = firstItemRef.current;
+    if (!el || items.length === 0) return;
+    const readWidth = () => {
+      requestAnimationFrame(() => {
+        const w = firstItemRef.current?.clientWidth ?? 0;
+        setItemWidth(w);
+      });
+    };
+    readWidth();
+    const observer = new ResizeObserver(readWidth);
+    observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [items.length]);
 
   useEffect(() => {
     const updateVisibleCount = () => {
-      if (window.innerWidth < 768) {
-        setVisibleCount(1);
-      } else {
-        setVisibleCount(3);
-      }
+      const newVisibleCount = window.innerWidth < 768 ? 1 : 3;
+      const newMaxIndex = Math.max(0, items.length - newVisibleCount);
+      setVisibleCount(newVisibleCount);
+      setCurrentIndex((prev) => Math.min(prev, newMaxIndex));
     };
     updateVisibleCount();
     window.addEventListener("resize", updateVisibleCount);
     return () => window.removeEventListener("resize", updateVisibleCount);
-  }, []);
+  }, [items.length]);
 
   return (
     <div className="container mx-auto rounded-lg bg-primary-foreground px-4 py-8 lg:px-12">
@@ -59,30 +68,37 @@ export default function EventCarousel({ items }: EventCarouselProps) {
           <h2 className="font-jersey10 text-4xl tracking-wide text-white">
             Upcoming Events
           </h2>
-
-          <div className="ml-5 flex gap-3 text-lg text-white/60">
-            <ChevronLeft
-              className={`hover:text-white ${
-                currentIndex === 0 ? "opacity-40" : "cursor-pointer"
-              }`}
-              onClick={slideLeft}
-            />
-            <ChevronRight
-              className={`hover:text-white ${
-                currentIndex === maxIndex ? "opacity-40" : "cursor-pointer"
-              }`}
-              onClick={slideRight}
-            />
-          </div>
+          {!isEmpty && (
+            <div className="ml-5 flex gap-3 text-lg text-white/60">
+              <ChevronLeft
+                className={`hover:text-white ${
+                  currentIndex === 0 ? "opacity-40" : "cursor-pointer"
+                }`}
+                onClick={slideLeft}
+              />
+              <ChevronRight
+                className={`hover:text-white ${
+                  currentIndex === maxIndex ? "opacity-40" : "cursor-pointer"
+                }`}
+                onClick={slideRight}
+              />
+            </div>
+          )}
         </div>
 
-        <Link href="/events" className="font-jersey10">
-          See More
-        </Link>
+        {!isEmpty && (
+          <Link href="/events" className="font-jersey10">
+            <Button>See More</Button>
+          </Link>
+        )}
       </div>
 
+      {isEmpty && (
+        <p className="mt-10 px-10 text-sm text-primary">No events available.</p>
+      )}
+
       <div className="mt-10 px-10">
-        <div ref={viewportRef} className="overflow-hidden">
+        <div ref={viewportRef} className="overflow-hidden px-2 md:px-4">
           <div
             className="flex transition-transform duration-300 ease-out"
             style={{
@@ -91,10 +107,11 @@ export default function EventCarousel({ items }: EventCarouselProps) {
             }}
           >
             {items.map((event, index) => (
-              <div
+              <Link
+                href={`/events/${event.id}`}
                 key={event.id}
                 ref={index === 0 ? firstItemRef : undefined}
-                className="w-full flex-shrink-0 md:w-[calc((100%-80px)/3)]"
+                className={`block w-full flex-shrink-0 rounded-xl transition-transform duration-200 ease-in-out hover:scale-110 md:w-[calc((100%-80px)/3)] ${index === currentIndex ? "origin-left" : ""}`}
               >
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
                   <Image
@@ -105,17 +122,16 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                   />
                 </div>
 
-                <h3 className="mt-6 font-firaCode text-lg font-semibold tracking-wide text-white">
+                <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
                   {event.name}
                 </h3>
 
-                {/* Needs proper processing and laying out */}
-                <p className="text-sm tracking-wide text-white/70">
-                  {event.startTime}
+                <p className="mb-4 text-base text-primary">
+                  <EventDateDisplay date={event.date} />
                 </p>
 
                 <div className="mt-3 w-full border-b border-white/20" />
-              </div>
+              </Link>
             ))}
           </div>
         </div>

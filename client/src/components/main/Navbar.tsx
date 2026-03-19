@@ -5,8 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+import { useExplosionContext } from "@/contexts/ExplosionContext";
+
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { triggerExplosionAt } = useExplosionContext();
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -16,11 +19,19 @@ export default function Navbar() {
     { href: "/artwork", label: "Art Showcase" },
   ];
 
+  const handleNavClick = (e: React.MouseEvent) => {
+    triggerExplosionAt(e.clientX, e.clientY);
+  };
+
   return (
     <>
       <header className="sticky top-0 z-50 flex h-24 w-full items-center rounded-md border-b border-border/20 bg-background px-20 font-jersey10">
         <div className="flex flex-1 items-center">
-          <Link href="/" className="flex items-center gap-3 text-2xl lg:mr-5">
+          <Link
+            href="/"
+            className="flex items-center gap-3 text-2xl lg:mr-5"
+            onClick={handleNavClick}
+          >
             <Image
               src="/game_dev_club_logo.svg"
               alt="logo"
@@ -44,6 +55,7 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={handleNavClick}
                 className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
               >
                 {item.label}
@@ -67,7 +79,10 @@ export default function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={() => setIsDropdownOpen(false)}
+                    onClick={(e) => {
+                      handleNavClick(e);
+                      setIsDropdownOpen(false);
+                    }}
                     className="block whitespace-nowrap px-4 py-3 text-lg transition-colors duration-150 hover:bg-accent"
                   >
                     {item.label}

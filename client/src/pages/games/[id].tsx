@@ -1,8 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import { SocialIcon } from "react-social-icons";
 
+import { GameEmbed } from "@/components/ui/GameEmbed";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
+import { useEvent } from "@/hooks/useEvent";
 import { useGame } from "@/hooks/useGames";
 
 export default function IndividualGamePage() {
@@ -15,6 +19,9 @@ export default function IndividualGamePage() {
     error,
     isError,
   } = useGame(router.isReady ? id : undefined);
+  const { data: eventData } = useEvent(
+    game?.event ? String(game.event) : undefined,
+  );
 
   if (isPending) {
     return (
@@ -50,6 +57,11 @@ export default function IndividualGamePage() {
   const gameTitle = game.name;
   const gameCover = game.gameCover;
   const gameDescription = game.description.split("\n");
+  const gamePlayableID = game.itchGamePlayableID;
+  const gameWidth = game.itchGameWidth;
+  const gameHeight = game.itchGameHeight;
+  const eventID = game.event;
+  const eventName = eventData?.name || "";
 
   const completionLabels: Record<number, string> = {
     1: "WIP",
@@ -60,8 +72,6 @@ export default function IndividualGamePage() {
 
   const devStage = completionLabels[game.completion] ?? "Stage Unknown";
 
-  // TODO ADD EVENT
-  const event = "Game Jam November 2025";
   // TODO ADD ARTIMAGES
   const artImages: { src: string; alt: string }[] = [];
   // const artImages = [
@@ -82,16 +92,28 @@ export default function IndividualGamePage() {
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       <main>
-        <section className="w-full bg-popover">
-          <div className="mx-auto max-w-7xl p-0 sm:p-8">
-            <Image
-              src={gameCover}
-              alt="Game Cover"
-              width={800}
-              height={800}
-              className="max-h-[60vh] w-full object-cover sm:mx-auto sm:h-auto sm:max-h-[60vh] sm:rounded-2xl sm:object-contain"
-              priority
-            />
+        <section className="w-full items-center justify-center bg-popover">
+          <div className="mx-auto flex max-w-7xl justify-center p-0 sm:p-8">
+            {/* only render game embed if ID, width, and height are all provided (...and are non-zero).  */}
+            {gamePlayableID && gameWidth && gameHeight ? (
+              <div className="m-auto flex overflow-auto">
+                <GameEmbed
+                  embedID={gamePlayableID}
+                  gameWidth={gameWidth}
+                  gameHeight={gameHeight}
+                  gameImage={gameCover}
+                />
+              </div>
+            ) : (
+              <Image
+                src={gameCover}
+                alt="Game Cover"
+                width={800}
+                height={800}
+                className="max-h-[60vh] w-full object-cover sm:mx-auto sm:h-auto sm:max-h-[60vh] sm:rounded-2xl sm:object-contain"
+                priority
+              />
+            )}
           </div>
         </section>
 
@@ -107,17 +129,29 @@ export default function IndividualGamePage() {
                     Contributors
                   </td>
                   <td className="py-1 text-right sm:py-2">
-                    <div className="grid grid-cols-[auto_auto] gap-x-1 gap-y-1">
+                    <div className="flex flex-col gap-y-1">
                       {game.contributors.map((c) => (
-                        <React.Fragment key={c.member_id}>
-                          <a
-                            href={`/member/${c.member_id}`}
+                        <div
+                          key={c.member_id}
+                          className="flex items-center gap-x-2"
+                        >
+                          <Link
+                            href={`/members/${c.member_id}`}
                             className="text-primary hover:underline"
                           >
                             {c.name}
-                          </a>
-                          <span>{c.role}</span>
-                        </React.Fragment>
+                          </Link>
+                          {Array.isArray(c.social_media) &&
+                            c.social_media.map((sm) => (
+                              <SocialIcon
+                                key={sm.link}
+                                url={sm.link}
+                                style={{ height: 24, width: 24 }}
+                                title={sm.socialMediaUserName}
+                              />
+                            ))}
+                          <span className="ml-auto">{c.role}</span>
+                        </div>
                       ))}
                     </div>
                   </td>
@@ -128,24 +162,39 @@ export default function IndividualGamePage() {
                   </td>
                   <td className="py-1 text-right sm:py-2">{devStage}</td>
                 </tr>
-                <tr className="border-b-2 border-gray-300">
-                  <td className="py-1 pr-2 text-muted-foreground sm:py-2">
-                    Host Site
-                  </td>
-                  <td className="py-1 text-right sm:py-2">
-                    <a
-                      href={game.hostURL}
-                      className="text-primary underline hover:underline"
-                    >
-                      {game.hostURL}
-                    </a>
-                  </td>
-                </tr>
+                {game.hostURL && (
+                  <tr className="border-b-2 border-gray-300">
+                    <td className="py-1 pr-2 text-muted-foreground sm:py-2">
+                      Host Site
+                    </td>
+                    <td className="py-1 text-right sm:py-2">
+                      <a
+                        href={game.hostURL}
+                        className="text-primary underline hover:underline"
+                      >
+                        {game.hostURL}
+                      </a>
+                    </td>
+                  </tr>
+                )}
                 <tr>
                   <td className="py-1 pr-2 text-muted-foreground sm:py-2">
                     Event
                   </td>
-                  <td className="py-1 text-right sm:py-2">{event}</td>
+                  <td className="py-1 text-right sm:py-2">
+                    {eventID && eventName ? (
+                      <Link
+                        href={`/events/${eventID}`}
+                        className="text-primary hover:underline"
+                      >
+                        {eventName}
+                      </Link>
+                    ) : (
+                      <span className="text-muted-foreground">
+                        No past/upcoming event
+                      </span>
+                    )}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -158,9 +207,8 @@ export default function IndividualGamePage() {
         </section>
 
         <section className="mt-8 flex w-full flex-col items-center gap-6">
-          {game.itchEmbedID && (
-            <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
-          )}
+          <ItchEmbed embedID={game.itchEmbedID} name={gameTitle} />
+
           <h2 className="font-jersey10 text-5xl text-primary">ARTWORK</h2>
 
           <div className="mx-auto mb-6 flex h-auto w-full max-w-4xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-center sm:gap-6 sm:px-6 md:h-60">

@@ -1,7 +1,7 @@
 services:
   server:
     image: ghcr.io/codersforcauses/game-dev-prod-server:latest
-    container_name: transplant_server
+    container_name: game_dev_server
     restart: unless-stopped
     env_file: ./.env.prod
     ports:
@@ -15,7 +15,7 @@ services:
 
   client:
     image: ghcr.io/codersforcauses/game-dev-prod-client:latest
-    container_name: transplant_client
+    container_name: game_dev_client
     restart: unless-stopped
     env_file: ./.env.prod
     ports:
@@ -26,7 +26,7 @@ services:
 
   nginx:
     image: nginx:stable-alpine3.21
-    container_name: transplant_nginx
+    container_name: game_dev_nginx
     restart: unless-stopped
     ports:
       - 80:80
@@ -41,7 +41,7 @@ services:
 
   watchtower:
     image: containrrr/watchtower:latest
-    container_name: transplant_watchtower
+    container_name: game_dev_watchtower
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
