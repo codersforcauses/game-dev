@@ -11,17 +11,20 @@ import {
 } from "@/components/ui/eventHighlightCard";
 import Explosion from "@/components/ui/Explosion";
 import LandingGames from "@/components/ui/landingGames";
-import { Button } from "../components/ui/button";
 import { UiEvent, useEvents } from "@/hooks/useEvents";
 
 export default function Landing() {
   const [showExplosion, setShowExplosion] = useState(false);
+  const [isShaking, setIsShaking] = useState(false);
 
   const handleExplode = () => {
     if (showExplosion) return;
 
     setShowExplosion(true);
     setTimeout(() => setShowExplosion(false), 700);
+    // Trigger screen shake
+    setIsShaking(true);
+    setTimeout(() => setIsShaking(false), 400);
   };
 
   const { data, isPending, isError, isFetching } = useEvents({
