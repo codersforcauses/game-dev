@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .serializers import GamesSerializer, GameshowcaseSerializer, EventSerializer, MemberSerializer
-from .models import Game, GameShowcase, Event, Member, Committee
+from .serializers import ContributorGameSerializer, GamesSerializer, GameshowcaseSerializer, EventSerializer, MemberSerializer
+from .models import Game, GameContributor, GameShowcase, Event, Member, Committee
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -37,6 +37,9 @@ class EventListAPIView(generics.ListAPIView):
         qs = Event.objects.all()
         type_param = self.request.query_params.get("type")
         now = timezone.now()
+        nowdate = now.date()
+        # Only show published events
+        qs = qs.filter(publicationDate__lte=nowdate)
 
         # Default to upcoming when type is missing/empty
         if not type_param:
@@ -60,14 +63,31 @@ class EventDetailAPIView(generics.RetrieveAPIView):
     lookup_url_kwarg = "id"
 
     def get_queryset(self):
-        return Event.objects.filter(id=self.kwargs["id"])
+        now = timezone.now().date()
+        return Event.objects.filter(id=self.kwargs["id"], publicationDate__lte=now)
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        try:
+            return queryset.get()
+        except Event.DoesNotExist:
+            from rest_framework.exceptions import NotFound
+            raise NotFound(detail="The event is not yet published by admin or does not exist.")
 
 
 class GameshowcaseAPIView(APIView):
     def get(self, request):
         showcases = GameShowcase.objects.all()
-        serializer = GameshowcaseSerializer(showcases, many=True)
+        serializer = GameshowcaseSerializer(showcases, many=True, context={'request': request})
         return Response(serializer.data)
+
+
+class ContributorGamesListAPIView(generics.ListAPIView):
+    serializer_class = ContributorGameSerializer
+
+    def get_queryset(self):
+        member_id = self.kwargs.get("member")
+        return GameContributor.objects.filter(member=member_id)
 
 
 class MemberAPIView(generics.RetrieveAPIView):

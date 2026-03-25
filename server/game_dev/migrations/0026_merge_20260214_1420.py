@@ -6,8 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("game_dev", "0013_alter_game_itchgameembedid"),
-        ("game_dev", "0013_merge_20260214_1347"),
+        ("game_dev", "0024_alter_game_itchgameembedid"),
+        ("game_dev", "0025_merge_20260214_1347"),
     ]
 
     operations = []

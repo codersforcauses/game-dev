@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { SocialIcon } from "react-social-icons";
@@ -6,6 +7,7 @@ import { SocialIcon } from "react-social-icons";
 import GameArtCarousel from "@/components/ui/GameArtCarousel";
 import { GameEmbed } from "@/components/ui/GameEmbed";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
+import { useEvent } from "@/hooks/useEvent";
 import { useGame } from "@/hooks/useGames";
 
 export default function IndividualGamePage() {
@@ -18,6 +20,9 @@ export default function IndividualGamePage() {
     error,
     isError,
   } = useGame(router.isReady ? id : undefined);
+  const { data: eventData } = useEvent(
+    game?.event ? String(game.event) : undefined,
+  );
 
   if (isPending) {
     return (
@@ -53,9 +58,11 @@ export default function IndividualGamePage() {
   const gameTitle = game.name;
   const gameCover = game.gameCover;
   const gameDescription = game.description.split("\n");
-  const gameEmbedID = game.itchGameEmbedID;
+  const gamePlayableID = game.itchGamePlayableID;
   const gameWidth = game.itchGameWidth;
   const gameHeight = game.itchGameHeight;
+  const eventID = game.event;
+  const eventName = eventData?.name || "";
 
   const completionLabels: Record<number, string> = {
     1: "WIP",
@@ -66,18 +73,31 @@ export default function IndividualGamePage() {
 
   const devStage = completionLabels[game.completion] ?? "Stage Unknown";
 
-  // TODO ADD EVENT
-  const event = "Game Jam November 2025";
+  // const artImages = [
+  //   {
+  //     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Minecraft_Zombie.png/120px-Minecraft_Zombie.png",
+  //     alt: "Minecraft Zombie",
+  //   },
+  //   {
+  //     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Minecraft_Enderman.png/120px-Minecraft_Enderman.png",
+  //     alt: "Minecraft Enderman",
+  //   },
+  //   {
+  //     src: "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Minecraft_explore_landscape.png/375px-Minecraft_explore_landscape.png",
+  //     alt: "Minecraft Landscape",
+  //   },
+  // ];
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       <main>
         <section className="w-full items-center justify-center bg-popover">
           <div className="mx-auto flex max-w-7xl justify-center p-0 sm:p-8">
-            {gameEmbedID != "0" ? (
+            {/* only render game embed if ID, width, and height are all provided (...and are non-zero).  */}
+            {gamePlayableID && gameWidth && gameHeight ? (
               <div className="m-auto flex overflow-auto">
                 <GameEmbed
-                  embedID={gameEmbedID}
+                  embedID={gamePlayableID}
                   gameWidth={gameWidth}
                   gameHeight={gameHeight}
                   gameImage={gameCover}
@@ -114,12 +134,12 @@ export default function IndividualGamePage() {
                           key={c.member_id}
                           className="flex items-center gap-x-2"
                         >
-                          <a
+                          <Link
                             href={`/members/${c.member_id}`}
                             className="text-primary hover:underline"
                           >
                             {c.name}
-                          </a>
+                          </Link>
                           {Array.isArray(c.social_media) &&
                             c.social_media.map((sm) => (
                               <SocialIcon
@@ -141,24 +161,39 @@ export default function IndividualGamePage() {
                   </td>
                   <td className="py-1 text-right sm:py-2">{devStage}</td>
                 </tr>
-                <tr className="border-b-2 border-gray-300">
-                  <td className="py-1 pr-2 text-muted-foreground sm:py-2">
-                    Host Site
-                  </td>
-                  <td className="py-1 text-right sm:py-2">
-                    <a
-                      href={game.hostURL}
-                      className="text-primary underline hover:underline"
-                    >
-                      {game.hostURL}
-                    </a>
-                  </td>
-                </tr>
+                {game.hostURL && (
+                  <tr className="border-b-2 border-gray-300">
+                    <td className="py-1 pr-2 text-muted-foreground sm:py-2">
+                      Host Site
+                    </td>
+                    <td className="py-1 text-right sm:py-2">
+                      <a
+                        href={game.hostURL}
+                        className="text-primary underline hover:underline"
+                      >
+                        {game.hostURL}
+                      </a>
+                    </td>
+                  </tr>
+                )}
                 <tr>
                   <td className="py-1 pr-2 text-muted-foreground sm:py-2">
                     Event
                   </td>
-                  <td className="py-1 text-right sm:py-2">{event}</td>
+                  <td className="py-1 text-right sm:py-2">
+                    {eventID && eventName ? (
+                      <Link
+                        href={`/events/${eventID}`}
+                        className="text-primary hover:underline"
+                      >
+                        {eventName}
+                      </Link>
+                    ) : (
+                      <span className="text-muted-foreground">
+                        No past/upcoming event
+                      </span>
+                    )}
+                  </td>
                 </tr>
               </tbody>
             </table>
