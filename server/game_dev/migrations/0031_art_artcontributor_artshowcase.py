@@ -46,8 +46,8 @@ class Migration(migrations.Migration):
             options={
                 'constraints': [
                     models.UniqueConstraint(
-                        fields=('art',), 
-                        name='unique_artshowcase_per_art', 
+                        fields=('art',),
+                        name='unique_artshowcase_per_art',
                         violation_error_message='Each art piece can only have one showcase.'
                     )
                 ],
