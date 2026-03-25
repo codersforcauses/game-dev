@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/eventHighlightCard";
 import Explosion from "@/components/ui/Explosion";
 import LandingGames from "@/components/ui/landingGames";
+import { useExplosionContext } from "@/contexts/ExplosionContext";
 import { UiEvent, useEvents } from "@/hooks/useEvents";
 
 export default function Landing() {
   const [showExplosion, setShowExplosion] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
 
+  const { triggerExplosionAt } = useExplosionContext();
   const handleExplode = () => {
     if (showExplosion) return;
 
@@ -25,6 +27,15 @@ export default function Landing() {
     // Trigger screen shake
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 400);
+
+    for (let i = 0; i < 10; i++) {
+      setTimeout(() => {
+        // Random position with 10% margin from edges
+        const x = window.innerWidth * (0.1 + Math.random() * 0.8);
+        const y = window.innerHeight * (0.1 + Math.random() * 0.8);
+        triggerExplosionAt(x, y);
+      }, i * 50); // Stagger by 50ms
+    }
   };
 
   const { data, isPending, isError, isFetching } = useEvents({
