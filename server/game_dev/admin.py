@@ -1,13 +1,10 @@
 from django.contrib import admin
-from .models import Member, Game, Event, GameContributor, GameShowcase, Committee, SocialMedia
+from .models import Member, Game, Event, GameContributor, GameShowcase, Committee, SocialMedia, Art, ArtContributor, ArtShowcase
 
 
 class SocialMediaInline(admin.TabularInline):
     model = SocialMedia
     extra = 1
-
-# from issue-8-merge-40 temp need changes
-from .models import Art, ArtContributor, ArtShowcase
 
 
 class MemberAdmin(admin.ModelAdmin):

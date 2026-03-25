@@ -36,6 +36,12 @@ function transformApiShowcaseGameToUi(data: ApiShowcaseGame): UiShowcaseGame {
   return {
     ...data,
     gameCover: data.game_cover_thumbnail ?? "/game_dev_club_logo.svg",
+    artworks: data.artworks.map((a) => ({
+      id: a.art_id,
+      name: a.name,
+      image: a.media,
+      sourceGameId: a.source_game_id,
+    })),
   };
 }
 

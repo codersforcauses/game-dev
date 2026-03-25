@@ -44,7 +44,13 @@ class Migration(migrations.Migration):
                 ('art', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='showcase', to='game_dev.art')),
             ],
             options={
-                'constraints': [models.UniqueConstraint(fields=('art',), name='unique_artshowcase_per_art', violation_error_message='Each art piece can only have one showcase.')],
+                'constraints': [
+                    models.UniqueConstraint(
+                        fields=('art',), 
+                        name='unique_artshowcase_per_art', 
+                        violation_error_message='Each art piece can only have one showcase.'
+                    )
+                ],
             },
         ),
     ]
