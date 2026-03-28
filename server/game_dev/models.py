@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class Member(models.Model):
@@ -17,8 +18,9 @@ class Event(models.Model):
     date = models.DateTimeField()
     description = models.CharField(max_length=256, blank=True)
     publicationDate = models.DateField()
-    cover_image = models.ImageField(upload_to="events/", null=True)
+    coverImage = models.ImageField(upload_to="events/", null=True)
     location = models.CharField(max_length=256)
+    workshopLink = models.URLField(max_length=2083, blank=True)
 
     def __str__(self):
         return self.name
@@ -53,33 +55,43 @@ class Game(models.Model):
         null=False,
     )
     active = models.BooleanField(default=True, null=False)
-    hostURL = models.URLField(max_length=2083)
+    hostURL = models.URLField(max_length=2083, blank=True)
     itchEmbedID = models.PositiveIntegerField(
         default=None,
         null=True,
         blank=True,
         help_text="If game is stored on itch.io, please enter the itchEmbedID, i.e., 1000200"
     )
+    itchGamePlayableID = models.PositiveBigIntegerField(
+        default=None,
+        null=True,
+        blank=True,
+        help_text="If a game is playable and has a web demo stored on itch.io, please enter the embed developer ID"
+    )
+    itchGameWidth = models.PositiveBigIntegerField(
+        default=None,
+        null=True,
+        blank=True,
+    )
+    itchGameHeight = models.PositiveBigIntegerField(
+        default=None,
+        null=True,
+        blank=True,
+    )
 
     thumbnail = models.ImageField(upload_to="games/", null=True)
     event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
 
-    itchGameEmbedID = models.PositiveBigIntegerField(
-        default=None,
-        null=True,
-        blank=True,
-        help_text="If a game has a web demo stored on itch.io, please enter the embed ID"
-    )
-
-    itchGameWidth = models.PositiveBigIntegerField(
-        default=0
-    )
-    itchGameHeight = models.PositiveBigIntegerField(
-        default=0
-    )
-
     def __str__(self):
         return str(self.name)
+
+    def clean(self):
+        super().clean()
+        if self.itchGamePlayableID:
+            if not self.itchGameWidth:
+                raise ValidationError({"itchGameWidth": "Game width is required if itchGamePlayableID is set."})
+            if not self.itchGameHeight:
+                raise ValidationError({"itchGameHeight": "Game height is required if itchGamePlayableID is set."})
 
 
 class GameShowcase(models.Model):
