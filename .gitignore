@@ -293,5 +293,6 @@ dist
 
 # misc
 .DS_Store
+.cursor/
 
 opt/
