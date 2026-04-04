@@ -265,6 +265,8 @@ class ArtContributorModelTest(TestCase):
             pronouns="She/Her"
         )
 
+        self.game = Game.objects.create(name="Test Game")
+
         # Create art
         image_file = SimpleUploadedFile(
             "test_art.jpg",
@@ -275,6 +277,7 @@ class ArtContributorModelTest(TestCase):
             name="Collaborative Artwork",
             description="Art with multiple contributors",
             media=image_file,
+            source_game=self.game,
         )
 
         # Create art contributor
@@ -330,6 +333,8 @@ class ArtContributorModelTest(TestCase):
 
 class ArtShowcaseModelTest(TestCase):
     def setUp(self):
+        self.game = Game.objects.create(name="Test Game")
+
         # Create art pieces
         image_file1 = SimpleUploadedFile(
             "test_art1.jpg",
@@ -340,6 +345,7 @@ class ArtShowcaseModelTest(TestCase):
             name="Showcased Artwork",
             description="This art is showcased",
             media=image_file1,
+            source_game=self.game,
         )
 
         image_file2 = SimpleUploadedFile(
@@ -351,6 +357,7 @@ class ArtShowcaseModelTest(TestCase):
             name="Another Artwork",
             description="This art is also showcased",
             media=image_file2,
+            source_game=self.game,
         )
 
         # Create showcase

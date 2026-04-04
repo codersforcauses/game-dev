@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (ContributorGamesListAPIView, EventListAPIView, EventDetailAPIView, GamesDetailAPIView,
-    GameshowcaseAPIView, MemberAPIView, CommitteeAPIView,
-    FeatureArtAPIView, ArtDetailAPIView)
+                    GameshowcaseAPIView, MemberAPIView, CommitteeAPIView,
+                    FeatureArtAPIView, ArtDetailAPIView)
 
 
 urlpatterns = [
