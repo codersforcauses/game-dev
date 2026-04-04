@@ -1,5 +1,5 @@
+import { Image as Placeholder } from "lucide-react";
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -28,17 +28,6 @@ function hasResultsArray<T>(value: unknown): value is { results: T[] } {
   return Array.isArray(v.results);
 }
 
-const PLACEHOLDER_ICON = (
-  <div data-svg-wrapper data-layer="Vector" className="Vector">
-    <Image
-      src="/placeholder-icon.svg"
-      alt="Placeholder icon"
-      width={96}
-      height={96}
-    />
-  </div>
-);
-
 function renderArtworkCard(artwork: Art) {
   return (
     <ImageCard
@@ -47,7 +36,7 @@ function renderArtworkCard(artwork: Art) {
       imageAlt={artwork.name}
       href={`/artwork/${artwork.art_id}`}
       disableFlip={artwork.isMock === true}
-      placeholder={PLACEHOLDER_ICON}
+      placeholder={<Placeholder color="var(--neutral-1)" />}
       backContent={
         <div className="flex h-full flex-col gap-4">
           <div>
