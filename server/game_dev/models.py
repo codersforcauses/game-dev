@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class Member(models.Model):
@@ -67,12 +68,15 @@ class Game(models.Model):
         blank=True,
         help_text="If a game is playable and has a web demo stored on itch.io, please enter the embed developer ID"
     )
-
     itchGameWidth = models.PositiveBigIntegerField(
-        default=0
+        default=None,
+        null=True,
+        blank=True,
     )
     itchGameHeight = models.PositiveBigIntegerField(
-        default=0
+        default=None,
+        null=True,
+        blank=True,
     )
 
     thumbnail = models.ImageField(upload_to="games/", null=True)
@@ -80,6 +84,14 @@ class Game(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+    def clean(self):
+        super().clean()
+        if self.itchGamePlayableID:
+            if not self.itchGameWidth:
+                raise ValidationError({"itchGameWidth": "Game width is required if itchGamePlayableID is set."})
+            if not self.itchGameHeight:
+                raise ValidationError({"itchGameHeight": "Game height is required if itchGamePlayableID is set."})
 
 
 class GameShowcase(models.Model):
