@@ -1,5 +1,6 @@
 ## Member Profiles
 
+URL: `/admin/game_dev/member/add/`
 Profiles of club members can be added and edited at the row 'Member' of the GAME_DEV section on the main admin page.
 
 ### Fields
