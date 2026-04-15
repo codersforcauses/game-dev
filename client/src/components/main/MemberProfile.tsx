@@ -20,6 +20,7 @@ export type MemberProfileData = {
 
 type MemberProfileProps = {
   member: MemberProfileData;
+  id: number;
 };
 
 function initialsFromName(name: string) {
