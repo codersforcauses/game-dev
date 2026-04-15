@@ -1,4 +1,6 @@
-# Events
+## Events
+
+URL: `/admin/game_dev/event/add`
 
 Event instances that are displayed on the landing and events pages
 
