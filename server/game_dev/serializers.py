@@ -17,6 +17,43 @@ class EventSerializer(serializers.ModelSerializer):
         ]
 
 
+########################################
+# Copied from issue-8-merge-40 therefore is just sample to work with
+class ArtContributorSerializer(serializers.ModelSerializer):
+    member_id = serializers.IntegerField(source='member.id', read_only=True)
+    member_name = serializers.CharField(source='member.name', read_only=True)
+
+    class Meta:
+        model = ArtContributor
+        fields = ['id', 'member_id', 'member_name', 'role']
+
+
+class ArtSerializer(serializers.ModelSerializer):
+    art_id = serializers.IntegerField(source='id', read_only=True)
+    source_game_id = serializers.IntegerField(source='source_game.id', read_only=True)
+    source_game_name = serializers.CharField(source='source_game.name', read_only=True)
+    contributors = ArtContributorSerializer(many=True, read_only=True)
+    showcase_description = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Art
+        fields = ['art_id', 'name', 'description', 'media', 'active', 'source_game_id', 'source_game_name', 'contributors', 'showcase_description']
+
+    def get_showcase_description(self, obj):
+        showcase = obj.showcase.first()
+        return showcase.description if showcase else None
+
+
+class ArtShowcaseSerializer(serializers.ModelSerializer):
+    art_name = serializers.CharField(source='art.name', read_only=True)
+
+    class Meta:
+        model = ArtShowcase
+        fields = ['id', 'description', 'art', 'art_name']
+
+########################################
+
+
 # This is child serializer of GameSerializer
 class GameContributorSerializer(serializers.ModelSerializer):
     # to link contributors to their member/[id] page
@@ -33,28 +70,31 @@ class GameContributorSerializer(serializers.ModelSerializer):
         return SocialMediaSerializer(social_links, many=True).data
 
 
+# Copied ArtSerializer at kept data only needed instead of all of it
+class GameArtSerializer(serializers.ModelSerializer):
+    art_id = serializers.IntegerField(source='id', read_only=True)
+    source_game_id = serializers.IntegerField(source='source_game.id', read_only=True)
+
+    class Meta:
+        model = Art
+        fields = ['art_id', 'name', 'media', 'active', 'source_game_id']
+
+
 class GamesSerializer(serializers.ModelSerializer):
     contributors = GameContributorSerializer(
         many=True, source="game_contributors", read_only=True
     )
+    artworks = GameArtSerializer(
+        many=True,
+        source="game_artwork",
+        read_only=True
+    )
 
     class Meta:
         model = Game
-        fields = (
-            "id",
-            "name",
-            "description",
-            "completion",
-            "active",
-            "hostURL",
-            "itchEmbedID",
-            "thumbnail",
-            "event",
-            "itchGamePlayableID",
-            "itchGameWidth",
-            "itchGameHeight",
-            "contributors",
-        )
+        fields = ('id', 'name', 'description', 'completion', 'active',
+                  'hostURL', 'itchEmbedID', 'thumbnail', 'event', "contributors", "artworks", 'itchGameEmbedID',
+                  'itchGameWidth', 'itchGameHeight')
 
 
 # Contributor serializer for name and role
@@ -83,22 +123,20 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         source="game.thumbnail", read_only=True
     )
     contributors = serializers.SerializerMethodField()
+    artworks = serializers.SerializerMethodField()
 
     class Meta:
         model = GameShowcase
-        fields = (
-            "game_id",
-            "game_name",
-            "game_description",
-            "description",
-            "contributors",
-            "game_cover_thumbnail",
-        )
+        fields = ('game_id', 'game_name', 'game_description',
+                  'description', 'contributors', 'game_cover_thumbnail', 'artworks')
 
     def get_contributors(self, obj):
         # Always fetch contributors from GameContributor for the related game
         contributors = GameContributor.objects.filter(game=obj.game)
         return ShowcaseContributorSerializer(contributors, many=True).data
+
+    def get_artworks(self, obj):
+        return GameArtSerializer(obj.game.game_artwork.all(), many=True).data
 
 
 class ContributorGameSerializer(serializers.ModelSerializer):

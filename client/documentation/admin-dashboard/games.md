@@ -1,18 +1,20 @@
 ## Games
 
+URL: `/admin/game_dev/game/`
 Pages for games can be added and edited at the row 'Game' of the GAME_DEV section on the main admin page.
 
 ### Fields
 
 **Name:** Required field for the game's name. A character field (includes letters, numbers and symbols) of maximum length 200 characters.
 
-**Descripiton:** Required field for the game's description. A text field.
+**Description:** Required field for the game's description. A text field.
 
 **Completion:** Required field for the game's completion. A multichoice option field with four options including:
- - "Work in progress (Unplayable)"
- - "Playable - In Development"
- - "Beta - Stable but not Final"
- - "Completed" 
+
+- "Work in progress (Unplayable)"
+- "Playable - In Development"
+- "Beta - Stable but not Final"
+- "Completed"
 
 **Active:** Required field for if the game is continued to be being worked on. A boolean field.
 
@@ -29,3 +31,4 @@ Pages for games can be added and edited at the row 'Game' of the GAME_DEV sectio
 **Itch Game Width:** This field is required if the playable field ID is non null. This value is gotten in a similar way to the Itch Game Embed, however for the developer it's the number after "width=" and in the page source is found after "data-width=".
 
 **Itch Game Height:** This field is required if the playable field ID is non null. This value is gotten in a similar way to the Itch Game Embed, however for the developer it's the number after "height=" and in the page source is found after "data-height=".
+

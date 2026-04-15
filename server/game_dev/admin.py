@@ -37,6 +37,7 @@ class CommitteeAdmin(admin.ModelAdmin):
     raw_id_fields = ["id"]
 
 
+# from issue-8-merge-40 temp need changes
 class ArtContributorInline(admin.TabularInline):
     model = ArtContributor
     extra = 1
@@ -54,3 +55,8 @@ admin.site.register(GameShowcase, GameShowcaseAdmin)
 admin.site.register(Art, ArtAdmin)
 admin.site.register(ArtShowcase)
 admin.site.register(Committee, CommitteeAdmin)
+
+# from issue-8-merge-40 temp need changes
+admin.site.register(Art, ArtAdmin)
+# admin.site.register(ArtContributor)
+admin.site.register(ArtShowcase)
