@@ -9,6 +9,7 @@ import { GameEmbed } from "@/components/ui/GameEmbed";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
 import { useEvent } from "@/hooks/useEvent";
 import { useGame } from "@/hooks/useGames";
+import { useRedirectOn404 } from "@/hooks/useRedirectOn404";
 
 export default function IndividualGamePage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function IndividualGamePage() {
   const { data: eventData } = useEvent(
     game?.event ? String(game.event) : undefined,
   );
-
+  useRedirectOn404(error);
   if (isPending) {
     return (
       <main className="mx-auto min-h-dvh max-w-6xl px-6 py-16 md:px-20">
@@ -72,21 +73,6 @@ export default function IndividualGamePage() {
   };
 
   const devStage = completionLabels[game.completion] ?? "Stage Unknown";
-
-  // const artImages = [
-  //   {
-  //     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Minecraft_Zombie.png/120px-Minecraft_Zombie.png",
-  //     alt: "Minecraft Zombie",
-  //   },
-  //   {
-  //     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Minecraft_Enderman.png/120px-Minecraft_Enderman.png",
-  //     alt: "Minecraft Enderman",
-  //   },
-  //   {
-  //     src: "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Minecraft_explore_landscape.png/375px-Minecraft_explore_landscape.png",
-  //     alt: "Minecraft Landscape",
-  //   },
-  // ];
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">

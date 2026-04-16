@@ -18,16 +18,25 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 ########################################
-# Copied from issue-8-merge-40 therefore is just sample to work with
+
 class ArtContributorSerializer(serializers.ModelSerializer):
+    art_id = serializers.IntegerField(source='art.id', read_only=True)
+    artwork_data = serializers.SerializerMethodField() 
     member_id = serializers.IntegerField(source='member.id', read_only=True)
     member_name = serializers.CharField(source='member.name', read_only=True)
 
     class Meta:
         model = ArtContributor
-        fields = ['id', 'member_id', 'member_name', 'role']
-
-
+        fields = ['id', 'role', 'art_id', 'member_id', 'member_name','artwork_data']
+    
+    def get_artwork_data(self, obj):
+        art = obj.art
+        request = self.context.get('request')
+        return {
+            'name': art.name,
+            'description': art.description,
+            'media': request.build_absolute_uri(art.media.url) if art.media and request else None
+        } 
 class ArtSerializer(serializers.ModelSerializer):
     art_id = serializers.IntegerField(source='id', read_only=True)
     source_game_id = serializers.IntegerField(source='source_game.id', read_only=True)
@@ -93,7 +102,7 @@ class GamesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ('id', 'name', 'description', 'completion', 'active',
-                  'hostURL', 'itchEmbedID', 'thumbnail', 'event', "contributors", "artworks", 'itchGameEmbedID',
+                  'hostURL', 'itchEmbedID', 'thumbnail', 'event', "contributors", "artworks", 'itchGamePlayableID',
                   'itchGameWidth', 'itchGameHeight')
 
 
@@ -184,13 +193,7 @@ class MemberSerializer(serializers.ModelSerializer):
         ]
 
 
-class ArtContributorSerializer(serializers.ModelSerializer):
-    member_id = serializers.IntegerField(source='member.id', read_only=True)
-    member_name = serializers.CharField(source='member.name', read_only=True)
 
-    class Meta:
-        model = ArtContributor
-        fields = ['id', 'member_id', 'member_name', 'role']
 
 
 class ArtSerializer(serializers.ModelSerializer):

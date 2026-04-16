@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 import { EventDateDisplay } from "@/components/ui/EventDateDisplay";
 import { useEvent } from "@/hooks/useEvent";
+import { useRedirectOn404 } from "@/hooks/useRedirectOn404";
 
 export default function EventPage() {
   const router = useRouter();
@@ -14,6 +15,8 @@ export default function EventPage() {
     error,
     isError,
   } = useEvent(router.isReady ? id : undefined);
+
+  useRedirectOn404(error);
 
   if (isPending) {
     return (

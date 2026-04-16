@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 
 import ImageCard from "@/components/ui/ImageCard";
 import ErrorModal from "@/components/ui/modal/error-modal";
-import { generateMockArtworks } from "@/hooks/useArtworkData";
 import api from "@/lib/api";
+import { generateMockArtworks } from "@/lib/generateMockArt";
 import { Art } from "@/types/art";
 
 export interface PageResult<T> {
