@@ -1,9 +1,9 @@
-import { ArrowUpRight , Gamepad2,Palette } from "lucide-react";
+import { ArrowUpRight, Gamepad2, Palette } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-import type { ArtData,GameData } from "@/hooks/useContributor";
+import type { ArtData, GameData } from "@/hooks/useContributor";
 
 export default function MemberProjectSection(props: {
   games: GameData[];
