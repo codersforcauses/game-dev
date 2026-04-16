@@ -1,5 +1,16 @@
 from django.contrib import admin
-from .models import Art, ArtContributor, ArtShowcase, Member, Game, Event, GameContributor, GameShowcase, Committee, SocialMedia
+from .models import (
+    Art,
+    ArtContributor,
+    ArtShowcase,
+    Member,
+    Game,
+    Event,
+    GameContributor,
+    GameShowcase,
+    Committee,
+    SocialMedia,
+)
 
 
 class SocialMediaInline(admin.TabularInline):
@@ -27,8 +38,19 @@ class GameShowcaseAdmin(admin.ModelAdmin):
 
 
 class GamesAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "description", "completion", "active", "hostURL", "itchEmbedID", "itchGamePlayableID", "itchGameWidth",
-                    "itchGameHeight", "thumbnail")
+    list_display = (
+        "id",
+        "name",
+        "description",
+        "completion",
+        "active",
+        "hostURL",
+        "itchEmbedID",
+        "itchGamePlayableID",
+        "itchGameWidth",
+        "itchGameHeight",
+        "thumbnail",
+    )
     search_fields = ["name", "description"]
     raw_id_fields = ["event"]
 

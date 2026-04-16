@@ -1,6 +1,23 @@
 from rest_framework import generics
-from .serializers import ContributorGameSerializer, GamesSerializer, GameshowcaseSerializer, EventSerializer, MemberSerializer, ArtSerializer, ArtContributorSerializer
-from .models import Game, GameContributor, GameShowcase, Event, Member, Committee, Art, ArtContributor
+from .serializers import (
+    ContributorGameSerializer,
+    GamesSerializer,
+    GameshowcaseSerializer,
+    EventSerializer,
+    MemberSerializer,
+    ArtSerializer,
+    ArtContributorSerializer,
+)
+from .models import (
+    Game,
+    GameContributor,
+    GameShowcase,
+    Event,
+    Member,
+    Committee,
+    Art,
+    ArtContributor,
+)
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -12,6 +29,7 @@ class GamesDetailAPIView(generics.RetrieveAPIView):
     """
     GET /api/games/<id>/
     """
+
     serializer_class = GamesSerializer
     lookup_url_kwarg = "id"
 
@@ -30,6 +48,7 @@ class EventListAPIView(generics.ListAPIView):
     GET /api/events/
     Returns a paginated list of events (optionally filtered by time)
     """
+
     serializer_class = EventSerializer
     pagination_class = EventPagination
 
@@ -51,14 +70,14 @@ class EventListAPIView(generics.ListAPIView):
         if type_param == "upcoming":
             return qs.filter(date__gte=now).order_by("date")
 
-        raise ValidationError(
-            {"type": "Invalid value. Use 'past' or 'upcoming'."})
+        raise ValidationError({"type": "Invalid value. Use 'past' or 'upcoming'."})
 
 
 class EventDetailAPIView(generics.RetrieveAPIView):
     """
     GET /api/events/<id>/
     """
+
     serializer_class = EventSerializer
     lookup_url_kwarg = "id"
 
@@ -72,13 +91,18 @@ class EventDetailAPIView(generics.RetrieveAPIView):
             return queryset.get()
         except Event.DoesNotExist:
             from rest_framework.exceptions import NotFound
-            raise NotFound(detail="The event is not yet published by admin or does not exist.")
+
+            raise NotFound(
+                detail="The event is not yet published by admin or does not exist."
+            )
 
 
 class GameshowcaseAPIView(APIView):
     def get(self, request):
         showcases = GameShowcase.objects.all()
-        serializer = GameshowcaseSerializer(showcases, many=True, context={'request': request})
+        serializer = GameshowcaseSerializer(
+            showcases, many=True, context={"request": request}
+        )
         return Response(serializer.data)
 
 
@@ -89,8 +113,9 @@ class ContributorGamesListAPIView(generics.ListAPIView):
         member_id = self.kwargs.get("member")
         return GameContributor.objects.filter(member=member_id)
 
+
 class ContributorArtListAPIView(generics.ListAPIView):
-    serializer_class = ArtContributorSerializer 
+    serializer_class = ArtContributorSerializer
 
     def get_queryset(self):
         member_id = self.kwargs.get("member")
@@ -111,8 +136,13 @@ class CommitteeAPIView(generics.ListAPIView):
     def get_queryset(self):
         outputList = []
         roleOrder = ("P", "VP", "SEC", "TRE", "MARK", "EVE", "PRO", "FRE")
-        placeholderMember = {"name": "Position not filled", "profile_picture": "url('/landing_placeholder.png')",
-                             "about": "", "pronouns": "", "pk": 0}
+        placeholderMember = {
+            "name": "Position not filled",
+            "profile_picture": "url('/landing_placeholder.png')",
+            "about": "",
+            "pronouns": "",
+            "pk": 0,
+        }
         for i in roleOrder:
             try:
                 cur = Committee.objects.get(role=i).id
@@ -129,6 +159,7 @@ class ArtDetailAPIView(generics.RetrieveAPIView):
     """
     GET /api/artworks/<id>/
     """
+
     serializer_class = ArtSerializer
     lookup_url_kwarg = "id"
 
@@ -140,6 +171,7 @@ class FeatureArtAPIView(generics.ListAPIView):
     """
     GET /api/arts/featured/
     """
+
     serializer_class = ArtSerializer
 
     def get_queryset(self):
