@@ -1,6 +1,6 @@
 ## Committee Members
 
-URL: `/admin/game_dev/committee/add/`
+URL: `/admin/game_dev/committee/`
 
 Profiles of the Committee Members of the club that are displayed on the about page `/about`.
 
