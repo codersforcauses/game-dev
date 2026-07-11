@@ -14,7 +14,7 @@ interface ImageCardProps {
 
 const ImageCard = ({
   imageSrc,
-  imageAlt = "Image",
+  imageAlt = "Game Artwork",
   children,
   backContent,
   href,
@@ -49,7 +49,7 @@ const ImageCard = ({
   return (
     <div className="p-4" style={{ perspective: "1200px" }}>
       <div
-        className={`relative h-[30rem] w-full max-w-[20rem] select-none rounded-[10px] shadow-[12px_17px_51px_rgba(0,0,0,0.22)] transition-transform duration-500 ${
+        className={`relative h-[30rem] w-full max-w-2xl select-none rounded-xl shadow-[12px_17px_51px_rgba(0,0,0,0.22)] transition-transform duration-500 ${
           (isMobile && href) || (backContent && !disableFlip && !hasImageError)
             ? "cursor-pointer"
             : "cursor-default"
@@ -61,7 +61,7 @@ const ImageCard = ({
         onClick={handleClick}
       >
         <div
-          className="absolute inset-0 overflow-hidden rounded-[10px] border border-white bg-dark_alt backdrop-blur-md"
+          className="absolute inset-0 overflow-hidden rounded-xl border border-white bg-dark_alt backdrop-blur-md"
           style={{ backfaceVisibility: "hidden" }}
         >
           {imageSrc && !hasImageError ? (
@@ -94,7 +94,7 @@ const ImageCard = ({
 
         {backContent && (
           <div
-            className="absolute inset-0 flex flex-col overflow-y-auto rounded-[10px] border border-white bg-dark_3 p-6 text-light_1"
+            className="absolute inset-0 flex flex-col overflow-y-auto rounded-xl border border-white bg-dark_3 p-6 text-light_1"
             style={{
               backfaceVisibility: "hidden",
               transform: "rotateY(180deg)",

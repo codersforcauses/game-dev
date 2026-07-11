@@ -18,7 +18,7 @@ export default function MemberProjectSection(props: {
       </h2>
       <div className="mb-12">
         {!games || games.length === 0 ? (
-          <p className="my-10 text-center font-firaCode text-lg text-[--light-3]">
+          <p className="my-10 text-center font-firaCode text-lg text-light_3">
             No games available.
           </p>
         ) : (
@@ -45,7 +45,7 @@ export default function MemberProjectSection(props: {
                   <p className="max-w-96 font-firaCode text-xl font-semibold">
                     {game.game_data.name}
                   </p>
-                  <p className="line-clamp-1 max-w-96 font-firaCode text-[--light-3]">
+                  <p className="line-clamp-1 max-w-96 font-firaCode text-light_3">
                     {game.game_data.description}
                   </p>
                 </div>
@@ -60,7 +60,7 @@ export default function MemberProjectSection(props: {
       </h2>
       <div className="mb-12">
         {!art || art.length === 0 ? (
-          <p className="my-10 text-center font-firaCode text-lg text-[--light-3]">
+          <p className="my-10 text-center font-firaCode text-lg text-light_3">
             No games available.
           </p>
         ) : (
@@ -89,7 +89,7 @@ export default function MemberProjectSection(props: {
                   <p className="max-w-96 font-firaCode text-xl font-semibold">
                     {artwork.artwork_data.name}
                   </p>
-                  <p className="line-clamp-1 max-w-96 font-firaCode text-[--light-3]">
+                  <p className="text-light_3] line-clamp-1 max-w-96 font-firaCode">
                     {artwork.artwork_data.description}
                   </p>
                 </div>

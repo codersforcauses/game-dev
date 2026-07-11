@@ -70,6 +70,7 @@ const config = {
         neutral_4: "var(--neutral-4)",
         light_1: "var(--light-1)",
         light_2: "var(--light-2)",
+        light_3: "var(--light-3)",
       },
       borderRadius: {
         lg: "var(--radius)",

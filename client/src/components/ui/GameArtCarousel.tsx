@@ -7,8 +7,6 @@ import { useEffect, useRef, useState } from "react";
 
 import type { UiArtwork } from "@/hooks/useGames";
 
-// import { UiEvent as EventType } from "@/hooks/useEvents";
-
 type GameArtCarouselProps = {
   items: UiArtwork[];
 };
