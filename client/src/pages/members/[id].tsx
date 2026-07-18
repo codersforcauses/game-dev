@@ -64,8 +64,6 @@ export default function MemberPage() {
   if (isError || !member) {
     return <p>Member not found</p>;
   }
-  console.log(gamesRes.data);
-  console.log(artRes.data);
   const games = gamesRes.data;
   const art = artRes.data;
   if (gamesRes.isError || !games || artRes.isError || !art) {
