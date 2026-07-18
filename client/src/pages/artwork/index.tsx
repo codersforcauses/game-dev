@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import ImageCard from "@/components/ui/ImageCard";
 import ErrorModal from "@/components/ui/modal/error-modal";
 import api from "@/lib/api";
-import { generateMockArtworks } from "@/lib/generateMockArt";
 import { Art } from "@/types/art";
 
 export interface PageResult<T> {
@@ -46,7 +45,6 @@ function renderArtworkCard(artwork: Art) {
       imageSrc={artwork.media || undefined}
       imageAlt={artwork.name}
       href={`/artwork/${artwork.art_id}`}
-      disableFlip={artwork.isMock === true}
       placeholder={PLACEHOLDER_ICON}
       backContent={
         <div className="flex h-full flex-col gap-4">
@@ -123,7 +121,7 @@ export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
   return (
     <div className="bg-gamedev-dark min-h-screen">
       <section className="px-6 py-10 md:px-24 md:py-14">
-        <h1 className="text-light_3 justify-start text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-primary">
+        <h1 className="justify-start text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-light_3 text-primary">
           Featured Artwork
         </h1>
 
@@ -163,13 +161,11 @@ export const getServerSideProps: GetServerSideProps<
       },
     };
   } catch (err) {
-    // Fallback to mock data on any error (network, 500, invalid shape, etc.)
-    const mockArtworks = generateMockArtworks(3);
     return {
       props: {
         artworks: {
-          results: mockArtworks,
-          count: mockArtworks.length,
+          results: [],
+          count: 0,
           next: "",
           previous: "",
         },
