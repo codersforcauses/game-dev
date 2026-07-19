@@ -178,8 +178,25 @@ class GameshowcaseSerializer(serializers.ModelSerializer):
         contributors = GameContributor.objects.filter(game=obj.game)
         return ShowcaseContributorSerializer(contributors, many=True).data
 
-    def get_artworks(self, obj):
-        return GameArtSerializer(obj.game.game_artwork.all(), many=True).data
+    def get_artworks(self, obj: GameShowcase):
+        showcase_art = obj.game.game_artwork.all()
+        request = self.context.get("request")
+        return [
+            {
+                "art_id": art.id,
+                "name": art.name,
+                "active": art.active,
+                "source_game_id": art.source_game_id,
+                "description": art.description,
+                "media": request.build_absolute_uri(art.media.url)
+                if art.media and request
+                else None,
+            }
+            for art in showcase_art
+        ]
+
+    # def get_artworks(self, obj):
+    #     return GameArtSerializer(obj.game.game_artwork.all(), many=True).data
 
 
 class ContributorGameSerializer(serializers.ModelSerializer):
