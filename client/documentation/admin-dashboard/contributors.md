@@ -21,7 +21,7 @@ You will see a little magnifying glass when selecting a Game and Member, click o
 
 ## Art Contributor
 
-A model that will associate a certain member with having contributed to a certain game. A Game Contributor object will be represented under the 'Contributors' section of a game's page as the name of the member who contributed.
+A model that will associate a certain member with having contributed to a certain artwork. An Art Contributor object will be represented under the 'Contributors' section of an artworks's page as the name of the member who contributed.
 
 ## Fields
 
