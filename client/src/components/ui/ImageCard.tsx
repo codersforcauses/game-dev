@@ -47,9 +47,9 @@ const ImageCard = ({
   };
 
   return (
-    <div className="p-4" style={{ perspective: "1200px" }}>
+    <div className="h-80 w-80 p-4 shadow-xl" style={{ perspective: "1200px" }}>
       <div
-        className={`relative h-[30rem] w-full max-w-2xl select-none rounded-xl shadow-[12px_17px_51px_rgba(0,0,0,0.22)] transition-transform duration-500 ${
+        className={`] relative h-full w-full max-w-2xl select-none rounded-xl transition-transform duration-500 ${
           (isMobile && href) || (backContent && !disableFlip && !hasImageError)
             ? "cursor-pointer"
             : "cursor-default"
@@ -61,41 +61,49 @@ const ImageCard = ({
         onClick={handleClick}
       >
         <div
-          className="absolute inset-0 overflow-hidden rounded-xl border border-white bg-dark_alt backdrop-blur-md"
-          style={{ backfaceVisibility: "hidden" }}
+          className="absolute inset-0 rounded-xl ring-1 ring-white"
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            willChange: "transform",
+          }}
         >
-          {imageSrc && !hasImageError ? (
-            <>
-              <Image
-                src={imageSrc}
-                alt={imageAlt}
-                width={400}
-                height={600}
-                className="h-full w-full object-cover"
-                onError={() => {
-                  setHasImageError(true);
-                  setIsFlipped(false);
-                }}
-              />
-              {children && (
-                <div className="bg-dark_1/40 absolute inset-0 flex items-center justify-center text-light_1">
-                  {children}
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="bg-dark_alt/60 flex h-full w-full items-center justify-center text-light_1">
-              {placeholder || children || (
-                <span className="font-bold">No Image</span>
-              )}
-            </div>
-          )}
+          <div className="h-full w-full overflow-hidden rounded-xl bg-dark_alt backdrop-blur-md">
+            {imageSrc && !hasImageError ? (
+              <>
+                <Image
+                  src={imageSrc}
+                  alt={imageAlt}
+                  width={400}
+                  height={600}
+                  className="h-full w-full object-cover"
+                  onError={() => {
+                    setHasImageError(true);
+                    setIsFlipped(false);
+                  }}
+                />
+                {children && (
+                  <div className="bg-dark_1/40 absolute inset-0 flex items-center justify-center text-light_1">
+                    {children}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="bg-dark_alt/60 flex h-full w-full items-center justify-center text-light_1">
+                {placeholder || children || (
+                  <span className="font-bold">No Image</span>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {backContent && (
           <div
-            className="absolute inset-0 flex flex-col overflow-y-auto rounded-xl border border-white bg-dark_3 p-6 text-light_1"
+            className="absolute inset-0 flex flex-col overflow-y-auto rounded-xl bg-dark_3 p-6 text-light_1 ring-1 ring-white"
             style={{
+              WebkitBackfaceVisibility: "hidden",
+              willChange: "transform",
               backfaceVisibility: "hidden",
               transform: "rotateY(180deg)",
             }}
