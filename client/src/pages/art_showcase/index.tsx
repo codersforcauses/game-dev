@@ -5,7 +5,7 @@ import {
   useMotionValue,
 } from "framer-motion";
 import { GetServerSideProps } from "next";
-import { useEffect, useRef,useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useMeasure from "react-use-measure";
 
 import ImageCard from "@/components/ui/ImageCard";
@@ -38,7 +38,7 @@ export default function Shartwork({ artworks }: ArtworksPageProps) {
   const FAST = 90;
 
   const controlsRef = useRef<AnimationPlaybackControls | null>(null);
-  const [speed, setSpeed] = useState(1); // multiplier
+  const [speed] = useState(1); // multiplier
 
   useEffect(() => {
     const finalPosition = -(width + gap) / 3;
@@ -63,22 +63,27 @@ export default function Shartwork({ artworks }: ArtworksPageProps) {
 
   const items = artworks?.results ?? [];
   return (
-    <div className="bg-gamedev-dark min-h-screen">
+    <div className="bg-gamedev-dark min-h-screen overflow-x-hidden">
       <section className="flex flex-col items-center px-6 py-10 md:px-24 md:py-14">
-        <h1 className="text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-light_3 text-primary">
+        <h1 className="text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-primary">
           Featured Artwork
         </h1>
         <div className="overflow-hidden py-8">
           <motion.div
-            className={`flex gap-[16px]`}
+            className={`flex gap-[16px] overflow-hidden`}
             ref={ref}
             style={{ x: xTranslation }}
             onHoverStart={() => {
-              setSpeed(0.1);
+              // setSpeed(0.1);
+              controlsRef.current?.pause();
             }}
             onHoverEnd={() => {
-              console.log("hoverend");
-              setSpeed(1);
+              controlsRef.current?.play();
+              // console.log("hoverend");
+              // setSpeed(1);
+            }}
+            onWheel={(e) => {
+              xTranslation.set(xTranslation.get() - e.deltaY);
             }}
           >
             {/* we need two copies to make sure it doesn't randomly snap incorrectly  */}
