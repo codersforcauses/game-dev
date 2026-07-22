@@ -3,9 +3,10 @@ import {
   AnimationPlaybackControls,
   motion,
   useMotionValue,
+  useTransform,
 } from "framer-motion";
 import { GetServerSideProps } from "next";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import useMeasure from "react-use-measure";
 
 import ImageCard from "@/components/ui/ImageCard";
@@ -30,36 +31,95 @@ function hasResultsArray<T>(value: unknown): value is { results: T[] } {
   return Array.isArray(v.results);
 }
 
-export default function Shartwork({ artworks }: ArtworksPageProps) {
+const GAP = 16;
+const DURATION = 90;
+
+export default function FeaturedArtwork({ artworks }: ArtworksPageProps) {
   const [ref, { width }] = useMeasure();
   const xTranslation = useMotionValue(0);
+  const scrollX = useMotionValue(0);
+  const isHoveredMV = useMotionValue(0);
 
-  const gap = 16; // px
-  const FAST = 90;
+  // switch x source to scrollX on hover
+  const displayX = useTransform(
+    [xTranslation, scrollX, isHoveredMV],
+    ([t, s, h]: number[]) => (h === 0 ? t : s),
+  );
 
   const controlsRef = useRef<AnimationPlaybackControls | null>(null);
-  const [speed] = useState(1); // multiplier
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isHoveredRef = useRef(false);
+  const hasScrolledRef = useRef(false);
+
+  const startAnimation = useCallback(
+    (from: number) => {
+      const finalPosition = -(width + GAP) / 3;
+      const rangeSize = -finalPosition;
+
+      controlsRef.current?.stop();
+
+      // Normalize `from` into [finalPosition, 0) so the loop restarts cleanly
+      const normalizedFrom = -(((-from % rangeSize) + rangeSize) % rangeSize);
+      xTranslation.set(normalizedFrom);
+
+      const startFullLoop = () => {
+        const controls = animate(xTranslation, [0, finalPosition], {
+          ease: "linear",
+          duration: DURATION,
+          repeat: Infinity,
+          repeatType: "loop",
+          repeatDelay: 0,
+        });
+        controlsRef.current = controls;
+      };
+
+      // if we've scrolled beyond finalPosition, jump back to start
+      const remaining = Math.abs(finalPosition - normalizedFrom);
+      if (remaining < 0.5) {
+        xTranslation.set(0);
+        startFullLoop();
+        return;
+      }
+
+      // animate the rest of the cycle, then resume
+      const partialDuration = DURATION * (remaining / rangeSize);
+      const controls = animate(xTranslation, finalPosition, {
+        ease: "linear",
+        duration: partialDuration,
+        onComplete: startFullLoop,
+      });
+      controlsRef.current = controls;
+    },
+    [xTranslation, width],
+  );
 
   useEffect(() => {
-    const finalPosition = -(width + gap) / 3;
-
-    const controls = animate(xTranslation, [0, finalPosition], {
-      ease: "linear",
-      duration: FAST,
-      repeat: Infinity,
-      repeatType: "loop",
-      repeatDelay: 0,
-    });
-
-    controlsRef.current = controls;
-    return controls.stop;
-  }, [xTranslation, width]);
+    startAnimation(0);
+    return () => {
+      controlsRef.current?.stop();
+    };
+  }, [startAnimation]);
 
   useEffect(() => {
-    if (controlsRef.current) {
-      controlsRef.current.speed = speed;
-    }
-  }, [speed]);
+    const el = containerRef.current;
+    if (!el) return;
+    const handleWheel = (e: WheelEvent) => {
+      if (!isHoveredRef.current) return;
+      e.preventDefault();
+      if (!hasScrolledRef.current) {
+        scrollX.set(xTranslation.get());
+        isHoveredMV.set(1);
+        controlsRef.current?.pause();
+        hasScrolledRef.current = true;
+      }
+      const rangeSize = (width + GAP) / 3;
+      const next = scrollX.get() - e.deltaY;
+      const normalized = -(((-next % rangeSize) + rangeSize) % rangeSize);
+      scrollX.set(normalized);
+    };
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, [isHoveredMV, scrollX, xTranslation, width]);
 
   const items = artworks?.results ?? [];
   return (
@@ -71,26 +131,33 @@ export default function Shartwork({ artworks }: ArtworksPageProps) {
         <div className="overflow-hidden py-8">
           <motion.div
             className={`flex gap-[16px] overflow-hidden`}
-            ref={ref}
-            style={{ x: xTranslation }}
+            ref={(el) => {
+              ref(el);
+              containerRef.current = el;
+            }}
+            style={{ x: displayX }}
             onHoverStart={() => {
-              // setSpeed(0.1);
-              controlsRef.current?.pause();
+              isHoveredRef.current = true;
+              hasScrolledRef.current = false;
             }}
             onHoverEnd={() => {
-              controlsRef.current?.play();
-              // console.log("hoverend");
-              // setSpeed(1);
-            }}
-            onWheel={(e) => {
-              xTranslation.set(xTranslation.get() - e.deltaY);
+              isHoveredRef.current = false;
+              if (hasScrolledRef.current) {
+                const current = scrollX.get();
+                xTranslation.set(current);
+                isHoveredMV.set(0);
+                startAnimation(current);
+              }
+              hasScrolledRef.current = false;
             }}
           >
-            {/* we need two copies to make sure it doesn't randomly snap incorrectly  */}
+            {/* we need three copies to make sure it doesn't randomly snap incorrectly  */}
             {[...items, ...items, ...items].map((item: Art, i: number) => (
-              <div
+              <motion.div
                 key={`${item.art_id} - ${i}`}
                 style={{ transform: "translateZ(0)" }}
+                whileHover={{ scale: 1.05, zIndex: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 <ImageCard
                   imageSrc={item.media || undefined}
@@ -98,7 +165,7 @@ export default function Shartwork({ artworks }: ArtworksPageProps) {
                   href={`/artwork/${item.art_id}`}
                   backContent={<p> Hi </p>}
                 />
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
