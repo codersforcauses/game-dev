@@ -25,7 +25,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex h-24 w-full items-center rounded-md border-b border-border/20 bg-background px-20 font-jersey10">
+      <header className="sticky top-0 z-50 flex h-24 w-full items-center border-b-2 border-border/20 border-b-primary bg-landingCard px-20 font-jersey10">
         <div className="flex flex-1 items-center">
           <Link
             href="/"
