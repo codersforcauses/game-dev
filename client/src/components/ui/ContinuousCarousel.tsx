@@ -7,14 +7,16 @@ import {
 import { useCallback, useEffect, useRef } from "react";
 import useMeasure from "react-use-measure";
 
-import ImageCard from "@/components/ui/ImageCard";
+import ImageCard from "@/components/ui/ImageCard/ImageCard";
 import { Art } from "@/types/art";
+
+import ImageCardBack from "./ImageCard/ImageCardBack";
 
 const GAP = 16;
 const DURATION = 90;
 
 // modifying this to accept anything with a name, src, and id should be trivial.
-export default function ContinuousCarousel(artworks: Art[]) {
+export default function ContinuousCarousel(artworks: Art[], reverse = false) {
   const [ref, { width }] = useMeasure();
   const xTranslation = useMotionValue(0);
 
@@ -31,8 +33,11 @@ export default function ContinuousCarousel(artworks: Art[]) {
       const normalizedFrom = -(((-from % rangeSize) + rangeSize) % rangeSize);
       xTranslation.set(normalizedFrom);
 
+      const target = reverse ? 0 : finalPosition;
+      const loopStart = reverse ? finalPosition : 0;
+
       const startFullLoop = () => {
-        const controls = animate(xTranslation, [0, finalPosition], {
+        const controls = animate(xTranslation, [loopStart, target], {
           ease: "linear",
           duration: DURATION,
           repeat: Infinity,
@@ -42,24 +47,24 @@ export default function ContinuousCarousel(artworks: Art[]) {
         controlsRef.current = controls;
       };
 
-      // if we've scrolled beyond finalPosition, jump back to start
-      const remaining = Math.abs(finalPosition - normalizedFrom);
+      // if we're already at the target end, jump to loop start and begin
+      const remaining = Math.abs(target - normalizedFrom);
       if (remaining < 0.5) {
-        xTranslation.set(0);
+        xTranslation.set(loopStart);
         startFullLoop();
         return;
       }
 
-      // animate the rest of the cycle, then resume
+      // animate the rest of this cycle, then resume full loops
       const partialDuration = DURATION * (remaining / rangeSize);
-      const controls = animate(xTranslation, finalPosition, {
+      const controls = animate(xTranslation, target, {
         ease: "linear",
         duration: partialDuration,
         onComplete: startFullLoop,
       });
       controlsRef.current = controls;
     },
-    [xTranslation, width],
+    [xTranslation, width, reverse],
   );
 
   useEffect(() => {
@@ -76,6 +81,7 @@ export default function ContinuousCarousel(artworks: Art[]) {
         className="flex w-max cursor-grab select-none gap-[16px] active:cursor-grabbing"
         ref={ref}
         style={{ x: xTranslation }}
+        // i'm not sure how to make these have momentum.. future TODO?
         onPanStart={() => controlsRef.current?.stop()}
         onPan={(_, info) => {
           const rangeSize = (width + GAP) / 3;
@@ -83,9 +89,9 @@ export default function ContinuousCarousel(artworks: Art[]) {
           const normalized = -(((-next % rangeSize) + rangeSize) % rangeSize);
           xTranslation.set(normalized);
         }}
-        onPanEnd={() => startAnimation(xTranslation.get())}
+        onHoverEnd={() => startAnimation(xTranslation.get())}
       >
-        {/* we need three copies to make sure it doesn't randomly snap incorrectly  */}
+        {/* we need three copies to make sure it doesn't randomly snap incorrectly... issues may arise on huge display resolutions  */}
         {[...items, ...items, ...items].map((item: Art, i: number) => (
           <motion.div
             key={`${item.art_id} - ${i}`}
@@ -100,7 +106,7 @@ export default function ContinuousCarousel(artworks: Art[]) {
               imageSrc={item.media || undefined}
               imageAlt={item.name}
               href={`/artwork/${item.art_id}`}
-              backContent={<p> Hi </p>}
+              backContent={<ImageCardBack artwork={item} />}
             />
           </motion.div>
         ))}

@@ -11,7 +11,7 @@ export interface PageResult<T> {
   results: T[];
 }
 interface ArtworksPageProps {
-  artworks?: PageResult<Art>;
+  carousels?: Art[][];
   error?: string;
 }
 
@@ -32,15 +32,7 @@ function shuffleArray<T>(arr: T[]) {
   }
 }
 
-export default function FeaturedArtwork({ artworks }: ArtworksPageProps) {
-  const carousels = [];
-  for (let i = 0; i < 3; i++) {
-    if (artworks) {
-      const temp = structuredClone(artworks.results);
-      shuffleArray(temp);
-      carousels.push(ContinuousCarousel(temp));
-    }
-  }
+export default function FeaturedArtwork({ carousels = [] }: ArtworksPageProps) {
   return (
     <div className="bg-gamedev-dark min-h-screen overflow-x-hidden">
       <section className="flex flex-col items-center bg-muted px-12 py-4 md:px-24 md:py-12">
@@ -54,8 +46,8 @@ export default function FeaturedArtwork({ artworks }: ArtworksPageProps) {
         </p>
       </section>
 
-      <section className="-mt-8 bg-dark_3 py-24 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
-        {carousels}
+      <section className="-mt-8 bg-gradient-to-b from-dark_3 to-dark_alt py-8 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
+        {carousels.map((items, i) => ContinuousCarousel(items, i % 2 === 0))}
       </section>
     </div>
   );
@@ -78,25 +70,17 @@ export const getServerSideProps: GetServerSideProps<
     // If API didn't throw but returned an unexpected shape, trigger fallback
     if (!results) throw new Error("Invalid arts/featured response shape");
 
-    return {
-      props: {
-        artworks: {
-          results,
-          count: results.length,
-          next: "",
-          previous: "",
-        },
-      },
-    };
+    const carousels = [0, 1, 2].map(() => {
+      const copy = structuredClone(results);
+      shuffleArray(copy);
+      return copy;
+    });
+
+    return { props: { carousels } };
   } catch (err) {
     return {
       props: {
-        artworks: {
-          results: [],
-          count: 0,
-          next: "",
-          previous: "",
-        },
+        carousels: [],
         error: err instanceof Error ? err.message : undefined,
       },
     };

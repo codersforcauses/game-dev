@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import ImageCard from "@/components/ui/ImageCard";
+import ImageCard from "@/components/ui/ImageCard/ImageCard";
 import ErrorModal from "@/components/ui/modal/error-modal";
 import api from "@/lib/api";
 import { Art } from "@/types/art";

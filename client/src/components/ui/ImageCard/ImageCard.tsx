@@ -47,9 +47,9 @@ const ImageCard = ({
   };
 
   return (
-    <div className="h-80 w-80 p-4 shadow-xl" style={{ perspective: "1200px" }}>
+    <div className="h-80 w-80 p-4" style={{ perspective: "1200px" }}>
       <div
-        className={`] relative h-full w-full max-w-2xl select-none rounded-xl transition-transform duration-500 ${
+        className={`] relative h-full w-full max-w-2xl select-none rounded-md border border-muted shadow-xl transition-transform duration-500 ${
           (isMobile && href) || (backContent && !disableFlip && !hasImageError)
             ? "cursor-pointer"
             : "cursor-default"
