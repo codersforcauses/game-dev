@@ -161,7 +161,9 @@ export default function HomePage() {
                   </div>
 
                   {/* Game Art Carousel */}
-                  <GameArtCarousel items={showcase.artworks || []} />
+                  {showcase.artworks.length ? (
+                    <GameArtCarousel items={showcase.artworks || []} />
+                  ) : null}
 
                   {/* Description */}
                   <div className="mx-auto w-full max-w-6xl px-8 text-base text-light_2">

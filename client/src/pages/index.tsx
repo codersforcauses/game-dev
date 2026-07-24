@@ -115,7 +115,7 @@ export default function Landing() {
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
             <div className="my-4 flex gap-4">
-              <Link href="/committee/about">
+              <Link href="/about">
                 <Button>More about us</Button>
               </Link>
               <Link href="https://discord.com/invite/JvnuVyMUff">

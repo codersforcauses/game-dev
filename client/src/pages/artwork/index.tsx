@@ -1,10 +1,6 @@
 import { GetServerSideProps } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
 
-import ImageCard from "@/components/ui/ImageCard/ImageCard";
-import ErrorModal from "@/components/ui/modal/error-modal";
+import ContinuousCarousel from "@/components/ui/ContinuousCarousel";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
 
@@ -14,9 +10,8 @@ export interface PageResult<T> {
   previous: string;
   results: T[];
 }
-
 interface ArtworksPageProps {
-  artworks?: PageResult<Art>;
+  carousels?: Art[][];
   error?: string;
 }
 
@@ -27,107 +22,32 @@ function hasResultsArray<T>(value: unknown): value is { results: T[] } {
   return Array.isArray(v.results);
 }
 
-const PLACEHOLDER_ICON = (
-  <div data-svg-wrapper data-layer="Vector" className="Vector">
-    <Image
-      src="/placeholder-icon.svg"
-      alt="Placeholder icon"
-      width={96}
-      height={96}
-    />
-  </div>
-);
-
-function renderArtworkCard(artwork: Art) {
-  return (
-    <ImageCard
-      key={artwork.art_id}
-      imageSrc={artwork.media || undefined}
-      imageAlt={artwork.name}
-      href={`/artwork/${artwork.art_id}`}
-      placeholder={PLACEHOLDER_ICON}
-      backContent={
-        <div className="flex h-full flex-col gap-4">
-          <div>
-            <h3 className="mb-2 text-center font-jersey10 text-6xl leading-tight text-accent">
-              {artwork.name}
-            </h3>
-            <p className="mb-3 text-center font-sans text-base leading-relaxed text-light_1">
-              {artwork.source_game_name ? (
-                <>
-                  from{" "}
-                  <Link
-                    href={`/games/${artwork.source_game_id}`}
-                    className="text-accent hover:underline"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    {artwork.source_game_name}
-                  </Link>
-                </>
-              ) : (
-                "No associated game"
-              )}
-            </p>
-            <p className="mb-3 text-base leading-relaxed text-light_1">
-              {artwork.description || "No description available."}
-            </p>
-          </div>
-
-          {artwork.contributors.length > 0 && (
-            <div className="mt-auto">
-              <h4 className="mb-2 font-jersey10 text-4xl leading-tight text-accent">
-                Contributors
-              </h4>
-              <div className="space-y-2.5">
-                {artwork.contributors.map((contributor) => (
-                  <div
-                    key={contributor.id}
-                    className="mb-2 text-base leading-relaxed text-light_1"
-                  >
-                    <Link
-                      href={`/members/${contributor.member_id}`}
-                      className="pl-1 text-accent hover:underline"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {contributor.member_name}
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <Link
-            href={`/artwork/${artwork.art_id}`}
-            className="mt-4 rounded-md border border-accent bg-accent/10 px-4 py-2 text-center font-jersey10 text-2xl leading-relaxed text-accent transition-colors hover:bg-accent hover:text-dark_3"
-            onClick={(e) => e.stopPropagation()}
-          >
-            View full details
-          </Link>
-        </div>
-      }
-    />
-  );
+// Durstenfeld shuffle
+function shuffleArray<T>(arr: T[]) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
 }
 
-export default function ArtworksPage({ artworks, error }: ArtworksPageProps) {
-  const router = useRouter();
-  if (error && !artworks?.results?.length) {
-    return <ErrorModal message={error} onClose={() => router.back()} />;
-  }
-
-  const featuredArtworks = artworks?.results?.slice(0, 3) ?? [];
-
+export default function FeaturedArtwork({ carousels = [] }: ArtworksPageProps) {
   return (
-    <div className="bg-gamedev-dark min-h-screen">
-      <section className="px-6 py-10 md:px-24 md:py-14">
-        <h1 className="justify-start text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-light_3 text-primary">
+    <div className="bg-gamedev-dark min-h-screen overflow-x-hidden">
+      <section className="flex flex-col items-center bg-muted px-12 py-4 md:px-24 md:py-12">
+        <h1 className="text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-primary">
           Featured Artwork
         </h1>
+        <p className="max-w-xl text-center text-base leading-relaxed text-white/80">
+          Some of our favourite art from our members&apos; games!
+          <br />
+          Click on an artwork to see more...
+        </p>
+      </section>
 
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
-          {featuredArtworks.map(renderArtworkCard)}
-        </div>
+      <section className="-mt-8 bg-gradient-to-b from-dark_3 to-dark_alt py-8 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
+        {carousels.map((items, i) => ContinuousCarousel(items, i % 2 === 0))}
       </section>
     </div>
   );
@@ -150,25 +70,17 @@ export const getServerSideProps: GetServerSideProps<
     // If API didn't throw but returned an unexpected shape, trigger fallback
     if (!results) throw new Error("Invalid arts/featured response shape");
 
-    return {
-      props: {
-        artworks: {
-          results,
-          count: results.length,
-          next: "",
-          previous: "",
-        },
-      },
-    };
+    const carousels = [0, 1, 2].map(() => {
+      const copy = structuredClone(results);
+      shuffleArray(copy);
+      return copy;
+    });
+
+    return { props: { carousels } };
   } catch (err) {
     return {
       props: {
-        artworks: {
-          results: [],
-          count: 0,
-          next: "",
-          previous: "",
-        },
+        carousels: [],
         error: err instanceof Error ? err.message : undefined,
       },
     };
