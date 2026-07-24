@@ -1,15 +1,6 @@
-import {
-  animate,
-  AnimationPlaybackControls,
-  motion,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
 import { GetServerSideProps } from "next";
-import { useCallback, useEffect, useRef } from "react";
-import useMeasure from "react-use-measure";
 
-import ImageCard from "@/components/ui/ImageCard";
+import ContinuousCarousel from "@/components/ui/ContinuousCarousel";
 import api from "@/lib/api";
 import { Art } from "@/types/art";
 
@@ -31,144 +22,40 @@ function hasResultsArray<T>(value: unknown): value is { results: T[] } {
   return Array.isArray(v.results);
 }
 
-const GAP = 16;
-const DURATION = 90;
+// Durstenfeld shuffle
+function shuffleArray<T>(arr: T[]) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+}
 
 export default function FeaturedArtwork({ artworks }: ArtworksPageProps) {
-  const [ref, { width }] = useMeasure();
-  const xTranslation = useMotionValue(0);
-  const scrollX = useMotionValue(0);
-  const isHoveredMV = useMotionValue(0);
-
-  // switch x source to scrollX on hover
-  const displayX = useTransform(
-    [xTranslation, scrollX, isHoveredMV],
-    ([t, s, h]: number[]) => (h === 0 ? t : s),
-  );
-
-  const controlsRef = useRef<AnimationPlaybackControls | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isHoveredRef = useRef(false);
-  const hasScrolledRef = useRef(false);
-
-  const startAnimation = useCallback(
-    (from: number) => {
-      const finalPosition = -(width + GAP) / 3;
-      const rangeSize = -finalPosition;
-
-      controlsRef.current?.stop();
-
-      // Normalize `from` into [finalPosition, 0) so the loop restarts cleanly
-      const normalizedFrom = -(((-from % rangeSize) + rangeSize) % rangeSize);
-      xTranslation.set(normalizedFrom);
-
-      const startFullLoop = () => {
-        const controls = animate(xTranslation, [0, finalPosition], {
-          ease: "linear",
-          duration: DURATION,
-          repeat: Infinity,
-          repeatType: "loop",
-          repeatDelay: 0,
-        });
-        controlsRef.current = controls;
-      };
-
-      // if we've scrolled beyond finalPosition, jump back to start
-      const remaining = Math.abs(finalPosition - normalizedFrom);
-      if (remaining < 0.5) {
-        xTranslation.set(0);
-        startFullLoop();
-        return;
-      }
-
-      // animate the rest of the cycle, then resume
-      const partialDuration = DURATION * (remaining / rangeSize);
-      const controls = animate(xTranslation, finalPosition, {
-        ease: "linear",
-        duration: partialDuration,
-        onComplete: startFullLoop,
-      });
-      controlsRef.current = controls;
-    },
-    [xTranslation, width],
-  );
-
-  useEffect(() => {
-    startAnimation(0);
-    return () => {
-      controlsRef.current?.stop();
-    };
-  }, [startAnimation]);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const handleWheel = (e: WheelEvent) => {
-      if (!isHoveredRef.current) return;
-      e.preventDefault();
-      if (!hasScrolledRef.current) {
-        scrollX.set(xTranslation.get());
-        isHoveredMV.set(1);
-        controlsRef.current?.pause();
-        hasScrolledRef.current = true;
-      }
-      const rangeSize = (width + GAP) / 3;
-      const next = scrollX.get() - e.deltaY;
-      const normalized = -(((-next % rangeSize) + rangeSize) % rangeSize);
-      scrollX.set(normalized);
-    };
-    el.addEventListener("wheel", handleWheel, { passive: false });
-    return () => el.removeEventListener("wheel", handleWheel);
-  }, [isHoveredMV, scrollX, xTranslation, width]);
-
-  const items = artworks?.results ?? [];
+  const carousels = [];
+  for (let i = 0; i < 3; i++) {
+    if (artworks) {
+      const temp = structuredClone(artworks.results);
+      shuffleArray(temp);
+      carousels.push(ContinuousCarousel(temp));
+    }
+  }
   return (
     <div className="bg-gamedev-dark min-h-screen overflow-x-hidden">
-      <section className="flex flex-col items-center px-6 py-10 md:px-24 md:py-14">
+      <section className="flex flex-col items-center bg-muted px-12 py-4 md:px-24 md:py-12">
         <h1 className="text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-primary">
           Featured Artwork
         </h1>
-        <div className="overflow-hidden py-8">
-          <motion.div
-            className={`flex gap-[16px] overflow-hidden`}
-            ref={(el) => {
-              ref(el);
-              containerRef.current = el;
-            }}
-            style={{ x: displayX }}
-            onHoverStart={() => {
-              isHoveredRef.current = true;
-              hasScrolledRef.current = false;
-            }}
-            onHoverEnd={() => {
-              isHoveredRef.current = false;
-              if (hasScrolledRef.current) {
-                const current = scrollX.get();
-                xTranslation.set(current);
-                isHoveredMV.set(0);
-                startAnimation(current);
-              }
-              hasScrolledRef.current = false;
-            }}
-          >
-            {/* we need three copies to make sure it doesn't randomly snap incorrectly  */}
-            {[...items, ...items, ...items].map((item: Art, i: number) => (
-              <motion.div
-                key={`${item.art_id} - ${i}`}
-                style={{ transform: "translateZ(0)" }}
-                whileHover={{ scale: 1.05, zIndex: 1 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                <ImageCard
-                  imageSrc={item.media || undefined}
-                  imageAlt={item.name}
-                  href={`/artwork/${item.art_id}`}
-                  backContent={<p> Hi </p>}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+        <p className="max-w-xl text-center text-base leading-relaxed text-white/80">
+          Some of our favourite art from our members&apos; games!
+          <br />
+          Click on an artwork to see more...
+        </p>
+      </section>
+
+      <section className="-mt-8 bg-dark_3 py-24 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
+        {carousels}
       </section>
     </div>
   );

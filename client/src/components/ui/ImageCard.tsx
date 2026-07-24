@@ -61,7 +61,7 @@ const ImageCard = ({
         onClick={handleClick}
       >
         <div
-          className="absolute inset-0 rounded-xl ring-1 ring-white"
+          className="absolute inset-0 rounded-xl"
           style={{
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
@@ -76,6 +76,7 @@ const ImageCard = ({
                   alt={imageAlt}
                   width={400}
                   height={600}
+                  draggable={false}
                   className="h-full w-full object-cover"
                   onError={() => {
                     setHasImageError(true);
