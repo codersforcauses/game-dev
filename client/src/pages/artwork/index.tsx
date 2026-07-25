@@ -35,7 +35,7 @@ function shuffleArray<T>(arr: T[]) {
 export default function FeaturedArtwork({ carousels = [] }: ArtworksPageProps) {
   return (
     <div className="bg-gamedev-dark min-h-screen overflow-x-hidden">
-      <section className="flex flex-col items-center bg-muted px-12 py-4 md:px-24 md:py-12">
+      <section className="flex flex-col items-center bg-muted px-12 pb-16 pt-12 sm:pb-12 md:px-24">
         <h1 className="text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-primary">
           Featured Artwork
         </h1>
