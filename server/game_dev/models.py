@@ -28,12 +28,16 @@ class Event(models.Model):
 
 # GameContributor table: links Game, Member, and role (composite PK)
 class GameContributor(models.Model):
-    game = models.ForeignKey('Game', on_delete=models.CASCADE, related_name='game_contributors')
-    member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='member_games')
+    game = models.ForeignKey(
+        "Game", on_delete=models.CASCADE, related_name="game_contributors"
+    )
+    member = models.ForeignKey(
+        "Member", on_delete=models.CASCADE, related_name="member_games"
+    )
     role = models.CharField(max_length=100)
 
     class Meta:
-        unique_together = (('game', 'member'),)
+        unique_together = (("game", "member"),)
 
     def __str__(self):
         return f"{self.member.name} ({self.role}) for {self.game.name}"
@@ -60,13 +64,13 @@ class Game(models.Model):
         default=None,
         null=True,
         blank=True,
-        help_text="If game is stored on itch.io, please enter the itchEmbedID, i.e., 1000200"
+        help_text="If game is stored on itch.io, please enter the itchEmbedID, i.e., 1000200",
     )
     itchGamePlayableID = models.PositiveBigIntegerField(
         default=None,
         null=True,
         blank=True,
-        help_text="If a game is playable and has a web demo stored on itch.io, please enter the embed developer ID"
+        help_text="If a game is playable and has a web demo stored on itch.io, please enter the embed developer ID",
     )
     itchGameWidth = models.PositiveBigIntegerField(
         default=None,
@@ -89,22 +93,86 @@ class Game(models.Model):
         super().clean()
         if self.itchGamePlayableID:
             if not self.itchGameWidth:
-                raise ValidationError({"itchGameWidth": "Game width is required if itchGamePlayableID is set."})
+                raise ValidationError(
+                    {
+                        "itchGameWidth": "Game width is required if itchGamePlayableID is set."
+                    }
+                )
             if not self.itchGameHeight:
-                raise ValidationError({"itchGameHeight": "Game height is required if itchGamePlayableID is set."})
+                raise ValidationError(
+                    {
+                        "itchGameHeight": "Game height is required if itchGamePlayableID is set."
+                    }
+                )
 
 
 class GameShowcase(models.Model):
-    game = models.OneToOneField('Game', on_delete=models.CASCADE, related_name='game_showcases')
+    game = models.OneToOneField(
+        "Game", on_delete=models.CASCADE, related_name="game_showcases"
+    )
     description = models.TextField()
 
     def __str__(self):
         return f"{self.game.name}"
 
 
+class Art(models.Model):
+    name = models.CharField(null=False, max_length=200)
+    description = models.CharField(
+        max_length=200,
+    )
+    source_game = models.ForeignKey(
+        "Game", on_delete=models.CASCADE, related_name="game_artwork"
+    )
+    media = models.ImageField(upload_to="art/", null=False)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class ArtContributor(models.Model):
+    art = models.ForeignKey(
+        "Art", on_delete=models.CASCADE, related_name="contributors"
+    )
+    member = models.ForeignKey(
+        "Member", on_delete=models.CASCADE, related_name="art_contributions"
+    )
+    role = models.CharField(max_length=100)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["art", "member"], name="unique_art_member")
+        ]
+        verbose_name = "Art Contributor"
+        verbose_name_plural = "Art Contributors"
+
+    def __str__(self):
+        return f"{self.member.name} - {self.art.name} ({self.role})"
+
+
+class ArtShowcase(models.Model):
+    description = models.CharField(max_length=200)
+    art = models.ForeignKey(Art, on_delete=models.CASCADE, related_name="showcase")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["art"],
+                name="unique_artshowcase_per_art",
+                violation_error_message="Each art piece can only have one showcase.",
+            )
+        ]
+
+    def __str__(self):
+        return f"ArtShowcase[Art={str(self.art.name)}, Description={self.description}]"
+
+
 class SocialMedia(models.Model):
     link = models.URLField(max_length=2083)
-    member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='social_media_links')
+    member = models.ForeignKey(
+        "Member", on_delete=models.CASCADE, related_name="social_media_links"
+    )
     socialMediaUserName = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
@@ -121,7 +189,7 @@ class Committee(models.Model):
         "MARK": "Marketing",
         "EV": "Events OCM",
         "PRO": "Projects OCM",
-        "FRE": "Fresher Rep"
+        "FRE": "Fresher Rep",
     }
     role = models.CharField(max_length=9, choices=roles, default="FRE", unique=True)
 

@@ -20,7 +20,6 @@ export function useCommittee() {
     queryKey: ["role"],
     queryFn: async () => {
       const response = await api.get<ApiMember[]>("/about/");
-      console.log(response.data);
       return response.data;
     },
     retry: (failureCount, error) => {

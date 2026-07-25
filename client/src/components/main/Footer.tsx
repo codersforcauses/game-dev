@@ -7,7 +7,6 @@ import {
   Home,
   Map,
   Palette,
-  Sparkles,
   Users,
 } from "lucide-react";
 import Image from "next/image";
@@ -120,7 +119,7 @@ export default function Footer() {
                         ease: "easeInOut",
                       }}
                     >
-                      <Sparkles className="h-4 w-4 text-yellow-400" />
+                      <Gamepad2 className="h-5 w-5 text-yellow-400" />
                     </motion.div>
                   </motion.div>
                   <div>

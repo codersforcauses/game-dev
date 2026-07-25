@@ -13,9 +13,8 @@ type ApiMember = {
   }[];
   pk: number;
 };
-
-// return api member, import id number from router, is not enabled if not a number type
-export const useMember = (id?: number) => {
+// should be called strictly with member's integer uuid.
+export function useMember(id: number | undefined) {
   return useQuery<ApiMember>({
     queryKey: ["member", id],
     queryFn: async () => {
@@ -24,4 +23,4 @@ export const useMember = (id?: number) => {
     },
     enabled: Number.isFinite(id),
   });
-};
+}

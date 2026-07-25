@@ -4,10 +4,12 @@ import { useRouter } from "next/router";
 import React from "react";
 import { SocialIcon } from "react-social-icons";
 
+import GameArtCarousel from "@/components/ui/GameArtCarousel";
 import { GameEmbed } from "@/components/ui/GameEmbed";
 import { ItchEmbed } from "@/components/ui/ItchEmbed";
 import { useEvent } from "@/hooks/useEvent";
 import { useGame } from "@/hooks/useGames";
+import { useRedirectOn404 } from "@/hooks/useRedirectOn404";
 
 export default function IndividualGamePage() {
   const router = useRouter();
@@ -22,7 +24,7 @@ export default function IndividualGamePage() {
   const { data: eventData } = useEvent(
     game?.event ? String(game.event) : undefined,
   );
-
+  useRedirectOn404(error);
   if (isPending) {
     return (
       <main className="mx-auto min-h-dvh max-w-6xl px-6 py-16 md:px-20">
@@ -71,23 +73,6 @@ export default function IndividualGamePage() {
   };
 
   const devStage = completionLabels[game.completion] ?? "Stage Unknown";
-
-  // TODO ADD ARTIMAGES
-  const artImages: { src: string; alt: string }[] = [];
-  // const artImages = [
-  //   {
-  //     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Minecraft_Zombie.png/120px-Minecraft_Zombie.png",
-  //     alt: "Minecraft Zombie",
-  //   },
-  //   {
-  //     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Minecraft_Enderman.png/120px-Minecraft_Enderman.png",
-  //     alt: "Minecraft Enderman",
-  //   },
-  //   {
-  //     src: "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Minecraft_explore_landscape.png/375px-Minecraft_explore_landscape.png",
-  //     alt: "Minecraft Landscape",
-  //   },
-  // ];
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
@@ -212,21 +197,7 @@ export default function IndividualGamePage() {
           <h2 className="font-jersey10 text-5xl text-primary">ARTWORK</h2>
 
           <div className="mx-auto mb-6 flex h-auto w-full max-w-4xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-center sm:gap-6 sm:px-6 md:h-60">
-            {artImages.map((img) => (
-              <div
-                key={img.src}
-                className="h-48 w-full overflow-hidden rounded-lg bg-popover shadow-md sm:h-60 sm:w-1/3"
-              >
-                <Image
-                  key={img.alt}
-                  src={img.src}
-                  alt={img.alt}
-                  width={240}
-                  height={240}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            ))}
+            <GameArtCarousel items={game.artworks || []} />
           </div>
         </section>
       </main>
