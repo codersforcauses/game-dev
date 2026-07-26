@@ -63,12 +63,12 @@ export default function AboutPage() {
     </>
   );
 
-  function committeeImage(profilePic: string) {
+  function committeeImage(profilePic: string, name: string) {
     return (
       <div className="relative h-[8.75rem] w-[8.25rem] overflow-hidden">
         <Image
           src={profilePic === null ? "/landing_placeholder.png" : profilePic}
-          alt="Placeholder Picture"
+          alt={name === null ? "Placeholder Picture" : name}
           fill
           className="object-cover object-center"
         />
@@ -81,10 +81,16 @@ export default function AboutPage() {
       <>
         <div className="relative flex h-56 w-56 items-center justify-center bg-[url('/pixel-art-frame.svg')] bg-contain bg-center bg-no-repeat">
           {committeeMember.pk === 0 ? (
-            committeeImage(committeeMember.profile_picture)
+            committeeImage(
+              committeeMember.profile_picture,
+              committeeMember.name,
+            )
           ) : (
             <Link href={`/members/${committeeMember.pk}`}>
-              {committeeImage(committeeMember.profile_picture)}
+              {committeeImage(
+                committeeMember.profile_picture,
+                committeeMember.name,
+              )}
             </Link>
           )}
         </div>
