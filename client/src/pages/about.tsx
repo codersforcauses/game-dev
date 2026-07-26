@@ -118,7 +118,7 @@ export default function AboutPage() {
   }
 
   if (isPending) {
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < roleOrder.length; i++) {
       committeeList.push({
         name: "Loading...",
         pronouns: "",
@@ -144,7 +144,7 @@ export default function AboutPage() {
       </main>
     );
   } else {
-    committeeList.push(...committee.slice(0, 8));
+    committeeList.push(...committee.slice(0, roleOrder.length));
   }
 
   return (
