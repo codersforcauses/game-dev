@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 import { EventDateDisplay } from "@/components/ui/EventDateDisplay";
 import { EventTypeFilter, UiEvent, useEvents } from "@/hooks/useEvents";
@@ -21,8 +21,6 @@ function groupEventsByYear<T extends { date: string }>(
 
 export default function EventsPage() {
   const router = useRouter();
-  const [page, setPage] = useState(1);
-
   const pageSize = 20;
 
   const rawType = useMemo(() => {
@@ -33,6 +31,7 @@ export default function EventsPage() {
   }, [router.query.type]);
 
   const type: EventTypeFilter = rawType ?? "upcoming";
+  const page = Number(router.query.page) || 1;
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -44,10 +43,6 @@ export default function EventsPage() {
       );
     }
   }, [router.isReady, rawType, router]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [type]);
 
   const { data, isPending, isError, isFetching } = useEvents({
     type,
@@ -118,7 +113,16 @@ export default function EventsPage() {
         <div className="mb-10 flex items-center justify-center gap-3">
           <button
             type="button"
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            onClick={() =>
+              router.push(
+                {
+                  pathname: "/events",
+                  query: { type, page: Math.max(1, page - 1) },
+                },
+                undefined,
+                { shallow: true },
+              )
+            }
             disabled={!hasPrev || isPending || isFetching}
             className={`rounded-md border px-4 py-2 text-sm transition-colors ${
               !hasPrev || isPending || isFetching
@@ -136,7 +140,13 @@ export default function EventsPage() {
 
           <button
             type="button"
-            onClick={() => setPage((p) => p + 1)}
+            onClick={() =>
+              router.push(
+                { pathname: "/events", query: { type, page: page + 1 } },
+                undefined,
+                { shallow: true },
+              )
+            }
             disabled={!hasNext || isPending || isFetching}
             className={`rounded-md border px-4 py-2 text-sm transition-colors ${
               !hasNext || isPending || isFetching

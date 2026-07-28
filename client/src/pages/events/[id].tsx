@@ -58,9 +58,9 @@ export default function EventPage() {
             className="mt-4 w-full border-t border-gray-600"
             aria-hidden="true"
           />
-          <p className="mt-6 text-lg">
+          <div className="mt-6 text-lg">
             <EventDateDisplay date={event.date} />
-          </p>
+          </div>
           <div className="font-firaCode text-sm text-primary">
             {event.location}{" "}
           </div>
