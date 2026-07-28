@@ -335,8 +335,6 @@ export default function NetworkCanvas({
   }, [containerRef]);
 
   const [isHovering, setIsHovering] = useState(false);
-  const [isClient, setIsClient] = useState(false); // Prevent SSR issues with canvas/animations
-  const [particleConfigs, setParticleConfigs] = useState<ParticleConfig[]>([]);
 
   // Mouse position tracking with spring physics for smooth movement
   const mouseX = useMotionValue(50);
@@ -350,27 +348,23 @@ export default function NetworkCanvas({
     stiffness: 100,
   });
 
-  // Initialize particles on client-side only (prevents hydration mismatch)
-  useEffect(() => {
-    setIsClient(true);
+  const [particleConfigs] = useState(() => {
     const particlecolours = [
       // could make this configurable, but probably doesn't matter
       hslVarWithOpacity("--light-1", 0.3),
       hslVarWithOpacity("--light-alt", 0.4),
       hslVarWithOpacity("--light-alt", 0.4),
     ];
-    setParticleConfigs(
-      Array.from({ length: conf.count }, () => ({
-        baseX: Math.random() * 100,
-        baseY: Math.random() * 100,
-        size: conf.min_particle_size + Math.random() * conf.max_particle_size,
-        delay: Math.random() * 4,
-        duration: 3 + Math.random() * 3,
-        color:
-          particlecolours[Math.floor(Math.random() * particlecolours.length)],
-      })),
-    );
-  }, [conf.count, conf.min_particle_size, conf.max_particle_size]);
+    const pickColour = (arr: string[]) => arr[Math.floor(Math.random() * 3)];
+    return Array.from({ length: conf.count }, () => ({
+      baseX: Math.random() * 100,
+      baseY: Math.random() * 100,
+      size: conf.min_particle_size + Math.random() * conf.max_particle_size,
+      delay: Math.random() * 4,
+      duration: 3 + Math.random() * 3,
+      color: pickColour(particlecolours),
+    }));
+  });
 
   // TODO we're doing this every animation frame..?
   // Convert mouse coordinates to percentage for gradient positioning
@@ -389,7 +383,7 @@ export default function NetworkCanvas({
       onMouseLeave={() => setIsHovering(false)}
     >
       {/* Only render when we have valid dimensions */}
-      {isClient && inView && dimensions.width > 0 && dimensions.height > 0 && (
+      {inView && dimensions.width > 0 && dimensions.height > 0 && (
         <>
           <MouseGradient
             smoothX={smoothX}

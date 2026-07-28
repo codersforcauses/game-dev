@@ -9,14 +9,18 @@ import {
   Palette,
   Users,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useRef } from "react";
 
 import LinksList from "@/components/ui/LinksList";
-import NetworkCanvas from "@/components/ui/NetworkCanvas";
 import SocialIconButton from "@/components/ui/SocialIconButton";
+
+const NetworkCanvas = dynamic(() => import("@/components/ui/NetworkCanvas"), {
+  ssr: false,
+});
 
 export interface ListLink {
   label: string;
