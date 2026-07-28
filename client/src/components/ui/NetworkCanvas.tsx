@@ -31,43 +31,6 @@ type NetworkParticle = {
 };
 
 // Gradient that follows mouse cursor position for interactive effect
-// function MouseGradient({
-//   smoothX,
-//   smoothY,
-//   isHovering,
-//   mouseGradStart,
-//   mouseGradEnd,
-// }: {
-//   smoothX: MotionValue<number>;
-//   smoothY: MotionValue<number>;
-//   isHovering: boolean;
-//   mouseGradStart: string;
-//   mouseGradEnd: string;
-// }) {
-//   const background = useMotionTemplate`radial-gradient(
-//           circle 15px at ${smoothX}% ${smoothY}%,
-//            hsl((--${mouseGradStart})) 0%,
-//            hsl(var(--${mouseGradEnd})) 40%,
-//            transparent 70%
-//          )`;
-//   return (
-//     <motion.div
-//       className="absolute inset-0"
-//       style={{
-//         // background: `radial-gradient(
-//         //   circle 15px at ${smoothX}% ${smoothY}%,
-//         //   hsl(var(--color-${mouseGradStart})) 0%, hsl(var(--color-${mouseGradEnd})) 40%,
-//         //   transparent 70%
-//         // )`,
-//         background: background,
-//         opacity: isHovering ? 0.3 : 0.2,
-//       }}
-//       transition={{ duration: 0.5 }}
-//     />
-//   );
-// }
-//
-// Gradient that follows mouse cursor position for interactive effect
 function MouseGradient({
   smoothX,
   smoothY,

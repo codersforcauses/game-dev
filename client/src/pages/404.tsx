@@ -4,43 +4,56 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import TRIVIA from "@/trivia.json";
+import _TRIVIA from "@/trivia.json";
 
 interface Trivia {
   question: string;
   answer: string;
 }
 
+const TRIVIA = _TRIVIA as Trivia[];
+const ANSWERS = TRIVIA.map((t) => t.answer);
+
+interface TriviaWithOptions {
+  qa: Trivia;
+  options: string[] | null;
+  correctPos: number;
+}
+
 export default function Custom404() {
-  const [gameQuestions, setGameQuestions] = useState<Trivia[]>([]);
+  const [gameQuestions, setGameQuestions] = useState<TriviaWithOptions[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [gameActive, setGameActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
   const [answered, setAnswered] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [options, setOptions] = useState<string[]>([]);
 
   const currentTrivia = gameQuestions[currentQuestionIndex];
 
   const generateQuestions = () => {
-    const shuffled = TRIVIA.sort(() => Math.random() - 0.5).slice(0, 10);
+    const shuffled = TRIVIA.sort(() => Math.random() - 0.5)
+      .slice(0, 10)
+      .map((t): TriviaWithOptions => {
+        const opts: string[] = [];
+
+        ANSWERS.sort(() => Math.random() - 0.5);
+        let i = 0;
+        for (const answer of ANSWERS) {
+          if (answer != t.answer) {
+            opts[i] = answer;
+            i++;
+          }
+          if (i == 3) break;
+        }
+        return {
+          qa: t,
+          options: opts,
+          correctPos: Math.floor(Math.random() * 3),
+        };
+      });
     setGameQuestions(shuffled);
   };
-
-  useEffect(() => {
-    if (!currentTrivia) return;
-
-    const wrongAnswers = TRIVIA.filter((t) => t.answer !== currentTrivia.answer)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3)
-      .map((t) => t.answer);
-
-    const allOptions = [currentTrivia.answer, ...wrongAnswers].sort(
-      () => Math.random() - 0.5,
-    );
-    setOptions(allOptions);
-  }, [currentQuestionIndex, currentTrivia]);
 
   useEffect(() => {
     if (!gameActive || timeLeft <= 0) return;
@@ -74,7 +87,7 @@ export default function Custom404() {
     setSelectedAnswer(answer);
     setAnswered(true);
 
-    if (answer === currentTrivia.answer) {
+    if (answer === currentTrivia.qa.answer) {
       setScore((prev) => prev + 1);
     }
 
@@ -97,11 +110,11 @@ export default function Custom404() {
       return `${baseClass} bg-card border-border text-foreground hover:border-accent`;
     }
 
-    if (option === currentTrivia.answer) {
+    if (option === currentTrivia.qa.answer) {
       return `${baseClass} bg-primary border-accent text-accent-foreground font-semibold`;
     }
 
-    if (option === selectedAnswer && option !== currentTrivia.answer) {
+    if (option === selectedAnswer && option !== currentTrivia.qa.answer) {
       return `${baseClass} bg-accent border-secondary text-secondary-foreground`;
     }
 
@@ -168,20 +181,26 @@ export default function Custom404() {
 
             <div className="md:space-y-4.5 space-y-4 rounded border border-border bg-card p-4 md:p-5">
               <p className="text-base leading-snug text-foreground md:text-[1.05rem]">
-                {currentTrivia.question}
+                {currentTrivia.qa.question}
               </p>
 
               <div className="space-y-2.5 md:space-y-3">
-                {options.map((option, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleAnswer(option)}
-                    className={getButtonClass(option)}
-                    disabled={answered}
-                  >
-                    {option}
-                  </button>
-                ))}
+                {currentTrivia.options
+                  ?.toSpliced(
+                    currentTrivia.correctPos,
+                    0,
+                    currentTrivia.qa.answer,
+                  )
+                  .map((option: string, idx: number) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleAnswer(option)}
+                      className={getButtonClass(option)}
+                      disabled={answered}
+                    >
+                      {option}
+                    </button>
+                  ))}
               </div>
 
               <p className="text-xs text-foreground md:text-sm">

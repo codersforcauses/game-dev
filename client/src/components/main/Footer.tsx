@@ -33,21 +33,6 @@ type socialMedia = {
   alt_text: string;
 };
 
-/*const quickLinks: ListLink[] = [
-  {
-    label: "Join the Club",
-    href: "#",
-    icon: <Handshake className="h-4 w-4" />,
-  },
-  {
-    label: "Submit Your Game",
-    href: "#",
-    icon: <Upload className="h-4 w-4" />,
-  },
-  { label: "Upcoming Jams", href: "#", icon: <Clock className="h-4 w-4" /> },
-  { label: "Resources", href: "#", icon: <Pencil className="h-4 w-4" /> },
-];*/
-
 // Main navigation links (ideally should be shared with Navbar)
 export const mainLinks: ListLink[] = [
   { label: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
