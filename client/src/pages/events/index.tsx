@@ -184,7 +184,7 @@ export default function EventsPage() {
                   </div>
                   <div
                     aria-hidden="true"
-                    className="absolute bottom-0 left-2 top-12 w-px bg-gray-600/60 md:left-4"
+                    className="absolute top-12 bottom-0 left-2 w-px bg-gray-600/60 md:left-4"
                   />
                 </div>
 
@@ -213,7 +213,7 @@ export default function EventsPage() {
                           </p>
                         </div>
 
-                        <div className="relative h-56 w-full flex-shrink-0 border-t border-indigo-300/20 md:h-auto md:w-80 md:border-l md:border-t-0">
+                        <div className="relative h-56 w-full flex-shrink-0 border-t border-indigo-300/20 md:h-auto md:w-80 md:border-t-0 md:border-l">
                           <Image
                             src={event.coverImage}
                             alt={`Cover image for ${event.name}`}

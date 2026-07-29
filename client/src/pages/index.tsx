@@ -104,7 +104,7 @@ export default function Landing() {
       }
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <section className="bg-muted flex w-full justify-center px-12 py-10">
+      <section className="flex w-full justify-center bg-muted px-12 py-10">
         <div className="flex w-full max-w-[1440px] flex-col items-center justify-between gap-12 md:flex-row">
           <div className="flex max-w-lg flex-col gap-6">
             <h1 className="font-jersey10 text-4xl font-bold">
@@ -144,7 +144,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="bg-dark-3 -mt-8 [overflow:clip] py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)]">
+      <section className="-mt-8 [overflow:clip] bg-dark-3 py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)]">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
             {eventCards
@@ -204,11 +204,11 @@ export default function Landing() {
         </div>
       </section> */}
 
-      <section className="bg-dark-3 relative w-full overflow-hidden px-6 py-20 lg:px-12">
+      <section className="relative w-full overflow-hidden bg-dark-3 px-6 py-20 lg:px-12">
         <div className="relative z-10 mx-auto max-w-7xl">
           <div className="mb-8 grid grid-cols-1 md:grid-cols-2">
             <div className="flex flex-col items-start">
-              <h2 className="font-jersey10 flex items-center gap-3 text-4xl text-white">
+              <h2 className="flex items-center gap-3 font-jersey10 text-4xl text-white">
                 Featured Member Creations
                 <Image src="/heart.png" alt="" width={60} height={50} />
               </h2>

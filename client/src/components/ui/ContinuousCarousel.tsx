@@ -78,7 +78,7 @@ export default function ContinuousCarousel(artworks: Art[], reverse = false) {
   return (
     <div className="overflow-hidden py-10">
       <motion.div
-        className="flex w-max cursor-grab select-none gap-[16px] active:cursor-grabbing"
+        className="flex w-max cursor-grab gap-[16px] select-none active:cursor-grabbing"
         ref={ref}
         style={{ x: xTranslation }}
         // i'm not sure how to make these have momentum.. future TODO?

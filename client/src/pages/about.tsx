@@ -24,7 +24,7 @@ export default function AboutPage() {
       <div className="mx-auto max-w-6xl space-y-20 px-6 py-16 md:px-20">
         <section className="flex flex-col justify-between gap-12 md:flex-row md:gap-20">
           <div className="flex-1">
-            <h1 className="font-jersey10 text-primary mb-4 text-5xl md:text-6xl">
+            <h1 className="mb-4 font-jersey10 text-5xl text-primary md:text-6xl">
               About Us
             </h1>
             <div className="mb-6 w-full border-t" aria-hidden="true" />
@@ -41,7 +41,7 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="bg-light-2 relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl md:w-96 lg:w-[32rem]">
+          <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-light-2 md:w-96 lg:w-[32rem]">
             <div className="flex h-full w-full items-center justify-center">
               <Image
                 /*>>Hardcoded feature image to be altered.<<*/
@@ -55,9 +55,9 @@ export default function AboutPage() {
         </section>
       </div>
       {/* Our Committee Title Section - LIGHT - Full Width */}
-      <section className="bg-card w-full px-6 py-6 md:px-10 md:py-6">
+      <section className="w-full bg-card px-6 py-6 md:px-10 md:py-6">
         <div className="mx-auto max-w-6xl">
-          <h2 className="font-jersey10 text-light-2 text-3xl">Our Committee</h2>
+          <h2 className="font-jersey10 text-3xl text-light-2">Our Committee</h2>
         </div>
       </section>
     </>
@@ -94,9 +94,9 @@ export default function AboutPage() {
             </Link>
           )}
         </div>
-        <div className="text-md font-firaCode max-w-56 pl-3 text-left leading-tight">
+        <div className="text-md max-w-56 pl-3 text-left font-firaCode leading-tight">
           <span className="inline-block text-white">
-            <p className="bg-card inline-block px-2 py-1">
+            <p className="inline-block bg-card px-2 py-1">
               {committeeMember.pk === 0 ? (
                 <>{committeeMember.name}</>
               ) : (
@@ -105,11 +105,11 @@ export default function AboutPage() {
                 </Link>
               )}
             </p>
-            <p className="bg-card inline-block px-2 py-1">
+            <p className="inline-block bg-card px-2 py-1">
               {committeeMember.pronouns}
             </p>
           </span>
-          <p className="bg-card text-primary inline-block px-2 py-1">
+          <p className="inline-block bg-card px-2 py-1 text-primary">
             {roleOrder[id]}
           </p>
         </div>
@@ -134,7 +134,7 @@ export default function AboutPage() {
         : "Failed to load Committee Members.";
 
     return (
-      <main className="bg-background relative min-h-screen">
+      <main className="relative min-h-screen bg-background">
         {about}
         <div className="mx-auto min-h-screen max-w-6xl px-6 py-16 md:px-20">
           <p className="text-red-500" role="alert">
@@ -148,10 +148,10 @@ export default function AboutPage() {
   }
 
   return (
-    <main className="bg-background relative min-h-screen">
+    <main className="relative min-h-screen bg-background">
       {about}
       {/* Portraits Section - DARK - Full Width */}
-      <section className="bg-background w-full px-6 py-10 pt-16 pb-20 md:px-10">
+      <section className="w-full bg-background px-6 py-10 pt-16 pb-20 md:px-10">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-wrap justify-center gap-6 md:gap-10">
             {committeeList.map((member, idx) => (

@@ -42,7 +42,7 @@ export default function HomePage() {
         }}
       >
         <h1
-          className="font-jersey10 text-primary text-left text-4xl font-bold"
+          className="text-left font-jersey10 text-4xl font-bold text-primary"
           style={{ marginLeft: "10%" }}
         >
           Game Showcase
@@ -61,7 +61,7 @@ export default function HomePage() {
                     className={`flex flex-col gap-8 rounded-xl p-4 lg:p-8 ${idx % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"}`}
                   >
                     {/* Left: Cover Image */}
-                    <div className="bg-logo-blue-1 flex min-h-48 w-full items-center justify-center overflow-hidden rounded-xl lg:w-auto lg:grow-[4] lg:basis-0">
+                    <div className="flex min-h-48 w-full items-center justify-center overflow-hidden rounded-xl bg-logo-blue-1 lg:w-auto lg:grow-[4] lg:basis-0">
                       {showcase.gameCover ? (
                         <Image
                           src={showcase.gameCover}
@@ -83,10 +83,10 @@ export default function HomePage() {
                       )}
                     </div>
                     {/* Right: Details */}
-                    <div className="border-neutral-3 flex flex-col rounded-lg border-2 border-solid p-4 shadow-lg lg:grow-[3] lg:basis-0 lg:p-8">
+                    <div className="flex flex-col rounded-lg border-2 border-solid border-neutral-3 p-4 shadow-lg lg:grow-[3] lg:basis-0 lg:p-8">
                       <div>
                         {/* Title of the game */}
-                        <h2 className="font-jersey10 text-primary mb-4 text-3xl font-bold tracking-wide">
+                        <h2 className="mb-4 font-jersey10 text-3xl font-bold tracking-wide text-primary">
                           <Link
                             href={
                               showcase.game_id
@@ -100,17 +100,17 @@ export default function HomePage() {
                           </Link>
                         </h2>
                         {/* Comments from committes */}
-                        <p className="text-foreground relative mb-6 pr-10 pl-10 text-base md:text-lg">
+                        <p className="relative mb-6 pr-10 pl-10 text-base text-foreground md:text-lg">
                           {/* double quotes from comments */}
                           <span
-                            className="text-primary absolute top-0 left-0 text-4xl select-none"
+                            className="absolute top-0 left-0 text-4xl text-primary select-none"
                             aria-hidden="true"
                           >
                             “
                           </span>
                           {showcase.description}
                           <span
-                            className="text-primary absolute right-0 bottom-0 text-4xl select-none"
+                            className="absolute right-0 bottom-0 text-4xl text-primary select-none"
                             aria-hidden="true"
                           >
                             ”
@@ -119,7 +119,7 @@ export default function HomePage() {
                       </div>
                       <div className="max-h-40 flex-grow" />
                       <div>
-                        <h3 className="text-primary mb-2 text-xl font-bold">
+                        <h3 className="mb-2 text-xl font-bold text-primary">
                           Contributors
                         </h3>
                         <ul className="mb-4">
@@ -129,7 +129,7 @@ export default function HomePage() {
                               className="mb-6 flex flex-col items-center gap-2 md:mb-2 md:flex-row md:gap-4"
                             >
                               <div className="flex flex-row gap-2">
-                                <span className="text-foreground font-semibold">
+                                <span className="font-semibold text-foreground">
                                   {contributor.name}
                                 </span>
                                 <span className="text-muted-foreground">
@@ -138,7 +138,7 @@ export default function HomePage() {
                               </div>
                               {/* Social icons placeholder */}
                               {/* TODO: Add actual links */}
-                              <span className="text-primary flex gap-2 md:ml-auto">
+                              <span className="flex gap-2 text-primary md:ml-auto">
                                 {/* Social icons using react-social-icons */}
                                 <SocialIcon
                                   url="https://facebook.com/"
@@ -166,7 +166,7 @@ export default function HomePage() {
                   ) : null}
 
                   {/* Description */}
-                  <div className="text-light-2 mx-auto w-full max-w-6xl px-8 text-base">
+                  <div className="mx-auto w-full max-w-6xl px-8 text-base text-light-2">
                     {showcase.game_description}
                   </div>
                 </div>

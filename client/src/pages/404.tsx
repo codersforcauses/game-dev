@@ -165,7 +165,7 @@ export default function Custom404() {
             )}
           </div>
         ) : (
-          <div className="md:space-y-4.5 mb-4 space-y-4 md:mb-5">
+          <div className="mb-4 space-y-4 md:mb-5 md:space-y-4.5">
             <div className="mb-2 flex items-center justify-between md:mb-3">
               <p className="text-xs text-muted-foreground md:text-sm">
                 Question {currentQuestionIndex + 1} / 10
@@ -179,7 +179,7 @@ export default function Custom404() {
               </div>
             </div>
 
-            <div className="md:space-y-4.5 space-y-4 rounded border border-border bg-card p-4 md:p-5">
+            <div className="space-y-4 rounded border border-border bg-card p-4 md:space-y-4.5 md:p-5">
               <p className="text-base leading-snug text-foreground md:text-[1.05rem]">
                 {currentTrivia.qa.question}
               </p>

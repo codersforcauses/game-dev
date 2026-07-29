@@ -100,7 +100,7 @@ export default function Footer() {
                       priority
                     />
                     <motion.div
-                      className="absolute -bottom-1 -right-1"
+                      className="absolute -right-1 -bottom-1"
                       animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
                       transition={{
                         duration: 3,

@@ -207,7 +207,10 @@ function NetworkFrame({
           const op = (1 - dist / frameconf.network_connection_distance) * 0.25; // the opacity base of the connections
           const grad = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
           grad.addColorStop(0, hslVarWithOpacity("--color-logo-blue-1", op));
-          grad.addColorStop(0.5, hslVarWithOpacity("--color-light-2", op * 1.5));
+          grad.addColorStop(
+            0.5,
+            hslVarWithOpacity("--color-light-2", op * 1.5),
+          );
           grad.addColorStop(1, hslVarWithOpacity("--color-light-alt", op));
           ctx.strokeStyle = grad;
           ctx.lineWidth = 1.5;
@@ -228,7 +231,10 @@ function NetworkFrame({
             const op = (1 - dist / frameconf.mouse_connection_distance) * 0.4; // the base opacity for connection lines with the mouse
             const grad = ctx.createLinearGradient(p.x, p.y, mx, my);
             grad.addColorStop(0, hslVarWithOpacity("--color-light-alt", op));
-            grad.addColorStop(1, hslVarWithOpacity("--color-light-1", op * 0.5));
+            grad.addColorStop(
+              1,
+              hslVarWithOpacity("--color-light-1", op * 0.5),
+            );
             ctx.strokeStyle = grad;
             ctx.lineWidth = 2;
             ctx.beginPath();

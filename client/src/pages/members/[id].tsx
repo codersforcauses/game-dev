@@ -74,7 +74,7 @@ export default function MemberPage() {
     return (
       <div className="mx-auto min-h-screen max-w-7xl px-6 py-16">
         <p
-          className="font-firaCode my-10 text-center text-lg text-red-500"
+          className="my-10 text-center font-firaCode text-lg text-red-500"
           role="alert"
         >
           {errorMessage}
@@ -86,10 +86,10 @@ export default function MemberPage() {
   const initials = initialsFromName(member.name);
   return (
     <>
-      <div className="bg-card text-light-2 m-auto h-fit">
+      <div className="m-auto h-fit bg-card text-light-2">
         <div className="mx-2 flex flex-wrap items-center justify-center gap-y-5 py-7 lg:mx-10">
           <div className="grid grid-cols-1 grid-rows-1 items-center justify-items-center lg:mr-6">
-            <div className="bg-accent absolute size-32 overflow-clip text-center">
+            <div className="absolute size-32 overflow-clip bg-accent text-center">
               {member.profile_picture ? (
                 <Image
                   src={member.profile_picture}
@@ -98,7 +98,7 @@ export default function MemberPage() {
                   className="object-cover"
                 />
               ) : (
-                <div className="font-jersey10 text-muted-foreground flex h-full w-full items-center justify-center text-5xl">
+                <div className="flex h-full w-full items-center justify-center font-jersey10 text-5xl text-muted-foreground">
                   <p className="mb-2"> {initials} </p>
                 </div>
               )}
@@ -111,10 +111,10 @@ export default function MemberPage() {
               className="z-10"
             />
           </div>
-          <div className="font-firaCode flex w-4/5 flex-col gap-2 rounded-md p-2.5">
+          <div className="flex w-4/5 flex-col gap-2 rounded-md p-2.5 font-firaCode">
             <div className="flex">
-              <p className="font-jersey10 min-w-fit text-4xl">{member.name}</p>
-              <hr className="border-light-2 ml-5 hidden w-full self-center lg:flex" />
+              <p className="min-w-fit font-jersey10 text-4xl">{member.name}</p>
+              <hr className="ml-5 hidden w-full self-center border-light-2 lg:flex" />
             </div>
             <div className="flex items-center gap-2">
               {member.social_media && member.social_media.length > 0 && (
@@ -133,7 +133,7 @@ export default function MemberPage() {
                           href={sm.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-firaCode hover:text-primary text-base underline"
+                          className="font-firaCode text-base underline hover:text-primary"
                         >
                           {sm.socialMediaUserName}
                         </a>

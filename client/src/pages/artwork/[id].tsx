@@ -64,8 +64,8 @@ export default function ArtworkPage() {
           />
         </div>
 
-        <div className="bg-neutral-1 flex flex-col justify-start rounded-sm px-10 py-6">
-          <p className="font-jersey10 text-accent justify-start text-5xl">
+        <div className="flex flex-col justify-start rounded-sm bg-neutral-1 px-10 py-6">
+          <p className="justify-start font-jersey10 text-5xl text-accent">
             {artwork.name}
           </p>
           <p className="mb-6">{artwork.description}</p>

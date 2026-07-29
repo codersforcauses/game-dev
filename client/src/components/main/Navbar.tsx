@@ -18,7 +18,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="border-border/20 border-b-primary bg-landing-card font-jersey10 sticky top-0 z-50 flex h-24 w-full items-center border-b-2 px-20">
+      <header className="sticky top-0 z-50 flex h-24 w-full items-center border-b-2 border-border/20 border-b-primary bg-landing-card px-20 font-jersey10">
         <div className="flex flex-1 items-center">
           <Link href="/" className="flex items-center gap-3 text-2xl lg:mr-5">
             <Image
@@ -44,7 +44,7 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-foreground/90 hover:text-primary whitespace-nowrap transition-colors duration-150"
+                className="whitespace-nowrap text-foreground/90 transition-colors duration-150 hover:text-primary"
               >
                 {item.label}
               </Link>
@@ -62,7 +62,7 @@ export default function Navbar() {
             </button>
 
             {isDropdownOpen && (
-              <div className="border-border/20 bg-popover absolute top-full right-0 z-50 mt-2 w-52 flex-col rounded border">
+              <div className="absolute top-full right-0 z-50 mt-2 w-52 flex-col rounded border border-border/20 bg-popover">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
@@ -70,7 +70,7 @@ export default function Navbar() {
                     onClick={() => {
                       setIsDropdownOpen(false);
                     }}
-                    className="hover:bg-accent block px-4 py-3 text-lg whitespace-nowrap transition-colors duration-150"
+                    className="block px-4 py-3 text-lg whitespace-nowrap transition-colors duration-150 hover:bg-accent"
                   >
                     {item.label}
                   </Link>
