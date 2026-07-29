@@ -61,7 +61,7 @@ export function EventHighlightCard({
     <div key={id} className="flex flex-col">
       {renderCardHeader({ id, title, description, type, image, row })}
 
-      <div className="border-muted bg-landingCard mt-4 rounded-md border p-4 text-gray-200">
+      <div className="border-muted bg-landing-card mt-4 rounded-md border p-4 text-gray-200">
         <div className="flex gap-2">
           <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
             <Play

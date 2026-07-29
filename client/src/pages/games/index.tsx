@@ -42,7 +42,7 @@ export default function HomePage() {
         }}
       >
         <h1
-          className="text-left font-jersey10 text-4xl font-bold text-primary"
+          className="font-jersey10 text-primary text-left text-4xl font-bold"
           style={{ marginLeft: "10%" }}
         >
           Game Showcase
@@ -83,10 +83,10 @@ export default function HomePage() {
                       )}
                     </div>
                     {/* Right: Details */}
-                    <div className="flex flex-col rounded-lg border-2 border-solid border-neutral_3 p-4 shadow-lg lg:grow-[3] lg:basis-0 lg:p-8">
+                    <div className="border-neutral-3 flex flex-col rounded-lg border-2 border-solid p-4 shadow-lg lg:grow-[3] lg:basis-0 lg:p-8">
                       <div>
                         {/* Title of the game */}
-                        <h2 className="mb-4 font-jersey10 text-3xl font-bold tracking-wide text-primary">
+                        <h2 className="font-jersey10 text-primary mb-4 text-3xl font-bold tracking-wide">
                           <Link
                             href={
                               showcase.game_id
@@ -100,17 +100,17 @@ export default function HomePage() {
                           </Link>
                         </h2>
                         {/* Comments from committes */}
-                        <p className="relative mb-6 pl-10 pr-10 text-base text-foreground md:text-lg">
+                        <p className="text-foreground relative mb-6 pr-10 pl-10 text-base md:text-lg">
                           {/* double quotes from comments */}
                           <span
-                            className="absolute left-0 top-0 select-none text-4xl text-primary"
+                            className="text-primary absolute top-0 left-0 text-4xl select-none"
                             aria-hidden="true"
                           >
                             “
                           </span>
                           {showcase.description}
                           <span
-                            className="absolute bottom-0 right-0 select-none text-4xl text-primary"
+                            className="text-primary absolute right-0 bottom-0 text-4xl select-none"
                             aria-hidden="true"
                           >
                             ”
@@ -119,7 +119,7 @@ export default function HomePage() {
                       </div>
                       <div className="max-h-40 flex-grow" />
                       <div>
-                        <h3 className="mb-2 text-xl font-bold text-primary">
+                        <h3 className="text-primary mb-2 text-xl font-bold">
                           Contributors
                         </h3>
                         <ul className="mb-4">
@@ -129,7 +129,7 @@ export default function HomePage() {
                               className="mb-6 flex flex-col items-center gap-2 md:mb-2 md:flex-row md:gap-4"
                             >
                               <div className="flex flex-row gap-2">
-                                <span className="font-semibold text-foreground">
+                                <span className="text-foreground font-semibold">
                                   {contributor.name}
                                 </span>
                                 <span className="text-muted-foreground">
@@ -138,7 +138,7 @@ export default function HomePage() {
                               </div>
                               {/* Social icons placeholder */}
                               {/* TODO: Add actual links */}
-                              <span className="flex gap-2 text-primary md:ml-auto">
+                              <span className="text-primary flex gap-2 md:ml-auto">
                                 {/* Social icons using react-social-icons */}
                                 <SocialIcon
                                   url="https://facebook.com/"
@@ -166,7 +166,7 @@ export default function HomePage() {
                   ) : null}
 
                   {/* Description */}
-                  <div className="mx-auto w-full max-w-6xl px-8 text-base text-light_2">
+                  <div className="text-light-2 mx-auto w-full max-w-6xl px-8 text-base">
                     {showcase.game_description}
                   </div>
                 </div>

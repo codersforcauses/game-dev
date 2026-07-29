@@ -9,7 +9,7 @@ export default function ImageCardBack({ artwork }: { artwork: Art }) {
         <h3 className="font-jersey10 text-accent mb-2 text-center text-4xl leading-tight">
           {artwork.name}
         </h3>
-        <p className="text-light_1 mb-3 text-center font-sans text-base leading-relaxed">
+        <p className="text-light-1 mb-3 text-center font-sans text-base leading-relaxed">
           {artwork.source_game_name ? (
             <>
               from{" "}
@@ -25,7 +25,7 @@ export default function ImageCardBack({ artwork }: { artwork: Art }) {
             "No associated game"
           )}
         </p>
-        {/* <p className="mb-3 text-base leading-relaxed text-light_1"> */}
+        {/* <p className="mb-3 text-base leading-relaxed text-light-1"> */}
         {/*   {artwork.description || "No description available."} */}
         {/* </p> */}
       </div>
@@ -39,7 +39,7 @@ export default function ImageCardBack({ artwork }: { artwork: Art }) {
             {artwork.contributors.map((contributor) => (
               <div
                 key={contributor.id}
-                className="text-light_1 mb-2 text-base leading-relaxed"
+                className="text-light-1 mb-2 text-base leading-relaxed"
               >
                 <Link
                   href={`/members/${contributor.member_id}`}

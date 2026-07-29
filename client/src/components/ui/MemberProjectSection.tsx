@@ -12,13 +12,13 @@ export default function MemberProjectSection(props: {
   const { games, art } = props;
   return (
     <>
-      <h2 className="mt-7 flex justify-center text-center font-jersey10 text-5xl">
+      <h2 className="font-jersey10 mt-7 flex justify-center text-center text-5xl">
         Games
         <Gamepad2 size={32} className="ml-2 self-center text-yellow-300" />
       </h2>
       <div className="mb-12">
         {!games || games.length === 0 ? (
-          <p className="my-10 text-center font-firaCode text-lg text-light_3">
+          <p className="font-firaCode text-light-3 my-10 text-center text-lg">
             No games available.
           </p>
         ) : (
@@ -35,17 +35,17 @@ export default function MemberProjectSection(props: {
                       className="group-hover:brightness-75 group-hover:duration-200"
                     />
                     <Link
-                      className="mb-16 hidden justify-self-center rounded-md bg-accent p-3 font-firaCode text-light_1 drop-shadow-md hover:underline group-hover:flex group-hover:blur-0 group-hover:duration-200"
+                      className="bg-accent font-firaCode text-light-1 group-hover:blur-0 mb-16 hidden justify-self-center rounded-md p-3 drop-shadow-md group-hover:flex group-hover:duration-200 hover:underline"
                       href="#"
                       onClick={() => window.open(`/games/${game.game_id}`)}
                     >
                       Visit work <ArrowUpRight className="ml-1" />
                     </Link>
                   </div>
-                  <p className="max-w-96 font-firaCode text-xl font-semibold">
+                  <p className="font-firaCode max-w-96 text-xl font-semibold">
                     {game.game_data.name}
                   </p>
-                  <p className="line-clamp-1 max-w-96 font-firaCode text-light_3">
+                  <p className="font-firaCode text-light-3 line-clamp-1 max-w-96">
                     {game.game_data.description}
                   </p>
                 </div>
@@ -54,13 +54,13 @@ export default function MemberProjectSection(props: {
           </div>
         )}
       </div>
-      <h2 className="mt-7 flex justify-center text-center font-jersey10 text-5xl">
+      <h2 className="font-jersey10 mt-7 flex justify-center text-center text-5xl">
         Artwork
         <Palette size={32} className="ml-2 self-center text-yellow-300" />
       </h2>
       <div className="mb-12">
         {!art || art.length === 0 ? (
-          <p className="my-10 text-center font-firaCode text-lg text-light_3">
+          <p className="font-firaCode text-light-3 my-10 text-center text-lg">
             No games available.
           </p>
         ) : (
@@ -79,17 +79,17 @@ export default function MemberProjectSection(props: {
                       className="group-hover:brightness-75 group-hover:duration-200"
                     />
                     <Link
-                      className="mb-16 hidden justify-self-center rounded-md bg-accent p-3 font-firaCode text-light_1 drop-shadow-md hover:underline group-hover:flex group-hover:blur-0 group-hover:duration-200"
+                      className="bg-accent font-firaCode text-light-1 group-hover:blur-0 mb-16 hidden justify-self-center rounded-md p-3 drop-shadow-md group-hover:flex group-hover:duration-200 hover:underline"
                       href="#"
                       onClick={() => window.open(`/artwork/${artwork.art_id}`)}
                     >
                       Visit work <ArrowUpRight className="ml-1" />
                     </Link>
                   </div>
-                  <p className="max-w-96 font-firaCode text-xl font-semibold">
+                  <p className="font-firaCode max-w-96 text-xl font-semibold">
                     {artwork.artwork_data.name}
                   </p>
-                  <p className="text-light_3] line-clamp-1 max-w-96 font-firaCode">
+                  <p className="text-light-3] font-firaCode line-clamp-1 max-w-96">
                     {artwork.artwork_data.description}
                   </p>
                 </div>
