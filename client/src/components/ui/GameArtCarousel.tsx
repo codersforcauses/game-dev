@@ -68,7 +68,7 @@ export default function GameArtCarousel({ items }: GameArtCarouselProps) {
         <button
           onClick={slideLeft}
           disabled={currentIndex === 0}
-          className="absolute left-[-50px] top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-dark_3 text-white shadow-md hover:bg-accent disabled:opacity-30"
+          className="bg-dark-3 hover:bg-accent absolute top-1/2 left-[-50px] z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-md disabled:opacity-30"
         >
           <ChevronLeft size={30} />
         </button>
@@ -112,7 +112,7 @@ export default function GameArtCarousel({ items }: GameArtCarouselProps) {
         <button
           onClick={slideRight}
           disabled={currentIndex === maxIndex}
-          className="absolute right-[-50px] top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-dark_3 text-white shadow-md hover:bg-accent disabled:opacity-30"
+          className="bg-dark-3 hover:bg-accent absolute top-1/2 right-[-50px] z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-md disabled:opacity-30"
         >
           <ChevronRight size={30} />
         </button>

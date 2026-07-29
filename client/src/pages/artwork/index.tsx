@@ -35,8 +35,8 @@ function shuffleArray<T>(arr: T[]) {
 export default function FeaturedArtwork({ carousels = [] }: ArtworksPageProps) {
   return (
     <div className="bg-gamedev-dark min-h-screen overflow-x-hidden">
-      <section className="flex flex-col items-center bg-muted px-12 pb-16 pt-12 sm:pb-12 md:px-24">
-        <h1 className="text-center font-jersey10 text-6xl font-bold leading-[76px] tracking-wide text-primary">
+      <section className="bg-muted flex flex-col items-center px-12 pt-12 pb-16 sm:pb-12 md:px-24">
+        <h1 className="font-jersey10 text-primary text-center text-6xl leading-[76px] font-bold tracking-wide">
           Featured Artwork
         </h1>
         <p className="max-w-xl text-center text-base leading-relaxed text-white/80">
@@ -46,7 +46,7 @@ export default function FeaturedArtwork({ carousels = [] }: ArtworksPageProps) {
         </p>
       </section>
 
-      <section className="-mt-8 bg-gradient-to-b from-dark_3 to-dark_alt py-8 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
+      <section className="from-dark-3 to-dark-alt -mt-8 [overflow:clip] bg-gradient-to-b py-8 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)]">
         {carousels.map((items, i) => ContinuousCarousel(items, i % 2 === 0))}
       </section>
     </div>

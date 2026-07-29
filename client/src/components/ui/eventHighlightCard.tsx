@@ -27,14 +27,14 @@ const renderCardHeader = (card: eventHighlightCardType) => {
           clipPath:
             "polygon(0% 0%, 71% 0%, 78% 7px, 100% 7px, 100% calc(100% - 8px), 0% calc(100% - 8px))",
         }}
-        className="relative bg-accent"
+        className="bg-accent relative"
       >
         <div
           style={{
             clipPath:
               "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
           }}
-          className="bg-dark_alt p-4 pt-3 font-jersey10 text-2xl font-semibold"
+          className="bg-dark-alt font-jersey10 p-4 pt-3 text-2xl font-semibold"
         >
           {card.title}
         </div>
@@ -43,7 +43,7 @@ const renderCardHeader = (card: eventHighlightCardType) => {
   }
 
   return (
-    <div className="rounded-md border border-accent bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold">
+    <div className="border-accent bg-dark-alt font-jersey10 rounded-md border px-4 py-2 text-2xl font-semibold">
       {card.title}
     </div>
   );
@@ -61,11 +61,11 @@ export function EventHighlightCard({
     <div key={id} className="flex flex-col">
       {renderCardHeader({ id, title, description, type, image, row })}
 
-      <div className="mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
+      <div className="border-muted bg-landingCard mt-4 rounded-md border p-4 text-gray-200">
         <div className="flex gap-2">
           <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
             <Play
-              className="h-6 w-6 fill-accent text-accent"
+              className="fill-accent text-accent h-6 w-6"
               aria-hidden="true"
               fill="currentColor"
             />

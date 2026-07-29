@@ -6,10 +6,10 @@ export default function ImageCardBack({ artwork }: { artwork: Art }) {
   return (
     <div className="flex h-full flex-col gap-4">
       <div>
-        <h3 className="mb-2 text-center font-jersey10 text-4xl leading-tight text-accent">
+        <h3 className="font-jersey10 text-accent mb-2 text-center text-4xl leading-tight">
           {artwork.name}
         </h3>
-        <p className="mb-3 text-center font-sans text-base leading-relaxed text-light_1">
+        <p className="text-light_1 mb-3 text-center font-sans text-base leading-relaxed">
           {artwork.source_game_name ? (
             <>
               from{" "}
@@ -32,18 +32,18 @@ export default function ImageCardBack({ artwork }: { artwork: Art }) {
 
       {artwork.contributors.length > 0 && (
         <div className="mt-auto">
-          <h4 className="mb-2 text-center font-jersey10 text-2xl leading-tight text-accent">
+          <h4 className="font-jersey10 text-accent mb-2 text-center text-2xl leading-tight">
             Contributed by:
           </h4>
           <div className="flex flex-col items-center space-y-2.5">
             {artwork.contributors.map((contributor) => (
               <div
                 key={contributor.id}
-                className="mb-2 text-base leading-relaxed text-light_1"
+                className="text-light_1 mb-2 text-base leading-relaxed"
               >
                 <Link
                   href={`/members/${contributor.member_id}`}
-                  className="pl-1 text-accent hover:underline"
+                  className="text-accent pl-1 hover:underline"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {contributor.member_name}
@@ -56,7 +56,7 @@ export default function ImageCardBack({ artwork }: { artwork: Art }) {
 
       <Link
         href={`/artwork/${artwork.art_id}`}
-        className="mt-4 rounded-md border border-accent bg-accent/10 px-4 py-2 text-center font-jersey10 text-2xl leading-relaxed text-accent transition-colors hover:bg-accent hover:text-dark_3"
+        className="border-accent bg-accent/10 font-jersey10 text-accent hover:bg-accent hover:text-dark-3 mt-4 rounded-md border px-4 py-2 text-center text-2xl leading-relaxed transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         View full details

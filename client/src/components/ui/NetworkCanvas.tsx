@@ -64,7 +64,7 @@ function SimpleParticle({
   smoothX,
   smoothY,
   isHovering,
-  color = hslVarWithOpacity("--light-1", 0.6),
+  color = hslVarWithOpacity("--color-light-1", 0.6),
 }: ParticleConfig & {
   smoothX: MotionValue<number>;
   smoothY: MotionValue<number>;
@@ -206,9 +206,9 @@ function NetworkFrame({
           const pB = pts[index];
           const op = (1 - dist / frameconf.network_connection_distance) * 0.25; // the opacity base of the connections
           const grad = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
-          grad.addColorStop(0, hslVarWithOpacity("--logo-blue-1", op));
-          grad.addColorStop(0.5, hslVarWithOpacity("--light-2", op * 1.5));
-          grad.addColorStop(1, hslVarWithOpacity("--light-alt", op));
+          grad.addColorStop(0, hslVarWithOpacity("--color-logo-blue-1", op));
+          grad.addColorStop(0.5, hslVarWithOpacity("--color-light-2", op * 1.5));
+          grad.addColorStop(1, hslVarWithOpacity("--color-light-alt", op));
           ctx.strokeStyle = grad;
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -227,8 +227,8 @@ function NetworkFrame({
           if (dist < frameconf.mouse_connection_distance) {
             const op = (1 - dist / frameconf.mouse_connection_distance) * 0.4; // the base opacity for connection lines with the mouse
             const grad = ctx.createLinearGradient(p.x, p.y, mx, my);
-            grad.addColorStop(0, hslVarWithOpacity("--light-alt", op));
-            grad.addColorStop(1, hslVarWithOpacity("--light-1", op * 0.5));
+            grad.addColorStop(0, hslVarWithOpacity("--color-light-alt", op));
+            grad.addColorStop(1, hslVarWithOpacity("--color-light-1", op * 0.5));
             ctx.strokeStyle = grad;
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -314,9 +314,9 @@ export default function NetworkCanvas({
   const [particleConfigs] = useState(() => {
     const particlecolours = [
       // could make this configurable, but probably doesn't matter
-      hslVarWithOpacity("--light-1", 0.3),
-      hslVarWithOpacity("--light-alt", 0.4),
-      hslVarWithOpacity("--light-alt", 0.4),
+      hslVarWithOpacity("--color-light-1", 0.3),
+      hslVarWithOpacity("--color-light-alt", 0.4),
+      hslVarWithOpacity("--color-light-alt", 0.4),
     ];
     const pickColour = (arr: string[]) => arr[Math.floor(Math.random() * 3)];
     return Array.from({ length: conf.count }, () => ({

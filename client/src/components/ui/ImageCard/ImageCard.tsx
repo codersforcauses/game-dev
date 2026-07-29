@@ -49,7 +49,7 @@ const ImageCard = ({
   return (
     <div className="h-80 w-80 p-4" style={{ perspective: "1200px" }}>
       <div
-        className={`] relative h-full w-full max-w-2xl select-none rounded-md border border-muted shadow-xl transition-transform duration-500 ${
+        className={`] border-muted relative h-full w-full max-w-2xl rounded-md border shadow-xl transition-transform duration-500 select-none ${
           (isMobile && href) || (backContent && !disableFlip && !hasImageError)
             ? "cursor-pointer"
             : "cursor-default"
@@ -68,7 +68,7 @@ const ImageCard = ({
             willChange: "transform",
           }}
         >
-          <div className="h-full w-full overflow-hidden rounded-xl bg-dark_alt backdrop-blur-md">
+          <div className="bg-dark-alt h-full w-full overflow-hidden rounded-xl backdrop-blur-md">
             {imageSrc && !hasImageError ? (
               <>
                 <Image
@@ -84,13 +84,13 @@ const ImageCard = ({
                   }}
                 />
                 {children && (
-                  <div className="bg-dark_1/40 absolute inset-0 flex items-center justify-center text-light_1">
+                  <div className="bg-dark-1/40 text-light-1 absolute inset-0 flex items-center justify-center">
                     {children}
                   </div>
                 )}
               </>
             ) : (
-              <div className="bg-dark_alt/60 flex h-full w-full items-center justify-center text-light_1">
+              <div className="bg-dark-alt/60 text-light-1 flex h-full w-full items-center justify-center">
                 {placeholder || children || (
                   <span className="font-bold">No Image</span>
                 )}
@@ -101,7 +101,7 @@ const ImageCard = ({
 
         {backContent && (
           <div
-            className="absolute inset-0 flex flex-col overflow-y-auto rounded-xl bg-dark_3 p-6 text-light_1 ring-1 ring-white"
+            className="bg-dark-3 text-light-1 absolute inset-0 flex flex-col overflow-y-auto rounded-xl p-6 ring-1 ring-white"
             style={{
               WebkitBackfaceVisibility: "hidden",
               willChange: "transform",
