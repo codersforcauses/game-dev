@@ -18,7 +18,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex h-24 w-full items-center border-b-2 border-border/20 border-b-primary bg-landingCard px-20 font-jersey10">
+      <header className="sticky top-0 z-50 flex h-24 w-full items-center border-b-2 border-border/20 border-b-primary bg-landing-card px-20 font-jersey10">
         <div className="flex flex-1 items-center">
           <Link href="/" className="flex items-center gap-3 text-2xl lg:mr-5">
             <Image
@@ -62,7 +62,7 @@ export default function Navbar() {
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute right-0 top-full z-50 mt-2 w-52 flex-col rounded border border-border/20 bg-popover">
+              <div className="absolute top-full right-0 z-50 mt-2 w-52 flex-col rounded border border-border/20 bg-popover">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
@@ -70,7 +70,7 @@ export default function Navbar() {
                     onClick={() => {
                       setIsDropdownOpen(false);
                     }}
-                    className="block whitespace-nowrap px-4 py-3 text-lg transition-colors duration-150 hover:bg-accent"
+                    className="block px-4 py-3 text-lg whitespace-nowrap transition-colors duration-150 hover:bg-accent"
                   >
                     {item.label}
                   </Link>

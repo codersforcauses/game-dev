@@ -20,8 +20,8 @@ export default function SocialIconButton({ url, altText }: SocialMedia) {
       whileHover={{
         scale: 1.1,
         y: -4,
-        backgroundColor: "var(--light-alt)",
-        borderColor: cssVarAsHSL("--light-alt", 0.5),
+        backgroundColor: "var(--color-light-alt)",
+        borderColor: cssVarAsHSL("--color-light-alt", 0.5),
       }}
       whileTap={{ scale: 0.95 }}
       transition={{

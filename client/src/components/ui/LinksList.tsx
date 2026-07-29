@@ -33,7 +33,7 @@ export default function LinksList({
 
   return (
     <div className="space-y-3 lg:col-span-1">
-      <h4 className="flex items-center gap-2 font-jersey10 text-xl font-semibold uppercase tracking-wider text-white">
+      <h4 className="flex items-center gap-2 font-jersey10 text-xl font-semibold tracking-wider text-white uppercase">
         {titleIcon}
         {title}
       </h4>
@@ -42,7 +42,7 @@ export default function LinksList({
           <li key={link.label}>
             <Link
               href={link.href}
-              className="hover:text-light-alt group flex items-center gap-2 font-jersey10 text-xl text-gray-400 decoration-2 underline-offset-4 transition-all duration-300 hover:underline"
+              className="group flex items-center gap-2 font-jersey10 text-xl text-gray-400 decoration-2 underline-offset-4 transition-all duration-300 hover:text-light-alt hover:underline"
               onMouseEnter={() => setIsHovered(link.label)}
               onMouseLeave={() => setIsHovered(null)}
             >

@@ -31,43 +31,6 @@ type NetworkParticle = {
 };
 
 // Gradient that follows mouse cursor position for interactive effect
-// function MouseGradient({
-//   smoothX,
-//   smoothY,
-//   isHovering,
-//   mouseGradStart,
-//   mouseGradEnd,
-// }: {
-//   smoothX: MotionValue<number>;
-//   smoothY: MotionValue<number>;
-//   isHovering: boolean;
-//   mouseGradStart: string;
-//   mouseGradEnd: string;
-// }) {
-//   const background = useMotionTemplate`radial-gradient(
-//           circle 15px at ${smoothX}% ${smoothY}%,
-//            hsl((--${mouseGradStart})) 0%,
-//            hsl(var(--${mouseGradEnd})) 40%,
-//            transparent 70%
-//          )`;
-//   return (
-//     <motion.div
-//       className="absolute inset-0"
-//       style={{
-//         // background: `radial-gradient(
-//         //   circle 15px at ${smoothX}% ${smoothY}%,
-//         //   hsl(var(--color-${mouseGradStart})) 0%, hsl(var(--color-${mouseGradEnd})) 40%,
-//         //   transparent 70%
-//         // )`,
-//         background: background,
-//         opacity: isHovering ? 0.3 : 0.2,
-//       }}
-//       transition={{ duration: 0.5 }}
-//     />
-//   );
-// }
-//
-// Gradient that follows mouse cursor position for interactive effect
 function MouseGradient({
   smoothX,
   smoothY,
@@ -101,7 +64,7 @@ function SimpleParticle({
   smoothX,
   smoothY,
   isHovering,
-  color = hslVarWithOpacity("--light-1", 0.6),
+  color = hslVarWithOpacity("--color-light-1", 0.6),
 }: ParticleConfig & {
   smoothX: MotionValue<number>;
   smoothY: MotionValue<number>;
@@ -243,9 +206,12 @@ function NetworkFrame({
           const pB = pts[index];
           const op = (1 - dist / frameconf.network_connection_distance) * 0.25; // the opacity base of the connections
           const grad = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
-          grad.addColorStop(0, hslVarWithOpacity("--logo-blue-1", op));
-          grad.addColorStop(0.5, hslVarWithOpacity("--light-2", op * 1.5));
-          grad.addColorStop(1, hslVarWithOpacity("--light-alt", op));
+          grad.addColorStop(0, hslVarWithOpacity("--color-logo-blue-1", op));
+          grad.addColorStop(
+            0.5,
+            hslVarWithOpacity("--color-light-2", op * 1.5),
+          );
+          grad.addColorStop(1, hslVarWithOpacity("--color-light-alt", op));
           ctx.strokeStyle = grad;
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -264,8 +230,11 @@ function NetworkFrame({
           if (dist < frameconf.mouse_connection_distance) {
             const op = (1 - dist / frameconf.mouse_connection_distance) * 0.4; // the base opacity for connection lines with the mouse
             const grad = ctx.createLinearGradient(p.x, p.y, mx, my);
-            grad.addColorStop(0, hslVarWithOpacity("--light-alt", op));
-            grad.addColorStop(1, hslVarWithOpacity("--light-1", op * 0.5));
+            grad.addColorStop(0, hslVarWithOpacity("--color-light-alt", op));
+            grad.addColorStop(
+              1,
+              hslVarWithOpacity("--color-light-1", op * 0.5),
+            );
             ctx.strokeStyle = grad;
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -335,8 +304,6 @@ export default function NetworkCanvas({
   }, [containerRef]);
 
   const [isHovering, setIsHovering] = useState(false);
-  const [isClient, setIsClient] = useState(false); // Prevent SSR issues with canvas/animations
-  const [particleConfigs, setParticleConfigs] = useState<ParticleConfig[]>([]);
 
   // Mouse position tracking with spring physics for smooth movement
   const mouseX = useMotionValue(50);
@@ -350,27 +317,23 @@ export default function NetworkCanvas({
     stiffness: 100,
   });
 
-  // Initialize particles on client-side only (prevents hydration mismatch)
-  useEffect(() => {
-    setIsClient(true);
+  const [particleConfigs] = useState(() => {
     const particlecolours = [
       // could make this configurable, but probably doesn't matter
-      hslVarWithOpacity("--light-1", 0.3),
-      hslVarWithOpacity("--light-alt", 0.4),
-      hslVarWithOpacity("--light-alt", 0.4),
+      hslVarWithOpacity("--color-light-1", 0.3),
+      hslVarWithOpacity("--color-light-alt", 0.4),
+      hslVarWithOpacity("--color-light-alt", 0.4),
     ];
-    setParticleConfigs(
-      Array.from({ length: conf.count }, () => ({
-        baseX: Math.random() * 100,
-        baseY: Math.random() * 100,
-        size: conf.min_particle_size + Math.random() * conf.max_particle_size,
-        delay: Math.random() * 4,
-        duration: 3 + Math.random() * 3,
-        color:
-          particlecolours[Math.floor(Math.random() * particlecolours.length)],
-      })),
-    );
-  }, [conf.count, conf.min_particle_size, conf.max_particle_size]);
+    const pickColour = (arr: string[]) => arr[Math.floor(Math.random() * 3)];
+    return Array.from({ length: conf.count }, () => ({
+      baseX: Math.random() * 100,
+      baseY: Math.random() * 100,
+      size: conf.min_particle_size + Math.random() * conf.max_particle_size,
+      delay: Math.random() * 4,
+      duration: 3 + Math.random() * 3,
+      color: pickColour(particlecolours),
+    }));
+  });
 
   // TODO we're doing this every animation frame..?
   // Convert mouse coordinates to percentage for gradient positioning
@@ -389,7 +352,7 @@ export default function NetworkCanvas({
       onMouseLeave={() => setIsHovering(false)}
     >
       {/* Only render when we have valid dimensions */}
-      {isClient && inView && dimensions.width > 0 && dimensions.height > 0 && (
+      {inView && dimensions.width > 0 && dimensions.height > 0 && (
         <>
           <MouseGradient
             smoothX={smoothX}

@@ -86,7 +86,7 @@ export default function MemberPage() {
   const initials = initialsFromName(member.name);
   return (
     <>
-      <div className="m-auto h-fit bg-card text-light_2">
+      <div className="m-auto h-fit bg-card text-light-2">
         <div className="mx-2 flex flex-wrap items-center justify-center gap-y-5 py-7 lg:mx-10">
           <div className="grid grid-cols-1 grid-rows-1 items-center justify-items-center lg:mr-6">
             <div className="absolute size-32 overflow-clip bg-accent text-center">
@@ -114,7 +114,7 @@ export default function MemberPage() {
           <div className="flex w-4/5 flex-col gap-2 rounded-md p-2.5 font-firaCode">
             <div className="flex">
               <p className="min-w-fit font-jersey10 text-4xl">{member.name}</p>
-              <hr className="ml-5 hidden w-full self-center border-light_2 lg:flex" />
+              <hr className="ml-5 hidden w-full self-center border-light-2 lg:flex" />
             </div>
             <div className="flex items-center gap-2">
               {member.social_media && member.social_media.length > 0 && (

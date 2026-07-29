@@ -9,14 +9,18 @@ import {
   Palette,
   Users,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useRef } from "react";
 
 import LinksList from "@/components/ui/LinksList";
-import NetworkCanvas from "@/components/ui/NetworkCanvas";
 import SocialIconButton from "@/components/ui/SocialIconButton";
+
+const NetworkCanvas = dynamic(() => import("@/components/ui/NetworkCanvas"), {
+  ssr: false,
+});
 
 export interface ListLink {
   label: string;
@@ -28,21 +32,6 @@ type socialMedia = {
   url: string;
   alt_text: string;
 };
-
-/*const quickLinks: ListLink[] = [
-  {
-    label: "Join the Club",
-    href: "#",
-    icon: <Handshake className="h-4 w-4" />,
-  },
-  {
-    label: "Submit Your Game",
-    href: "#",
-    icon: <Upload className="h-4 w-4" />,
-  },
-  { label: "Upcoming Jams", href: "#", icon: <Clock className="h-4 w-4" /> },
-  { label: "Resources", href: "#", icon: <Pencil className="h-4 w-4" /> },
-];*/
 
 // Main navigation links (ideally should be shared with Navbar)
 export const mainLinks: ListLink[] = [
@@ -111,7 +100,7 @@ export default function Footer() {
                       priority
                     />
                     <motion.div
-                      className="absolute -bottom-1 -right-1"
+                      className="absolute -right-1 -bottom-1"
                       animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
                       transition={{
                         duration: 3,

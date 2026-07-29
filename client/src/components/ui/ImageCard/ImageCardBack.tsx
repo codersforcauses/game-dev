@@ -9,7 +9,7 @@ export default function ImageCardBack({ artwork }: { artwork: Art }) {
         <h3 className="mb-2 text-center font-jersey10 text-4xl leading-tight text-accent">
           {artwork.name}
         </h3>
-        <p className="mb-3 text-center font-sans text-base leading-relaxed text-light_1">
+        <p className="mb-3 text-center font-sans text-base leading-relaxed text-light-1">
           {artwork.source_game_name ? (
             <>
               from{" "}
@@ -25,7 +25,7 @@ export default function ImageCardBack({ artwork }: { artwork: Art }) {
             "No associated game"
           )}
         </p>
-        {/* <p className="mb-3 text-base leading-relaxed text-light_1"> */}
+        {/* <p className="mb-3 text-base leading-relaxed text-light-1"> */}
         {/*   {artwork.description || "No description available."} */}
         {/* </p> */}
       </div>
@@ -39,7 +39,7 @@ export default function ImageCardBack({ artwork }: { artwork: Art }) {
             {artwork.contributors.map((contributor) => (
               <div
                 key={contributor.id}
-                className="mb-2 text-base leading-relaxed text-light_1"
+                className="mb-2 text-base leading-relaxed text-light-1"
               >
                 <Link
                   href={`/members/${contributor.member_id}`}
@@ -56,7 +56,7 @@ export default function ImageCardBack({ artwork }: { artwork: Art }) {
 
       <Link
         href={`/artwork/${artwork.art_id}`}
-        className="mt-4 rounded-md border border-accent bg-accent/10 px-4 py-2 text-center font-jersey10 text-2xl leading-relaxed text-accent transition-colors hover:bg-accent hover:text-dark_3"
+        className="mt-4 rounded-md border border-accent bg-accent/10 px-4 py-2 text-center font-jersey10 text-2xl leading-relaxed text-accent transition-colors hover:bg-accent hover:text-dark-3"
         onClick={(e) => e.stopPropagation()}
       >
         View full details

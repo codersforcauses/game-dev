@@ -1,56 +1,54 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
 
-@layer base {
-  :root {
-    /* Figma Colours */
-    --dark-1: hsl(0 0% 0%);
-    --dark-2: hsl(236.25, 47.06%, 6.67%);
-    --dark-3: hsl(232.5, 48%, 9.8%);
-    --dark-alt: hsl(260 52.38% 12.35%);
-    --neutral-1: hsl(235.1, 47.57%, 20.2%);
-    --neutral-2: hsl(235.38, 47.45%, 26.86%);
-    --neutral-3: hsl(234.81, 47.37%, 33.53%);
-    --neutral-4: hsl(235.05, 47.32%, 40.2%);
+@theme {
+  /* Figma palette */
+  --color-dark-1: hsl(0 0% 0%);
+  --color-dark-2: hsl(236.25 47.06% 6.67%);
+  --color-dark-3: hsl(232.5 48% 9.8%);
+  --color-dark-alt: hsl(260 52.38% 12.35%);
+  --color-neutral-1: hsl(235.1 47.57% 20.2%);
+  --color-neutral-2: hsl(235.38 47.45% 26.86%);
+  --color-neutral-3: hsl(234.81 47.37% 33.53%);
+  --color-neutral-4: hsl(235.05 47.32% 40.2%);
+  --color-light-1: hsl(0 0% 100%);
+  --color-light-2: hsl(236.25 96% 90.2%);
+  --color-light-3: hsl(235 96% 80%);
+  --color-light-alt: hsl(183 100% 79%);
+  --color-logo-blue-1: hsl(236 62% 95%);
 
-    --light-1: hsl(0 0% 100%);
-    --light-2: hsl(236.25, 96%, 90.2%);
-    --light-3: hsl(235, 96%, 80%);
-    --light-alt: hsl(183 100% 79%);
-    --logo-blue-1: hsl(236 62% 95%);
+  /* Semantic tokens */
+  --color-background: hsl(236 47% 7%);
+  --color-foreground: hsl(0 0% 100%);
+  --color-card: hsl(235 47% 20%);
+  --color-card-foreground: hsl(0 0% 100%);
+  --color-landing-card: hsl(232 50.8% 12%);
+  --color-popover: hsl(235 47% 20%);
+  --color-popover-foreground: hsl(0 0% 100%);
+  --color-primary: hsl(235 96% 80%);
+  --color-primary-foreground: hsl(235 47% 20%);
+  --color-secondary: hsl(260 68% 69%);
+  --color-secondary-foreground: hsl(235 47% 20%);
+  --color-muted: hsl(235 47% 20%);
+  --color-muted-foreground: hsl(236 96% 90%);
+  --color-accent: hsl(260 68% 69%);
+  --color-accent-foreground: hsl(235 47% 20%);
+  --color-destructive: hsl(0 62.8% 30.6%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-border: hsl(235 47% 20%);
+  --color-input: hsl(235 47% 20%);
+  --color-ring: hsl(236 47% 7%);
 
-    /* Colours to be used for components */
-    --background: 236 47% 7%;
-    --foreground: 0 0% 100%;
+  /* Border radius */
+  --radius-lg: 0.5rem;
+  --radius-md: 0.375rem;
+  --radius-sm: 0.25rem;
+}
 
-    --card: 235 47% 20%;
-    --card-foreground: 0 0% 100%;
-    --landing-card: 232, 50.8%, 12%;
-
-    --popover: 235 47% 20%;
-    --popover-foreground: 0 0% 100%;
-
-    --primary: 235 96% 80%;
-    --primary-foreground: 235 47% 20%;
-
-    --secondary: 260 68% 69%;
-    --secondary-foreground: 235 47% 20%;
-
-    --muted: 235 47% 20%;
-    --muted-foreground: 236 96% 90%;
-
-    --accent: 260 68% 69%;
-    --accent-foreground: 235 47% 20%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 235 47% 20%;
-    --input: 235 47% 20%;
-    --ring: 236 47% 7%;
-    --radius: 0.5rem;
-  }
+@theme inline {
+  /* next/font injects these at runtime — inline keeps them as live var() references */
+  --font-jersey10: var(--font-jersey10);
+  --font-firaCode: var(--font-firaCode);
 }
 
 @layer base {

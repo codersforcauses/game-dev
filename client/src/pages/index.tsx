@@ -144,7 +144,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="-mt-8 bg-dark_3 py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
+      <section className="-mt-8 [overflow:clip] bg-dark-3 py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)]">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
             {eventCards
@@ -204,7 +204,7 @@ export default function Landing() {
         </div>
       </section> */}
 
-      <section className="relative w-full overflow-hidden bg-dark_3 px-6 py-20 lg:px-12">
+      <section className="relative w-full overflow-hidden bg-dark-3 px-6 py-20 lg:px-12">
         <div className="relative z-10 mx-auto max-w-7xl">
           <div className="mb-8 grid grid-cols-1 md:grid-cols-2">
             <div className="flex flex-col items-start">

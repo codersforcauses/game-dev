@@ -61,7 +61,7 @@ export default function HomePage() {
                     className={`flex flex-col gap-8 rounded-xl p-4 lg:p-8 ${idx % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"}`}
                   >
                     {/* Left: Cover Image */}
-                    <div className="bg-logo-blue-1 flex min-h-48 w-full items-center justify-center overflow-hidden rounded-xl lg:w-auto lg:grow-[4] lg:basis-0">
+                    <div className="flex min-h-48 w-full items-center justify-center overflow-hidden rounded-xl bg-logo-blue-1 lg:w-auto lg:grow-[4] lg:basis-0">
                       {showcase.gameCover ? (
                         <Image
                           src={showcase.gameCover}
@@ -83,7 +83,7 @@ export default function HomePage() {
                       )}
                     </div>
                     {/* Right: Details */}
-                    <div className="flex flex-col rounded-lg border-2 border-solid border-neutral_3 p-4 shadow-lg lg:grow-[3] lg:basis-0 lg:p-8">
+                    <div className="flex flex-col rounded-lg border-2 border-solid border-neutral-3 p-4 shadow-lg lg:grow-[3] lg:basis-0 lg:p-8">
                       <div>
                         {/* Title of the game */}
                         <h2 className="mb-4 font-jersey10 text-3xl font-bold tracking-wide text-primary">
@@ -100,17 +100,17 @@ export default function HomePage() {
                           </Link>
                         </h2>
                         {/* Comments from committes */}
-                        <p className="relative mb-6 pl-10 pr-10 text-base text-foreground md:text-lg">
+                        <p className="relative mb-6 pr-10 pl-10 text-base text-foreground md:text-lg">
                           {/* double quotes from comments */}
                           <span
-                            className="absolute left-0 top-0 select-none text-4xl text-primary"
+                            className="absolute top-0 left-0 text-4xl text-primary select-none"
                             aria-hidden="true"
                           >
                             “
                           </span>
                           {showcase.description}
                           <span
-                            className="absolute bottom-0 right-0 select-none text-4xl text-primary"
+                            className="absolute right-0 bottom-0 text-4xl text-primary select-none"
                             aria-hidden="true"
                           >
                             ”
@@ -166,7 +166,7 @@ export default function HomePage() {
                   ) : null}
 
                   {/* Description */}
-                  <div className="mx-auto w-full max-w-6xl px-8 text-base text-light_2">
+                  <div className="mx-auto w-full max-w-6xl px-8 text-base text-light-2">
                     {showcase.game_description}
                   </div>
                 </div>

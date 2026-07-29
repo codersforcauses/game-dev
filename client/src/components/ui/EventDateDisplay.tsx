@@ -55,7 +55,7 @@ export function EventDateDisplay({ date }: EventDateDisplayProps) {
   return (
     <div className="flex flex-wrap items-baseline gap-x-1 font-firaCode">
       <span className="whitespace-nowrap text-primary">{parts.weekday},</span>
-      <span className="whitespace-nowrap font-medium text-primary">
+      <span className="font-medium whitespace-nowrap text-primary">
         {getOrdinal(parseInt(parts.day))} {parts.month}
         {"・"}
       </span>

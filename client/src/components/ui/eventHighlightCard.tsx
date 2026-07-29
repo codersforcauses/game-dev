@@ -34,7 +34,7 @@ const renderCardHeader = (card: eventHighlightCardType) => {
             clipPath:
               "polygon(1px 1px, calc(71% - 1px) 1px, calc(78% - 1px) 8px, calc(100% - 1px) 8px, calc(100% - 1px) calc(100% - 8px - 1px), 1px calc(100% - 8px - 1px))",
           }}
-          className="bg-dark_alt p-4 pt-3 font-jersey10 text-2xl font-semibold"
+          className="bg-dark-alt p-4 pt-3 font-jersey10 text-2xl font-semibold"
         >
           {card.title}
         </div>
@@ -43,7 +43,7 @@ const renderCardHeader = (card: eventHighlightCardType) => {
   }
 
   return (
-    <div className="rounded-md border border-accent bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold">
+    <div className="rounded-md border border-accent bg-dark-alt px-4 py-2 font-jersey10 text-2xl font-semibold">
       {card.title}
     </div>
   );
@@ -61,7 +61,7 @@ export function EventHighlightCard({
     <div key={id} className="flex flex-col">
       {renderCardHeader({ id, title, description, type, image, row })}
 
-      <div className="mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
+      <div className="mt-4 rounded-md border border-muted bg-landing-card p-4 text-gray-200">
         <div className="flex gap-2">
           <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
             <Play

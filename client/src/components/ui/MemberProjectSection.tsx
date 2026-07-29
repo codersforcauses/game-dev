@@ -18,7 +18,7 @@ export default function MemberProjectSection(props: {
       </h2>
       <div className="mb-12">
         {!games || games.length === 0 ? (
-          <p className="my-10 text-center font-firaCode text-lg text-light_3">
+          <p className="my-10 text-center font-firaCode text-lg text-light-3">
             No games available.
           </p>
         ) : (
@@ -35,7 +35,7 @@ export default function MemberProjectSection(props: {
                       className="group-hover:brightness-75 group-hover:duration-200"
                     />
                     <Link
-                      className="mb-16 hidden justify-self-center rounded-md bg-accent p-3 font-firaCode text-light_1 drop-shadow-md hover:underline group-hover:flex group-hover:blur-0 group-hover:duration-200"
+                      className="group-hover:blur-0 mb-16 hidden justify-self-center rounded-md bg-accent p-3 font-firaCode text-light-1 drop-shadow-md group-hover:flex group-hover:duration-200 hover:underline"
                       href="#"
                       onClick={() => window.open(`/games/${game.game_id}`)}
                     >
@@ -45,7 +45,7 @@ export default function MemberProjectSection(props: {
                   <p className="max-w-96 font-firaCode text-xl font-semibold">
                     {game.game_data.name}
                   </p>
-                  <p className="line-clamp-1 max-w-96 font-firaCode text-light_3">
+                  <p className="line-clamp-1 max-w-96 font-firaCode text-light-3">
                     {game.game_data.description}
                   </p>
                 </div>
@@ -60,7 +60,7 @@ export default function MemberProjectSection(props: {
       </h2>
       <div className="mb-12">
         {!art || art.length === 0 ? (
-          <p className="my-10 text-center font-firaCode text-lg text-light_3">
+          <p className="my-10 text-center font-firaCode text-lg text-light-3">
             No games available.
           </p>
         ) : (
@@ -79,7 +79,7 @@ export default function MemberProjectSection(props: {
                       className="group-hover:brightness-75 group-hover:duration-200"
                     />
                     <Link
-                      className="mb-16 hidden justify-self-center rounded-md bg-accent p-3 font-firaCode text-light_1 drop-shadow-md hover:underline group-hover:flex group-hover:blur-0 group-hover:duration-200"
+                      className="group-hover:blur-0 mb-16 hidden justify-self-center rounded-md bg-accent p-3 font-firaCode text-light-1 drop-shadow-md group-hover:flex group-hover:duration-200 hover:underline"
                       href="#"
                       onClick={() => window.open(`/artwork/${artwork.art_id}`)}
                     >
@@ -89,7 +89,7 @@ export default function MemberProjectSection(props: {
                   <p className="max-w-96 font-firaCode text-xl font-semibold">
                     {artwork.artwork_data.name}
                   </p>
-                  <p className="text-light_3] line-clamp-1 max-w-96 font-firaCode">
+                  <p className="text-light-3] line-clamp-1 max-w-96 font-firaCode">
                     {artwork.artwork_data.description}
                   </p>
                 </div>

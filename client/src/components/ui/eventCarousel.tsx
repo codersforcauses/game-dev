@@ -122,7 +122,7 @@ export default function EventCarousel({ items }: EventCarouselProps) {
                   />
                 </div>
 
-                <h3 className="mb-2 mt-4 font-jersey10 text-2xl text-white">
+                <h3 className="mt-4 mb-2 font-jersey10 text-2xl text-white">
                   {event.name}
                 </h3>
 

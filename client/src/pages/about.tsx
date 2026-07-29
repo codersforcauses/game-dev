@@ -41,7 +41,7 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-light_2 md:w-96 lg:w-[32rem]">
+          <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-light-2 md:w-96 lg:w-[32rem]">
             <div className="flex h-full w-full items-center justify-center">
               <Image
                 /*>>Hardcoded feature image to be altered.<<*/
@@ -57,7 +57,7 @@ export default function AboutPage() {
       {/* Our Committee Title Section - LIGHT - Full Width */}
       <section className="w-full bg-card px-6 py-6 md:px-10 md:py-6">
         <div className="mx-auto max-w-6xl">
-          <h2 className="font-jersey10 text-3xl text-light_2">Our Committee</h2>
+          <h2 className="font-jersey10 text-3xl text-light-2">Our Committee</h2>
         </div>
       </section>
     </>
@@ -95,8 +95,8 @@ export default function AboutPage() {
           )}
         </div>
         <div className="text-md max-w-56 pl-3 text-left font-firaCode leading-tight">
-          <p className="inline-block text-white">
-            <text className="inline-block bg-card px-2 py-1">
+          <span className="inline-block text-white">
+            <p className="inline-block bg-card px-2 py-1">
               {committeeMember.pk === 0 ? (
                 <>{committeeMember.name}</>
               ) : (
@@ -104,11 +104,11 @@ export default function AboutPage() {
                   {committeeMember.name}
                 </Link>
               )}
-            </text>
-            <text className="inline-block bg-card px-2 py-1 empty:hidden">
+            </p>
+            <p className="inline-block bg-card px-2 py-1">
               {committeeMember.pronouns}
-            </text>
-          </p>
+            </p>
+          </span>
           <p className="inline-block bg-card px-2 py-1 text-primary">
             {roleOrder[id]}
           </p>
@@ -151,7 +151,7 @@ export default function AboutPage() {
     <main className="relative min-h-screen bg-background">
       {about}
       {/* Portraits Section - DARK - Full Width */}
-      <section className="w-full bg-background px-6 py-10 pb-20 pt-16 md:px-10">
+      <section className="w-full bg-background px-6 py-10 pt-16 pb-20 md:px-10">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-wrap justify-center gap-6 md:gap-10">
             {committeeList.map((member, idx) => (
