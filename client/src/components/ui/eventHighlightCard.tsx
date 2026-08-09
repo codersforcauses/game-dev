@@ -1,5 +1,6 @@
 import { Play } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 export type eventHighlightCardImage = {
   url: string;
@@ -16,6 +17,13 @@ export type eventHighlightCardType = {
   image: eventHighlightCardImage | null;
   row: number;
 };
+
+export type sparkleIndexOverlay = {
+  card: eventHighlightCardType;
+  indexes: number[];
+};
+
+const sparkleImages = ["/sparkle_1.png", "/sparkle_2.png", "/sparkle_3.png"];
 
 // Purple card header section.
 const renderCardHeader = (card: eventHighlightCardType) => {
@@ -41,12 +49,39 @@ const renderCardHeader = (card: eventHighlightCardType) => {
       </div>
     );
   }
-
   return (
     <div className="rounded-md border border-accent bg-dark_alt px-4 py-2 font-jersey10 text-2xl font-semibold">
       {card.title}
     </div>
   );
+};
+
+// only render sparkles on specific cards
+const renderSparkleOverlay = (sparkle: sparkleIndexOverlay) => {
+  switch (sparkle.card.id) {
+    case 2:
+      return (
+        <Image
+          src={sparkleImages[sparkle.indexes[0]]}
+          width={15}
+          height={17}
+          alt="sparkle"
+          className="absolute bottom-0 right-0 h-10 w-10 [image-rendering:pixelated]"
+        />
+      );
+    case 3:
+      return (
+        <Image
+          src={sparkleImages[sparkle.indexes[0]]}
+          width={15}
+          height={17}
+          alt="sparkle"
+          className="absolute bottom-0 left-0 h-10 w-10 [image-rendering:pixelated]"
+        />
+      );
+    default:
+      return null;
+  }
 };
 
 export function EventHighlightCard({
@@ -57,11 +92,21 @@ export function EventHighlightCard({
   image,
   row,
 }: eventHighlightCardType) {
+  const [indexes] = useState(() => {
+    const first = Math.floor(Math.random() * sparkleImages.length);
+    let second = Math.floor(Math.random() * sparkleImages.length);
+
+    if (second === first) {
+      second = (first + 1) % sparkleImages.length;
+    }
+    return [first, second];
+  });
+
   return (
     <div key={id} className="flex flex-col">
       {renderCardHeader({ id, title, description, type, image, row })}
 
-      <div className="mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
+      <div className="relative mt-4 rounded-md border border-muted bg-landingCard p-4 text-gray-200">
         <div className="flex gap-2">
           <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
             <Play
@@ -81,7 +126,13 @@ export function EventHighlightCard({
             />
           )}
         </div>
+        {renderSparkleOverlay({
+          card: { id, title, description, type, image, row },
+          indexes,
+        })}
       </div>
     </div>
   );
 }
+
+// render sparkle overlay function takes a card and index to then return a sparkle on the specified indexes

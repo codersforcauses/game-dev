@@ -9,16 +9,25 @@ import {
   EventHighlightCard,
   eventHighlightCardType,
 } from "@/components/ui/eventHighlightCard";
+import Explosion from "@/components/ui/Explosion";
 import LandingGames from "@/components/ui/landingGames";
 import { useExplosionContext } from "@/contexts/ExplosionContext";
 import { UiEvent, useEvents } from "@/hooks/useEvents";
 
 export default function Landing() {
+  const [showExplosion, setShowExplosion] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
-  const { triggerExplosionAt } = useExplosionContext();
 
-  const handleBombClick = (e: React.MouseEvent) => {
-    // Trigger multiple explosions across the page
+  const { triggerExplosionAt } = useExplosionContext();
+  const handleExplode = () => {
+    if (showExplosion) return;
+
+    setShowExplosion(true);
+    setTimeout(() => setShowExplosion(false), 700);
+    // Trigger screen shake
+    setIsShaking(true);
+    setTimeout(() => setIsShaking(false), 400);
+
     for (let i = 0; i < 10; i++) {
       setTimeout(() => {
         // Random position with 10% margin from edges
@@ -27,14 +36,8 @@ export default function Landing() {
         triggerExplosionAt(x, y);
       }, i * 50); // Stagger by 50ms
     }
-
-    // Trigger screen shake
-    setIsShaking(true);
-    setTimeout(() => setIsShaking(false), 400);
-
-    // Prevent event bubbling
-    e.stopPropagation();
   };
+
   const { data, isPending, isError, isFetching } = useEvents({
     type: "upcoming",
     pageSize: 100,
@@ -132,48 +135,63 @@ export default function Landing() {
               alt="placeholder"
               className="retroBorder min-w-80"
             />
-            <Image
-              src="/bomb.png"
-              width={96}
-              height={156}
-              alt="Bomb - click to explode!"
-              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 cursor-pointer transition-transform [image-rendering:pixelated] hover:scale-110"
-              onClick={handleBombClick}
-            />
+            <div
+              className="absolute bottom-0 left-0 h-auto w-[20%] -translate-x-1/4 -translate-y-4 cursor-pointer"
+              onClick={handleExplode}
+            >
+              {showExplosion && (
+                <Explosion
+                  colour1="#ef4444"
+                  colour2="#f59e0b"
+                  count={11}
+                  yOffset={40}
+                />
+              )}
+              <Image
+                src="/bomb.png"
+                width={96}
+                height={156}
+                alt="bomb"
+                className="h-auto w-full transition-transform [image-rendering:pixelated] active:scale-90"
+              />
+            </div>
           </div>
         </div>
       </section>
 
       <section className="-mt-8 bg-dark_3 py-16 [clip-path:polygon(0%_0%,20%_0%,calc(20%+32px)_32px,100%_32px,100%_100%,0%_100%)] [overflow:clip]">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-            {eventCards
-              .filter((card) => card.row === 1)
-              .map((card) => (
-                <EventHighlightCard key={card.id} {...card} />
-              ))}
+          <div className="relative">
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+              {eventCards
+                .filter((card) => card.row === 1)
+                .map((card) => (
+                  <EventHighlightCard key={card.id} {...card} />
+                ))}
+            </div>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[23fr_27fr_11fr]">
-            {eventCards
-              .filter((card) => card.row === 2)
-              .map((card) => (
-                <EventHighlightCard key={card.id} {...card} />
-              ))}
-
-            <div className="flex flex-row items-center justify-center gap-4 md:hidden lg:flex lg:flex-col lg:items-start">
-              {gameLogoImages.map((logo, index) => (
-                <Image
-                  key={index}
-                  src={logo.url}
-                  width={135}
-                  height={46}
-                  alt={logo.alt}
-                  className={`${index < gameLogoImages.length - 1 ? "lg:mb-5" : ""} ${
-                    logo.position === "end" ? "lg:self-end" : ""
-                  }`}
-                />
-              ))}
+          <div className="relative">
+            <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[23fr_27fr_11fr]">
+              {eventCards
+                .filter((card) => card.row === 2)
+                .map((card) => (
+                  <EventHighlightCard key={card.id} {...card} />
+                ))}
+              <div className="flex flex-row items-center justify-center gap-4 md:hidden lg:flex lg:flex-col lg:items-start">
+                {gameLogoImages.map((logo, index) => (
+                  <Image
+                    key={index}
+                    src={logo.url}
+                    width={135}
+                    height={46}
+                    alt={logo.alt}
+                    className={`${index < gameLogoImages.length - 1 ? "lg:mb-5" : ""} ${
+                      logo.position === "end" ? "lg:self-end" : ""
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
